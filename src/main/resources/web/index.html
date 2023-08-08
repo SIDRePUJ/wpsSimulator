@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>WellProd Simulator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+
+        function showData(name){
+            var space = document.getElementById("agentInfo");
+            space.innerHTML = JSON.stringify(agentData[name], null, 2);
+        }
+
+        function addBootstrapButton(name) {
+            var btn = document.createElement("button");
+            btn.id = name;
+            btn.className = "btn btn-primary";
+            btn.innerHTML = name;
+            btn.style = "width:220px";
+            btn.onclick = function() { showData(name); };
+            document.body.appendChild(btn);
+        }
+
+        function updateAgent(jsonData) {
+            //console.log("Updating agent:", jsonData);
+            var agent = document.getElementById(jsonData.name);
+            var state = JSON.parse(jsonData.state);
+
+            if (agent == null) {
+                addBootstrapButton(jsonData.name);
+                agent = document.getElementById(jsonData.name);
+            }
+            agent.innerHTML = jsonData.name + "<br> 💊 " + state.health + "<br> 💰 " + state.money + "<br> 📅 " + state.internalCurrentDate;
+
+            if (state.health <= 0 ) {
+                agent.className = "btn btn-danger";
+            } else if (state.health <= 30) {
+                agent.className = "btn btn-warning";
+            } else if (state.health <= 80) {
+                agent.className = "btn btn-primary";
+            } else if (state.health > 80) {
+                agent.className = "btn btn-success";
+            }
+
+            if (state.weekBlock == true) {
+                agent.className = "btn btn-secondary";
+            }
+        }
+
+        var socket;
+        var agentData = {};
+        if (window.WebSocket) {
+            socket = new WebSocket("ws://localhost:8080/wpsViewer");
+            socket.onmessage = function(event) {
+                var prefix = event.data.substring(0, 2);
+                var data = event.data.substring(2);
+                switch (prefix){
+                    case "j=":
+                        try {
+                            var jsonData = JSON.parse(data);
+                            updateAgent(jsonData);
+                            agentData[jsonData.name] = jsonData;
+                        } catch (error) {
+                            console.error("Error parsing JSON:", error);
+                        }break;
+                    case "q=":
+                        var number = parseInt(data, 10);
+                        for (var i = 1; i <= number; i++) {
+                            addBootstrapButton("PeasantFamily_" + i);
+                        }break;
+                    case "d=":
+                        document.getElementById("currentDate").value = data;
+                        break;
+                   case "m=":
+                        document.getElementById("map").value = data;
+                        //console.log("Map:", data);
+                        break;
+                   case "s=":
+                        var jsonData = JSON.parse(data);
+                        document.getElementById("alive").value = jsonData.alive;
+                        document.getElementById("dead").value = jsonData.dead;
+                        break;
+                    default:
+                        console.log("Unknown message prefix:", prefix);
+                }
+            };
+            socket.onopen = function(event) {
+                console.log("Web Socket opened!");
+            };
+            socket.onclose = function(event) {
+                console.log("Web Socket closed.");
+            };
+        } else {
+            alert("Your browser does not support Websockets. (Use Chrome)");
+        }
+    
+        function send(message) {
+            if (!window.WebSocket) {
+                return;
+            }
+            if (socket.readyState == WebSocket.OPEN) {
+                socket.send(message);
+            } else {
+                console.log("The socket is not open.");
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">WellProd Simulator</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <input type="button" value="Setup" onclick="socket.send('setup')"/>
+                </li>
+                <li class="nav-item">
+                    <input type="button" value="Start" onclick="socket.send('start')"/>
+                </li>
+                <li class="nav-item">
+                    <input type="button" value="Stop" onclick="socket.send('stop')"/>
+                </li>
+                <li class="nav-item">
+                    <input type="button" id="currentDate" />
+                </li>
+                <li class="nav-item">
+                    <input type="button" id="alive" />
+                </li>
+                <li class="nav-item">
+                    <input type="button" id="dead" />
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-5">
+        <div id="agentList"></div>
+    </div>
+
+    <!-- Pie de página -->
+    <footer class="bg-light text-center py-3">
+        <div id="agentInfo"></div>
+        <div id="map"></div>
+    </footer>
+</body>
+</html>

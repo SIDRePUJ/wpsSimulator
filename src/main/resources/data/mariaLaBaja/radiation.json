@@ -1,0 +1,74 @@
+[
+  {
+    "average": 7.89,
+    "standardDeviation": 0.52,
+    "maxValue": 8.35,
+    "minValue": 7.32
+  },
+  {
+    "average": 7.21,
+    "standardDeviation": 0.55,
+    "maxValue": 7.75,
+    "minValue": 6.64
+  },
+  {
+    "average": 6.07,
+    "standardDeviation": 0.39,
+    "maxValue": 6.47,
+    "minValue": 5.68
+  },
+  {
+    "average": 5.40,
+    "standardDeviation": 0.33,
+    "maxValue": 5.77,
+    "minValue": 5.10
+  },
+  {
+    "average": 4.62,
+    "standardDeviation": 0.26,
+    "maxValue": 4.93,
+    "minValue": 4.47
+  },
+  {
+    "average": 4.97,
+    "standardDeviation": 0.46,
+    "maxValue": 5.50,
+    "minValue": 4.68
+  },
+  {
+    "average": 5.62,
+    "standardDeviation": 0.44,
+    "maxValue": 6.14,
+    "minValue": 5.32
+  },
+  {
+    "average": 5.30,
+    "standardDeviation": 0.4,
+    "maxValue": 5.76,
+    "minValue": 5.06
+  },
+  {
+    "average": 4.40,
+    "standardDeviation": 0.29,
+    "maxValue": 4.73,
+    "minValue": 4.19
+  },
+  {
+    "average": 4.39,
+    "standardDeviation": 0.24,
+    "maxValue": 4.67,
+    "minValue": 4.21
+  },
+  {
+    "average": 5.07,
+    "standardDeviation": 0.25,
+    "maxValue": 5.35,
+    "minValue": 4.87
+  },
+  {
+    "average": 6.77,
+    "standardDeviation": 0.42,
+    "maxValue": 7.18,
+    "minValue": 6.33
+  }
+]

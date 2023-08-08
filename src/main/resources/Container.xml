@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <container alias = "MAS_1" password = "0.91" ipaddress= "127.0.0.1">
+        <environment seneventattemps = "10" sendeventtimeout = "1" rmitimeout = "1000">
+            <remote rmiport = "1099" mcaddress = "230.0.0.1" mcport = "2222"/>
+        </environment>
+    </container>
+</config>
