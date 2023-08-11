@@ -22,15 +22,16 @@ import BESA.Log.ReportBESA;
 import org.json.JSONObject;
 import org.wpsim.Control.ControlCurrentDate;
 import org.wpsim.Control.Guards.ControlAgentGuard;
-import org.wpsim.PeasantFamily.Guards.ToControlMessage;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.wpsReport;
 import rational.data.InfoData;
 import rational.mapping.Believes;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -45,10 +46,8 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
     private PeasantActivityType currentPeasantActivityType;
     private PeasantLeisureType currentPeasantLeisureType;
     private ResourceNeededType currentResourceNeededType;
-
     private int currentDay;
     private int robberyAccount;
-
     private double timeLeftOnDay;
     private boolean newDay;
     private boolean checkedToday;
@@ -56,14 +55,15 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
     private boolean askedForLoanToday;
     private boolean haveLoan;
     private boolean weekBlock;
-    private boolean busy;
     private double toPay;
     private boolean loanDenied;
+    private boolean leisureDoneToday;
 
     private String internalCurrentDate;
     private String ptwDate;
 
     private Map<String, FarmingResource> priceList = new HashMap<>();
+    private Map<Long, TaskLog> taskLog = new ConcurrentHashMap<>();
 
     /**
      *
@@ -74,8 +74,8 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         this.setPeasantProfile(peasantProfile);
         this.internalCurrentDate = ControlCurrentDate.getInstance().getCurrentDate();
         this.peasantProfile.setPeasantFamilyAlias(alias);
+        this.taskLog.clear();
 
-        this.busy = false;
         this.currentDay = 1;
         this.timeLeftOnDay = 24;
         this.checkedToday = false;
@@ -87,6 +87,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         this.priceList.clear();
         this.loanDenied = false;
         this.ptwDate = "";
+        this.leisureDoneToday = false;
 
         this.currentSeason = SeasonType.NONE;
         this.currentCropCare = CropCareType.NONE;
@@ -94,6 +95,15 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
 
+    }
+    public void addTaskToLog(String date){
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String fullClassName = stackTraceElements[2].getClassName();
+        String[] parts = fullClassName.split("\\.");
+        String taskName = parts[parts.length - 1];
+        long time = System.currentTimeMillis() - wpsStart.startTime;
+        TaskLog taskLog = new TaskLog(date, taskName);
+        this.taskLog.put(time, taskLog);
     }
     public boolean isHaveLoan() {
         return haveLoan;
@@ -157,30 +167,6 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         this.robbedToday = false;
         this.askedForLoanToday = false;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
-        wpsReport.ws(this.toJson(), getPeasantProfile().getPeasantFamilyAlias());
-
-        try {
-            AdmBESA adm = AdmBESA.getInstance();
-            ToControlMessage toControlMessage = new ToControlMessage(
-                    getPeasantProfile().getPeasantFamilyAlias(),
-                    getInternalCurrentDate()
-            );
-            EventBESA eventBesa = new EventBESA(
-                    ControlAgentGuard.class.getName(),
-                    toControlMessage
-            );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
-                    wpsStart.config.getControlAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
-        } catch (ExceptionBESA ex) {
-            ReportBESA.error(ex);
-        }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
     }
 
@@ -238,6 +224,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
      * @param time
      */
     public void useTime(TimeConsumedBy time) {
+        //TimeConsumedBy.valueOf(this.getClass().getSimpleName())
         decreaseTime(time.getTime());
     }
 
@@ -256,19 +243,21 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
      * @param time
      */
     public synchronized void decreaseTime(double time) {
-        this.timeLeftOnDay = this.timeLeftOnDay - time;
-        if (this.timeLeftOnDay <= 0) {
-            /*wpsReport.info("🌤️🌤️  NewDay para "
-                    + this.peasantProfile.getPeasantFamilyAlias()
-                    + " con "
-                    + this.peasantProfile.getHealth()
-                    + " de Salud.",
-                    this.getPeasantProfile().getPeasantFamilyAlias()
-            );*/
-            //wpsReport.debug(toJson(), this.getPeasantProfile().getPeasantFamilyAlias());
+        //wpsReport.debug("decreaseTime: " + time, getPeasantProfile().getPeasantFamilyAlias());
+        timeLeftOnDay = timeLeftOnDay - time;
+        if (timeLeftOnDay <= 0) {
             this.makeNewDay();
+        }
+            /*wpsReport.info("🌤️🌤️  NewDay para "
+                    + peasantProfile.getPeasantFamilyAlias()
+                    + " con "
+                    + peasantProfile.getHealth()
+                    + " de Salud.",
+                    getPeasantProfile().getPeasantFamilyAlias()
+            );
+            //wpsReport.debug(toJson(), this.getPeasantProfile().getPeasantFamilyAlias());
         } else {
-            /*wpsReport.info("⏱️⏱️  "
+            wpsReport.info("⏱️⏱️  "
                     + this.peasantProfile.getPeasantFamilyAlias()
                     + " Le quedan "
                     + this.timeLeftOnDay
@@ -276,14 +265,15 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                     + internalCurrentDate
                     + " con "
                     + this.peasantProfile.getHealth()
-                    + " de Salud."
-            );*/
+                    + " de Salud.",
+                    this.getPeasantProfile().getPeasantFamilyAlias()
+            );
         }
         try {
             Thread.sleep((long) (50 * time));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
     }
 
     /**
@@ -319,7 +309,10 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
      *
      */
     public void releaseWeekBlock(int wait) {
-        ReportBESA.debug("Esperando " + wait + " milisegundos para liberar el bloqueo de semana.");
+        wpsReport.debug(
+                "Esperando " + wait + " milisegundos para liberar el bloqueo de semana.",
+                getPeasantProfile().getPeasantFamilyAlias()
+        );
         try {
             Thread.sleep(wait * 10);
             this.weekBlock = false;
@@ -340,7 +333,12 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
      * @return
      */
     public boolean getWeekBlock() {
-        return this.weekBlock;
+        // Si la fecha interna es anterior a la fecha global actual, no se bloquea el agente
+        if (ControlCurrentDate.getInstance().isBeforeDate(internalCurrentDate)){
+            return false;
+        }else {
+            return this.weekBlock;
+        }
     }
 
     /**
@@ -501,32 +499,9 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
      *
      * @return
      */
-    public boolean isFree() {
-        return !this.busy;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isBusy() {
-        return this.busy;
-    }
-
-    /**
-     *
-     * @param busy
-     */
-    public void setBusy(boolean busy) {
-        this.busy = busy;
-    }
-
-    /**
-     *
-     * @return
-     */
     public String toJson() {
         JSONObject dataObject = new JSONObject();
+        dataObject.put("money", peasantProfile.getMoney());
         dataObject.put("currentSeason", currentSeason);
         dataObject.put("currentCropCare", currentCropCare);
         dataObject.put("robberyAccount", robberyAccount);
@@ -539,7 +514,6 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         dataObject.put("timeLeftOnDay", timeLeftOnDay);
         dataObject.put("newDay", newDay);
         dataObject.put("weekBlock", weekBlock);
-        //dataObject.put("busy", busy);
         dataObject.put("askedForLoanToday", askedForLoanToday);
         dataObject.put("robbedToday", robbedToday);
         dataObject.put("checkedToday", checkedToday);
@@ -549,6 +523,8 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         dataObject.put("rainfallConditions", peasantProfile.getRainfallConditions());
         dataObject.put("peasantFamilyMinimalVital", peasantProfile.getPeasantFamilyMinimalVital());
         dataObject.put("health", peasantProfile.getHealth());
+        dataObject.put("leisureDoneToday", leisureDoneToday);
+        dataObject.put("currentActivity", currentPeasantActivityType);
         //dataObject.put("productivity", peasantProfile.getProductivity());
         //dataObject.put("wellBeging", peasantProfile.getWellBeging());
         //dataObject.put("peasantQualityFactor", peasantProfile.getPeasantQualityFactor());
@@ -561,7 +537,6 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         //dataObject.put("housingCondition", peasantProfile.getHousingCondition());
         //dataObject.put("housingLocation", peasantProfile.getHousingLocation());
         //dataObject.put("farmDistance", peasantProfile.getFarmDistance());
-        dataObject.put("money", peasantProfile.getMoney());
         //dataObject.put("totalIncome", peasantProfile.getTotalIncome());
         dataObject.put("loanAmountToPay", peasantProfile.getLoanAmountToPay());
         //dataObject.put("housingQuailty", peasantProfile.getHousingQuailty());
@@ -585,31 +560,11 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         finalDataObject.put("name", peasantProfile.getPeasantFamilyAlias());
         finalDataObject.put("state", dataObject.toString());
 
-        return finalDataObject.toString();
-    }
 
-    @Override
-    public String toString() {
-        return "\n"
-                + " * ==========================================================================\n"
-                + " * wpsPeasantFamilyProfile: " + peasantProfile.getPeasantFamilyAlias() + "\n"
-                + " * ==========================================================================\n"
-                + " * CurrentSeason: " + currentSeason + "\n"
-                + " * CurrentCropCare: " + currentCropCare + "\n"
-                + " * CurrentMoneyOrigin: " + currentMoneyOrigin + "\n"
-                + " * PeasantActivityType: " + currentPeasantActivityType + "\n"
-                + " * currentPeasantLeisureType: " + currentPeasantLeisureType + "\n"
-                + " * robberyAccount: " + robberyAccount + "\n"
-                + " * ptwDate: " + ptwDate + "\n"
-                + " * CurrentDay: " + currentDay + "\n"
-                + " * TimeLeftOnDay: " + timeLeftOnDay + "\n"
-                + " * NewDay: " + newDay + "\n"
-                + " * WeekBlock: " + weekBlock + "\n"
-                + " * Busy: " + busy + "\n"
-                + " * InternalCurrentDate: " + internalCurrentDate + "\n"
-                + " * Price List: " + priceList + "\n"
-                + " * ==========================================================================\n"
-                + peasantProfile.toString();
+        finalDataObject.put("taskLog", new JSONObject(taskLog).toString());
+
+
+        return finalDataObject.toString();
     }
 
     public double getToPay() {
@@ -643,5 +598,13 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                 wpsReport.error(ex, this.peasantProfile.getPeasantFamilyAlias());
             }
         }
+    }
+
+    public boolean isLeisureDoneToday() {
+        return leisureDoneToday;
+    }
+
+    public void setLeisureDoneToday(boolean leisureDoneToday) {
+        this.leisureDoneToday = leisureDoneToday;
     }
 }

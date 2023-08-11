@@ -42,6 +42,7 @@ public class PeasantOffTask extends Task {
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
 
         believes.setNewDay(false);
         believes.useTime(believes.getTimeLeftOnDay());

@@ -47,6 +47,7 @@ public class LookForLoanTask extends Task {
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
         wpsReport.debug("LookForLoanTask", believes.getPeasantProfile().getPeasantFamilyAlias());
 

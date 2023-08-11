@@ -22,20 +22,26 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import BESA.Log.ReportBESA;
 import org.wpsim.Control.Guards.AliveAgentGuard;
 import org.wpsim.Control.Guards.ControlAgentGuard;
 import org.wpsim.Control.Guards.DeadAgentGuard;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
+import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.PeasantOffGoal;
+import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
+import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
+import org.wpsim.PeasantFamily.Goals.L2Obligation.PayDebtsGoal;
+import org.wpsim.PeasantFamily.Goals.L3Development.PrepareLandGoal;
+import org.wpsim.PeasantFamily.Goals.L3Development.StealingOutOfNecessityGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.LeisureActivitiesGoal;
 import org.wpsim.PeasantFamily.Guards.*;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.WebsocketServer;
 import org.wpsim.Viewer.wpsReport;
 import rational.guards.InformationFlowGuard;
 
@@ -58,20 +64,28 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
     private ScheduledFuture<?> futureTask;
 
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
+
         structBESA.addBehavior("HeartBeatGuard");
         structBESA.bindGuard("HeartBeatGuard", HeartBeatGuard.class);
+
         structBESA.addBehavior("FromControlGuard");
         structBESA.bindGuard("FromControlGuard", FromControlGuard.class);
+
         structBESA.addBehavior("FromWorldGuard");
         structBESA.bindGuard("FromWorldGuard", FromWorldGuard.class);
+
         structBESA.addBehavior("FromBankGuard");
         structBESA.bindGuard("FromBankGuard", FromBankGuard.class);
+
         structBESA.addBehavior("FromMarketGuard");
         structBESA.bindGuard("FromMarketGuard", FromMarketGuard.class);
+
         structBESA.addBehavior("StatusGuard");
         structBESA.bindGuard("StatusGuard", StatusGuard.class);
+
         structBESA.addBehavior("KillZombieGuard");
         structBESA.bindGuard("KillZombieGuard", KillZombieGuard.class);
+
         return structBESA;
     }
 
@@ -85,14 +99,14 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
         //Level 1 Goals: Survival        
         goals.add(DoVitalsGoal.buildGoal());
-        //goals.add(SeekPurposeGoal.buildGoal());
+        goals.add(SeekPurposeGoal.buildGoal());
         //goals.add(DoHealthCareGoal.buildGoal());
         //goals.add(SelfEvaluationGoal.buildGoal());
-        goals.add(PeasantOffGoal.buildGoal());
+        //goals.add(PeasantOffGoal.buildGoal());
 
         //Level 2 Goals: Obligations
-        //goals.add(LookForLoanGoal.buildGoal());
-        //goals.add(PayDebtsGoal.buildGoal());
+        goals.add(LookForLoanGoal.buildGoal());
+        goals.add(PayDebtsGoal.buildGoal());
 
         //Level 3 Goals: Development        
         //goals.add(AttendToLivestockGoal.buildGoal());
@@ -106,7 +120,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(ProcessProductsGoal.buildGoal());
         //goals.add(SellCropGoal.buildGoal());
         //goals.add(SellProductsGoal.buildGoal());
-        //goals.add(StealingOutOfNecessityGoal.buildGoal());
+        goals.add(StealingOutOfNecessityGoal.buildGoal());
 
         //Level 4 Goals: Skills And Resources
         //goals.add(GetPriceListGoal.buildGoal());
@@ -184,6 +198,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         // Anuncio de que el agente está muerto
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) this.getState()).getBelieves();
         wpsReport.debug(believes.toJson(), this.getAlias());
+
         //Eliminar la tierra del agente
         try {
             AdmBESA adm = AdmBESA.getInstance();
@@ -208,6 +223,8 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
                     wpsStart.config.getControlAgentName()
             );
             agHandler.sendEvent(eventBesa);
+
+            wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
@@ -233,17 +250,40 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
     private void executePulseTask() {
 
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) this.getState()).getBelieves();
-        wpsReport.debug("Pulse, "
-                + "health: " + believes.getPeasantProfile().getHealth()
-                + " currentDate: " + believes.getInternalCurrentDate()
-                + " money: " + believes.getPeasantProfile().getMoney(),
-                this.getAlias()
-        );
 
         if (believes.getPeasantProfile().getHealth() <= 0) {
             wpsReport.debug("Muerto " + this.getAlias(), this.getAlias());
             this.shutdownAgent();
             return;
+        }
+
+        while (believes.getWeekBlock()) {
+            wpsReport.debug("Bloqueado " + this.getAlias(), this.getAlias());
+
+            try {
+                AdmBESA adm = AdmBESA.getInstance();
+                ToControlMessage toControlMessage = new ToControlMessage(
+                        believes.getPeasantProfile().getPeasantFamilyAlias(),
+                        believes.getInternalCurrentDate(),
+                        believes.getCurrentDay()
+                );
+                EventBESA eventBesa = new EventBESA(
+                        ControlAgentGuard.class.getName(),
+                        toControlMessage
+                );
+                AgHandlerBESA agHandler = adm.getHandlerByAlias(
+                        wpsStart.config.getControlAgentName()
+                );
+                agHandler.sendEvent(eventBesa);
+            } catch (ExceptionBESA ex) {
+                ReportBESA.error(ex);
+            }
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         try {
@@ -253,10 +293,11 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
                     null
             );
             agHandler.sendEvent(eventBesa);
-
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, this.getAlias());
         }
+
+        wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
 
         int waitTime = getUpdatedWaitTime();
         futureTask = executor.schedule(this::executePulseTask, waitTime, TimeUnit.MILLISECONDS);

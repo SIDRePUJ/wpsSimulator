@@ -50,6 +50,7 @@ public class ObtainWaterTask extends Task {
     public void executeTask(Believes parameters) {
 
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         wpsReport.info("🚰🚰🚰 Comprando Agua", believes.getPeasantProfile().getPeasantFamilyAlias());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 

@@ -35,6 +35,7 @@ public class StatusGuard extends GuardBESA {
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
         wpsReport.info(believes.toJson(), this.getAgent().getAlias());
+        //wpsReport.info("Llegó desbloqueo " + event.getData(), this.getAgent().getAlias());
     }
 
 }

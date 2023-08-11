@@ -49,6 +49,7 @@ public class PlantCropTask extends Task {
     public void executeTask(Believes parameters) {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         try {

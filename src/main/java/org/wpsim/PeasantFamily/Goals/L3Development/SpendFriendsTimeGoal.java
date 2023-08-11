@@ -109,8 +109,7 @@ public class SpendFriendsTimeGoal extends GoalBDI {
         //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         //wpsReport.info("isBusy=" + believes.isBusy());
-        if (believes.isFree()
-                && believes.haveTimeAvailable(
+        if (believes.haveTimeAvailable(
                         TimeConsumedBy.SpendFriendsTime
                 )) {
             return 1;

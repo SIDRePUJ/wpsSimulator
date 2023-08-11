@@ -17,6 +17,7 @@ package org.wpsim.PeasantFamily.Guards;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
+import org.wpsim.PeasantFamily.Data.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 
 /**
@@ -33,6 +34,8 @@ public class KillZombieGuard extends GuardBESA {
     public void funcExecGuard(EventBESA event) {
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+
+        believes.setCurrentActivity(PeasantActivityType.BLOCKED);
 
         this.getAgent().shutdownAgent();
     }

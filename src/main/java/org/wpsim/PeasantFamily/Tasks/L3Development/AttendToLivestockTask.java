@@ -42,6 +42,7 @@ public class AttendToLivestockTask extends Task {
     public void executeTask(Believes parameters) {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         /*believes.getPeasantProfile().increaseHealth();
         believes.getPeasantProfile().increaseLeisureOptions();
         believes.getPeasantProfile().useFamilyTimeAvailability();*/

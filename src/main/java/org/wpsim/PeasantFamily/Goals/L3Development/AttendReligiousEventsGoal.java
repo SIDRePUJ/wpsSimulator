@@ -104,11 +104,8 @@ public class AttendReligiousEventsGoal extends GoalBDI {
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.isBusy()) {
+
             return 0;
-        } else {
-            return 1;
-        }
     }
 
     /**

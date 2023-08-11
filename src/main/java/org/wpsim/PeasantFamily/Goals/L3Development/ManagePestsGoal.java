@@ -111,8 +111,7 @@ public class ManagePestsGoal extends GoalBDI {
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.isFree()
-                && believes.haveTimeAvailable(TimeConsumedBy.ManagePestsTask)) {
+        if (believes.haveTimeAvailable(TimeConsumedBy.ManagePestsTask)) {
             return 1;
         } else {
             return 0;

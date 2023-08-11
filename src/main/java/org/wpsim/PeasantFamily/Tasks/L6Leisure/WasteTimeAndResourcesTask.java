@@ -38,6 +38,7 @@ public class WasteTimeAndResourcesTask extends Task {
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
         believes.getPeasantProfile().useMoney(1000);
         believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);

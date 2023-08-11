@@ -37,11 +37,10 @@ public class SeekPurposeTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         believes.getPeasantProfile().setPurpose("farmer");
-        //believes.setCurrentActivity(PeasantActivityType.LEISURE);
     }
 
     /**
@@ -49,16 +48,14 @@ public class SeekPurposeTask extends Task {
      * @param parameters
      */
     @Override
-    public void interruptTask(Believes parameters) {
-    }
+    public void interruptTask(Believes parameters) {}
 
     /**
      *
      * @param parameters
      */
     @Override
-    public void cancelTask(Believes parameters) {
-    }
+    public void cancelTask(Believes parameters) {}
 
     /**
      *

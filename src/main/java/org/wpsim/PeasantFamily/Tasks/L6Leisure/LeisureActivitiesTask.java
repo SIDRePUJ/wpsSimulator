@@ -14,6 +14,8 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
+import org.wpsim.Simulator.wpsStart;
+import org.wpsim.Viewer.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -37,11 +39,10 @@ public class LeisureActivitiesTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        // TODO: Realmente debería avanzar 1 hora y dar espacio a otra actividad.
-        // Por ahora toma todo el día restante del campesino.
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
-        believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
+        believes.setLeisureDoneToday(true);
         this.setTaskFinalized();
     }
 
@@ -50,16 +51,14 @@ public class LeisureActivitiesTask extends Task {
      * @param parameters
      */
     @Override
-    public void interruptTask(Believes parameters) {
-    }
+    public void interruptTask(Believes parameters) {}
 
     /**
      *
      * @param parameters
      */
     @Override
-    public void cancelTask(Believes parameters) {
-    }
+    public void cancelTask(Believes parameters) {}
 
     /**
      *
@@ -69,6 +68,6 @@ public class LeisureActivitiesTask extends Task {
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getCurrentPeasantLeisureType() == PeasantLeisureType.NONE;
+        return believes.isLeisureDoneToday();
     }
 }

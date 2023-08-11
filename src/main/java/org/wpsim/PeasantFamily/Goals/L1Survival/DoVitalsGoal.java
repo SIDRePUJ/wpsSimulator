@@ -21,6 +21,7 @@ import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L1Survival.DoVitalsTask;
+import org.wpsim.Viewer.wpsReport;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -53,11 +54,12 @@ public class DoVitalsGoal extends GoalBDI {
         RationalRole doVitalsRole = new RationalRole(
                 "DoVitalsTask",
                 doVitalsPlan);
-        return new DoVitalsGoal(
+        DoVitalsGoal doVitalsGoal = new DoVitalsGoal(
                 wpsStart.getPlanID(),
                 doVitalsRole,
                 "DoVitalsTask",
                 GoalBDITypes.SURVIVAL);
+        return doVitalsGoal;
     }
 
     /**
@@ -134,8 +136,13 @@ public class DoVitalsGoal extends GoalBDI {
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.debug("DoVitalsGoal.goalSucceeded: " + believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-        return !believes.isNewDay();
+        wpsReport.debug(wpsStart.time() + " DoVitalsGoal:goalSucceeded " + believes.isNewDay() + " " + believes.getPeasantProfile().getPeasantFamilyAlias() + " date " + believes.getInternalCurrentDate() + " hour " + believes.getTimeLeftOnDay(),believes.getPeasantProfile().getPeasantFamilyAlias());
+
+        if (believes.isNewDay()) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

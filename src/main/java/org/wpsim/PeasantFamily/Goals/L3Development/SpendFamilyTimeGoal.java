@@ -73,8 +73,7 @@ public class SpendFamilyTimeGoal extends GoalBDI {
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
         //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.isBusy()
-                && believes.haveTimeAvailable(
+        if (believes.haveTimeAvailable(
                         TimeConsumedBy.SpendFamilyTimeTask
                 )) {
             return 1;

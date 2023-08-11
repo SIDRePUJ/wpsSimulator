@@ -43,6 +43,7 @@ public class FindNewsTask extends Task {
     public void executeTask(Believes parameters) {
        // wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.getPeasantProfile().useLeisureOptions();
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         this.setFinished(true);

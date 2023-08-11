@@ -17,7 +17,7 @@ package org.wpsim.PeasantFamily.Guards;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import BESA.Log.ReportBESA;
+import org.wpsim.Control.ControlMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Viewer.wpsReport;
 
@@ -29,14 +29,14 @@ public class FromControlGuard extends GuardBESA {
 
     /**
      *
-     * @param event
+     * @param event Event rising the Guard
      */
     @Override
     public void funcExecGuard(EventBESA event) {
         StateBDI state = (StateBDI) this.agent.getState();
+        ControlMessage controlMessage = (ControlMessage) event.getData();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
-        ReportBESA.warn("desbloqueando " + believes.getPeasantProfile().getPeasantFamilyAlias());
-        int wait = Integer.parseInt(event.getData().toString());
-        believes.releaseWeekBlock(wait);
+        wpsReport.debug("desbloqueando " + believes.getPeasantProfile().getPeasantFamilyAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
+        believes.releaseWeekBlock(controlMessage.getWait());
     }
 }

@@ -59,7 +59,6 @@ public class SeekPurposeGoal extends GoalBDI {
      */
     public SeekPurposeGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
-        //wpsReport.info("");
     }
 
     /**
@@ -70,13 +69,7 @@ public class SeekPurposeGoal extends GoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getPurpose().isEmpty()) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return 1;
     }
 
     /**
@@ -88,7 +81,6 @@ public class SeekPurposeGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.info("Purpose=" + believes.getProfile().getPurpose());
         if (believes.getPeasantProfile().getPurpose().isBlank()) {
             return 1;
         } else {
@@ -104,8 +96,6 @@ public class SeekPurposeGoal extends GoalBDI {
      */
     @Override
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         return 1;
     }
 

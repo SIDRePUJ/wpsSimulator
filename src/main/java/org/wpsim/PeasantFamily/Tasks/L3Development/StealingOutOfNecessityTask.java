@@ -39,6 +39,7 @@ public class StealingOutOfNecessityTask extends Task {
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         wpsReport.info("⚙️⚙️⚙️", believes.getPeasantProfile().getPeasantFamilyAlias());
         believes.useTime(believes.getTimeLeftOnDay());
         believes.increaseRobberyAccount();

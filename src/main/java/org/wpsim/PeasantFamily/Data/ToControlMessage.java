@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.wpsim.PeasantFamily.Guards;
+package org.wpsim.PeasantFamily.Data;
 
 import BESA.Kernel.Agent.Event.DataBESA;
 
@@ -17,6 +17,9 @@ public class ToControlMessage extends DataBESA {
     private String currentDate;
     private boolean peasantAlive;
 
+    public ToControlMessage(String peasantFamilyAlias) {
+        this.setPeasantFamilyAlias(peasantFamilyAlias);
+    }
     public ToControlMessage(String peasantFamilyAlias, int days) {
         this.setPeasantFamilyAlias(peasantFamilyAlias);
         this.setDays(days);
@@ -26,8 +29,8 @@ public class ToControlMessage extends DataBESA {
         this.setCurrentDate(currentDate);
     }
 
-    public ToControlMessage(String peasantFamilyAlias, int days, boolean alive) {
-        this.setPeasantAlive(alive);
+    public ToControlMessage(String peasantFamilyAlias, String currentDate, int days) {
+        this.setCurrentDate(currentDate);
         this.setPeasantFamilyAlias(peasantFamilyAlias);
         this.setDays(days);
     }

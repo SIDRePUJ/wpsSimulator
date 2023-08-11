@@ -50,6 +50,7 @@ public class CheckCropsTask extends Task {
     public void executeTask(Believes parameters) {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         String peasantFamilyAlias = believes.getPeasantProfile().getPeasantFamilyLandAlias();
         // @TODO: falta calcular el tiempo necesario para el cultivo
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));

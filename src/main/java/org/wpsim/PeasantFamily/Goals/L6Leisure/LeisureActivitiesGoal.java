@@ -22,6 +22,7 @@ import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L6Leisure.LeisureActivitiesTask;
+import org.wpsim.Viewer.wpsReport;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -43,12 +44,12 @@ public class LeisureActivitiesGoal extends GoalBDI {
         RationalRole leisureActivitiesRole = new RationalRole(
                 "LeisureActivitiesTask",
                 leisureActivitiesPlan);
-        LeisureActivitiesGoal leisureActivitiesGoalBDI = new LeisureActivitiesGoal(
+        LeisureActivitiesGoal leisureActivitiesGoal = new LeisureActivitiesGoal(
                 wpsStart.getPlanID(),
                 leisureActivitiesRole,
                 "LeisureActivitiesTask",
                 GoalBDITypes.ATTENTION_CYCLE);
-        return leisureActivitiesGoalBDI;
+        return leisureActivitiesGoal;
     }
 
     /**
@@ -71,22 +72,11 @@ public class LeisureActivitiesGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-
-        if (believes.getPeasantProfile().getHealth() > 0){
-            return 1;
+        if (believes.isLeisureDoneToday()){
+            return 0;
         }else {
-            return 0;
-        }
-
-        //if (believes.getCurrentPeasantLeisureType() == PeasantLeisureType.LEISURE) {
-        /*if (believes.getCurrentActivity() == PeasantActivityType.LEISURE) {
-            //wpsReport.debug("Detectó");
-            wpsReport.debug("detectGoal " + believes.getTimeLeftOnDay(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
-        } else {
-            //wpsReport.debug(believes.toJson());
-            return 0;
-        }*/
+        }
     }
 
     /**
@@ -124,8 +114,7 @@ public class LeisureActivitiesGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("evaluateContribution " + stateBDI.getMachineBDIParams().getAttentionCycleThreshold());
-        return 0.7;
+        return 1;
     }
 
     /**
@@ -136,8 +125,7 @@ public class LeisureActivitiesGoal extends GoalBDI {
      */
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
+        return true;
     }
 
     /**
@@ -148,8 +136,8 @@ public class LeisureActivitiesGoal extends GoalBDI {
      */
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.debug("goalSucceededgoalSucceeded");
-        return true;
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        return believes.isLeisureDoneToday();
     }
 
 }

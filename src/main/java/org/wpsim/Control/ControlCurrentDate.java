@@ -55,13 +55,29 @@ public class ControlCurrentDate {
         return newDate;
     }
 
-    public synchronized boolean compareNewDateGreater(String date){
+    public synchronized boolean isAfterDate(String date){
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         DateTime oldDate = formatter.parseDateTime(getCurrentDate());
         DateTime newDate = formatter.parseDateTime(date);
 
-        return newDate.isAfter(oldDate) || newDate.isEqual(oldDate);
+        return newDate.isAfter(oldDate);
+    }
+    public synchronized boolean isBeforeDate(String date){
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+
+        DateTime oldDate = formatter.parseDateTime(getCurrentDate());
+        DateTime newDate = formatter.parseDateTime(date);
+
+        return newDate.isBefore(oldDate);
+    }
+    public synchronized boolean isEqualDate(String date){
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+
+        DateTime oldDate = formatter.parseDateTime(getCurrentDate());
+        DateTime newDate = formatter.parseDateTime(date);
+
+        return newDate.isEqual(oldDate);
     }
 
     /**

@@ -53,6 +53,7 @@ public class ObtainLivestockTask extends Task {
     public void executeTask(Believes parameters) {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         //wpsReport.info("$ Asking for a LOAN to the Bank " + believes.getProfile().getMoney());
 

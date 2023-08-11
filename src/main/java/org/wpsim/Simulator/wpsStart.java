@@ -42,11 +42,11 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static wpsConfig config;
-    public static int peasantFamiliesAgents = 14;
+    public static int peasantFamiliesAgents = 21;
     public static boolean started = false;
-    private final static int SIMULATION_TIME = 60;
+    private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;
-    static final long startTime = System.currentTimeMillis();
+    public static final long startTime = System.currentTimeMillis();
     static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 
     /**
@@ -84,6 +84,7 @@ public class wpsStart {
             }
 
             printHeader();
+            //startAgents();
 
         } catch (Exception ex) {
             wpsReport.error(ex, "wpsStart");
@@ -94,7 +95,6 @@ public class wpsStart {
         // Simulation Start
         try {
             startPFAgents(peasantFamilyBDIAgents);
-            started = true;
         } catch (ExceptionBESA e) {
             throw new RuntimeException(e);
         }
@@ -144,15 +144,8 @@ public class wpsStart {
     @SuppressWarnings("rawtypes")
     public static void stopSimulation() {
         getStatus();
-        /*AdmBESA adm = AdmBESA.getInstance();
-        Enumeration enumeration = adm.getIdList();
-        while (enumeration.hasMoreElements()) {
-            adm.killAgent((String) enumeration.nextElement(), PASSWD);
-        }
-        adm.kill(0.09);*/
-        // Calculate the time of simulation
         try {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -163,7 +156,6 @@ public class wpsStart {
 
     public static void stopSimulationByTime() throws ExceptionBESA {
 
-        // Closing simulation after X minutes
         try {
             Thread.sleep((60 * SIMULATION_TIME) * 1000);
             stopSimulation();
@@ -216,4 +208,7 @@ public class wpsStart {
                 """, "wpsStart");
     }
 
+    public static long time() {
+        return System.currentTimeMillis() - startTime;
+    }
 }

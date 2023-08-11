@@ -61,7 +61,6 @@ public class PrepareLandGoal extends GoalBDI {
      */
     public PrepareLandGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
-        //wpsReport.info("");
     }
 
     /**
@@ -72,7 +71,6 @@ public class PrepareLandGoal extends GoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.getPeasantProfile().getTools() > 0
                 && believes.getPeasantProfile().getSupplies() > 0
@@ -134,7 +132,6 @@ public class PrepareLandGoal extends GoalBDI {
      */
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
     }
@@ -147,7 +144,6 @@ public class PrepareLandGoal extends GoalBDI {
      */
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         return true;
     }
 

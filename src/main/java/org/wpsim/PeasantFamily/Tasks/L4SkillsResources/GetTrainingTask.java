@@ -43,6 +43,7 @@ public class GetTrainingTask extends Task {
     public void executeTask(Believes parameters) {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         // @TODO: Cambiar a la venta real con el agente social market
         believes.getPeasantProfile().increaseTrainingLevel();
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));

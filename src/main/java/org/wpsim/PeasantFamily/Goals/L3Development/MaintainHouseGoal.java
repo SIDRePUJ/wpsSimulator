@@ -90,8 +90,7 @@ public class MaintainHouseGoal extends GoalBDI {
         //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         //wpsReport.info("isBusy=" + believes.getProfile().isBusy());
-        if (believes.isBusy() 
-                && believes.haveTimeAvailable(TimeConsumedBy.MaintainHouseTask)) {
+        if (believes.haveTimeAvailable(TimeConsumedBy.MaintainHouseTask)) {
             return 0;
         } else {
             return 1;

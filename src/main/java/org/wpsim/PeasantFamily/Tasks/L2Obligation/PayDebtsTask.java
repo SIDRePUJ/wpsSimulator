@@ -50,6 +50,7 @@ public class PayDebtsTask extends Task {
     public void executeTask(Believes parameters) {
 
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         wpsReport.info("⚙️⚙️⚙️ Paying ", believes.getPeasantProfile().getPeasantFamilyAlias());
         try {
             AdmBESA adm = AdmBESA.getInstance();

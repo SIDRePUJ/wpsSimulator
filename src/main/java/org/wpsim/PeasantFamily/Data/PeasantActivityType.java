@@ -42,6 +42,10 @@ public enum PeasantActivityType {
     /**
      *
      */
-    PTW
+    PTW,
+    /**
+     *
+     */
+    BLOCKED
 
 }

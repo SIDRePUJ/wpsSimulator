@@ -41,6 +41,7 @@ public class MaintainHouseTask extends Task {
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.getPeasantProfile().increaseHouseCondition();
         believes.useTime(believes.getTimeLeftOnDay());
         this.setFinished();

@@ -107,8 +107,7 @@ public class SellProductsGoal extends GoalBDI {
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.isFree()
-                && believes.haveTimeAvailable(TimeConsumedBy.SellProductsTask)) {
+        if (believes.haveTimeAvailable(TimeConsumedBy.SellProductsTask)) {
             return 1;
         } else {
             return 0;
