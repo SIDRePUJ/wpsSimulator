@@ -55,7 +55,7 @@ public class ControlCurrentDate {
         return newDate;
     }
 
-    public synchronized boolean isAfterDate(String date){
+    public boolean isAfterDate(String date){
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         DateTime oldDate = formatter.parseDateTime(getCurrentDate());
@@ -63,7 +63,7 @@ public class ControlCurrentDate {
 
         return newDate.isAfter(oldDate);
     }
-    public synchronized boolean isBeforeDate(String date){
+    public boolean isBeforeDate(String date){
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         DateTime oldDate = formatter.parseDateTime(getCurrentDate());
@@ -71,7 +71,7 @@ public class ControlCurrentDate {
 
         return newDate.isBefore(oldDate);
     }
-    public synchronized boolean isEqualDate(String date){
+    public boolean isEqualDate(String date){
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
 
         DateTime oldDate = formatter.parseDateTime(getCurrentDate());

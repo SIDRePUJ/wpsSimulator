@@ -28,4 +28,6 @@
     <root level="ALL">
         <appender-ref ref="ASYNC" />
     </root>
+    <logger name="io.undertow" level="OFF"/>
+    <logger name="org.xnio" level="OFF"/>
 </configuration>

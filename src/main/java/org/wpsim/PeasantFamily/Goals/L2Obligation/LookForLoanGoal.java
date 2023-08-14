@@ -70,30 +70,11 @@ public class LookForLoanGoal extends GoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.debug("evaluateViability " + believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-        if (believes.haveTimeAvailable(TimeConsumedBy.LookForLoanTask)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.debug("detectGoal " + believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
         if (believes.getPeasantProfile().getMoney() <= 70000
-                && !believes.isLoanDenied()
+                //&& !believes.isLoanDenied()
                     && !believes.isAskedForLoanToday()) {
-            believes.setAskedForLoanToday();
             return 1;
         } else {
             return 0;
@@ -108,13 +89,23 @@ public class LookForLoanGoal extends GoalBDI {
      */
     @Override
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getHealth() > 0) {
+        if (believes.haveTimeAvailable(TimeConsumedBy.LookForLoanTask)) {
             return 1;
         } else {
             return 0;
         }
+    }
+
+    /**
+     *
+     * @param parameters
+     * @return
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        return 1;
     }
 
     /**
@@ -125,7 +116,6 @@ public class LookForLoanGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         return 1;
     }
 
@@ -150,7 +140,7 @@ public class LookForLoanGoal extends GoalBDI {
      */
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return true;
+        return ((PeasantFamilyBDIAgentBelieves) parameters).isAskedForLoanToday();
     }
 
 }

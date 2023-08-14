@@ -56,8 +56,8 @@ public class DoVitalsTask extends Task {
 
         believes.setNewDay(false);
         believes.setLeisureDoneToday(false);
-
-        // Use time
+        believes.setSpendFamilyTimeDoneToday(false);
+        believes.setFriendsTimeDoneToday(false);
         believes.useTime(TimeConsumedBy.valueOf("DoVitalsTask"));
 
         // Check crop season
@@ -68,7 +68,7 @@ public class DoVitalsTask extends Task {
         }
 
         // Check debts
-        checkBankDebt(believes);
+        //checkBankDebt(believes);
         // Check Sync
         checkWeek(believes);
 
@@ -113,6 +113,7 @@ public class DoVitalsTask extends Task {
      * @param believes
      */
     private void checkWeek(PeasantFamilyBDIAgentBelieves believes) {
+        //if (ControlCurrentDate.getInstance().isFirstDayOfWeek(believes.getInternalCurrentDate())){
         if (believes.getCurrentDay() % wpsStart.DAYS_TO_CHECK == 0) {
             believes.setWeekBlock();
         }

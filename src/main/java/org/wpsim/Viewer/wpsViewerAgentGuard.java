@@ -43,7 +43,7 @@ public class wpsViewerAgentGuard extends GuardBESA {
                 case "WARN" -> logger.warn(viewerMessage.getPeasantMessage());
                 case "ERROR" -> logger.error(viewerMessage.getPeasantMessage());
                 case "WS" -> {
-                    logger.debug(viewerMessage.getPeasantMessage());
+                    //logger.debug(viewerMessage.getPeasantMessage());
                     WebsocketServer.getInstance().broadcastMessage("j=" + viewerMessage.getPeasantMessage());
                 }
                 default -> logger.info(viewerMessage.getPeasantMessage());

@@ -39,7 +39,6 @@ public enum TimeConsumedBy {
     SellCropTask(2),
     SellProductsTask(2),
     SpendFamilyTimeTask(2),
-    SpendFriendsTime(2),
     GetTrainingTask(2),
     ObtainALandTask(8),
     ObtainLivestockTask(4),
@@ -51,11 +50,12 @@ public enum TimeConsumedBy {
     CommunicateTask(1),
     LookForCollaborationTask(1),
     ProvideCollaborationTask(2),
-    LeisureActivitiesTask(1),
+    LeisureActivitiesTask(2),
     FindNewsTask(2),
     WasteTimeAndResourcesTask(1),
     PeasantPayDebtsTaks(2),
-    peasantOffTask(24);
+    peasantOffTask(24),
+    SpendFriendsTimeTask(2);
     
     private int time;
 

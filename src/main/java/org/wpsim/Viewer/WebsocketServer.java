@@ -75,7 +75,7 @@ public class WebsocketServer implements Runnable {
                                 channel.resumeReceives();
                             }
                         }))
-                        .addPrefixPath("/", resource(resourceManager).addWelcomeFiles("index.html"))
+                        //.addPrefixPath("/", resource(resourceManager).addWelcomeFiles("index.html"))
                 )
                 .build();
         System.out.println("WebSocket Server Started on port 8080");

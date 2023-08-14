@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Tasks.L3Development;
+package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
 import rational.mapping.Believes;
 import rational.mapping.Task;
@@ -37,11 +37,10 @@ public class SpendFamilyTimeTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.getPeasantProfile().useFamilyTimeAvailability();
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.SpendFamilyTimeTask);
+        believes.setSpendFamilyTimeDoneToday(true);
         this.setTaskFinalized();
     }
 
@@ -51,7 +50,6 @@ public class SpendFamilyTimeTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        this.setTaskFinalized();
     }
 
     /**
@@ -60,17 +58,16 @@ public class SpendFamilyTimeTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        this.setTaskFinalized();
     }
 
     /**
      *
-     * @param believes
+     * @param parameters
      * @return
      */
     @Override
-    public boolean checkFinish(Believes believes) {
-        //wpsReport.info("");
-        return true;
+    public boolean checkFinish(Believes parameters) {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        return believes.isFamilyTimeDoneToday();
     }
 }

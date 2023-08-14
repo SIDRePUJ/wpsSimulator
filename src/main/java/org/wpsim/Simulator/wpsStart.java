@@ -39,10 +39,10 @@ import java.util.List;
  */
 public class wpsStart {
 
+    public static wpsConfig config;
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
-    public static wpsConfig config;
-    public static int peasantFamiliesAgents = 21;
+    public static int peasantFamiliesAgents = 100;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;

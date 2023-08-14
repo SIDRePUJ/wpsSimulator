@@ -281,7 +281,7 @@ public final class wpsConfig {
         //getHighRiskFarmerProfile()
 
         double rnd = 1 + generateRandomNumber(
-                pfProfile.getVariance() * -4,
+                pfProfile.getVariance() * -1,
                 pfProfile.getVariance()
         );
         wpsReport.debug(rnd + " random number", "wpsConfig.getFarmerProfile");
@@ -291,6 +291,9 @@ public final class wpsConfig {
         pfProfile.setWaterAvailable((int) (pfProfile.getWaterAvailable() * rnd));
         pfProfile.setSeeds((int) (pfProfile.getSeeds() * rnd));
         pfProfile.setCropSize((int) (pfProfile.getCropSize() * rnd));
+        pfProfile.setPeasantFamilyAffinity(pfProfile.getPeasantFamilyAffinity() * rnd);
+        pfProfile.setPeasantFriendsAffinity(pfProfile.getPeasantFriendsAffinity() * rnd);
+        pfProfile.setPeasantLeisureAffinity(pfProfile.getPeasantLeisureAffinity() * rnd);
 
         return pfProfile;
     }

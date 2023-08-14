@@ -73,8 +73,10 @@ public class LeisureActivitiesGoal extends GoalBDI {
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.isLeisureDoneToday()){
+            //wpsReport.trace("NO " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 0;
         }else {
+            //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         }
     }
@@ -89,8 +91,10 @@ public class LeisureActivitiesGoal extends GoalBDI {
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.LeisureActivitiesTask)) {
+            //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         } else {
+            //wpsReport.trace("NO " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 0;
         }
     }
@@ -114,7 +118,14 @@ public class LeisureActivitiesGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 1;
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
+        if (believes.isFriendsTimeDoneToday() && believes.isFamilyTimeDoneToday()) {
+            //wpsReport.trace("SI 1", believes.getPeasantProfile().getPeasantFamilyAlias());
+            return 1;
+        }else {
+            //wpsReport.trace("SI " + believes.getPeasantProfile().getPeasantLeisureAffinity(), believes.getPeasantProfile().getPeasantFamilyAlias());
+            return believes.getPeasantProfile().getPeasantLeisureAffinity();
+        }
     }
 
     /**
@@ -125,7 +136,8 @@ public class LeisureActivitiesGoal extends GoalBDI {
      */
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return true;
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
+        return believes.getPeasantProfile().getHealth() > 0;
     }
 
     /**

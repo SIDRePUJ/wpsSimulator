@@ -42,6 +42,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
     private ConcurrentMap<String, Boolean> agentMap = new ConcurrentHashMap<>();
     private ConcurrentMap<String, Boolean> deadAgentMap = new ConcurrentHashMap<>();
     private Timer timer = new Timer();
+    private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
 
     public ControlAgentState() {
         super();
@@ -55,28 +56,23 @@ public class ControlAgentState extends StateBESA implements Serializable {
         return deadAgentMap;
     }
 
-    private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
-
     public synchronized boolean allAgentsAlive() {
 
         if (!wpsStart.started) {
             return false;
         }
 
-        int trueCount = 0;
-        int falseCount = 0;
-
-        for (Boolean value : agentMap.values()) {
-            if (value) {
-                trueCount++;
-            } else {
-                falseCount++;
-            }
-        }
+        int trueCount = (int) agentMap.values().stream().filter(Boolean::booleanValue).count();
+        int falseCount = agentMap.size() - trueCount;
 
         WebsocketServer.getInstance().broadcastMessage(
-                "s={\"alive\":" + trueCount + ",\"away\":" + falseCount+ ",\"dead\":" + deadAgentMap.size() + "}"
+                "s={" +
+                           "\"alive\":" + trueCount
+                        + ",\"away\":" + falseCount
+                        + ",\"dead\":" + deadAgentMap.size()
+                        + "}"
         );
+        WebsocketServer.getInstance().broadcastMessage("d=" + ControlCurrentDate.getInstance().getCurrentDate());
 
         if (wpsStart.peasantFamiliesAgents == (agentMap.size() + deadAgentMap.size())) {
             return !agentMap.containsValue(false);
@@ -86,21 +82,21 @@ public class ControlAgentState extends StateBESA implements Serializable {
     }
 
     public synchronized boolean checkUnblocking(int days) {
+        //System.out.println("checkUnblocking " + days);
         if (unblocking.get() && (days % wpsStart.DAYS_TO_CHECK == 0)) {
-            wpsReport.debug("Unblocking event", "ControlAgentState");
+            //wpsReport.debug("Unblocking event", "ControlAgentState");
             try {
                 int count = wpsStart.peasantFamiliesAgents;
                 for (String agentName : getAliveAgentMap().keySet()) {
                     AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(agentName);
                     EventBESA eventBesa = new EventBESA(
                             FromControlGuard.class.getName(),
-                            new ControlMessage(agentName, count--)
+                            new ControlMessage(agentName, count--, days + wpsStart.DAYS_TO_CHECK)
                     );
                     agHandler.sendEvent(eventBesa);
-                    wpsReport.debug("Unblock " + agentName + " sent " + count, "ControlAgentState");
+                    //wpsReport.debug("Unblock " + agentName + " sent " + count, "ControlAgentState");
                 }
                 resetActiveAgents();
-                WebsocketServer.getInstance().broadcastMessage("d=" + ControlCurrentDate.getInstance().getCurrentDate());
                 return true;
             } catch (ExceptionBESA ex) {
                 wpsReport.debug(ex, "ControlAgentState");
@@ -118,7 +114,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
         wpsReport.debug("Agent " + agentName + " is new and alive", "ControlAgentState");
         this.agentMap.put(agentName, false);
         //Comienza a revisar el desbloqueo de agentes por tiempo
-        if (agentMap.size()==wpsStart.peasantFamiliesAgents){
+        if (agentMap.size() == wpsStart.peasantFamiliesAgents) {
             wpsStart.started = true;
         }
     }
@@ -127,6 +123,10 @@ public class ControlAgentState extends StateBESA implements Serializable {
         wpsReport.debug("Agent " + agentName + " is dead", "ControlAgentState");
         this.agentMap.remove(agentName);
         this.deadAgentMap.put(agentName, true);
+        Timer existingTimer = agentTimers.get(agentName);
+        if (existingTimer != null) {
+            existingTimer.cancel();
+        }
     }
 
     public void modifyAgentMap(String agentName) {
@@ -135,54 +135,39 @@ public class ControlAgentState extends StateBESA implements Serializable {
         if (existingTimer != null) {
             existingTimer.cancel();
         }
-
         // Marca el agente como "vivo"
         this.agentMap.put(agentName, true);
-
         WebsocketServer.getInstance().broadcastMessage("m=" + agentMap.toString());
-
         unblocking.set(allAgentsAlive());
-
         // Inicia un nuevo temporizador para este agente
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-            wpsReport.debug("Agent " + agentName + " is dead by ControlAgentState", "ControlAgentState");
-
-            removeAgentFromMap(agentName);
-
-            // Marca el agente como "muerto"
-            try {
-                AdmBESA adm = AdmBESA.getInstance();
-                ToControlMessage toControlMessage = new ToControlMessage(
-                        agentName
-                );
-                EventBESA eventBesa = new EventBESA(
-                        DeadAgentGuard.class.getName(),
-                        toControlMessage
-                );
-                AgHandlerBESA agHandler = adm.getHandlerByAlias(
-                        wpsStart.config.getControlAgentName()
-                );
-                agHandler.sendEvent(eventBesa);
-
-            } catch (ExceptionBESA ex) {
-                wpsReport.error(ex, "controlAgentState");
+                //wpsReport.debug("Agent " + agentName + " is dead by ControlAgentState", "ControlAgentState");
+                // Marca el agente como "muerto"
+                try {
+                    AdmBESA adm = AdmBESA.getInstance();
+                    ToControlMessage toControlMessage = new ToControlMessage(agentName);
+                    EventBESA eventBesa = new EventBESA(DeadAgentGuard.class.getName(), toControlMessage);
+                    AgHandlerBESA agHandler = adm.getHandlerByAlias(wpsStart.config.getControlAgentName());
+                    agHandler.sendEvent(eventBesa);
+                } catch (ExceptionBESA ex) {
+                    wpsReport.error(ex, "controlAgentState");
+                }
+                // Enviar señal de matar al agente
+                try {
+                    AdmBESA adm = AdmBESA.getInstance();
+                    EventBESA eventBesa = new EventBESA(KillZombieGuard.class.getName(), null);
+                    AgHandlerBESA agHandler = adm.getHandlerByAlias(agentName);
+                    agHandler.sendEvent(eventBesa);
+                } catch (ExceptionBESA ex) {
+                    wpsReport.error(ex, "ControlAgentState");
+                }
+                removeAgentFromMap(agentName);
             }
-            // Enviar señal de matar al agente
-            try {
-                AdmBESA adm = AdmBESA.getInstance();
-                EventBESA eventBesa = new EventBESA(KillZombieGuard.class.getName(), null);
-                AgHandlerBESA agHandler = adm.getHandlerByAlias(agentName);
-                agHandler.sendEvent(eventBesa);
-            } catch (ExceptionBESA ex) {
-                wpsReport.error(ex, "ControlAgentState");
-            }
-            }
-        }, 1 * 60 * 1000); // 1 minuto
+        }, 1 * 60 * 1000); // 2 minutos
         agentTimers.put(agentName, timer);
-
     }
 
 }

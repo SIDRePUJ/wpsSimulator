@@ -28,14 +28,13 @@ import org.wpsim.Control.Guards.ControlAgentGuard;
 import org.wpsim.Control.Guards.DeadAgentGuard;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
+import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
-import org.wpsim.PeasantFamily.Goals.L1Survival.PeasantOffGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
-import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
-import org.wpsim.PeasantFamily.Goals.L2Obligation.PayDebtsGoal;
-import org.wpsim.PeasantFamily.Goals.L3Development.PrepareLandGoal;
 import org.wpsim.PeasantFamily.Goals.L3Development.StealingOutOfNecessityGoal;
+import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFamilyTimeGoal;
+import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFriendsTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.LeisureActivitiesGoal;
 import org.wpsim.PeasantFamily.Guards.*;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
@@ -59,7 +58,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unchecked")
 public class PeasantFamilyBDIAgent extends AgentBDI {
 
-    private static final double BDITHRESHOLD = 0.5;
+    private static final double BDITHRESHOLD = 0.3;
     private ScheduledExecutorService executor;
     private ScheduledFuture<?> futureTask;
 
@@ -105,8 +104,8 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(PeasantOffGoal.buildGoal());
 
         //Level 2 Goals: Obligations
-        goals.add(LookForLoanGoal.buildGoal());
-        goals.add(PayDebtsGoal.buildGoal());
+        //goals.add(LookForLoanGoal.buildGoal());
+        //goals.add(PayDebtsGoal.buildGoal());
 
         //Level 3 Goals: Development        
         //goals.add(AttendToLivestockGoal.buildGoal());
@@ -139,8 +138,9 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(ProvideCollaborationGoal.buildGoal());
 
         //Level 6 Goals: Leisure
+        goals.add(SpendFamilyTimeGoal.buildGoal());
+        goals.add(SpendFriendsTimeGoal.buildGoal());
         goals.add(LeisureActivitiesGoal.buildGoal());
-        //goals.add(SpendFamilyTimeGoal.buildGoal());
         //goals.add(WasteTimeAndResourcesGoal.buildGoal());
 
         return goals;
@@ -228,7 +228,6 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        //this.shutdownAgent();
     }
 
 
@@ -252,16 +251,24 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) this.getState()).getBelieves();
 
         if (believes.getPeasantProfile().getHealth() <= 0) {
-            wpsReport.debug("Muerto " + this.getAlias(), this.getAlias());
+            //wpsReport.debug("Muerto " + this.getAlias(), this.getAlias());
             this.shutdownAgent();
             return;
         }
 
-        while (believes.getWeekBlock()) {
-            wpsReport.debug("Bloqueado " + this.getAlias(), this.getAlias());
+        /*if ((believes.isFriendsTimeDoneToday() || believes.isFamilyTimeDoneToday()) && believes.isLeisureDoneToday()) {
+            wpsReport.info("AVANCE: Horas faltantes " + believes.getTimeLeftOnDay() + " del día " + believes.getInternalCurrentDate(), this.getAlias());
+            believes.makeNewDay();
+            believes.setLeisureDoneToday(false);
+            believes.setSpendFamilyTimeDoneToday(false);
+            believes.setFriendsTimeDoneToday(false);
+        }else {
+            wpsReport.info("Horas faltantes " + believes.getTimeLeftOnDay() + " del día " + believes.getInternalCurrentDate(), this.getAlias());
+        }*/
 
+        while (believes.checkBlockedDay()) {
+            //System.out.println("Bloqueado " + this.getAlias());
             try {
-                AdmBESA adm = AdmBESA.getInstance();
                 ToControlMessage toControlMessage = new ToControlMessage(
                         believes.getPeasantProfile().getPeasantFamilyAlias(),
                         believes.getInternalCurrentDate(),
@@ -271,16 +278,15 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
                         ControlAgentGuard.class.getName(),
                         toControlMessage
                 );
-                AgHandlerBESA agHandler = adm.getHandlerByAlias(
+                AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(
                         wpsStart.config.getControlAgentName()
                 );
                 agHandler.sendEvent(eventBesa);
             } catch (ExceptionBESA ex) {
                 ReportBESA.error(ex);
             }
-
             try {
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -307,15 +313,14 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
     private synchronized int getUpdatedWaitTime() {
         StateBDI believes = (StateBDI) this.state;
         if (believes.getMainRole() != null) {
-            //int sleepTime = TimeConsumedBy.valueOf(believes.getMainRole().getRoleName()).getTime() * 50;
+            int sleepTime = TimeConsumedBy.valueOf(believes.getMainRole().getRoleName()).getTime() * 75;
             //wpsReport.debug(this.getAlias() + " MAIN ROLE " + believes.getMainRole().getRoleName());// + " durmiendo " + sleepTime + "ms");
             //wpsReport.warn(this.getAlias() + " MAIN Intention " + believes.getMachineBDIParams().getIntention());
-            //return sleepTime;
+            return sleepTime;
         } else {
             //wpsReport.debug(this.getAlias() + " MAIN ROLE NULL");
-            //return 50;
+            return 75;
         }
-        return 100;
     }
 
 }

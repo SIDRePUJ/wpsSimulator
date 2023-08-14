@@ -23,6 +23,9 @@ HighriskPeasant:
   money: 1100000
   waterAvailable: 0
   variance: 0.4
+  peasantFamilyAffinity: 0.9
+  peasantLeisureAffinity: 0.7
+  peasantFriendsAffinity: 0.8
   #Peasant
   peasantKind: HighriskPeasant
   purpose: ""  
@@ -89,7 +92,6 @@ HighriskPeasant:
   #healthAndWellness:
   healthProgramsAvailability: 1
   familyTime: 0
-  peasantFamilyAffinity: 0.7
   familyTimeAvailability: 1
   restingTimeAvailibility: 0.7
   peasantRestAffinity: 0.7

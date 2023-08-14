@@ -11,19 +11,23 @@
     <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js" integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css" integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js"
+            integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css"
+          integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 
     <script>
-
-        function showData(name){
+        function showData(name) {
             //var space = document.getElementById("agentInfo");
             //space.innerHTML = JSON.stringify(agentData[name], null, 2);
             console.log("Showing data for:", agentData[name]);
-            $(function() {
-              document.getElementById("agentName").innerHTML = agentData[name]["name"];
-              $("#agentInfo").JSONView(agentData[name]["state"]);
-              $("#agentTasks").JSONView(agentData[name]["taskLog"]);
+            $(function () {
+                document.getElementById("agentName").innerHTML = agentData[name]["name"];
+                $("#agentInfo").JSONView(agentData[name]["state"]);
+                $("#agentTasks").JSONView(agentData[name]["taskLog"]);
+                $("#unblockDateList").JSONView(agentData[name]["unblockDateList"]);
             });
 
             const taskLog = JSON.parse(agentData[name]["taskLog"]);
@@ -37,14 +41,14 @@
                 taskCount[taskName]++;
             }
 
-            console.log("taskCount:", taskCount); // Verificar el conteo de tareas
+            //console.log("taskCount:", taskCount); // Verificar el conteo de tareas
 
             const taskList = document.getElementById('taskList');
             taskList.innerHTML = ''; // Esto limpia todos los elementos de la lista
 
             for (const task in taskCount) {
                 const listItem = document.createElement('li');
-                listItem.className = 'list-group-item';
+                listItem.className = 'list-group-item col-5';
                 listItem.textContent = `${task}: ${taskCount[task]}`;
                 taskList.appendChild(listItem);
             }
@@ -52,98 +56,102 @@
         }
 
         function addBootstrapButton(name) {
-            var btn = document.createElement("button");
+            let btn = document.createElement("button");
             btn.id = name;
-            btn.className = "btn btn-primary btn-sm";
+            btn.className = "btn btn-primary btn-sm rounded-circle";
             btn.innerHTML = name;
             btn.style = "width:120px; font-size: x-small;";
-            btn.onclick = function() { showData(name); };
+            btn.onclick = function () {
+                showData(name);
+            };
             document.getElementById("agentList").appendChild(btn);
         }
 
         function updateAgent(jsonData) {
             //console.log("Updating agent:", jsonData);
-            var agent = document.getElementById(jsonData.name);
-            var state = JSON.parse(jsonData.state);
+            let agent = document.getElementById(jsonData.name);
+            let state = JSON.parse(jsonData.state);
 
-            if (agent == null) {
-                addBootstrapButton(jsonData.name);
-                agent = document.getElementById(jsonData.name);
+            let rob = "";
+            if (state.robberyAccount > 0) {
+                rob = "🦹";
             }
-            agent.innerHTML = jsonData.name
-                        + "<br> 💊 " + state.health
-                        + "<br> 💰 " + state.money
-                        + "<br> 📅 " + state.internalCurrentDate
-                        + "<br> 📝 " + state.currentActivity
-                        + "<br> 🚜 " + state.currentCropCare
 
-            if (state.health <= 30) {
+            agent.innerHTML = jsonData.name + "<br>"
+                + state.health + " 💊<br>"
+                + rob + " \$" + state.money.toLocaleString('es-CO') + " 💰<br>"
+                + state.internalCurrentDate + " 📅<br>"
+                + state.currentActivity + " 📝<br>"
+                + state.currentCropCare + " 🚜<br>"
+
+            if (state.currentActivity == "BLOCKED") {
+                agent.className = "btn btn-secondary";
+            } else if (state.health <= 0) {
+                agent.className = "btn btn-secondary";
+            } else if (state.health <= 30) {
                 agent.className = "btn btn-warning";
             } else if (state.health <= 80) {
                 agent.className = "btn btn-primary";
-            } else if (state.health > 80) {
+            } else {
                 agent.className = "btn btn-success";
-            }
-
-            if (state.weekBlock == true) {
-                agent.className = "btn btn-danger";
-            }
-
-            if (state.health <= 0 ) {
-                agent.className = "btn btn-secondary";
             }
 
         }
 
-        var socket;
-        var agentData = {};
+        let socket;
+        let agentData = {};
         if (window.WebSocket) {
             socket = new WebSocket("ws://localhost:8080/wpsViewer");
-            socket.onmessage = function(event) {
-                var prefix = event.data.substring(0, 2);
-                var data = event.data.substring(2);
-                switch (prefix){
+            socket.onmessage = function (event) {
+                let prefix = event.data.substring(0, 2);
+                let data = event.data.substring(2);
+                switch (prefix) {
                     case "j=":
                         try {
-                            var jsonData = JSON.parse(data);
-                            updateAgent(jsonData);
-                            agentData[jsonData.name] = jsonData;
+                            let newAgentData = JSON.parse(data);
+                            updateAgent(newAgentData);
+                            //console.log(newAgentData);
+                            agentData[newAgentData.name] = newAgentData;
                         } catch (error) {
                             console.error("Error parsing JSON:", error);
-                        }break;
-                    case "q=":
-                        var number = parseInt(data, 10);
-                        for (var i = 1; i <= number; i++) {
-                            addBootstrapButton("PeasantFamily_" + i);
-                        }break;
-                    case "d=":
-                        document.getElementById("currentDate").value = data;
+                        }
                         break;
-                   case "m=":
+                    case "q=":
+                        let number = parseInt(data, 10);
+                        for (let i = 1; i <= number; i++) {
+                            addBootstrapButton("PeasantFamily_" + i);
+                        }
+                        break;
+                    case "d=":
+                        document.getElementById("currentDate").innerHTML = data;
+                        break;
+                    case "m=":
                         //document.getElementById("map").value = data;
                         //console.log("Map:", data);
                         break;
-                   case "s=":
-                        var jsonData = JSON.parse(data);
-                        document.getElementById("alive").value = "alive " + jsonData.alive;
-                        document.getElementById("away").value = "away " + jsonData.away;
-                        document.getElementById("dead").value = "dead " + jsonData.dead;
+                    case "s=":
+                        let jsonData = JSON.parse(data);
+                        document.getElementById("alive").innerHTML = jsonData.alive;
+                        document.getElementById("away").innerHTML = jsonData.away;
+                        document.getElementById("dead").innerHTML = jsonData.dead;
                         break;
                     default:
                         console.log("Unknown message prefix:", prefix);
+                        break;
                 }
                 $('#agentList .btn-secondary').appendTo('#deadAgentList');
             };
-            socket.onopen = function(event) {
+            socket.onopen = function (event) {
                 console.log("Web Socket opened!");
+                socket.send('setup')
             };
-            socket.onclose = function(event) {
+            socket.onclose = function (event) {
                 console.log("Web Socket closed.");
             };
         } else {
             alert("Your browser does not support Websockets. (Use Chrome)");
         }
-    
+
         function send(message) {
             if (!window.WebSocket) {
                 return;
@@ -159,19 +167,16 @@
 </head>
 
 <body>
-
+<div class="container-fluid">
     <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">WellProd Simulator</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <input type="button" value="Setup" class="btn btn-primary" onclick="socket.send('setup')"/>
-                </li>
                 <li class="nav-item">
                     <input type="button" value="Start" class="btn btn-success" onclick="socket.send('start')"/>
                 </li>
@@ -182,16 +187,24 @@
                     &nbsp;
                 </li>
                 <li class="nav-item">
-                    <input type="button" id="currentDate" class="btn" />
+                    <button type="button" class="btn btn-dark">
+                        Fecha Global: <span class="badge text-bg-light" id="currentDate">--/--/--</span>
+                    </button>
                 </li>
                 <li class="nav-item">
-                    <input type="button" id="alive" class="btn" />
+                    <button type="button" class="btn btn-dark">
+                        Activos <span class="badge text-bg-light" id="alive">0</span>
+                    </button>
                 </li>
                 <li class="nav-item">
-                    <input type="button" id="away" class="btn" />
+                    <button type="button" class="btn btn-dark">
+                        Inactivos <span class="badge text-bg-light" id="dead">0</span>
+                    </button>
                 </li>
                 <li class="nav-item">
-                    <input type="button" id="dead" class="btn" />
+                    <button type="button" class="btn btn-dark">
+                        Bloqueados <span class="badge text-bg-light" id="away">0</span>
+                    </button>
                 </li>
             </ul>
         </div>
@@ -204,11 +217,15 @@
                 <div id="agentList"></div>
                 <div id="deadAgentList"></div>
             </div>
-            <div class="col-4">
-                <div id="agentName"></div>
-                <div id="agentInfo" style="font-size:small;height:40vh;overflow-y:scroll;"></div>
-                <div id="agentTasks" style="font-size:small;height:20vh;overflow-y:scroll;"></div>
-                <div style="font-size:small;height:30vh;overflow-y:scroll;">
+            <div class="col-4 border-left border-info">
+                <div id="agentName" class="border-left border-info"></div>
+                <div id="agentInfo" style="font-size:small;height:40vh;overflow-y:scroll;"
+                     class="border-left border-info"></div>
+                <div id="agentTasks" style="font-size:small;height:20vh;overflow-y:scroll;"
+                     class="border-left border-info"></div>
+                <div id="unblockDateList" style="font-size:small;height:10vh;overflow-y:scroll;"
+                     class="border-left border-info"></div>
+                <div style="font-size:small;height:20vh;overflow-y:scroll;">
                     <ul class="list-group" id="taskList">
                     </ul>
                 </div>
@@ -218,7 +235,26 @@
 
     <!-- Pie de página -->
     <footer class="bg-light text-center py-3">
-        <input type="text" id="map" />
+        <input type="text" id="map"/>
     </footer>
+</div>
+
+<div id="app">{{ message }}</div>
+
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+
+    const {createApp, ref} = Vue
+
+    createApp({
+        setup() {
+            const message = ref('Hello vue!')
+            return {
+                message
+            }
+        }
+    }).mount('#app')
+</script>
 </body>
 </html>

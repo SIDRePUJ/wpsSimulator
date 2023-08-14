@@ -35,8 +35,9 @@ public class FromControlGuard extends GuardBESA {
     public void funcExecGuard(EventBESA event) {
         StateBDI state = (StateBDI) this.agent.getState();
         ControlMessage controlMessage = (ControlMessage) event.getData();
+        int unblockDay = controlMessage.getCurrentDay();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        believes.setUnblockDay(unblockDay);
         wpsReport.debug("desbloqueando " + believes.getPeasantProfile().getPeasantFamilyAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
-        believes.releaseWeekBlock(controlMessage.getWait());
     }
 }

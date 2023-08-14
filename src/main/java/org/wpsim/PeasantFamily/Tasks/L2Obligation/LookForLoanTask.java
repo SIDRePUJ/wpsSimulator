@@ -20,6 +20,7 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Bank.BankAgentGuard;
 import org.wpsim.Bank.BankMessage;
+import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Viewer.wpsReport;
@@ -48,30 +49,25 @@ public class LookForLoanTask extends Task {
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(believes.getTimeLeftOnDay());
+        believes.setAskedForLoanToday();
+        believes.useTime(TimeConsumedBy.LookForLoanTask);
         wpsReport.debug("LookForLoanTask", believes.getPeasantProfile().getPeasantFamilyAlias());
-
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(wpsStart.config.getBankAgentName());
-            
+            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(wpsStart.config.getBankAgentName());
             wpsReport.info("Pidiendo prestamo formal", believes.getPeasantProfile().getPeasantFamilyAlias());
             BankMessage bankMessage = new BankMessage(
                     ASK_FOR_FORMAL_LOAN,
                     believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    100000);
-            
+                    1000000);
             EventBESA ev = new EventBESA(
                     BankAgentGuard.class.getName(),
                     bankMessage);
             ah.sendEvent(ev);
-            
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        believes.setAskedForLoanToday();
-        
+        this.setTaskFinalized();
     }
 
     /**
@@ -80,7 +76,6 @@ public class LookForLoanTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        this.setTaskFinalized();
     }
 
     /**
@@ -89,7 +84,7 @@ public class LookForLoanTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        this.setTaskFinalized();
+
     }
 
     /**

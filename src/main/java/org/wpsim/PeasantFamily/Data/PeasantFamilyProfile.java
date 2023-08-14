@@ -30,8 +30,9 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private double peasantFamilyMinimalVital;
     private int health;
     private double variance;
-    private double productivity;
-    private double wellBeging;
+    private double peasantLeisureAffinity;
+    private double peasantFriendsAffinity;
+    private double peasantFamilyAffinity;
     private boolean worker;
     private double peasantQualityFactor;
     private double liveStockAffinity;
@@ -75,7 +76,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private double livestockHealth;
     private int livestockNumber;
     private double familyTime;
-    private double peasantFamilyAffinity;
+
     private double familyTimeAvailability;
     private double communications;
     private double socialCompatibility;
@@ -326,32 +327,32 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      * @return
      */
-    public double getProductivity() {
-        return productivity;
+    public double getPeasantLeisureAffinity() {
+        return peasantLeisureAffinity;
     }
 
     /**
      *
-     * @param productivity
+     * @param peasantLeisureAffinity
      */
-    public synchronized void setProductivity(double productivity) {
-        this.productivity = productivity;
+    public synchronized void setPeasantLeisureAffinity(double peasantLeisureAffinity) {
+        this.peasantLeisureAffinity = Math.min(Math.max(peasantLeisureAffinity, 0), 1);
     }
 
     /**
      *
      * @return
      */
-    public double getWellBeging() {
-        return wellBeging;
+    public double getPeasantFriendsAffinity() {
+        return peasantFriendsAffinity;
     }
 
     /**
      *
-     * @param wellBeging
+     * @param peasantFriendsAffinity
      */
-    public synchronized void setWellBeging(double wellBeging) {
-        this.wellBeging = wellBeging;
+    public synchronized void setPeasantFriendsAffinity(double peasantFriendsAffinity) {
+        this.peasantFriendsAffinity = Math.min(Math.max(peasantFriendsAffinity, 0), 1);
     }
 
     /**
@@ -1145,7 +1146,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      * @param peasantFamilyAffinity
      */
     public synchronized void setPeasantFamilyAffinity(double peasantFamilyAffinity) {
-        this.peasantFamilyAffinity = peasantFamilyAffinity;
+        this.peasantFamilyAffinity = Math.min(Math.max(peasantFamilyAffinity, 0), 1);
     }
 
     /**
@@ -1161,7 +1162,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      * @param familyTimeAvailability
      */
     public synchronized void setFamilyTimeAvailability(double familyTimeAvailability) {
-        this.familyTimeAvailability = familyTimeAvailability;
+        this.familyTimeAvailability = Math.min(Math.max(familyTimeAvailability, 0), 1);
     }
 
     /**
@@ -1359,7 +1360,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      */
     @Override
     public synchronized boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof PeasantFamilyProfile)) {
             return false;
         }
@@ -1444,8 +1444,8 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
         dataObject1.put("rainfallConditions", rainfallConditions);
         dataObject1.put("peasantFamilyMinimalVital", peasantFamilyMinimalVital);
         dataObject1.put("health", health);
-        dataObject1.put("productivity", productivity);
-        dataObject1.put("wellBeging", wellBeging);
+        dataObject1.put("productivity", peasantLeisureAffinity);
+        dataObject1.put("wellBeging", peasantFriendsAffinity);
         dataObject1.put("worker", worker);
         dataObject1.put("peasantQualityFactor", peasantQualityFactor);
         dataObject1.put("liveStockAffinity", liveStockAffinity);
@@ -1476,37 +1476,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
         dataObject1.put("diseasedCrop", diseasedCrop);
         dataObject1.put("weedControl", weedControl);
         return dataObject1;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public synchronized String toString() {
-        return " * Peasant Kind: " + peasantKind + "\n"
-                + " * Health: " + health + "\n"
-                + " * Land: " + land + "\n"
-                + " * Money: " + money + "\n"
-                + " * Total Harvested Weight: " + totalHarvestedWeight + "\n"
-                + " * Loan Amount To Pay: " + loanAmountToPay + "\n"
-                + " * Harvested Weight: " + harvestedWeight + "\n"
-                + " * Rainfall Conditions: " + rainfallConditions + "\n"
-                + " * Crop Health: " + cropHealth + "\n"
-                + " * Processed Weight: " + processedWeight + "\n"
-                + " * Diseased Crop: " + diseasedCrop + "\n"
-                + " * Weed Control: " + weedControl + "\n"
-                + " * Infested Crop: " + infestedCrop + "\n"
-                + " * Sell Done: " + sellDone + "\n"
-                + " * Water Available: " + waterAvailable + "\n"
-                + " * Pesticides Available: " + pesticidesAvailable + "\n"
-                + " * Tools: " + tools + "\n"
-                + " * Supplies: " + supplies + "\n"
-                + " * Seeds: " + seeds + "\n"
-                + " * Start Ñame Season: " + startRiceSeason + "\n"
-                + " * Current Crop Name: " + currentCropName + "\n"
-                + " * ==========================================================================\n"
-                + " \n";
     }
 
     @Override
