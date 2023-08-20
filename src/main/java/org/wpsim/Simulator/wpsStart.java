@@ -16,18 +16,19 @@ package org.wpsim.Simulator;
 
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import BESA.Util.PeriodicDataBESA;
 import org.wpsim.Bank.BankAgent;
 import org.wpsim.Control.ControlAgent;
-import org.wpsim.Control.ControlCurrentDate;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Market.MarketAgent;
 import org.wpsim.PeasantFamily.Guards.StatusGuard;
 import org.wpsim.PeasantFamily.Guards.HeartBeatGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
 import org.wpsim.Perturbation.PerturbationAgent;
 import org.wpsim.Society.SocietyAgent;
-import org.wpsim.Viewer.WebsocketServer;
 import org.wpsim.Viewer.wpsReport;
 import org.wpsim.Viewer.wpsViewerAgent;
 
@@ -42,7 +43,8 @@ public class wpsStart {
     public static wpsConfig config;
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
-    public static int peasantFamiliesAgents = 100;
+    public static int peasantFamiliesAgents = 20;
+    public static int stepTime = 100;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;
@@ -56,11 +58,58 @@ public class wpsStart {
      */
     public static void main(String[] args) {
 
-        config = wpsConfig.getInstance();
-
+        printHeader();
         // Set init date of simulation
+        config = wpsConfig.getInstance();
         ControlCurrentDate.getInstance().setCurrentDate(config.getStartSimulationDate());
+        AdmBESA admLocal = null;
+        if (args.length > 0) {
+            // Cluster mode
+            System.out.println("Iniciando modo cluster");
+            admLocal = AdmBESA.getInstance("server_" + args[0] + ".xml");
+            System.out.println("centralizado " + admLocal.getConfigBESA().getAliasContainer());
+            switch (args[0]) {
+                case "main" -> createServices();
+                case "peasants" -> {
+                    createPeasants();
+                    startAgents();
+                }
+                case "local" -> {
+                    // Single mode
+                    createServices();
+                    createPeasants();
+                }
+                default -> System.out.println("No se reconoce el nombre del contendor BESA " + args[0]);
+            }
+        } else {
+            System.out.println("No hay contenedores válidos");
+            System.exit(0);
+        }
 
+    }
+
+    /**
+     * Creates the peasant family agents.
+     */
+    private static void createPeasants() {
+        try {
+            for (int i = 0; i < peasantFamiliesAgents; i++) {
+                PeasantFamilyBDIAgent peasantFamilyBDIAgent = new PeasantFamilyBDIAgent(
+                        config.getUniqueFarmerName(),
+                        config.getFarmerProfile()
+                );
+                peasantFamilyBDIAgents.add(peasantFamilyBDIAgent);
+            }
+        } catch (Exception ex) {
+            wpsReport.error(ex, "wpsStart");
+        }
+
+    }
+
+    /**
+     * Creates the services for peasant family agents.
+     */
+    private static void createServices() {
         try {
             wpsViewerAgent viewerAgent = wpsViewerAgent.createAgent(config.getViewerAgentName(), PASSWD);
             viewerAgent.start();
@@ -74,24 +123,15 @@ public class wpsStart {
             marketAgent.start();
             PerturbationAgent perturbationAgent = PerturbationAgent.createAgent(PASSWD);
             perturbationAgent.start();
-
-            for (int i = 0; i < peasantFamiliesAgents; i++) {
-                PeasantFamilyBDIAgent peasantFamilyBDIAgent = new PeasantFamilyBDIAgent(
-                        config.getUniqueFarmerName(),
-                        config.getFarmerProfile()
-                );
-                peasantFamilyBDIAgents.add(peasantFamilyBDIAgent);
-            }
-
-            printHeader();
-            //startAgents();
-
         } catch (Exception ex) {
             wpsReport.error(ex, "wpsStart");
         }
     }
 
-    public static void startAgents(){
+    /**
+     * Starts the peasant family agents.
+     */
+    public static void startAgents() {
         // Simulation Start
         try {
             startPFAgents(peasantFamilyBDIAgents);
@@ -125,10 +165,10 @@ public class wpsStart {
             }
             // first heart beat to families
             for (int i = 1; i <= peasantFamiliesAgents; i++) {
-                AdmBESA adm = AdmBESA.getInstance();
-                EventBESA eventBesa = new EventBESA(HeartBeatGuard.class.getName(), null);
-                AgHandlerBESA agHandler = adm.getHandlerByAlias("PeasantFamily_" + i);
-                agHandler.sendEvent(eventBesa);
+                AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias("PeasantFamily_" + i);
+                PeriodicDataBESA periodicDataBESAWorld = new PeriodicDataBESA(stepTime, PeriodicGuardBESA.START_PERIODIC_CALL);
+                EventBESA eventPeriodicWorld = new EventBESA(HeartBeatGuard.class.getName(), periodicDataBESAWorld);
+                ah.sendEvent(eventPeriodicWorld);
             }
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "wpsStart");
@@ -188,10 +228,9 @@ public class wpsStart {
      */
     public static void printHeader() {
 
-        wpsReport.info("""
+        System.out.println("""
                                        
-                                       
-                                       
+                                    
                  * ==========================================================================
                  *   __      __ _ __   ___           WellProdSim                            *
                  *   \\ \\ /\\ / /| '_ \\ / __|          @version 1.0                           *
@@ -205,10 +244,10 @@ public class wpsStart {
                  * management and emotional reasoning BDI.                                  *
                  * ==========================================================================
                  
-                """, "wpsStart");
+                """);
     }
 
-    public static long time() {
+    public static long getTime() {
         return System.currentTimeMillis() - startTime;
     }
 }

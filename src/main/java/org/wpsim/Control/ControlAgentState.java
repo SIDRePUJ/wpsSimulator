@@ -19,12 +19,12 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import BESA.Log.ReportBESA;
+import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.Control.Data.ControlMessage;
 import org.wpsim.Control.Guards.DeadAgentGuard;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.PeasantFamily.Guards.FromControlGuard;
 import org.wpsim.PeasantFamily.Guards.KillZombieGuard;
-import org.wpsim.PeasantFamily.Guards.StatusGuard;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.WebsocketServer;
 import org.wpsim.Viewer.wpsReport;
@@ -41,7 +41,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
     private AtomicBoolean unblocking = new AtomicBoolean(false);
     private ConcurrentMap<String, Boolean> agentMap = new ConcurrentHashMap<>();
     private ConcurrentMap<String, Boolean> deadAgentMap = new ConcurrentHashMap<>();
-    private Timer timer = new Timer();
+    //private Timer timer = new Timer();
     private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
 
     public ControlAgentState() {
@@ -67,7 +67,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
 
         WebsocketServer.getInstance().broadcastMessage(
                 "s={" +
-                           "\"alive\":" + trueCount
+                        "\"alive\":" + trueCount
                         + ",\"away\":" + falseCount
                         + ",\"dead\":" + deadAgentMap.size()
                         + "}"
@@ -81,7 +81,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
 
     }
 
-    public synchronized boolean checkUnblocking(int days) {
+    public boolean checkUnblocking(int days) {
         //System.out.println("checkUnblocking " + days);
         if (unblocking.get() && (days % wpsStart.DAYS_TO_CHECK == 0)) {
             //wpsReport.debug("Unblocking event", "ControlAgentState");
@@ -123,24 +123,24 @@ public class ControlAgentState extends StateBESA implements Serializable {
         wpsReport.debug("Agent " + agentName + " is dead", "ControlAgentState");
         this.agentMap.remove(agentName);
         this.deadAgentMap.put(agentName, true);
-        Timer existingTimer = agentTimers.get(agentName);
+        /*Timer existingTimer = agentTimers.get(agentName);
         if (existingTimer != null) {
             existingTimer.cancel();
-        }
+        }*/
     }
 
     public void modifyAgentMap(String agentName) {
         // Cancela cualquier temporizador existente para este agente
-        Timer existingTimer = agentTimers.get(agentName);
+        /*Timer existingTimer = agentTimers.get(agentName);
         if (existingTimer != null) {
             existingTimer.cancel();
-        }
+        }*/
         // Marca el agente como "vivo"
         this.agentMap.put(agentName, true);
         WebsocketServer.getInstance().broadcastMessage("m=" + agentMap.toString());
-        unblocking.set(allAgentsAlive());
+        //unblocking.set(allAgentsAlive());
         // Inicia un nuevo temporizador para este agente
-        Timer timer = new Timer();
+        /*Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -166,8 +166,9 @@ public class ControlAgentState extends StateBESA implements Serializable {
                 }
                 removeAgentFromMap(agentName);
             }
-        }, 1 * 60 * 1000); // 2 minutos
+        }, 2 * 60 * 1000); // 2 minutos
         agentTimers.put(agentName, timer);
+        */
     }
 
 }

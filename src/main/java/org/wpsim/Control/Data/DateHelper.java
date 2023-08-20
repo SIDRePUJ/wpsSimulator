@@ -1,4 +1,4 @@
-package org.wpsim.Control;
+package org.wpsim.Control.Data;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;

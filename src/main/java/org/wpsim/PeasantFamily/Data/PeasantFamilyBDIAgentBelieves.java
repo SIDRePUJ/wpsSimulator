@@ -18,7 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.json.JSONObject;
-import org.wpsim.Control.ControlCurrentDate;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.wpsReport;
 import rational.data.InfoData;
@@ -70,7 +70,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                 .orElse(null);
         //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " lastEntry: " + lastEntry.getKey());
         //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " currentDay: " + currentDay);
-        if ( currentDay < (lastEntry.getKey() + wpsStart.DAYS_TO_CHECK) ){
+        if ( currentDay < lastEntry.getKey() ){
             //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " checkDateUnblocked: false");
             return false;
         }else{
@@ -97,12 +97,12 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
         this.currentDay = 1;
         this.timeLeftOnDay = 24;
-        this.checkedToday = false;
+        this.checkedToday = true;
         this.askedForLoanToday = false;
         this.robbedToday = false;
         this.haveLoan = false;
         this.newDay = true;
-        this.weekBlock = false;
+        //this.weekBlock = false;
         this.priceList.clear();
         this.loanDenied = false;
         this.ptwDate = "";
@@ -352,7 +352,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         );
         try {
             Thread.sleep(wait * 10);
-            this.weekBlock = false;
+            //this.weekBlock = false;
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -545,6 +545,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         dataObject.put("currentSeason", currentSeason);
         dataObject.put("currentCropCare", currentCropCare);
         dataObject.put("robberyAccount", robberyAccount);
+        dataObject.put("purpose", peasantProfile.getPurpose());
         dataObject.put("peasantFamilyAffinity", peasantProfile.getPeasantFamilyAffinity());
         dataObject.put("peasantLeisureAffinity", peasantProfile.getPeasantLeisureAffinity());
         dataObject.put("peasantFriendsAffinity", peasantProfile.getPeasantFriendsAffinity());
@@ -553,7 +554,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         dataObject.put("currentPeasantLeisureType", currentPeasantLeisureType);
         dataObject.put("currentResourceNeededType", currentResourceNeededType);
         dataObject.put("currentDay", currentDay);
-        dataObject.put("weekBlock", weekBlock);
+        //dataObject.put("weekBlock", weekBlock);
         dataObject.put("askedForLoanToday", askedForLoanToday);
         dataObject.put("robbedToday", robbedToday);
         dataObject.put("checkedToday", checkedToday);
@@ -624,7 +625,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         dataObject.put("currentPeasantLeisureType", currentPeasantLeisureType);
         dataObject.put("currentResourceNeededType", currentResourceNeededType);
         dataObject.put("currentDay", currentDay);
-        dataObject.put("weekBlock", weekBlock);
+        //dataObject.put("weekBlock", weekBlock);
         dataObject.put("askedForLoanToday", askedForLoanToday);
         dataObject.put("robbedToday", robbedToday);
         dataObject.put("checkedToday", checkedToday);

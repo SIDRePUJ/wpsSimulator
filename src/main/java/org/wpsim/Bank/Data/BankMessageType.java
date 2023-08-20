@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Bank;
+package org.wpsim.Bank.Data;
 
 /**
  *

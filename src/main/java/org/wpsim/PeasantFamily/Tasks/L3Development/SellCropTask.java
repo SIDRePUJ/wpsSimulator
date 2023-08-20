@@ -36,14 +36,10 @@ import static org.wpsim.Market.MarketMessageType.SELL_CROP;
  */
 public class SellCropTask extends Task {
 
-    private boolean finished;
-
     /**
      *
      */
     public SellCropTask() {
-        ////wpsReport.info("");
-        this.finished = false;
     }
 
     /**
@@ -54,8 +50,6 @@ public class SellCropTask extends Task {
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        wpsReport.info("⚙️⚙️⚙️", believes.getPeasantProfile().getPeasantFamilyAlias());
-        // @TODO: Cambiar a la venta real con el agente social market
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         
         try {
@@ -78,23 +72,6 @@ public class SellCropTask extends Task {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
         believes.setCurrentSeason(SeasonType.NONE);
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isFinished() {
-        ////wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     */
-    public void setFinished() {
-        this.finished = true;
         this.setTaskFinalized();
     }
 
@@ -104,8 +81,6 @@ public class SellCropTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        ////wpsReport.info("");
-        this.setFinished();
     }
 
     /**
@@ -114,17 +89,6 @@ public class SellCropTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        ////wpsReport.info("");
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isExecuted() {
-        ////wpsReport.info("");
-        return finished;
     }
 
     /**
@@ -134,7 +98,6 @@ public class SellCropTask extends Task {
      */
     @Override
     public boolean checkFinish(Believes believes) {
-        ////wpsReport.info("");
         return ((PeasantFamilyBDIAgentBelieves) believes).getPeasantProfile().getHarvestedWeight() == 0;
     }
 }

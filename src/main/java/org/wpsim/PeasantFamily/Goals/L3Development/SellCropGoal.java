@@ -72,13 +72,14 @@ public class SellCropGoal extends GoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        return 1;
+        /*PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.getPeasantProfile().getTools() > 0) {
             //wpsReport.debug("Viable ------");
             return 1;
         } else {
             return 0;
-        }
+        }*/
     }
 
     /**

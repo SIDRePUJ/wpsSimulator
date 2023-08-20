@@ -61,12 +61,12 @@ HighriskPeasant:
   processingTime: 1.0
   riceSeedsByHectare: 20
   #toolsAndSupplies:
-  tools: 10
-  toolsAvailability: 1.0
-  toolsCost: 1.0
-  supplies: 1.0
-  suppliesAvailability: 1.0
-  suppliesCost: 1.0
+  tools: 100
+  toolsAvailability: 100
+  toolsCost: 100
+  supplies: 100
+  suppliesAvailability: 100
+  suppliesCost: 100
   #housing:
   housing: 1.0
   servicesPresence: 1.0

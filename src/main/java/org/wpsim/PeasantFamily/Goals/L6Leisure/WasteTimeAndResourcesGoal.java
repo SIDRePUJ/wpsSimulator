@@ -69,12 +69,7 @@ public class WasteTimeAndResourcesGoal extends GoalBDI {
      */
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getMoney() > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return 1;
     }
 
     /**
@@ -85,12 +80,7 @@ public class WasteTimeAndResourcesGoal extends GoalBDI {
      */
     @Override
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.WasteTimeAndResourcesTask)) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return 1;
     }
 
     /**
@@ -112,7 +102,7 @@ public class WasteTimeAndResourcesGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.6;
+        return 0.1;
     }
 
     /**

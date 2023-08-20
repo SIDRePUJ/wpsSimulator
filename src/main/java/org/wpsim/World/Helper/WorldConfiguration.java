@@ -2,8 +2,7 @@ package org.wpsim.World.Helper;
 
 import BESA.Util.FileLoader;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Properties;
 
 /**
@@ -22,7 +21,7 @@ public class WorldConfiguration {
      */
     private WorldConfiguration() {
 
-        try (InputStream in = FileLoader.readFileToFileInputStream(CONF_NAME)) {
+        try (InputStream in = loadFileAsStream(CONF_NAME)) {
 
             //load a properties file from class path, inside static method
             this.appProperties = new Properties();
@@ -44,6 +43,18 @@ public class WorldConfiguration {
             instance = new WorldConfiguration();
         }
         return instance;
+    }
+    private InputStream loadFileAsStream(String fileName) throws FileNotFoundException {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
+        if (inputStream == null) {
+            File file = new File(fileName);
+            if (file.exists()) {
+                inputStream = new FileInputStream(file);
+            } else {
+                throw new FileNotFoundException("No se pudo encontrar " + fileName + " ni dentro del JAR ni en el sistema de archivos");
+            }
+        }
+        return inputStream;
     }
 
     /**

@@ -2,9 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.wpsim.Bank;
-
-import org.wpsim.Bank.BankMessageType;
+package org.wpsim.Bank.Data;
 
 import java.io.Serializable;
 
@@ -19,7 +17,7 @@ public class LoanTable implements Serializable {
     private Integer paidTerm;
     private BankMessageType loanType;
     
-    LoanTable(String peasantFamily, Integer loanGranted, Integer maxTerm, Integer paidTerm, BankMessageType loanType){
+    public LoanTable(String peasantFamily, Integer loanGranted, Integer maxTerm, Integer paidTerm, BankMessageType loanType){
         this.peasantFamily = peasantFamily;
         this.loanGranted = loanGranted;
         this.maxTerm = maxTerm;

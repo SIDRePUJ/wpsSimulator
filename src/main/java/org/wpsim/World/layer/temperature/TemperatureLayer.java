@@ -3,7 +3,7 @@ package org.wpsim.World.layer.temperature;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.wpsim.Control.DateHelper;
+import org.wpsim.Control.Data.DateHelper;
 import org.wpsim.World.Automata.layer.LayerExecutionParams;
 import org.wpsim.World.layer.LayerFunctionParams;
 import org.wpsim.World.layer.SimWorldSimpleLayer;

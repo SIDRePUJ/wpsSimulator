@@ -4,7 +4,7 @@ import org.jgrapht.Graphs;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.wpsim.Control.DateHelper;
+import org.wpsim.Control.Data.DateHelper;
 import org.wpsim.Viewer.wpsReport;
 import org.wpsim.World.Helper.WorldConfiguration;
 import org.wpsim.World.Automata.layer.GenericWorldLayerGraphCell;

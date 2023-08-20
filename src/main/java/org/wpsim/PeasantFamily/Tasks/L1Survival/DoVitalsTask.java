@@ -18,10 +18,10 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Bank.BankAgentGuard;
-import org.wpsim.Bank.BankMessage;
-import org.wpsim.Control.ControlCurrentDate;
-import org.wpsim.Control.DateHelper;
+import org.wpsim.Bank.Guard.BankAgentGuard;
+import org.wpsim.Bank.Data.BankMessage;
+import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.Control.Data.DateHelper;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.SeasonType;
@@ -30,7 +30,7 @@ import org.wpsim.Viewer.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 
-import static org.wpsim.Bank.BankMessageType.ASK_CURRENT_TERM;
+import static org.wpsim.Bank.Data.BankMessageType.ASK_CURRENT_TERM;
 
 /**
  *
@@ -99,7 +99,7 @@ public class DoVitalsTask extends Task {
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        wpsReport.debug(wpsStart.time() + " DoVitalsTask:checkFinish " + believes.isNewDay() + " " + believes.getPeasantProfile().getPeasantFamilyAlias() + " date " + believes.getInternalCurrentDate() + " hour " + believes.getTimeLeftOnDay(),believes.getPeasantProfile().getPeasantFamilyAlias());
+        wpsReport.debug(wpsStart.getTime() + " DoVitalsTask:checkFinish " + believes.isNewDay() + " " + believes.getPeasantProfile().getPeasantFamilyAlias() + " date " + believes.getInternalCurrentDate() + " hour " + believes.getTimeLeftOnDay(),believes.getPeasantProfile().getPeasantFamilyAlias());
 
         if (believes.isNewDay()) {
             return false;

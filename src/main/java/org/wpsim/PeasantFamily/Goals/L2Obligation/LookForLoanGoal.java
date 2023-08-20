@@ -22,6 +22,7 @@ import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L2Obligation.LookForLoanTask;
+import org.wpsim.Viewer.wpsReport;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -74,9 +75,12 @@ public class LookForLoanGoal extends GoalBDI {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.getPeasantProfile().getMoney() <= 70000
                 //&& !believes.isLoanDenied()
-                    && !believes.isAskedForLoanToday()) {
+                    && !believes.isAskedForLoanToday()
+                        && believes.getToPay()==0 ){
+            //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         } else {
+            //wpsReport.trace("NO " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 0;
         }
     }
@@ -91,8 +95,10 @@ public class LookForLoanGoal extends GoalBDI {
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.LookForLoanTask)) {
+            //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         } else {
+            //wpsReport.trace("NO " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 0;
         }
     }

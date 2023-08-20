@@ -71,14 +71,14 @@ public class PlantCropGoal extends GoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (!believes.getPriceList().isEmpty()
-                && believes.getPeasantProfile().getTools() > 0
+        return 1;
+        /*PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        if (believes.getPeasantProfile().getTools() > 0
                 && believes.getPeasantProfile().getSeeds() > 0) {
             return 1;
         } else {
             return 0;
-        }
+        }*/
     }
 
     /**

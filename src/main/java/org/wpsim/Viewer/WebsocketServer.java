@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Simulator.wpsStart;
 
 import static io.undertow.Handlers.path;
@@ -39,12 +40,12 @@ public class WebsocketServer implements Runnable {
     @Override
     public void run() {
 
-        ResourceManager resourceManager = null;
+        /*ResourceManager resourceManager = null;
         try {
             resourceManager = new PathResourceManager(Paths.get(wpsStart.class.getClassLoader().getResource("web/").toURI()));
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         Undertow server = Undertow.builder()
                 .addHttpListener(8080, "localhost")
@@ -65,6 +66,7 @@ public class WebsocketServer implements Runnable {
                                         } else if (msg.contains("stop")) {
                                             wpsStart.stopSimulation();
                                         } else if(msg.contains("setup")) {
+                                            WebSockets.sendText("d=" + ControlCurrentDate.getInstance().getCurrentDate(), channel, null);
                                             WebSockets.sendText("q=" + wpsStart.peasantFamiliesAgents, channel, null);
                                         }else{
                                             System.out.println("Unknown message: " + msg);

@@ -72,7 +72,7 @@ public class ObtainToolsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getCurrentResourceNeededType() == ResourceNeededType.TOOLS) {
+        if (believes.getPeasantProfile().getTools() <= 10) {
             return 1;
         } else {
             return 0;
@@ -143,7 +143,7 @@ public class ObtainToolsGoal extends GoalBDI {
         //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         //believes.getProfile().setGrowingSeason(true);
-        return believes.getPeasantProfile().getTools() == 1;
+        return believes.getPeasantProfile().getTools() > 10;
     }
 
 }

@@ -32,10 +32,14 @@ import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
-import org.wpsim.PeasantFamily.Goals.L3Development.StealingOutOfNecessityGoal;
+import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
+import org.wpsim.PeasantFamily.Goals.L2Obligation.PayDebtsGoal;
+import org.wpsim.PeasantFamily.Goals.L3Development.*;
+import org.wpsim.PeasantFamily.Goals.L4SkillsResources.*;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFamilyTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFriendsTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.LeisureActivitiesGoal;
+import org.wpsim.PeasantFamily.Goals.L6Leisure.WasteTimeAndResourcesGoal;
 import org.wpsim.PeasantFamily.Guards.*;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
@@ -58,7 +62,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unchecked")
 public class PeasantFamilyBDIAgent extends AgentBDI {
 
-    private static final double BDITHRESHOLD = 0.3;
+    private static final double BDITHRESHOLD = 0;
     private ScheduledExecutorService executor;
     private ScheduledFuture<?> futureTask;
 
@@ -104,27 +108,27 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(PeasantOffGoal.buildGoal());
 
         //Level 2 Goals: Obligations
-        //goals.add(LookForLoanGoal.buildGoal());
-        //goals.add(PayDebtsGoal.buildGoal());
+        goals.add(LookForLoanGoal.buildGoal());
+        goals.add(PayDebtsGoal.buildGoal());
 
         //Level 3 Goals: Development        
         //goals.add(AttendToLivestockGoal.buildGoal());
-        //goals.add(CheckCropsGoal.buildGoal());
-        //goals.add(HarvestCropsGoal.buildGoal());
-        //goals.add(IrrigateCropsGoal.buildGoal());
+        goals.add(CheckCropsGoal.buildGoal());
+        goals.add(HarvestCropsGoal.buildGoal());
+        goals.add(IrrigateCropsGoal.buildGoal());
         //goals.add(MaintainHouseGoal.buildGoal());
-        //goals.add(ManagePestsGoal.buildGoal());
-        //goals.add(PlantCropGoal.buildGoal());
-        //goals.add(PrepareLandGoal.buildGoal());
+        goals.add(ManagePestsGoal.buildGoal());
+        goals.add(PlantCropGoal.buildGoal());
+        goals.add(PrepareLandGoal.buildGoal());
         //goals.add(ProcessProductsGoal.buildGoal());
-        //goals.add(SellCropGoal.buildGoal());
+        goals.add(SellCropGoal.buildGoal());
         //goals.add(SellProductsGoal.buildGoal());
         goals.add(StealingOutOfNecessityGoal.buildGoal());
 
         //Level 4 Goals: Skills And Resources
-        //goals.add(GetPriceListGoal.buildGoal());
+        goals.add(GetPriceListGoal.buildGoal());
         //goals.add(GetTrainingGoal.buildGoal());
-        //goals.add(ObtainALandGoal.buildGoal());
+        goals.add(ObtainALandGoal.buildGoal());
         //goals.add(ObtainLivestockGoal.buildGoal());
         //goals.add(ObtainSeedsGoal.buildGoal());
         //goals.add(ObtainSuppliesGoal.buildGoal());
@@ -141,7 +145,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         goals.add(SpendFamilyTimeGoal.buildGoal());
         goals.add(SpendFriendsTimeGoal.buildGoal());
         goals.add(LeisureActivitiesGoal.buildGoal());
-        //goals.add(WasteTimeAndResourcesGoal.buildGoal());
+        goals.add(WasteTimeAndResourcesGoal.buildGoal());
 
         return goals;
     }
@@ -227,99 +231,6 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
             wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
-        }
-    }
-
-
-    /**
-     *
-     */
-    public void BDIPulse() {
-        if (executor == null) {
-            executor = Executors.newScheduledThreadPool(1);
-        }
-        int waitTime = getUpdatedWaitTime();
-
-        futureTask = executor.schedule(this::executePulseTask, waitTime, TimeUnit.MILLISECONDS);
-    }
-
-    /**
-     *
-     */
-    private void executePulseTask() {
-
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) this.getState()).getBelieves();
-
-        if (believes.getPeasantProfile().getHealth() <= 0) {
-            //wpsReport.debug("Muerto " + this.getAlias(), this.getAlias());
-            this.shutdownAgent();
-            return;
-        }
-
-        /*if ((believes.isFriendsTimeDoneToday() || believes.isFamilyTimeDoneToday()) && believes.isLeisureDoneToday()) {
-            wpsReport.info("AVANCE: Horas faltantes " + believes.getTimeLeftOnDay() + " del día " + believes.getInternalCurrentDate(), this.getAlias());
-            believes.makeNewDay();
-            believes.setLeisureDoneToday(false);
-            believes.setSpendFamilyTimeDoneToday(false);
-            believes.setFriendsTimeDoneToday(false);
-        }else {
-            wpsReport.info("Horas faltantes " + believes.getTimeLeftOnDay() + " del día " + believes.getInternalCurrentDate(), this.getAlias());
-        }*/
-
-        while (believes.checkBlockedDay()) {
-            //System.out.println("Bloqueado " + this.getAlias());
-            try {
-                ToControlMessage toControlMessage = new ToControlMessage(
-                        believes.getPeasantProfile().getPeasantFamilyAlias(),
-                        believes.getInternalCurrentDate(),
-                        believes.getCurrentDay()
-                );
-                EventBESA eventBesa = new EventBESA(
-                        ControlAgentGuard.class.getName(),
-                        toControlMessage
-                );
-                AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(
-                        wpsStart.config.getControlAgentName()
-                );
-                agHandler.sendEvent(eventBesa);
-            } catch (ExceptionBESA ex) {
-                ReportBESA.error(ex);
-            }
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        try {
-            AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(this.getAlias());
-            EventBESA eventBesa = new EventBESA(
-                    InformationFlowGuard.class.getName(),
-                    null
-            );
-            agHandler.sendEvent(eventBesa);
-        } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, this.getAlias());
-        }
-
-        wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-
-        int waitTime = getUpdatedWaitTime();
-        futureTask = executor.schedule(this::executePulseTask, waitTime, TimeUnit.MILLISECONDS);
-
-    }
-
-    private synchronized int getUpdatedWaitTime() {
-        StateBDI believes = (StateBDI) this.state;
-        if (believes.getMainRole() != null) {
-            int sleepTime = TimeConsumedBy.valueOf(believes.getMainRole().getRoleName()).getTime() * 75;
-            //wpsReport.debug(this.getAlias() + " MAIN ROLE " + believes.getMainRole().getRoleName());// + " durmiendo " + sleepTime + "ms");
-            //wpsReport.warn(this.getAlias() + " MAIN Intention " + believes.getMachineBDIParams().getIntention());
-            return sleepTime;
-        } else {
-            //wpsReport.debug(this.getAlias() + " MAIN ROLE NULL");
-            return 75;
         }
     }
 

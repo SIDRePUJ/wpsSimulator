@@ -74,15 +74,15 @@ public class PlantCropTask extends Task {
                     believes.getPeasantProfile().getRiceSeedsByHectare()
             );
             // 2500 kilo * 20 kilos de semillas
-            believes.getPeasantProfile().useMoney(
+            /*believes.getPeasantProfile().useMoney(
                     believes.getPriceList().get("seeds").getCost()
                     * 20
-            );
+            );*/
+            believes.setCurrentSeason(SeasonType.GROWING);
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        believes.setCurrentSeason(SeasonType.GROWING);
         this.setTaskFinalized();
     }
 

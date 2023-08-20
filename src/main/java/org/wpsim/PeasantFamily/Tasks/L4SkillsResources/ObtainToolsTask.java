@@ -53,8 +53,7 @@ public class ObtainToolsTask extends Task {
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(wpsStart.config.getMarketAgentName());
+            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(wpsStart.config.getMarketAgentName());
             MarketMessage marketMessage = new MarketMessage(
                     BUY_TOOLS,
                     believes.getPeasantProfile().getPeasantFamilyAlias(),

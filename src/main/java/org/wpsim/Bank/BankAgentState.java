@@ -15,6 +15,8 @@
 package org.wpsim.Bank;
 
 import BESA.Kernel.Agent.StateBESA;
+import org.wpsim.Bank.Data.BankMessageType;
+import org.wpsim.Bank.Data.LoanTable;
 
 import java.io.Serializable;
 import java.util.HashMap;

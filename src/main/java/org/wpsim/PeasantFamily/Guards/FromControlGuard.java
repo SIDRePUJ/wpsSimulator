@@ -17,7 +17,7 @@ package org.wpsim.PeasantFamily.Guards;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.Control.ControlMessage;
+import org.wpsim.Control.Data.ControlMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Viewer.wpsReport;
 
@@ -37,7 +37,7 @@ public class FromControlGuard extends GuardBESA {
         ControlMessage controlMessage = (ControlMessage) event.getData();
         int unblockDay = controlMessage.getCurrentDay();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
-        believes.setUnblockDay(unblockDay);
+        //believes.setUnblockDay(unblockDay);
         wpsReport.debug("desbloqueando " + believes.getPeasantProfile().getPeasantFamilyAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
     }
 }

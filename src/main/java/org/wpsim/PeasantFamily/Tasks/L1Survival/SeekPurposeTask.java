@@ -41,6 +41,7 @@ public class SeekPurposeTask extends Task {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         believes.getPeasantProfile().setPurpose("farmer");
+        this.setTaskFinalized();
     }
 
     /**

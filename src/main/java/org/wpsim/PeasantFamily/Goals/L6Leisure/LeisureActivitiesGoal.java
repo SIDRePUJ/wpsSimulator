@@ -123,7 +123,11 @@ public class LeisureActivitiesGoal extends GoalBDI {
             //wpsReport.trace("SI 1", believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         }else {
-            //wpsReport.trace("SI " + believes.getPeasantProfile().getPeasantLeisureAffinity(), believes.getPeasantProfile().getPeasantFamilyAlias());
+            /*wpsReport.trace(
+                "Contribution Main " + stateBDI.getMachineBDIParams().getAttentionCycleThreshold()
+                            + "Local " + believes.getPeasantProfile().getPeasantLeisureAffinity(),
+                    believes.getPeasantProfile().getPeasantFamilyAlias()
+            );*/
             return believes.getPeasantProfile().getPeasantLeisureAffinity();
         }
     }

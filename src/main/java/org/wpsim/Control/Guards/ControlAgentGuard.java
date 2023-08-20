@@ -17,7 +17,7 @@ package org.wpsim.Control.Guards;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.Control.ControlAgentState;
-import org.wpsim.Control.ControlCurrentDate;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.Viewer.WebsocketServer;
 import org.wpsim.Viewer.wpsReport;
@@ -31,7 +31,7 @@ public class ControlAgentGuard extends GuardBESA {
      * @param event Event rising the Guard
      */
     @Override
-    public synchronized void funcExecGuard(EventBESA event) {
+    public void funcExecGuard(EventBESA event) {
         ToControlMessage toControlMessage = (ToControlMessage) event.getData();
         String agentAlias = toControlMessage.getPeasantFamilyAlias();
         String agentCurrentDate = toControlMessage.getCurrentDate();
@@ -45,8 +45,7 @@ public class ControlAgentGuard extends GuardBESA {
             ControlCurrentDate.getInstance().setCurrentDate(agentCurrentDate);
             WebsocketServer.getInstance().broadcastMessage("d=" + ControlCurrentDate.getInstance().getCurrentDate());
         }
-
-        state.checkUnblocking(currentDay);
+        //state.checkUnblocking(currentDay);
 
     }
 

@@ -18,15 +18,15 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Bank.BankAgentGuard;
-import org.wpsim.Bank.BankMessage;
+import org.wpsim.Bank.Guard.BankAgentGuard;
+import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Viewer.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 
-import static org.wpsim.Bank.BankMessageType.PAY_LOAN_TERM;
+import static org.wpsim.Bank.Data.BankMessageType.PAY_LOAN_TERM;
 
 /**
  *
@@ -39,7 +39,6 @@ public class PayDebtsTask extends Task {
      *
      */
     public PayDebtsTask() {
-        ////wpsReport.info("");
     }
 
     /**
