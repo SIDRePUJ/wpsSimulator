@@ -85,6 +85,15 @@
             <artifactId>RationalBESA</artifactId>
             <version>3.17</version>
         </dependency>
+
+        <!-- Dependencia para eBDIBESA -->
+        <dependency>
+            <groupId>BESA</groupId>
+            <artifactId>eBDIBESA</artifactId>
+            <version>3.17</version>
+        </dependency>
+
+        <!-- Dependencia para JSON -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>

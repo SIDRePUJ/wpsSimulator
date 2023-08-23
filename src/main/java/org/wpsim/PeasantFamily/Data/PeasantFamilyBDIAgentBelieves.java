@@ -19,6 +19,7 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.json.JSONObject;
 import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.PeasantFamily.Emotions.EmotionalComponent;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.wpsReport;
 import rational.data.InfoData;
@@ -37,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     private PeasantFamilyProfile peasantProfile;
+    private EmotionalComponent peasantEmotions;
     private SeasonType currentSeason;
     private CropCareType currentCropCare;
     private MoneyOriginType currentMoneyOrigin;
@@ -79,11 +81,6 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         }
     }
 
-    public void setUnblockDay(int day) {
-        unblockDaysList.put(day, true);
-    }
-
-
     /**
      *
      * @param alias Peasant Family Alias
@@ -91,6 +88,7 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
      */
     public PeasantFamilyBDIAgentBelieves(String alias, PeasantFamilyProfile peasantProfile) {
         this.setPeasantProfile(peasantProfile);
+
         this.internalCurrentDate = ControlCurrentDate.getInstance().getCurrentDate();
         this.peasantProfile.setPeasantFamilyAlias(alias);
         this.taskLog.clear();
@@ -102,7 +100,6 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         this.robbedToday = false;
         this.haveLoan = false;
         this.newDay = true;
-        //this.weekBlock = false;
         this.priceList.clear();
         this.loanDenied = false;
         this.ptwDate = "";

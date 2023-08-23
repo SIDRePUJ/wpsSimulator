@@ -46,14 +46,9 @@ import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.wpsReport;
-import rational.guards.InformationFlowGuard;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -63,8 +58,6 @@ import java.util.concurrent.TimeUnit;
 public class PeasantFamilyBDIAgent extends AgentBDI {
 
     private static final double BDITHRESHOLD = 0;
-    private ScheduledExecutorService executor;
-    private ScheduledFuture<?> futureTask;
 
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
 
@@ -194,11 +187,6 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
     @Override
     public void shutdownAgentBDI() {
         wpsReport.debug("Shutdown " + this.getAlias(), this.getAlias());
-        if (executor != null) {
-            futureTask.cancel(true);
-            executor.shutdown();
-            executor = null;
-        }
         // Anuncio de que el agente está muerto
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) this.getState()).getBelieves();
         wpsReport.debug(believes.toJson(), this.getAlias());
