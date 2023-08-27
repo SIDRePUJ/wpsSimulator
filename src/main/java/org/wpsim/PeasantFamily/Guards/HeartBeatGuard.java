@@ -15,6 +15,8 @@
 package org.wpsim.PeasantFamily.Guards;
 
 import BESA.BDI.AgentStructuralModel.StateBDI;
+import BESA.Emotional.EmotionalEvent;
+import BESA.Emotional.Semantics;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
@@ -47,13 +49,18 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
         String PeasantFamilyAlias = believes.getPeasantProfile().getPeasantFamilyAlias();
-        //System.out.println(PeasantFamilyAlias + " alive " + believes.getInternalCurrentDate() + " " + believes.getCurrentDay());
+
+        try {
+            wpsReport.debug(PeasantFamilyAlias + " getEmotionsListCopy " + believes.getEmotionsListCopy().toString(), PeasantFamilyAlias);
+            wpsReport.debug(PeasantFamilyAlias + " getMostActivatedEmotion " + believes.getMostActivatedEmotion().toString(),PeasantFamilyAlias);
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
 
         if (believes.getPeasantProfile().getHealth() <= 0) {
             this.agent.shutdownAgent();
             return;
         }
-        //System.out.println("HeartBeatGuard pulse of " + getDelayTime() + " milliseconds for " + PeasantFamilyAlias);
 
         try {
             ToControlMessage toControlMessage = new ToControlMessage(

@@ -15,46 +15,16 @@
 package org.wpsim.PeasantFamily.Emotions;
 
 
-import BESA.Emotional.Semantics;
-import BESA.Emotional.EmotionAxis;
-import BESA.Emotional.EmotionalActor;
+import BESA.Emotional.*;
 
-public class EmotionalComponent extends EmotionalActor {
+public abstract class EmotionalComponent extends EmotionalModel {
 
     /**
      * Creates a new emotional component.
      */
     public EmotionalComponent() {
 
-        // Emotions
-        this.addEmotionalAxis(
-                Semantics.Emotions.Happiness,
-                Semantics.Emotions.Sadness,
-                0.0f, 0.0f, 0.05f
-        );
-        this.addEmotionalAxis(
-                Semantics.Emotions.Confident,
-                Semantics.Emotions.Insecure,
-                0.0f, 0.0f, 0.05f
-        );
-
-        // Sensations
-        this.addEmotionalAxis(
-                Semantics.Sensations.NoHunger,
-                Semantics.Sensations.Hunger,
-                0.5f, 0.0f, 0.1f
-        );
-        this.addEmotionalAxis(
-                Semantics.Sensations.Energized,
-                Semantics.Sensations.Exhausted,
-                0.5f, 0.0f, 0.1f
-        );
-        this.addEmotionalAxis(
-                Semantics.Sensations.Healthy,
-                Semantics.Sensations.Sick,
-                0.5f, 0.0f, 0.1f
-        );
-
+/*
         // Event Rating Desires (Adjusted based on the new Event classes provided)
         this.configureEventDesire(Semantics.Events.ReceivesNews, Semantics.EventRating._4_SomewhatDesirable.getName());
         this.configureEventDesire(Semantics.Events.ObservesDirtiness, Semantics.EventRating._2_SomewhatUndesirable.getName());
@@ -85,68 +55,136 @@ public class EmotionalComponent extends EmotionalActor {
         this.configurePersonRelationship(Semantics.People.Landowner, Semantics.PeopleRating._3_Unknown.getName());
         this.configurePersonRelationship(Semantics.People.MarketVendor, Semantics.PeopleRating._3_Unknown.getName());
         this.configurePersonRelationship(Semantics.People.BankOfficer, Semantics.PeopleRating._3_Unknown.getName());
-
+*/
 
     }
 
+    @Override
+    public void emotionalStateChanged() {
+        /*try {
+            HashMap<String, Object> infoServicio = new HashMap<>();
+            EmotionAxis ea = getTopEmotionAxis();
 
-    /**
-     * Adds a new emotional axis to the system.
-     *
-     * @param  positivePole     the positive pole of the emotional axis
-     * @param  negativePole     the negative pole of the emotional axis
-     * @param  currentValue    the current value of the emotional axis
-     * @param  baseline         the baseline value of the emotional axis
-     * @param  attenuationFactor the attenuation factor of the emotional axis
-     */
-    public void addEmotionalAxis(String positivePole, String negativePole, float currentValue, float baseline, float attenuationFactor) {
-        EmotionAxis emotionAxis = new EmotionAxis(positivePole, negativePole, currentValue, baseline, attenuationFactor);
-        this.addEmotionAxis(emotionAxis);
+            float state = ea.getCurrentValue();
+            if (state > 0 && valencia != 1) {
+                valencia = 1;
+                tiempoEmocionPredominante = System.currentTimeMillis();
+            } else if (state < 0 && valencia != -1) {
+                valencia = -1;
+                tiempoEmocionPredominante = System.currentTimeMillis();
+            }
+            leds = PepperEmotionRanges.getFromEmotionalValue(state);
+            infoServicio.put("velocidad", normalizeValue(state, PepperConf.SPEED));
+            infoServicio.put("tonoHabla", normalizeValue(state, PepperConf.PITCH));
+            infoServicio.put("ledIntens", normalizeValue(state, PepperConf.LEDINTENSITY));
+            infoServicio.put("DURATION", normalizeValue(state, PepperConf.DURATION));
+            infoServicio.put("COLOR", leds.getHexa());
+            System.out.println("AfueraStoryMOde" + isStoryMode());
+
+            if (!storyMode) {
+                System.out.println("StoryMOde" + isStoryMode());
+                infoServicio.put("EmotionalTag", leds.toString());
+            }
+            if (storyMode) {
+                infoServicio.put("velHabla", normalizeValue(state - 0.3f, PepperConf.TALKSPEED));
+            } else {
+                infoServicio.put("velHabla", normalizeValue(state, PepperConf.TALKSPEED));
+            }
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println("Valores Emocionales para: " + ea.getNegativeName());
+            System.out.println("Valores Emocionales para: " + state);
+            System.out.println("EmotionalTag: " + leds.toString());
+            System.out.println("Velocidad " + normalizeValue(state, PepperConf.SPEED));
+            System.out.println("velHabla " + normalizeValue(state, PepperConf.TALKSPEED));
+            System.out.println("tonoHabla " + normalizeValue(state, PepperConf.PITCH));
+            System.out.println("ledIntens " + normalizeValue(state, PepperConf.LEDINTENSITY));
+            System.out.println("DURATION " + normalizeValue(state, PepperConf.DURATION));
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
+            ServiceDataRequest srb = ServiceRequestBuilder.buildRequest(RobotStateServiceRequestType.ROBOTEMOTION, infoServicio);
+            ResPwaUtils.requestService(srb);
+        } catch (CloneNotSupportedException ex) {
+            Logger.getLogger(BEstadoRobot.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+
     }
 
-    /**
-     * Configures the influence of an event on the emotion axis.
-     *
-     * @param  positivePole     the positive pole of the emotion axis
-     * @param  negativePole     the negative pole of the emotion axis
-     * @param  event            the event for which to configure the influence
-     * @param  influenceFactor  the factor that determines the influence of the event on the emotion axis
-     */
-    public void configureEventInfluence(String positivePole, String negativePole, String event, float influenceFactor) {
-        EmotionAxis emotionAxis = this.getEmotionAxis(positivePole, negativePole);
-        if (emotionAxis != null) {
-            emotionAxis.setEventInfluence(event, influenceFactor);
+    @Override
+    public void loadSemanticDictionary() {
+
+        SemanticDictionary sd = SemanticDictionary.getInstance();
+        for (EmotionalConfig.People who : EmotionalConfig.People.values()) {
+            sd.addSemanticItem(Personality.EmotionElementType.Person, new SemanticValue(who.toString(), who.getValue()));
         }
+
+        for (EmotionalConfig.Events evt : EmotionalConfig.Events.values()) {
+            sd.addSemanticItem(Personality.EmotionElementType.Event, new SemanticValue(evt.toString(), evt.getValue()));
+        }
+
+        for (EmotionalConfig.Objects obj : EmotionalConfig.Objects.values()) {
+            sd.addSemanticItem(Personality.EmotionElementType.Object, new SemanticValue(obj.toString(), obj.getValue()));
+        }
+
     }
 
-    /**
-     * Configure the desire for a specific event.
-     *
-     * @param  event     the event to configure the desire for
-     * @param  valuation the valuation of the event desire
-     */
-    public void configureEventDesire(String event, String valuation) {
-        this.setEventDesirability(event, valuation);
+    @Override
+    public void loadCharacterDescriptor() {
+
+        for (EmotionalSubjectType who : EmotionalSubjectType.values()) {
+            setPersonRelationship(who.toString(), who.getConfig());
+        }
+
+        for (EmotionalEventType evt : EmotionalEventType.values()) {
+            setEventDesirability(evt.toString(), evt.getConfig());
+        }
+
+        for (EmotionalObjectType obj : EmotionalObjectType.values()) {
+            if (!obj.equals(EmotionalObjectType.NULL)) {
+                setObjectRelationship(obj.toString(), obj.getConfig());
+            }
+        }
+
     }
 
-    /**
-     * Configures the object relationship.
-     *
-     * @param  object     the object to configure the relationship for
-     * @param  valuation  the valuation of the relationship
-     */
-    public void configureObjectRelationship(String object, String valuation) {
-        this.setObjectRelationship(object, valuation);
-    }
+    @Override
+    public void loadEmotionalAxes() {
+        EmotionAxis emoAxis;
 
-    /**
-     * Configure the person's relationship with a peasant family.
-     *
-     * @param  peasantFamily  the name of the peasant family
-     * @param  valuation      the valuation of the relationship
-     */
-    public void configurePersonRelationship(String peasantFamily, String valuation) {
-        this.setPersonRelationship(peasantFamily, valuation);
+        // Emotions related to the Happiness axis
+        emoAxis = new EmotionAxis(
+                Semantics.Emotions.Happiness,
+                Semantics.Emotions.Sadness,
+                0.0f, 0.0f, 0.05f
+        );
+        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.THIEVING.name(), -0.4f);
+        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), -0.4f);
+        emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), 0.1f);
+        this.addEmotionAxis(emoAxis);
+
+        // Emotions related to the Health axis
+        emoAxis = new EmotionAxis(
+                Semantics.Sensations.Healthy,
+                Semantics.Sensations.Sick,
+                0.5f, 0.0f, 0.1f
+        );
+        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), -0.6f);
+        this.addEmotionAxis(emoAxis);
+
+        // Emotions related to the Energy axis
+        emoAxis = new EmotionAxis(
+                Semantics.Sensations.Energized,
+                Semantics.Sensations.Exhausted,
+                0.5f, 0.0f, 0.1f
+        );
+        emoAxis.setEventInfluence(EmotionalEventType.PLANTING.name(), -0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.IRRIGATING.name(), -0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.HARVESTING.name(), -0.4f);
+        emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), -0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
+        this.addEmotionAxis(emoAxis);
+
     }
 }
 

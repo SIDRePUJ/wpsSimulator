@@ -14,6 +14,8 @@
  */
 package org.wpsim.PeasantFamily.Data;
 
+import BESA.Emotional.EmotionAxis;
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
@@ -25,20 +27,16 @@ import org.wpsim.Viewer.wpsReport;
 import rational.data.InfoData;
 import rational.mapping.Believes;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
  * @author jairo
  */
-public class PeasantFamilyBDIAgentBelieves implements Believes {
+public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements Believes {
 
     private PeasantFamilyProfile peasantProfile;
-    private EmotionalComponent peasantEmotions;
     private SeasonType currentSeason;
     private CropCareType currentCropCare;
     private MoneyOriginType currentMoneyOrigin;
@@ -64,22 +62,6 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
     private Map<String, FarmingResource> priceList = new HashMap<>();
     private Map<Long, TaskLog> taskLog = new ConcurrentHashMap<>();
     private LinkedHashMap<Integer, Boolean> unblockDaysList = new LinkedHashMap<>();
-
-    public boolean checkBlockedDay() {
-        //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " checkDateUnblocked");
-        Map.Entry<Integer, Boolean> lastEntry = unblockDaysList.entrySet().stream()
-                .reduce((first, second) -> second)
-                .orElse(null);
-        //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " lastEntry: " + lastEntry.getKey());
-        //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " currentDay: " + currentDay);
-        if ( currentDay < lastEntry.getKey() ){
-            //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " checkDateUnblocked: false");
-            return false;
-        }else{
-            //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " checkDateUnblocked: true");
-            return true;
-        }
-    }
 
     /**
      *
@@ -113,6 +95,22 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     }
 
+    /**
+     * Adds a task to the log.
+     *
+     * @param  date  the date of the task
+     * @return       void
+     */
+    public void addTaskToLog(String date) {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String fullClassName = stackTraceElements[2].getClassName();
+        String[] parts = fullClassName.split("\\.");
+        String taskName = parts[parts.length - 1];
+        long time = System.currentTimeMillis() - wpsStart.startTime;
+        TaskLog taskLog = new TaskLog(date, taskName);
+        this.taskLog.put(time, taskLog);
+    }
+
     public boolean isFamilyTimeDoneToday() {
         return spendFamilyTimeDoneToday;
     }
@@ -127,16 +125,6 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
 
     public void setFriendsTimeDoneToday(boolean friendsTimeDoneToday) {
         this.friendsTimeDoneToday = friendsTimeDoneToday;
-    }
-
-    public void addTaskToLog(String date) {
-        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
-        String fullClassName = stackTraceElements[2].getClassName();
-        String[] parts = fullClassName.split("\\.");
-        String taskName = parts[parts.length - 1];
-        long time = System.currentTimeMillis() - wpsStart.startTime;
-        TaskLog taskLog = new TaskLog(date, taskName);
-        this.taskLog.put(time, taskLog);
     }
 
     public boolean isHaveLoan() {
@@ -339,41 +327,6 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         this.newDay = newDay;
     }
 
-    /**
-     *
-     */
-    public void releaseWeekBlock(int wait) {
-        wpsReport.debug(
-                "Esperando " + wait + " milisegundos para liberar el bloqueo de semana.",
-                getPeasantProfile().getPeasantFamilyAlias()
-        );
-        try {
-            Thread.sleep(wait * 10);
-            //this.weekBlock = false;
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     *
-     */
-    public void setWeekBlock() {
-        this.weekBlock = true;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean getWeekBlock() {
-        // Si la fecha interna es anterior a la fecha global actual, no se bloquea el agente
-        if (ControlCurrentDate.getInstance().isBeforeDate(internalCurrentDate)) {
-            return false;
-        } else {
-            return this.weekBlock;
-        }
-    }
 
     /**
      *
@@ -593,6 +546,15 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
         //dataObject.put("diseasedCrop", peasantProfile.getDiseasedCrop());
         //dataObject.put("weedControl", peasantProfile.getWeedControl());
 
+        try {
+            List<EmotionAxis> emotions = this.getEmotionsListCopy();
+            emotions.forEach(emotion -> {
+                dataObject.put(emotion.toString(), emotion.getCurrentValue());
+            });
+        } catch (CloneNotSupportedException e) {
+            dataObject.put("emotions", 0);
+        }
+
         JSONObject finalDataObject = new JSONObject();
         finalDataObject.put("name", peasantProfile.getPeasantFamilyAlias());
         finalDataObject.put("state", dataObject.toString());
@@ -677,6 +639,10 @@ public class PeasantFamilyBDIAgentBelieves implements Believes {
                 AdmBESA adm = AdmBESA.getInstance();
                 AgHandlerBESA agHandler = adm.getHandlerByAlias(this.peasantProfile.getPeasantFamilyAlias());
                 adm.killAgent(agHandler.getAgId(), wpsStart.PASSWD);
+
+                this.processEmotionalEvent(
+                        new EmotionalEvent("FAMILY", "STARVING", "FOOD")
+                );
             } catch (ExceptionBESA ex) {
                 wpsReport.error(ex, this.peasantProfile.getPeasantFamilyAlias());
             }

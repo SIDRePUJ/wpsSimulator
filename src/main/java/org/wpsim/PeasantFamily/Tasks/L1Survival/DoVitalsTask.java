@@ -14,6 +14,8 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
+import BESA.Emotional.EmotionalEvent;
+import BESA.Emotional.Semantics;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
@@ -60,6 +62,10 @@ public class DoVitalsTask extends Task {
         believes.setFriendsTimeDoneToday(false);
         believes.useTime(TimeConsumedBy.valueOf("DoVitalsTask"));
 
+        believes.processEmotionalEvent(
+                new EmotionalEvent("FAMILY", "DOVITALS", "FOOD")
+        );
+
         // Check crop season
         if (DateHelper.differenceDaysBetweenTwoDates(
                 believes.getInternalCurrentDate(),
@@ -69,8 +75,6 @@ public class DoVitalsTask extends Task {
 
         // Check debts
         //checkBankDebt(believes);
-        // Check Sync
-        checkWeek(believes);
 
         believes.getPeasantProfile().discountDailyMoney();
         this.setTaskFinalized();
@@ -105,17 +109,6 @@ public class DoVitalsTask extends Task {
             return false;
         } else {
             return true;
-        }
-    }
-
-    /**
-     * Check for the week sync
-     * @param believes
-     */
-    private void checkWeek(PeasantFamilyBDIAgentBelieves believes) {
-        //if (ControlCurrentDate.getInstance().isFirstDayOfWeek(believes.getInternalCurrentDate())){
-        if (believes.getCurrentDay() % wpsStart.DAYS_TO_CHECK == 0) {
-            believes.setWeekBlock();
         }
     }
 

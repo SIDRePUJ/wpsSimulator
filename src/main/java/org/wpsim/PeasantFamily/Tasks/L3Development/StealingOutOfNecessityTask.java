@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import BESA.Emotional.EmotionalEvent;
 import org.wpsim.Viewer.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
@@ -53,6 +54,9 @@ public class StealingOutOfNecessityTask extends Task {
         }
         believes.setCurrentMoneyOrigin(MoneyOriginType.ROBERY);
         believes.setRobbedToday();
+        believes.processEmotionalEvent(
+                new EmotionalEvent("FAMILY", "THIEVING", "MONEY")
+        );
         this.setTaskFinalized();
     }
 
