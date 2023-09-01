@@ -43,7 +43,7 @@ public class wpsStart {
     public static wpsConfig config;
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
-    public static int peasantFamiliesAgents = 5;
+    public static int peasantFamiliesAgents = 50;
     public static int stepTime = 100;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
@@ -85,7 +85,6 @@ public class wpsStart {
             System.out.println("No hay contenedores válidos");
             System.exit(0);
         }
-
     }
 
     /**

@@ -51,7 +51,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private boolean robbedToday;
     private boolean askedForLoanToday;
     private boolean haveLoan;
-    private boolean weekBlock;
     private double toPay;
     private boolean loanDenied;
     private boolean leisureDoneToday;
@@ -256,7 +255,16 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         if (this.currentSeason == SeasonType.GROWING) {
             this.checkedToday = false;
         }
-
+    }
+    public void makeNewDayWOD() {
+        this.currentDay++;
+        this.timeLeftOnDay = 24;
+        this.newDay = true;
+        this.robbedToday = false;
+        this.askedForLoanToday = false;
+        if (this.currentSeason == SeasonType.GROWING) {
+            this.checkedToday = false;
+        }
     }
 
     /**
@@ -270,32 +278,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         if (timeLeftOnDay <= 0) {
             this.makeNewDay();
         }
-            /*wpsReport.info("🌤️🌤️  NewDay para "
-                    + peasantProfile.getPeasantFamilyAlias()
-                    + " con "
-                    + peasantProfile.getHealth()
-                    + " de Salud.",
-                    getPeasantProfile().getPeasantFamilyAlias()
-            );
-            //wpsReport.debug(toJson(), this.getPeasantProfile().getPeasantFamilyAlias());
-        } else {
-            wpsReport.info("⏱️⏱️  "
-                    + this.peasantProfile.getPeasantFamilyAlias()
-                    + " Le quedan "
-                    + this.timeLeftOnDay
-                    + " horas del día "
-                    + internalCurrentDate
-                    + " con "
-                    + this.peasantProfile.getHealth()
-                    + " de Salud.",
-                    this.getPeasantProfile().getPeasantFamilyAlias()
-            );
-        }
-        try {
-            Thread.sleep((long) (50 * time));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     /**
@@ -305,8 +287,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      */
     public boolean haveTimeAvailable(TimeConsumedBy time) {
         return this.timeLeftOnDay - time.getTime() >= 0;
-        //wpsReport.info("⏳🚩⏳🚩⏳ No alcanza le tiempo " + time.getTime() + " tiene " + this.timeLeftOnDay + " del día " + wpsCurrentDate.getInstance().getCurrentDate());
-        //wpsReport.info("⏳ ⏳ ⏳ Todavía tiene " + this.timeLeftOnDay + " en el día " + wpsCurrentDate.getInstance().getCurrentDate());
     }
 
     /**
@@ -504,7 +484,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("currentPeasantLeisureType", currentPeasantLeisureType);
         dataObject.put("currentResourceNeededType", currentResourceNeededType);
         dataObject.put("currentDay", currentDay);
-        //dataObject.put("weekBlock", weekBlock);
         dataObject.put("askedForLoanToday", askedForLoanToday);
         dataObject.put("robbedToday", robbedToday);
         dataObject.put("checkedToday", checkedToday);
@@ -565,52 +544,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         return finalDataObject.toString();
     }
 
-    /**
-     *
-     * @return
-     */
-    public String toSmallJson() {
-        JSONObject dataObject = new JSONObject();
-        dataObject.put("money", peasantProfile.getMoney());
-        dataObject.put("health", peasantProfile.getHealth());
-        dataObject.put("timeLeftOnDay", timeLeftOnDay);
-        dataObject.put("newDay", newDay);
-        dataObject.put("currentSeason", currentSeason);
-        dataObject.put("currentCropCare", currentCropCare);
-        dataObject.put("robberyAccount", robberyAccount);
-        dataObject.put("peasantFamilyAffinity", peasantProfile.getPeasantFamilyAffinity());
-        dataObject.put("peasantLeisureAffinity", peasantProfile.getPeasantLeisureAffinity());
-        dataObject.put("peasantFriendsAffinity", peasantProfile.getPeasantFriendsAffinity());
-        dataObject.put("currentPeasantLeisureType", currentPeasantLeisureType);
-        dataObject.put("currentResourceNeededType", currentResourceNeededType);
-        dataObject.put("currentDay", currentDay);
-        //dataObject.put("weekBlock", weekBlock);
-        dataObject.put("askedForLoanToday", askedForLoanToday);
-        dataObject.put("robbedToday", robbedToday);
-        dataObject.put("checkedToday", checkedToday);
-        dataObject.put("internalCurrentDate", internalCurrentDate);
-        dataObject.put("toPay", toPay);
-        dataObject.put("leisureDoneToday", leisureDoneToday);
-        dataObject.put("spendFamilyTimeDoneToday", spendFamilyTimeDoneToday);
-        dataObject.put("friendsTimeDoneToday", friendsTimeDoneToday);
-        dataObject.put("currentActivity", currentPeasantActivityType);
-        dataObject.put("farm", peasantProfile.getLand());
-        dataObject.put("cropSize", peasantProfile.getCropSize());
-        dataObject.put("loanAmountToPay", peasantProfile.getLoanAmountToPay());
-        dataObject.put("tools", peasantProfile.getTools());
-        dataObject.put("seeds", peasantProfile.getSeeds());
-        dataObject.put("waterAvailable", peasantProfile.getWaterAvailable());
-        dataObject.put("pesticidesAvailable", peasantProfile.getPesticidesAvailable());
-        dataObject.put("riceSeedsByHectare", peasantProfile.getRiceSeedsByHectare());
-        dataObject.put("harvestedWeight", peasantProfile.getHarvestedWeight());
-
-        JSONObject finalDataObject = new JSONObject();
-        finalDataObject.put("name", peasantProfile.getPeasantFamilyAlias());
-        finalDataObject.put("state", dataObject.toString());
-
-        return finalDataObject.toString();
-    }
-
     public double getToPay() {
         return toPay;
     }
@@ -639,7 +572,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
                 AdmBESA adm = AdmBESA.getInstance();
                 AgHandlerBESA agHandler = adm.getHandlerByAlias(this.peasantProfile.getPeasantFamilyAlias());
                 adm.killAgent(agHandler.getAgId(), wpsStart.PASSWD);
-
                 this.processEmotionalEvent(
                         new EmotionalEvent("FAMILY", "STARVING", "FOOD")
                 );

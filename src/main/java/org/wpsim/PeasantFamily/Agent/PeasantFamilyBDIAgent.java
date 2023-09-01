@@ -32,6 +32,7 @@ import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
+import org.wpsim.PeasantFamily.Goals.L1Survival.SelfEvaluationGoal;
 import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
 import org.wpsim.PeasantFamily.Goals.L2Obligation.PayDebtsGoal;
 import org.wpsim.PeasantFamily.Goals.L3Development.*;

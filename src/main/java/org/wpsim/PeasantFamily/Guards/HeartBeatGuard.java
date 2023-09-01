@@ -24,6 +24,7 @@ import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Log.ReportBESA;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Guards.ControlAgentGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -40,6 +41,16 @@ import rational.guards.InformationFlowGuard;
 public class HeartBeatGuard extends PeriodicGuardBESA {
     
     /**
+     * It retrieves the current agent and its beliefs.
+     * It checks if the current date is more than 7 days before the internal current date to move forward.
+     * If so, it updates the internal current date and creates a new day without data.
+     * It logs the emotions list and the most activated emotion of the agent.
+     * It checks if the agent's health is zero or below. If so, it shuts down the agent.
+     * It creates a message to send to a control agent with the agent's alias, internal current date, and current day.
+     * It sends the message to the control agent.
+     * It sends an event to an agent with the alias PeasantFamilyAlias.
+     * It logs the agent's beliefs as a JSON string along with the agent's alias.
+     * It calculates the wait time based on the agent's main role and sets the delay time for the next execution of the method.
      *
      * @param event
      */
@@ -49,6 +60,12 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
         String PeasantFamilyAlias = believes.getPeasantProfile().getPeasantFamilyAlias();
+
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -7) {
+            System.out.println("Jump PeasantFamilyAlias: " + PeasantFamilyAlias + " - getDaysBetweenDates" + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
+            believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
+            believes.makeNewDayWOD();
+        }
 
         try {
             wpsReport.debug(PeasantFamilyAlias + " getEmotionsListCopy " + believes.getEmotionsListCopy().toString(), PeasantFamilyAlias);
@@ -88,7 +105,8 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             );
             agHandler.sendEvent(eventBesa);
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, PeasantFamilyAlias);
+            //wpsReport.error(ex, PeasantFamilyAlias);
+            ReportBESA.error(ex);
         }
 
         wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
@@ -96,7 +114,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         int waitTime = wpsStart.stepTime;
         if (state.getMainRole() != null) {
             waitTime = TimeConsumedBy.valueOf(state.getMainRole().getRoleName()).getTime() * wpsStart.stepTime;
-            //System.out.println("waitTime: " + waitTime);
+            //System.out.println("PeasantFamilyAlias: " + PeasantFamilyAlias + " - waitTime: " + waitTime);
         }
 
         this.setDelayTime(waitTime);

@@ -125,6 +125,8 @@ public abstract class EmotionalComponent extends EmotionalModel {
             sd.addSemanticItem(Personality.EmotionElementType.Object, new SemanticValue(obj.toString(), obj.getValue()));
         }
 
+        //System.out.println("Semantic Dictionary: " + sd.toString());
+
     }
 
     @Override
@@ -150,18 +152,6 @@ public abstract class EmotionalComponent extends EmotionalModel {
     public void loadEmotionalAxes() {
         EmotionAxis emoAxis;
 
-        // Emotions related to the Happiness axis
-        emoAxis = new EmotionAxis(
-                Semantics.Emotions.Happiness,
-                Semantics.Emotions.Sadness,
-                0.0f, 0.0f, 0.05f
-        );
-        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
-        emoAxis.setEventInfluence(EmotionalEventType.THIEVING.name(), -0.4f);
-        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), -0.4f);
-        emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), 0.1f);
-        this.addEmotionAxis(emoAxis);
-
         // Emotions related to the Health axis
         emoAxis = new EmotionAxis(
                 Semantics.Sensations.Healthy,
@@ -169,7 +159,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
                 0.5f, 0.0f, 0.1f
         );
         emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
-        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), -0.6f);
+        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), 0.6f);
         this.addEmotionAxis(emoAxis);
 
         // Emotions related to the Energy axis
@@ -181,6 +171,31 @@ public abstract class EmotionalComponent extends EmotionalModel {
         emoAxis.setEventInfluence(EmotionalEventType.PLANTING.name(), -0.1f);
         emoAxis.setEventInfluence(EmotionalEventType.IRRIGATING.name(), -0.1f);
         emoAxis.setEventInfluence(EmotionalEventType.HARVESTING.name(), -0.4f);
+        emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), -0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
+        this.addEmotionAxis(emoAxis);
+
+        // Emotions related to the Happiness axis
+        emoAxis = new EmotionAxis(
+                Semantics.Emotions.Happiness,
+                Semantics.Emotions.Sadness,
+                0.0f, 0.0f, 0.01f
+        );
+        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.THIEVING.name(), -0.4f);
+        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), -0.4f);
+        emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), 0.1f);
+        this.addEmotionAxis(emoAxis);
+
+        // Emotions related to the Security axis
+        emoAxis = new EmotionAxis(
+                Semantics.Emotions.Confident,
+                Semantics.Emotions.Insecure,
+                0.5f, 0.0f, 0.1f
+        );
+        emoAxis.setEventInfluence(EmotionalEventType.PLANTING.name(), -0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.IRRIGATING.name(), -0.1f);
+        emoAxis.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.4f);
         emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), -0.1f);
         emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
         this.addEmotionAxis(emoAxis);

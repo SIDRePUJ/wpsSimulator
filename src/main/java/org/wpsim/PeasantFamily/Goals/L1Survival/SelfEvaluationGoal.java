@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L1Survival.SelfEvaluationTask;
@@ -70,8 +71,7 @@ public class SelfEvaluationGoal extends GoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return 0;
+        return 1;
     }
 
     /**
@@ -83,8 +83,12 @@ public class SelfEvaluationGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        
-        return 0;
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -7) {
+            System.out.println("Jump detectado para PeasantFamilyAlias: " + believes.getPeasantProfile().getPeasantFamilyAlias() + " getDaysBetweenDates" + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
+            return 1;
+        }else {
+            return 0;
+        }
     }
 
     /**
@@ -95,13 +99,6 @@ public class SelfEvaluationGoal extends GoalBDI {
      */
     @Override
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        /*if (believes.getProfile().getHealth() > 0.0) {
-            return 1;
-        } else {
-            return 0;
-        }*/
         return 1;
     }
 
@@ -113,7 +110,6 @@ public class SelfEvaluationGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         return 1;
     }
 
@@ -125,9 +121,7 @@ public class SelfEvaluationGoal extends GoalBDI {
      */
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
+        return true;
     }
 
     /**
@@ -139,8 +133,11 @@ public class SelfEvaluationGoal extends GoalBDI {
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.info("getHealth=" + believes.getProfile().getHealth());
-        return believes.getPeasantProfile().getHealth() == 1;
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) > 7) {
+            return false;
+        }else {
+            return true;
+        }
     }
 
 }

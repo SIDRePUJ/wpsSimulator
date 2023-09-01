@@ -1,6 +1,7 @@
 package org.wpsim.Control.Data;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -62,6 +63,15 @@ public class ControlCurrentDate {
         DateTime newDate = formatter.parseDateTime(date);
 
         return newDate.isAfter(oldDate);
+    }
+
+    public int getDaysBetweenDates(String date){
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+
+        DateTime oldDate = formatter.parseDateTime(getCurrentDate());
+        DateTime newDate = formatter.parseDateTime(date);
+
+        return Days.daysBetween(oldDate, newDate).getDays();
     }
     public boolean isBeforeDate(String date){
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
