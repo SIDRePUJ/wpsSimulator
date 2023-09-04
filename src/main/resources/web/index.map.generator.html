@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>WellProd Simulator</title>
+    <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+    <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js"
+            integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css"
+          integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+
+
+    <script>
+
+        let currentDate;
+        let socket;
+        let agentData = {};
+        let family_data = {};
+
+        function showData(name) {
+            //var space = document.getElementById("agentInfo");
+            //space.innerHTML = JSON.stringify(agentData[name], null, 2);
+            //console.log("Showing data for:", agentData[name]);
+            $(function () {
+                document.getElementById("activeAgent").value = agentData[name]["name"];
+                $("#agentInfo").JSONView(agentData[name]["state"]);
+                $("#agentTasks").JSONView(agentData[name]["taskLog"]);
+                $("#unblockDateList").JSONView(agentData[name]["unblockDateList"]);
+            });
+
+            const taskLog = JSON.parse(agentData[name]["taskLog"]);
+
+            const taskCount = {};
+            for (const key in taskLog) {
+                const taskName = taskLog[key].task;
+                if (!taskCount[taskName]) {
+                    taskCount[taskName] = 0;
+                }
+                taskCount[taskName]++;
+            }
+
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+
+            for (const task in taskCount) {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.textContent = `${task}: ${taskCount[task]}`;
+                taskList.appendChild(listItem);
+            }
+
+            createOptions(agentData[name]["state"]);
+
+        }
+
+        function addPeasantFamily(name) {
+            let btn = document.createElement("button");
+            btn.id = name;
+            btn.className = "btn btn-primary btn-sm rounded-circle";
+            btn.innerHTML = name;
+            btn.style = "width:120px; font-size: x-small; opacity: 0.7;";
+            btn.onclick = function () {
+                showData(name);
+            };
+            document.getElementById("agentList").appendChild(btn);
+            document.getElementById("activeAgent").appendChild(new Option(name, name));
+        }
+
+        function updateAgent(jsonData) {
+            let unSynchronized = "";
+            //console.log("Updating agent:", jsonData);
+            let agent = document.getElementById(jsonData.name);
+            let state = JSON.parse(jsonData.state);
+
+            if (currentDate != null) {
+                const currentDateParts = currentDate.split('/');
+                const currentDateObj = new Date(currentDateParts[2], currentDateParts[1] - 1, currentDateParts[0]);
+                const buttonDateParts = state.internalCurrentDate.split('/');
+                const buttonDateObj = new Date(buttonDateParts[2], buttonDateParts[1] - 1, buttonDateParts[0]);
+                // Calcular la diferencia en días
+                const differenceInTime = buttonDateObj.getTime() - currentDateObj.getTime();
+                const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+                if (differenceInDays < -7) {
+                    unSynchronized = " 🚫";
+                } else {
+                    unSynchronized = "";
+                }
+            }
+
+            agent.innerHTML = `${jsonData.name}<br>
+                ${state.health} 💊<br>
+                $${state.money.toLocaleString('es-CO')} 💰<br>
+                ${state.internalCurrentDate} 📅${unSynchronized}<br>
+                ${state.currentSeason} 🚜`;
+
+            if (state.robberyAccount > 0) {
+                agent.innerHTML = agent.innerHTML + " 🦹";
+            }
+
+            if (state.currentActivity == "BLOCKED") {
+                agent.className = "btn btn-secondary";
+            } else if (state.health <= 0) {
+                agent.className = "btn btn-secondary";
+            } else if (state.health <= 30) {
+                agent.className = "btn btn-warning";
+            } else if (state.health <= 80) {
+                agent.className = "btn btn-primary";
+            } else {
+                agent.className = "btn btn-success";
+            }
+
+        }
+
+        function createOptions(options) {
+            const options_data = JSON.parse(options);
+            //console.log("Creating options:", options_data);
+            const form = document.getElementById("graphOptions");
+            form.innerHTML = '';
+            for (const [key, value] of Object.entries(options_data)) {
+                //console.log(key, value);
+                if (typeof value === 'number') {
+                    const div = document.createElement('div');
+                    div.className = 'form-check';
+
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = "opt_" + key;
+                    checkbox.className = 'form-check-input';
+                    checkbox.name = key;
+                    checkbox.value = value;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = key;
+                    label.className = 'form-check-label';
+                    label.textContent = key;
+
+                    // Agrega el checkbox y la etiqueta al formulario
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+                    form.appendChild(div);
+                }
+            }
+        }
+
+        if (window.WebSocket) {
+            socket = new WebSocket("ws://localhost:8080/wpsViewer");
+            socket.onmessage = function (event) {
+                let prefix = event.data.substring(0, 2);
+                let data = event.data.substring(2);
+                switch (prefix) {
+                    case "j=":
+                        try {
+                            let newAgentData = JSON.parse(data);
+                            updateAgent(newAgentData);
+                            if (!agentData) {
+                                agentData = {};
+                            }
+                            agentData[newAgentData.name] = newAgentData;
+                            if (!family_data[newAgentData.name]) {
+                                family_data[newAgentData.name] = {};
+                            }
+                            let state = JSON.parse(newAgentData.state);
+                            family_data[newAgentData.name][state.internalCurrentDate] = state;
+                        } catch (error) {
+                            console.error("Error parsing JSON:", error);
+                        }
+                        break;
+                    case "q=":
+                        let number = parseInt(data, 10);
+                        for (let i = 1; i <= number; i++) {
+                            addPeasantFamily("PeasantFamily_" + i);
+                        }
+                        break;
+                    case "d=":
+                        currentDate = data;
+                        document.getElementById("currentDate").innerHTML = data;
+                        break;
+                    case "m=":
+                        //document.getElementById("map").value = data;
+                        //console.log("Map:", data);
+                        break;
+                    case "s=":
+                        let jsonData = JSON.parse(data);
+                        document.getElementById("alive").innerHTML = jsonData.alive;
+                        document.getElementById("away").innerHTML = jsonData.away;
+                        document.getElementById("dead").innerHTML = jsonData.dead;
+                        break;
+                    default:
+                        console.log("Unknown message prefix:", prefix);
+                        break;
+                }
+                $('#agentList .btn-secondary').appendTo('#deadAgentList');
+            };
+            socket.onopen = function (event) {
+                console.log("Web Socket opened!");
+                socket.send('setup')
+            };
+            socket.onclose = function (event) {
+                console.log("Web Socket closed.");
+            };
+        } else {
+            alert("Your browser does not support Websockets. (Use Chrome)");
+        }
+
+        function send(message) {
+            if (!window.WebSocket) {
+                return;
+            }
+            if (socket.readyState == WebSocket.OPEN) {
+                socket.send(message);
+            } else {
+                console.log("The socket is not open.");
+            }
+        }
+
+        function stringToHashCode(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return hash;
+        }
+        function hashCodeToColor(hash) {
+            const r = (hash & 0xFF0000) >> 16;
+            const g = (hash & 0x00FF00) >> 8;
+            const b = hash & 0x0000FF;
+            return `rgba(${r}, ${g}, ${b}, 1)`;
+        }
+
+        const familySelect = document.getElementById('activeAgent');
+        let myChart;
+
+        function updateChart(familyName) {
+
+            const selectedFamily = family_data[familyName];
+            // Crear una función para convertir la fecha al formato YYYY/MM/DD para comparación
+            const convertDate = (dateStr) => {
+                const [day, month, year] = dateStr.split('/');
+                return `${day}/${month}/${year}`;
+            };
+
+            // Obtener todas las claves (fechas) y ordenarlas
+            const dates = Object.keys(selectedFamily).sort((a, b) => {
+                return new Date(convertDate(a)) - new Date(convertDate(b));
+            });
+
+            const datasets = [];
+
+            // Buscar todos los checkboxes con id que empiezan con "opt_"
+            const checkboxes = document.querySelectorAll('[id^="opt_"]');
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    // Obtén el nombre del campo del checkbox seleccionado, por ejemplo, "peasantLeisureAffinity" de "opt_peasantLeisureAffinity"
+                    const fieldName = checkbox.id.substring(4);
+
+                    if (dates.every(date => selectedFamily[date][fieldName] !== undefined)) {
+                        const data = dates.map(date => selectedFamily[date][fieldName]);
+
+                        const hash = stringToHashCode(fieldName);
+                        const color = hashCodeToColor(hash);
+
+                        datasets.push({
+                            label: fieldName,
+                            data: data,
+                            borderColor: color,
+                            borderWidth: 1
+                        });
+                    }
+                }
+            });
+
+            if (!myChart) {
+                // Crea el gráfico utilizando Chart.js.
+                const ctx = document.getElementById('myChart').getContext('2d');
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dates,
+                        datasets: datasets
+                    },
+                    options: {
+                        animation: false,
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    parser: 'DD/MM/YYYY'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }else{
+                myChart.data.labels = dates;
+                myChart.data.datasets = datasets;
+                myChart.update();
+            }
+        }
+
+        let familySelectValue;
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const familySelect = document.getElementById('activeAgent');
+
+            if (!familySelect) {
+                console.error('El elemento "activeAgent" no se encuentra en el DOM.');
+                return;
+            }
+
+            familySelectValue = familySelect.value;
+            console.log('Valor inicial:', familySelectValue);  // Para depuración
+
+            familySelect.addEventListener('change', event => {
+                familySelectValue = event.target.value;
+                console.log('Valor cambiado:', familySelectValue);  // Para depuración
+
+                try {
+                    updateChart(familySelectValue);  // Actualizar el gráfico
+                    showData(familySelectValue);     // Mostrar datos
+                } catch (error) {
+                    console.error('Error en updateChart o showData:', error);
+                }
+            });
+        });
+
+        function periodicUpdate() {
+            if (familySelectValue) {
+                //console.log('Actualizando gráfico para:', familySelectValue);  // Para depuración
+                try {
+                    updateChart(familySelectValue);
+                } catch (error) {
+                    console.error('Error en updateChart:', error);
+                }
+            }
+        }
+
+        // Configuración del intervalo para actualizar cada 15 segundos
+        setInterval(periodicUpdate, 5000);
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: black;">
+    <a class="navbar-brand" href="#" style="color: #FFF">&nbsp;WellProd Simulator</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <input type="button" value="Start" class="btn btn-success btn-sm" onclick="socket.send('start')"/>
+            </li>
+            <li class="nav-item">
+                <input type="button" value="Stop" class="btn btn-danger btn-sm" onclick="socket.send('stop')"/>
+            </li>
+            <li class="nav-item">
+                &nbsp;
+            </li>
+            <li class="nav-item">
+                <button class="btn btn-outline-dark btn-sm text-bg-light">
+                    Fecha Global: <span class="badge text-bg-light" id="currentDate">--/--/--</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="btn btn-dark btn-sm">
+                    Activos <span class="badge text-bg-light" id="alive">0</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="btn btn-dark btn-sm">
+                    Inactivos <span class="badge text-bg-light" id="dead">0</span>
+                </button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="btn btn-dark btn-sm">
+                    Bloqueados <span class="badge text-bg-light" id="away">0</span>
+                </button>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8"><button onclick="downloadData()">Descargar Datos de las Fincas</button>
+            <div id="mapid" style="height: 600px;"></div>            
+            <canvas id="myChart" width="400" height="200"></canvas>
+            <div class="alert alert-light" role="alert">Agentes Activos</div>
+            <div id="agentList"></div>
+            <div class="alert alert-light" role="alert">Agentes Inactivos</div>
+            <div id="deadAgentList"></div>
+        </div>
+        <div class="col-4 border-left border-info">
+            <select class="form-select" id="activeAgent" aria-label="Select active agent">
+                <option selected>Select active agent</option>
+            </select>
+            <div class="row">
+                <div class="col-7">
+                    <div id="graphOptions" style="font-size:x-small;height:30vh;overflow-y:scroll;"
+                         class="border-left border-primary"></div>
+                    <div id="agentInfo" style="font-size:x-small;height:30vh;overflow-y:scroll;"
+                         class="border-left border-primary"></div>
+                    <div id="agentTasks" style="font-size:x-small;height:20vh;overflow-y:scroll;"
+                         class="border-left border-primary"></div>
+                </div>
+                <div class="col-5">
+                    <div style="font-size:x-small;height:70vh;overflow-y:scroll;">
+                        <ul class="list-group" id="taskList">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="bg-light text-center py-3" style="height:5vh;">
+    <a class="icon-link" href=""><i class="bi bi-github"></i></a>
+</footer>
+<script>
+    // Crear el mapa
+    var mymap = L.map('mapid').setView([9.937618, -75.309686], 14);
+
+    // Agregar tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © OpenStreetMap contributors'
+    }).addTo(mymap);
+
+    var center = { lat: 9.937618, lng:-75.309686 };
+    var divisiones = 20; // 400 de 1.2Has
+    var delta = 0.001;
+
+    var angle = 41 * (Math.PI / 180); // Ángulo de rotación en radianes
+    var fincasData = [];
+
+  function rotatePoint(point, origin, angle) {
+    var rotatedLng = Math.cos(angle) * (point.lng - origin.lng) - Math.sin(angle) * (point.lat - origin.lat) + origin.lng;
+    var rotatedLat = Math.sin(angle) * (point.lng - origin.lng) + Math.cos(angle) * (point.lat - origin.lat) + origin.lat;
+
+    return [rotatedLat, rotatedLng];
+  }
+
+  for (var i = 0; i < divisiones; i++) {
+    for (var j = 0; j < divisiones; j++) {
+      var bottomLeft = { lat: center.lat + i * delta, lng: center.lng + j * delta };
+      var topLeft = { lat: center.lat + (i + 1) * delta, lng: center.lng + j * delta };
+      var topRight = { lat: center.lat + (i + 1) * delta, lng: center.lng + (j + 1) * delta };
+      var bottomRight = { lat: center.lat + i * delta, lng: center.lng + (j + 1) * delta };
+
+      var polygon = L.polygon([
+        rotatePoint(bottomLeft, center, angle),
+        rotatePoint(topLeft, center, angle),
+        rotatePoint(topRight, center, angle),
+        rotatePoint(bottomRight, center, angle)
+      ]).addTo(mymap).bindTooltip("Finca " + (i * divisiones + j + 1));
+
+      fincasData.push({
+        name: "Finca " + (i * divisiones + j + 1),
+        coordinates: [
+          rotatePoint(bottomLeft, center, angle),
+          rotatePoint(topLeft, center, angle),
+          rotatePoint(topRight, center, angle),
+          rotatePoint(bottomRight, center, angle)
+        ]
+      });
+    }
+  }
+
+  function downloadData() {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+
+    var json = JSON.stringify(fincasData, null, 2),
+        blob = new Blob([json], { type: "octet/stream" }),
+        url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = "fincas_data.txt";
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  </script>
+</body>
+</html>
