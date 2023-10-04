@@ -19,8 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.wpsim.Simulator.wpsConfig;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -28,11 +30,11 @@ import java.util.stream.Collectors;
  */
 public class GovernmentAgentState extends StateBESA implements Serializable {
 
+    private static final int GRID_SIZE = 20;
     /**
      * Map that contains the land ownership information.
      */
     private Map<String, LandInfo> landOwnership;
-
     /**
      * Map that contains the farm information.
      */
@@ -98,48 +100,48 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
         System.out.println("Total lands assigned: " + totalLandsAssigned);
     }
 
-
-    public void createFarms() {
-        List<String> availableLands = landOwnership.entrySet().stream()
-                .filter(e -> !e.getValue().kind.equals("road") && e.getValue().farmName == null) // Excluir tierras de tipo "road"
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-
-        int totalLands = availableLands.size();
-        int largeFarmsLands = (int) (totalLands * 0.5);
-        int mediumFarmsLands = (int) (totalLands * 0.3);
-        // El resto será para fincas pequeñas
-
-        int farmId = 1;
-        Random rand = new Random();
-
-        while (!availableLands.isEmpty()) {
-            int size;
-            String farmSize;
-
-            if (largeFarmsLands > 0) {
-                size = Math.min(rand.nextInt(11) + 10, availableLands.size()); // 10 to 20
-                farmSize = "large";
-                largeFarmsLands -= size;
-            } else if (mediumFarmsLands > 0) {
-                size = Math.min(rand.nextInt(7) + 4, availableLands.size()); // 4 to 10
-                farmSize = "medium";
-                mediumFarmsLands -= size;
-            } else {
-                size = Math.min(rand.nextInt(4) + 1, availableLands.size()); // 1 to 4 or remaining lands
-                farmSize = "small";
-            }
-
-            List<String> farmLands = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-                String land = availableLands.remove(rand.nextInt(availableLands.size()));
-                farmLands.add(land);
-            }
-
-            farms.put("farm_" + farmId + "_" + farmSize, farmLands);
-            farmId++;
-        }
+    private Point landNameToPoint(String landName) {
+        int number = Integer.parseInt(landName.replace("land_", ""));
+        int x = (number - 1) % GRID_SIZE;
+        int y = (number - 1) / GRID_SIZE;
+        return new Point(x, y);
     }
+
+    private List<String> selectBlock(List<String> availableLands, int rows, int cols) {
+        for (int i = 0; i < availableLands.size(); i++) {
+            String landName = availableLands.get(i);
+            Point startPoint = landNameToPoint(landName);
+
+            if (isBlockAvailable(startPoint, rows, cols, availableLands)) {
+                return extractBlock(startPoint, rows, cols, availableLands);
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    private boolean isBlockAvailable(Point startPoint, int rows, int cols, List<String> availableLands) {
+        for (int x = startPoint.x; x < startPoint.x + cols; x++) {
+            for (int y = startPoint.y; y < startPoint.y + rows; y++) {
+                if (x >= GRID_SIZE || y >= GRID_SIZE || !availableLands.contains("land_" + (y * GRID_SIZE + x + 1))) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private List<String> extractBlock(Point startPoint, int rows, int cols, List<String> availableLands) {
+        List<String> block = new ArrayList<>();
+        for (int x = startPoint.x; x < startPoint.x + cols; x++) {
+            for (int y = startPoint.y; y < startPoint.y + rows; y++) {
+                String landName = "land_" + (y * GRID_SIZE + x + 1);
+                block.add(landName);
+                availableLands.remove(landName);
+            }
+        }
+        return block;
+    }
+
 
     public synchronized Map.Entry<String, Map<String, String>> assignLandToFamily(String familyName) {
         List<String> availableFarms = farms.entrySet().stream()
@@ -163,6 +165,47 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
 
         return new AbstractMap.SimpleEntry<>(selectedFarm, landsWithKind);
     }
+
+    public void createFarms() {
+        List<String> availableLands = landOwnership.entrySet().stream()
+                .filter(e -> !e.getValue().kind.equals("road") && e.getValue().farmName == null) // Excluir tierras de tipo "road"
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        Random rand = new Random();
+        int farmId = 1;
+
+        // Asignar fincas grandes
+        while (true) {
+            List<String> farmLands = selectBlock(availableLands, 4, 5); // Intenta un bloque de 4x5
+            if (farmLands.isEmpty()) {
+                break;
+            }
+            farms.put("farm_" + farmId + "_large", farmLands);
+            farmId++;
+        }
+
+        // Asignar fincas medianas
+        while (true) {
+            List<String> farmLands = selectBlock(availableLands, 2, 5); // Intenta un bloque de 2x5
+            if (farmLands.isEmpty()) {
+                break;
+            }
+            farms.put("farm_" + farmId + "_medium", farmLands);
+            farmId++;
+        }
+
+        // Asignar fincas pequeñas
+        while (!availableLands.isEmpty()) {
+            List<String> farmLands = selectBlock(availableLands, 1, 2); // Intenta un bloque de 1x2
+            if (farmLands.isEmpty()) {
+                break;
+            }
+            farms.put("farm_" + farmId + "_small", farmLands);
+            farmId++;
+        }
+    }
+
 
 
 

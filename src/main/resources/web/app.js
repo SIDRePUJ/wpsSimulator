@@ -44,7 +44,7 @@ function addPeasantFamily(name) {
     btn.id = name;
     btn.className = "btn btn-primary btn-sm rounded-circle";
     btn.innerHTML = name;
-    btn.style = "width:100px; font-size: xx-small;";
+    btn.style = "width:120px; font-size: xx-small;";
     btn.onclick = function () {
         showData(name);
     };
@@ -103,7 +103,7 @@ function updateAgent(jsonData) {
                 $${state.money.toLocaleString("es-CO")} 💰<br>
                 ${state.internalCurrentDate} 📅${unSynchronized}<br>
                 ${state.currentSeason} 🚜<br>
-                ${state.assignedLands} 🏡<br>`  ;
+                ${state.peasantFamilyLandAlias} 🌱<br>`;  ;
 
     if (state.robberyAccount > 0) {
         agent.innerHTML = agent.innerHTML + " 🦹";
@@ -144,7 +144,7 @@ function updateAgent(jsonData) {
                 ${state.currentSeason} 🚜
         `;
     modifyLand(state.peasantFamilyLandAlias, lands[state.peasantFamilyLandAlias], color, newTooltip);
-    //sconsole.log(state.assignedLands);
+    //console.log(state.assignedLands);
 
 }
 
@@ -433,20 +433,51 @@ async function loadData() {
 window.onload = loadData;
 
 function modifyLand(name, landDataUse, color, newTooltip) {
-
-    //console.log(landDataUse);
+    const borderStyleUnique = borderStyles[name];
     for (let land in landDataUse) {
         let landLayer = landData[land];
-        //console.log("  Land:", land, "Kind:", land["kind"], "Used:", land.used);
         if (landLayer) {
-            landLayer.setStyle({fillColor: color, fillOpacity: 0.5});
+            landLayer.setStyle({
+                fillColor: color,
+                fillOpacity: 0.5,
+                color: borderStyleUnique.color, // Color del borde
+                weight: borderStyleUnique.weight, // Grosor del borde
+                dashArray: borderStyleUnique.dashArray // Estilo de línea del borde
+            });
             landLayer.on('click', function () {
-                // Actualiza un panel de información en lugar de un tooltip
                 document.getElementById('agent-info-panel').innerHTML = newTooltip;
             });
         } else {
             console.error("No finca found with name:", name);
         }
     }
+}
 
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function getRandomLineStyle() {
+    const styles = ['', '5,5', '10,10', '5,10', '10,5'];
+    return styles[Math.floor(Math.random() * styles.length)];
+}
+
+const borderStyles = {};
+const sizes = ['large', 'medium', 'small'];
+
+for (let i = 1; i <= 100; i++) {
+    sizes.forEach(size => {
+        const farmName = `farm_${i}_${size}`;
+        borderStyles[farmName] = {
+            color: getRandomColor(),
+            weight: Math.floor(Math.random() * 0.7) + 1, // Grosor aleatorio entre 1 y 4
+            dashArray: getRandomLineStyle()
+        };
+    });
 }
