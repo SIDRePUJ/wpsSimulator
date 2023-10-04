@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Agent;
+package org.wpsim.PeasantFamily;
 
 import BESA.BDI.AgentStructuralModel.Agent.AgentBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDI;
@@ -43,6 +43,7 @@ import org.wpsim.PeasantFamily.Goals.L6Leisure.LeisureActivitiesGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.WasteTimeAndResourcesGoal;
 import org.wpsim.PeasantFamily.Guards.*;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
+import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
 import org.wpsim.Simulator.wpsStart;
@@ -61,27 +62,18 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
     private static final double BDITHRESHOLD = 0;
 
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
+        // Cada comportamiento es un hilo.
+        structBESA.addBehavior("PFamilyHeartBeatGuard");
+        structBESA.bindGuard("PFamilyHeartBeatGuard", HeartBeatGuard.class);
 
-        structBESA.addBehavior("HeartBeatGuard");
-        structBESA.bindGuard("HeartBeatGuard", HeartBeatGuard.class);
-
-        structBESA.addBehavior("FromControlGuard");
-        structBESA.bindGuard("FromControlGuard", FromControlGuard.class);
-
-        structBESA.addBehavior("FromWorldGuard");
-        structBESA.bindGuard("FromWorldGuard", FromWorldGuard.class);
-
-        structBESA.addBehavior("FromBankGuard");
-        structBESA.bindGuard("FromBankGuard", FromBankGuard.class);
-
-        structBESA.addBehavior("FromMarketGuard");
-        structBESA.bindGuard("FromMarketGuard", FromMarketGuard.class);
-
-        structBESA.addBehavior("StatusGuard");
-        structBESA.bindGuard("StatusGuard", StatusGuard.class);
-
-        structBESA.addBehavior("KillZombieGuard");
-        structBESA.bindGuard("KillZombieGuard", KillZombieGuard.class);
+        structBESA.addBehavior("DefaultPFamilyBehavior");
+        structBESA.bindGuard("DefaultPFamilyBehavior", FromControlGuard.class);
+        structBESA.bindGuard("DefaultPFamilyBehavior", FromWorldGuard.class);
+        structBESA.bindGuard("DefaultPFamilyBehavior", FromBankGuard.class);
+        structBESA.bindGuard("DefaultPFamilyBehavior", FromMarketGuard.class);
+        structBESA.bindGuard("DefaultPFamilyBehavior", FromGovernmentGuard.class);
+        structBESA.bindGuard("DefaultPFamilyBehavior", StatusGuard.class);
+        structBESA.bindGuard("DefaultPFamilyBehavior", KillZombieGuard.class);
 
         return structBESA;
     }

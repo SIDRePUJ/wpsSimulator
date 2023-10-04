@@ -34,6 +34,7 @@ ThrivingPeasant:
   peasantFamilyConf: 1.0
   peasantConsumption: 1.0  
   liveStockAffinity: 0.7
+  peasantFamilyAliasLand: ""
   #Farm:
   farm: false
   farmName: ""  

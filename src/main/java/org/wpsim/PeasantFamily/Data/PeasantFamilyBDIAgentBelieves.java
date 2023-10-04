@@ -21,6 +21,7 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.json.JSONObject;
 import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.Government.LandInfo;
 import org.wpsim.PeasantFamily.Emotions.EmotionalComponent;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.wpsReport;
@@ -43,6 +44,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private PeasantActivityType currentPeasantActivityType;
     private PeasantLeisureType currentPeasantLeisureType;
     private ResourceNeededType currentResourceNeededType;
+    private Map<String, LandInfo> assignedLands = new HashMap<>();
     private int currentDay;
     private int robberyAccount;
     private double timeLeftOnDay;
@@ -92,6 +94,21 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
 
+    }
+
+    public synchronized Map<String, LandInfo> getAssignedLands() {
+        return assignedLands;
+    }
+
+    public void setAssignedLands(Map<String, String> lands) {
+        //System.out.println("Llegó a peasant profile" + this.peasantProfile.getPeasantFamilyAlias() + " - Assigned lands: " + lands);
+        if (lands == null) {
+            return;
+        }
+        this.assignedLands.clear();
+        for (Map.Entry<String, String> entry : lands.entrySet()) {
+            this.assignedLands.put(entry.getKey(), new LandInfo(entry.getValue()));
+        }
     }
 
     /**
@@ -466,7 +483,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      *
      * @return
      */
-    public String toJson() {
+    public synchronized String toJson() {
         JSONObject dataObject = new JSONObject();
         dataObject.put("money", peasantProfile.getMoney());
         dataObject.put("health", peasantProfile.getHealth());
@@ -479,8 +496,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("peasantFamilyAffinity", peasantProfile.getPeasantFamilyAffinity());
         dataObject.put("peasantLeisureAffinity", peasantProfile.getPeasantLeisureAffinity());
         dataObject.put("peasantFriendsAffinity", peasantProfile.getPeasantFriendsAffinity());
-        //dataObject.put("currentMoneyOrigin", currentMoneyOrigin);
-        //dataObject.put("currentPeasantActivityType", currentPeasantActivityType);
         dataObject.put("currentPeasantLeisureType", currentPeasantLeisureType);
         dataObject.put("currentResourceNeededType", currentResourceNeededType);
         dataObject.put("currentDay", currentDay);
@@ -492,38 +507,28 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("peasantKind", peasantProfile.getPeasantKind());
         dataObject.put("rainfallConditions", peasantProfile.getRainfallConditions());
         dataObject.put("peasantFamilyMinimalVital", peasantProfile.getPeasantFamilyMinimalVital());
+        dataObject.put("peasantFamilyLandAlias", peasantProfile.getPeasantFamilyLandAlias());
         dataObject.put("leisureDoneToday", leisureDoneToday);
         dataObject.put("spendFamilyTimeDoneToday", spendFamilyTimeDoneToday);
         dataObject.put("friendsTimeDoneToday", friendsTimeDoneToday);
         dataObject.put("currentActivity", currentPeasantActivityType);
-        //dataObject.put("productivity", peasantProfile.getProductivity());
-        //dataObject.put("wellBeging", peasantProfile.getWellBeging());
-        //dataObject.put("peasantQualityFactor", peasantProfile.getPeasantQualityFactor());
-        //dataObject.put("liveStockAffinity", peasantProfile.getLiveStockAffinity());
         dataObject.put("farm", peasantProfile.getLand());
         dataObject.put("cropSize", peasantProfile.getCropSize());
-        //dataObject.put("housing", peasantProfile.getHousing());
-        //dataObject.put("servicesPresence", peasantProfile.getServicesPresence());
-        //dataObject.put("housingSize", peasantProfile.getHousingSize());
-        //dataObject.put("housingCondition", peasantProfile.getHousingCondition());
-        //dataObject.put("housingLocation", peasantProfile.getHousingLocation());
-        //dataObject.put("farmDistance", peasantProfile.getFarmDistance());
-        //dataObject.put("totalIncome", peasantProfile.getTotalIncome());
         dataObject.put("loanAmountToPay", peasantProfile.getLoanAmountToPay());
-        //dataObject.put("timeSpentOnMaintenance", peasantProfile.getTimeSpentOnMaintenance());
-        //dataObject.put("cropHealth", peasantProfile.getCropHealth());
-        //dataObject.put("farmReady", peasantProfile.getFarmReady());
         dataObject.put("tools", peasantProfile.getTools());
         dataObject.put("seeds", peasantProfile.getSeeds());
         dataObject.put("waterAvailable", peasantProfile.getWaterAvailable());
         dataObject.put("pesticidesAvailable", peasantProfile.getPesticidesAvailable());
-        //dataObject.put("trainingLevel", peasantProfile.getTrainingLevel());
         dataObject.put("riceSeedsByHectare", peasantProfile.getRiceSeedsByHectare());
         dataObject.put("harvestedWeight", peasantProfile.getHarvestedWeight());
-        //dataObject.put("totalHarvestedWeight", peasantProfile.getHarvestedWeight());
-        //dataObject.put("processedWeight", peasantProfile.getProcessedWeight());
-        //dataObject.put("diseasedCrop", peasantProfile.getDiseasedCrop());
-        //dataObject.put("weedControl", peasantProfile.getWeedControl());
+
+        if (!getAssignedLands().isEmpty()) {
+            dataObject.put("assignedLands", getAssignedLands());
+        } else {
+            dataObject.put("assignedLands", Collections.emptyList());
+        }
+        //dataObject.put("assignedLands", getAssignedLands());
+        //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " assignedLands: " + getAssignedLands());
 
         try {
             List<EmotionAxis> emotions = this.getEmotionsListCopy();

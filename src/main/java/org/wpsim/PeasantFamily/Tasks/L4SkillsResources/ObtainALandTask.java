@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -19,6 +19,10 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.Government.GovernmentAgentLandGuard;
+import org.wpsim.Government.GovernmentLandData;
+import org.wpsim.Market.MarketAgentGuard;
+import org.wpsim.Market.MarketMessage;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.wpsReport;
 import org.wpsim.World.Agent.WorldAgent;
@@ -43,6 +47,8 @@ import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 
+import static org.wpsim.Market.MarketMessageType.BUY_LIVESTOCK;
+
 /**
  *
  * @author jairo
@@ -65,6 +71,26 @@ public class ObtainALandTask extends Task {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+
+        try {
+            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(wpsStart.config.getGovernmentAgentName());
+            GovernmentLandData governmentLandData = new GovernmentLandData(
+                    believes.getPeasantProfile().getPeasantFamilyAlias()
+            );
+            EventBESA ev = new EventBESA(GovernmentAgentLandGuard.class.getName(), governmentLandData);
+            ah.sendEvent(ev);
+            //System.out.println("Enviando mensaje al gobierno para obtener tierra " + believes.getPeasantProfile().getPeasantFamilyAlias());
+        } catch (ExceptionBESA ex) {
+            System.out.println(ex);
+        }
+
+        while (believes.getPeasantProfile().getPeasantFamilyLandAlias().equals("")) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                wpsReport.error(ex, "ObtainALandTask");
+            }
+        }
 
         // @TODO: setFarmName lo cambia el gobierno o el campesino
         believes.getPeasantProfile().setLand(true);
@@ -106,14 +132,10 @@ public class ObtainALandTask extends Task {
     private static void setPerturbation(String arg) {
         WorldConfiguration worldConfiguration = WorldConfiguration.getPropsInstance();
         switch (arg) {
-            case "disease" ->
-                worldConfiguration.setPerturbations(true, false);
-            case "course" ->
-                worldConfiguration.setPerturbations(false, true);
-            case "all" ->
-                worldConfiguration.setPerturbations(true, true);
-            default ->
-                worldConfiguration.setPerturbations(false, false);
+            case "disease" -> worldConfiguration.setPerturbations(true, false);
+            case "course" -> worldConfiguration.setPerturbations(false, true);
+            case "all" -> worldConfiguration.setPerturbations(true, true);
+            default -> worldConfiguration.setPerturbations(false, false);
         }
     }
 
@@ -202,14 +224,10 @@ public class ObtainALandTask extends Task {
         WorldConfiguration worldConfiguration = WorldConfiguration.getPropsInstance();
         String rainfallFile;
         switch (arg) {
-            case "wet" ->
-                rainfallFile = worldConfiguration.getProperty("data.rainfall.wet");
-            case "dry" ->
-                rainfallFile = worldConfiguration.getProperty("data.rainfall.dry");
-            case "normal" ->
-                rainfallFile = worldConfiguration.getProperty("data.rainfall");
-            default ->
-                rainfallFile = worldConfiguration.getProperty("data.rainfall");
+            case "wet" -> rainfallFile = worldConfiguration.getProperty("data.rainfall.wet");
+            case "dry" -> rainfallFile = worldConfiguration.getProperty("data.rainfall.dry");
+            case "normal" -> rainfallFile = worldConfiguration.getProperty("data.rainfall");
+            default -> rainfallFile = worldConfiguration.getProperty("data.rainfall");
         }
         return rainfallFile;
     }

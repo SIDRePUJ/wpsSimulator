@@ -15,18 +15,15 @@
 package org.wpsim.PeasantFamily.Guards;
 
 import BESA.BDI.AgentStructuralModel.StateBDI;
-import BESA.Emotional.EmotionalEvent;
-import BESA.Emotional.Semantics;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
-import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Log.ReportBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Guards.ControlAgentGuard;
-import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
+import org.wpsim.PeasantFamily.PeasantFamilyBDIAgent;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;

@@ -12,22 +12,20 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Control;
+package org.wpsim.Government;
 
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
-import org.wpsim.Control.Guards.AliveAgentGuard;
-import org.wpsim.Control.Guards.ControlAgentGuard;
-import org.wpsim.Control.Guards.DeadAgentGuard;
+import org.wpsim.PeasantFamily.Guards.StatusGuard;
 
 /**
  *
  * @author jairo
  */
-public class ControlAgent extends AgentBESA {
+public class GovernmentAgent extends AgentBESA {
 
     /**
      *
@@ -37,25 +35,26 @@ public class ControlAgent extends AgentBESA {
      * @param passwd
      * @throws KernelAgentExceptionBESA
      */
-    public ControlAgent(String alias, StateBESA state, StructBESA structAgent, double passwd) throws KernelAgentExceptionBESA {
+    public GovernmentAgent(String alias, StateBESA state, StructBESA structAgent, double passwd) throws KernelAgentExceptionBESA {
         super(alias, state, structAgent, passwd);
     }
 
-    public static ControlAgent createAgent(String alias, double passwd) throws ExceptionBESA{        
-        return new ControlAgent(alias, createState(), createStruct(new StructBESA()), passwd);
+    public static GovernmentAgent createAgent(String alias, double passwd) throws ExceptionBESA{
+        GovernmentAgent governmentAgent = new GovernmentAgent(alias, createState(), createStruct(new StructBESA()), passwd);
+        return governmentAgent;
+        
     }
     
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
-        structBESA.addBehavior("ControlGuards");
-        structBESA.bindGuard("ControlGuards", ControlAgentGuard.class);
-        structBESA.bindGuard("ControlGuards", AliveAgentGuard.class);
-        structBESA.bindGuard("ControlGuards", DeadAgentGuard.class);
+        structBESA.addBehavior("GovernmentAgentGuards");
+        structBESA.bindGuard("GovernmentAgentGuards", GovernmentAgentHelpGuard.class);
+        structBESA.bindGuard("GovernmentAgentGuards", GovernmentAgentLandGuard.class);
         return structBESA;
     }
     
-    private static ControlAgentState createState() throws ExceptionBESA {
-        ControlAgentState controlAgentState = new ControlAgentState();
-        return controlAgentState;
+    private static GovernmentAgentState createState() throws ExceptionBESA {
+        GovernmentAgentState governmentAgentState = new GovernmentAgentState();
+        return governmentAgentState;
     }
 
     /**

@@ -25,7 +25,6 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 
-
     <script>
 
         let currentDate;
@@ -237,6 +236,7 @@
             }
             return hash;
         }
+
         function hashCodeToColor(hash) {
             const r = (hash & 0xFF0000) >> 16;
             const g = (hash & 0x00FF00) >> 8;
@@ -310,7 +310,7 @@
                         }
                     }
                 });
-            }else{
+            } else {
                 myChart.data.labels = dates;
                 myChart.data.datasets = datasets;
                 myChart.update();
@@ -342,20 +342,6 @@
                 }
             });
         });
-
-        function periodicUpdate() {
-            if (familySelectValue) {
-                //console.log('Actualizando gráfico para:', familySelectValue);  // Para depuración
-                try {
-                    updateChart(familySelectValue);
-                } catch (error) {
-                    console.error('Error en updateChart:', error);
-                }
-            }
-        }
-
-        // Configuración del intervalo para actualizar cada 15 segundos
-        setInterval(periodicUpdate, 5000);
 
     </script>
 </head>
@@ -402,8 +388,9 @@
 </nav>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-8"><button onclick="downloadData()">Descargar Datos de las Fincas</button>
-            <div id="mapid" style="height: 600px;"></div>            
+        <div class="col-8">
+            <button onclick="downloadData()">Descargar Datos de las Fincas</button>
+            <div id="mapid" style="height: 600px;"></div>
             <canvas id="myChart" width="400" height="200"></canvas>
             <div class="alert alert-light" role="alert">Agentes Activos</div>
             <div id="agentList"></div>
@@ -445,60 +432,61 @@
         attribution: 'Map data © OpenStreetMap contributors'
     }).addTo(mymap);
 
-    var center = { lat: 9.937618, lng:-75.309686 };
+    var center = {lat: 9.937618, lng: -75.309686};
     var divisiones = 20; // 400 de 1.2Has
     var delta = 0.001;
 
     var angle = 41 * (Math.PI / 180); // Ángulo de rotación en radianes
     var fincasData = [];
 
-  function rotatePoint(point, origin, angle) {
-    var rotatedLng = Math.cos(angle) * (point.lng - origin.lng) - Math.sin(angle) * (point.lat - origin.lat) + origin.lng;
-    var rotatedLat = Math.sin(angle) * (point.lng - origin.lng) + Math.cos(angle) * (point.lat - origin.lat) + origin.lat;
+    function rotatePoint(point, origin, angle) {
+        var rotatedLng = Math.cos(angle) * (point.lng - origin.lng) - Math.sin(angle) * (point.lat - origin.lat) + origin.lng;
+        var rotatedLat = Math.sin(angle) * (point.lng - origin.lng) + Math.cos(angle) * (point.lat - origin.lat) + origin.lat;
 
-    return [rotatedLat, rotatedLng];
-  }
-
-  for (var i = 0; i < divisiones; i++) {
-    for (var j = 0; j < divisiones; j++) {
-      var bottomLeft = { lat: center.lat + i * delta, lng: center.lng + j * delta };
-      var topLeft = { lat: center.lat + (i + 1) * delta, lng: center.lng + j * delta };
-      var topRight = { lat: center.lat + (i + 1) * delta, lng: center.lng + (j + 1) * delta };
-      var bottomRight = { lat: center.lat + i * delta, lng: center.lng + (j + 1) * delta };
-
-      var polygon = L.polygon([
-        rotatePoint(bottomLeft, center, angle),
-        rotatePoint(topLeft, center, angle),
-        rotatePoint(topRight, center, angle),
-        rotatePoint(bottomRight, center, angle)
-      ]).addTo(mymap).bindTooltip("Finca " + (i * divisiones + j + 1));
-
-      fincasData.push({
-        name: "Finca " + (i * divisiones + j + 1),
-        coordinates: [
-          rotatePoint(bottomLeft, center, angle),
-          rotatePoint(topLeft, center, angle),
-          rotatePoint(topRight, center, angle),
-          rotatePoint(bottomRight, center, angle)
-        ]
-      });
+        return [rotatedLat, rotatedLng];
     }
-  }
 
-  function downloadData() {
-    var a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
+    for (var i = 0; i < divisiones; i++) {
+        for (var j = 0; j < divisiones; j++) {
+            var bottomLeft = {lat: center.lat + i * delta, lng: center.lng + j * delta};
+            var topLeft = {lat: center.lat + (i + 1) * delta, lng: center.lng + j * delta};
+            var topRight = {lat: center.lat + (i + 1) * delta, lng: center.lng + (j + 1) * delta};
+            var bottomRight = {lat: center.lat + i * delta, lng: center.lng + (j + 1) * delta};
 
-    var json = JSON.stringify(fincasData, null, 2),
-        blob = new Blob([json], { type: "octet/stream" }),
-        url = window.URL.createObjectURL(blob);
-    a.href = url;
-    a.download = "fincas_data.txt";
-    a.click();
-    window.URL.revokeObjectURL(url);
-  }
+            var polygon = L.polygon([
+                rotatePoint(bottomLeft, center, angle),
+                rotatePoint(topLeft, center, angle),
+                rotatePoint(topRight, center, angle),
+                rotatePoint(bottomRight, center, angle)
+            ]).addTo(mymap).bindTooltip("land_" + (i * divisiones + j + 1));
 
-  </script>
+            fincasData.push({
+                name: "land_" + (i * divisiones + j + 1),
+                road: false,
+                coordinates: [
+                    rotatePoint(bottomLeft, center, angle),
+                    rotatePoint(topLeft, center, angle),
+                    rotatePoint(topRight, center, angle),
+                    rotatePoint(bottomRight, center, angle)
+                ]
+            });
+        }
+    }
+
+    function downloadData() {
+        var a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+
+        var json = JSON.stringify(fincasData, null, 2),
+            blob = new Blob([json], {type: "octet/stream"}),
+            url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = "fincas_data.txt";
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+
+</script>
 </body>
 </html>

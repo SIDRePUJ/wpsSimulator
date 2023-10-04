@@ -39,6 +39,7 @@ public final class wpsConfig {
     private String MarketAgentName;
     private String ControlAgentName;
     private String PerturbationAgentName;
+    private String GovernmentAgentName;
     private String ViewerAgentName;
     private String peasantType;
     private String rainfallConditions;
@@ -211,6 +212,7 @@ public final class wpsConfig {
             this.SocietyAgentName = properties.getProperty("society.name");
             this.PerturbationAgentName = properties.getProperty("perturbation.name");
             this.ViewerAgentName = properties.getProperty("viewer.name");
+            this.GovernmentAgentName = properties.getProperty("government.name");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -258,7 +260,7 @@ public final class wpsConfig {
     }
 
 
-    private String loadFile(String fileName) {
+    public String loadFile(String fileName) {
         InputStream inputStream = null;
         try {
             // Intentar cargar desde dentro del JAR
@@ -332,4 +334,7 @@ public final class wpsConfig {
         return "PeasantFamily_" + peasantSerialID++;
     }
 
+    public String getGovernmentAgentName() {
+        return this.GovernmentAgentName;
+    }
 }

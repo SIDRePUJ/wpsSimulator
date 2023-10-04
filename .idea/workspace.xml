@@ -4,15 +4,34 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Actualización al mapa y paso del tiempo">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Particiones del mapa actualizadas">
       <change afterPath="$PROJECT_DIR$/logs/wpsSimulator.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/index.map.generator.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/land_world.03h.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/land_world.11h.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/land_world.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/GovernmentAgent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/GovernmentAgentHelpGuard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/GovernmentAgentLandGuard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/GovernmentAgentState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/GovernmentLandData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/LandInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment/FromGovernmentGuard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment/FromGovernmentMessage.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/ñame_water_stress_.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/ControlAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/ControlAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeasantFamilyBDIAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainALandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainALandTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/web/index.map.generator.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/index.map.generator.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/web/index.map.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/index.map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/web/land_world.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsHighriskPeasant.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsHighriskPeasant.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsStablePeasant.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsStablePeasant.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsThrivingPeasant.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsThrivingPeasant.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +41,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -59,14 +78,14 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/jairo/IdeaProjects/wpsim/src/main/resources/web&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/jairo/IdeaProjects/wpsim/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.16989066&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.27296937&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;profiler.jvm&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -74,6 +93,8 @@
       <recent name="org.wpsim.PeasantFamily.Emotions" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment" />
+      <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/Government" />
       <recent name="$PROJECT_DIR$/src/main/resources/web" />
       <recent name="$PROJECT_DIR$/src/main/java/org/wpsim" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
@@ -85,13 +106,17 @@
       <recent name="$PROJECT_DIR$/src/main/resources/data" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.wpsim.PeasantFamily" />
       <recent name="org.wpsim.Control.Data" />
       <recent name="org.wpsim.Bank.Data" />
       <recent name="org.wpsim.Bank.Guard" />
       <recent name="org.wpsim.PeasantFamily.Tasks.L6Leisure" />
-      <recent name="org.wpsim.PeasantFamily.Goals.L6Leisure" />
+    </key>
+    <key name="MoveInnerDialog.RECENTS_KEY">
+      <recent name="org.wpsim.Government" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.wpsim.Government" />
       <recent name="org.wpsim.PeasantFamily.Guards" />
       <recent name="org.wpsim.Control" />
     </key>
@@ -184,7 +209,13 @@
       <workItem from="1692756240893" duration="6668000" />
       <workItem from="1692874534165" duration="22703000" />
       <workItem from="1693388586822" duration="15088000" />
-      <workItem from="1693850011302" duration="1029000" />
+      <workItem from="1693850011302" duration="14646000" />
+      <workItem from="1695312318456" duration="15537000" />
+      <workItem from="1695510724099" duration="6650000" />
+      <workItem from="1695768773107" duration="429000" />
+      <workItem from="1696172230824" duration="393000" />
+      <workItem from="1696257462151" duration="8960000" />
+      <workItem from="1696296288974" duration="26619000" />
     </task>
     <task id="LOCAL-00001" summary="Nueva versión">
       <option name="closed" value="true" />
@@ -242,7 +273,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693562540282</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Particiones del mapa actualizadas">
+      <option name="closed" value="true" />
+      <created>1693855740642</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1693855740642</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,6 +307,11 @@
     <MESSAGE value="Base del componente Emocional" />
     <MESSAGE value="Componente emocional configurado&#10;Incluidas gráficas en la UI" />
     <MESSAGE value="Actualización al mapa y paso del tiempo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Actualización al mapa y paso del tiempo" />
+    <MESSAGE value="Particiones del mapa actualizadas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Particiones del mapa actualizadas" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

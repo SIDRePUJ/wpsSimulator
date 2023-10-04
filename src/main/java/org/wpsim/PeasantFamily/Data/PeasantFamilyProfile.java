@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -15,8 +15,13 @@
 package org.wpsim.PeasantFamily.Data;
 
 import org.json.JSONObject;
+import org.wpsim.Government.LandInfo;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -33,6 +38,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private double peasantLeisureAffinity;
     private double peasantFriendsAffinity;
     private double peasantFamilyAffinity;
+    private String peasantFamilyLandAlias = "";
     private boolean worker;
     private double peasantQualityFactor;
     private double liveStockAffinity;
@@ -99,14 +105,17 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private String currentCropName;
     private String rainfallConditions;
 
+
     /**
      *
      */
     public PeasantFamilyProfile() {
     }
+
     public double getVariance() {
         return variance;
     }
+
     public void setVariance(double variance) {
         this.variance = variance;
     }
@@ -209,6 +218,14 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
 
     /**
      *
+     * @param pesticidesAvailable
+     */
+    public synchronized void setPesticidesAvailable(Integer pesticidesAvailable) {
+        this.pesticidesAvailable += pesticidesAvailable;
+    }
+
+    /**
+     *
      * @return
      */
     public double getPeasantFamilyMinimalVital() {
@@ -233,20 +250,20 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
 
     /**
      *
-     */
-    public void discountDailyMoney() {
-        this.money = this.money - this.peasantFamilyMinimalVital;
-        if (this.money <= 0){
-            this.decreaseHealth();
-        }
-    }
-
-    /**
-     *
      * @param sellDone
      */
     public void setSellDone(boolean sellDone) {
         this.sellDone = sellDone;
+    }
+
+    /**
+     *
+     */
+    public void discountDailyMoney() {
+        this.money = this.money - this.peasantFamilyMinimalVital;
+        if (this.money <= 0) {
+            this.decreaseHealth();
+        }
     }
 
     /**
@@ -275,18 +292,22 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
 
     /**
      *
-     * @return
-     */
-    public String getPeasantFamilyLandAlias() {
-        return peasantFamilyAlias + "_land";
-    }
-
-    /**
-     *
      * @param peasantFamilyAlias
      */
     public void setPeasantFamilyAlias(String peasantFamilyAlias) {
         this.peasantFamilyAlias = peasantFamilyAlias;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getPeasantFamilyLandAlias() {
+        return peasantFamilyLandAlias;
+    }
+
+    public synchronized void setPeasantFamilyLandAlias(String peasantFamilyLandAlias) {
+        this.peasantFamilyLandAlias = peasantFamilyLandAlias;
     }
 
     /**
@@ -457,9 +478,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public int getCropSize() {
         return cropSize;
     }
-    public double getCropSizeHA() {
-        return cropSize / 1000;
-    }
 
     /**
      *
@@ -467,6 +485,10 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      */
     public synchronized void setCropSize(int cropSize) {
         this.cropSize = cropSize;
+    }
+
+    public double getCropSizeHA() {
+        return cropSize / 1000;
     }
 
     /**
@@ -1392,14 +1414,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
 
     /**
      *
-     * @param pesticidesAvailable
-     */
-    public synchronized void setPesticidesAvailable(Integer pesticidesAvailable) {
-        this.pesticidesAvailable += pesticidesAvailable;
-    }
-
-    /**
-     *
      * @param discount
      */
     public synchronized void useMoney(int discount) {
@@ -1433,51 +1447,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
         this.health -= 10;
     }
 
-    /**
-     *
-     * @return
-     */
-    public JSONObject toJson() {
-
-        JSONObject dataObject1 = new JSONObject();
-        dataObject1.put("peasantKind", peasantKind);
-        dataObject1.put("rainfallConditions", rainfallConditions);
-        dataObject1.put("peasantFamilyMinimalVital", peasantFamilyMinimalVital);
-        dataObject1.put("health", health);
-        dataObject1.put("productivity", peasantLeisureAffinity);
-        dataObject1.put("wellBeging", peasantFriendsAffinity);
-        dataObject1.put("worker", worker);
-        dataObject1.put("peasantQualityFactor", peasantQualityFactor);
-        dataObject1.put("liveStockAffinity", liveStockAffinity);
-        dataObject1.put("farm", land);
-        dataObject1.put("cropSize", cropSize);
-        dataObject1.put("housing", housing);
-        dataObject1.put("servicesPresence", servicesPresence);
-        dataObject1.put("housingSize", housingSize);
-        dataObject1.put("housingCondition", housingCondition);
-        dataObject1.put("housingLocation", housingLocation);
-        dataObject1.put("farmDistance", farmDistance);
-        dataObject1.put("money", money);
-        dataObject1.put("totalIncome", totalIncome);
-        dataObject1.put("loanAmountToPay", loanAmountToPay);
-        dataObject1.put("housingQuailty", housingQuailty);
-        dataObject1.put("timeSpentOnMaintenance", timeSpentOnMaintenance);
-        dataObject1.put("cropHealth", cropHealth);
-        dataObject1.put("farmReady", farmReady);
-        dataObject1.put("tools", tools);
-        dataObject1.put("seeds", seeds);
-        dataObject1.put("waterAvailable", waterAvailable);
-        dataObject1.put("pesticidesAvailable", pesticidesAvailable);
-        dataObject1.put("trainingLevel", trainingLevel);
-        dataObject1.put("riceSeedsByHectare", riceSeedsByHectare);
-        dataObject1.put("harvestedWeight", harvestedWeight);
-        dataObject1.put("totalHarvestedWeight", totalHarvestedWeight);
-        dataObject1.put("processedWeight", processedWeight);
-        dataObject1.put("diseasedCrop", diseasedCrop);
-        dataObject1.put("weedControl", weedControl);
-        return dataObject1;
-    }
-
     @Override
     public PeasantFamilyProfile clone() {
         try {
@@ -1490,5 +1459,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public void increaseTotalHarvestedWeight(double harvested) {
         this.totalHarvestedWeight += harvested;
     }
+
 
 }
