@@ -47,7 +47,6 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
         super();
         this.landOwnership = new HashMap<>();
         initializeLands();
-
     }
 
     /**
@@ -142,7 +141,6 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
         return block;
     }
 
-
     public synchronized Map.Entry<String, Map<String, String>> assignLandToFamily(String familyName) {
         List<String> availableFarms = farms.entrySet().stream()
                 .filter(e -> e.getValue().stream().allMatch(land -> landOwnership.get(land).farmName == null))
@@ -162,13 +160,12 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
             landOwnership.get(land).farmName = familyName;
             landsWithKind.put(land, landOwnership.get(land).kind);
         }
-
         return new AbstractMap.SimpleEntry<>(selectedFarm, landsWithKind);
     }
 
     public void createFarms() {
         List<String> availableLands = landOwnership.entrySet().stream()
-                .filter(e -> !e.getValue().kind.equals("road") && e.getValue().farmName == null) // Excluir tierras de tipo "road"
+                .filter(e -> !e.getValue().kind.equals("road") && e.getValue().farmName == null)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
@@ -177,7 +174,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
 
         // Asignar fincas grandes
         while (true) {
-            List<String> farmLands = selectBlock(availableLands, 4, 5); // Intenta un bloque de 4x5
+            List<String> farmLands = selectBlock(availableLands, 4, 5);
             if (farmLands.isEmpty()) {
                 break;
             }
@@ -187,7 +184,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
 
         // Asignar fincas medianas
         while (true) {
-            List<String> farmLands = selectBlock(availableLands, 2, 5); // Intenta un bloque de 2x5
+            List<String> farmLands = selectBlock(availableLands, 2, 5);
             if (farmLands.isEmpty()) {
                 break;
             }
@@ -197,7 +194,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
 
         // Asignar fincas pequeñas
         while (!availableLands.isEmpty()) {
-            List<String> farmLands = selectBlock(availableLands, 1, 2); // Intenta un bloque de 1x2
+            List<String> farmLands = selectBlock(availableLands, 1, 2);
             if (farmLands.isEmpty()) {
                 break;
             }
@@ -205,9 +202,6 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
             farmId++;
         }
     }
-
-
-
 
     /**
      * Removes the assignment of a specified land.

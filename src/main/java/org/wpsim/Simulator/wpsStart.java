@@ -44,7 +44,7 @@ public class wpsStart {
     public static wpsConfig config;
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
-    public static int peasantFamiliesAgents = 70;
+    public static int peasantFamiliesAgents = 20;
     public static int stepTime = 100;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
@@ -71,14 +71,22 @@ public class wpsStart {
             System.out.println("centralizado " + admLocal.getConfigBESA().getAliasContainer());
             switch (args[0]) {
                 case "main" -> createServices();
-                case "peasants" -> {
-                    createPeasants();
+                case "peasants_01" -> {
+                    createPeasants(0,100);
+                    startAgents();
+                }
+                case "peasants_02" -> {
+                    createPeasants(101,200);
+                    startAgents();
+                }
+                case "peasants_03" -> {
+                    createPeasants(201,300);
                     startAgents();
                 }
                 case "local" -> {
                     // Single mode
                     createServices();
-                    createPeasants();
+                    createPeasants(0, peasantFamiliesAgents);
                 }
                 default -> System.out.println("No se reconoce el nombre del contendor BESA " + args[0]);
             }
@@ -91,9 +99,9 @@ public class wpsStart {
     /**
      * Creates the peasant family agents.
      */
-    private static void createPeasants() {
+    private static void createPeasants(int min, int max) {
         try {
-            for (int i = 0; i < peasantFamiliesAgents; i++) {
+            for (int i = min; i < max; i++) {
                 PeasantFamilyBDIAgent peasantFamilyBDIAgent = new PeasantFamilyBDIAgent(
                         config.getUniqueFarmerName(),
                         config.getFarmerProfile()

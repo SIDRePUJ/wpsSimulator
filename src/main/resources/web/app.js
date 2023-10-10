@@ -180,7 +180,7 @@ function createOptions(options) {
 }
 
 if (window.WebSocket) {
-    socket = new WebSocket("ws://localhost:8080/wpsViewer");
+    socket = new WebSocket("ws://0.0.0.0:8080/wpsViewer");
     socket.onmessage = function (event) {
         let prefix = event.data.substring(0, 2);
         let data = event.data.substring(2);
