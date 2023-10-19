@@ -47,7 +47,8 @@ public class WorldGuard extends GuardBESA {
                 peasantMessage = new FromWorldMessage(
                         FromWorldMessageType.CROP_INIT,
                         worldMessage.getPeasantAgentAlias(),
-                        "CROP_INIT");
+                        "CROP_INIT",
+                        this.getAgent().getAlias());
                 peasantMessage.setDate(worldMessage.getDate());
                 this.replyToPeasantAgent(
                         worldMessage.getPeasantAgentAlias(),
@@ -68,7 +69,8 @@ public class WorldGuard extends GuardBESA {
                 peasantMessage = new FromWorldMessage(
                         FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
                         worldMessage.getPeasantAgentAlias(),
-                        cropDataJson.toString());
+                        cropDataJson.toString(),
+                        this.getAgent().getAlias());
                 peasantMessage.setDate(worldMessage.getDate());
                 this.replyToPeasantAgent(worldMessage.getPeasantAgentAlias(), peasantMessage);
                 break;
@@ -107,7 +109,8 @@ public class WorldGuard extends GuardBESA {
                 peasantMessage = new FromWorldMessage(
                         FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
                         worldMessage.getPeasantAgentAlias(),
-                        "CROP_IRRIGATION");
+                        "CROP_IRRIGATION",
+                        this.getAgent().getAlias());
                 peasantMessage.setDate(worldMessage.getDate());
                 this.replyToPeasantAgent(
                         worldMessage.getPeasantAgentAlias(),
@@ -126,7 +129,8 @@ public class WorldGuard extends GuardBESA {
                 peasantMessage = new FromWorldMessage(
                         FromWorldMessageType.CROP_PESTICIDE,
                         worldMessage.getPeasantAgentAlias(),
-                        defaultCropInsecticideCoverage + " " + diseaseCellId);
+                        defaultCropInsecticideCoverage + " " + diseaseCellId,
+                        this.getAgent().getAlias());
                 peasantMessage.setDate(worldMessage.getDate());
                 this.replyToPeasantAgent(worldMessage.getPeasantAgentAlias(), peasantMessage);
                 break;
@@ -141,7 +145,8 @@ public class WorldGuard extends GuardBESA {
                 peasantMessage = new FromWorldMessage(
                         FromWorldMessageType.CROP_HARVEST,
                         worldMessage.getPeasantAgentAlias(),
-                        cropDataJson.toString());
+                        cropDataJson.toString(),
+                        this.getAgent().getAlias());
                 peasantMessage.setDate(worldMessage.getDate());
                 this.replyToPeasantAgent(
                         worldMessage.getPeasantAgentAlias(),
@@ -181,7 +186,8 @@ public class WorldGuard extends GuardBESA {
             FromWorldMessage peasantMessage = new FromWorldMessage(
                     messageType,
                     agentAlias,
-                    null);
+                    null,
+                    this.getAgent().getAlias());
             peasantMessage.setDate(date);
             EventBESA event = new EventBESA(
                     FromWorldGuard.class.getName(),
@@ -205,7 +211,8 @@ public class WorldGuard extends GuardBESA {
             FromWorldMessage peasantMessage = new FromWorldMessage(
                     FromWorldMessageType.NOTIFY_CROP_READY_HARVEST,
                     agentAlias,
-                    null);
+                    null,
+                    this.getAgent().getAlias());
             peasantMessage.setDate(date);
             EventBESA event = new EventBESA(
                     FromWorldGuard.class.getName(),

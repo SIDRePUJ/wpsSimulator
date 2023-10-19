@@ -18,7 +18,7 @@ ThrivingPeasant:
   rainfallConditions: wet
   cropSize: 10000
   seeds: 5000
-  startRiceSeason: 01/05/2022
+  startRiceSeason: 15/01/2022
   currentCropName: ñame
   money: 5000000
   waterAvailable: 1000

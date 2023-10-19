@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.Government.LandInfo;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.SeasonType;
@@ -44,12 +45,11 @@ public class PlantCropGoal extends GoalBDI {
         RationalRole plantCropRole = new RationalRole(
                 "PlantCropTask",
                 plantCropPlan);
-        PlantCropGoal plantCropGoal = new PlantCropGoal(
+        return new PlantCropGoal(
                 wpsStart.getPlanID(),
                 plantCropRole,
                 "PlantCropTask",
                 GoalBDITypes.OPORTUNITY);
-        return plantCropGoal;
     }
 
     /**
@@ -90,11 +90,12 @@ public class PlantCropGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getCurrentSeason() == SeasonType.PLANTING) {
-            return 1;
-        } else {
-            return 0;
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
+                return 1;
+            }
         }
+        return 0;
     }
 
     /**
@@ -144,8 +145,7 @@ public class PlantCropGoal extends GoalBDI {
      */
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getCurrentSeason() == SeasonType.GROWING;
+        return true;
     }
 
 }

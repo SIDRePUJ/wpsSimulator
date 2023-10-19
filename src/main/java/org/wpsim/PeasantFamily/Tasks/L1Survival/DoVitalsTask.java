@@ -24,6 +24,7 @@ import org.wpsim.Bank.Guard.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Data.DateHelper;
+import org.wpsim.Government.LandInfo;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.SeasonType;
@@ -36,7 +37,6 @@ import static org.wpsim.Bank.Data.BankMessageType.ASK_CURRENT_TERM;
 
 /**
  *
- *
  */
 public class DoVitalsTask extends Task {
 
@@ -47,7 +47,6 @@ public class DoVitalsTask extends Task {
     }
 
     /**
-     *
      * @param parameters
      */
     @Override
@@ -66,13 +65,6 @@ public class DoVitalsTask extends Task {
                 new EmotionalEvent("FAMILY", "DOVITALS", "FOOD")
         );
 
-        // Check crop season
-        if (DateHelper.differenceDaysBetweenTwoDates(
-                believes.getInternalCurrentDate(),
-                believes.getPeasantProfile().getStartRiceSeason()) == 0) {
-            believes.setCurrentSeason(SeasonType.PREPARATION);
-        }
-
         // Check debts
         //checkBankDebt(believes);
 
@@ -82,38 +74,33 @@ public class DoVitalsTask extends Task {
     }
 
     /**
-     *
      * @param parameters
      */
     @Override
-    public void interruptTask(Believes parameters) {}
+    public void interruptTask(Believes parameters) {
+    }
 
     /**
-     *
      * @param parameters
      */
     @Override
-    public void cancelTask(Believes parameters) {}
+    public void cancelTask(Believes parameters) {
+    }
 
     /**
-     *
      * @param parameters
      * @return
      */
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        wpsReport.debug(wpsStart.getTime() + " DoVitalsTask:checkFinish " + believes.isNewDay() + " " + believes.getPeasantProfile().getPeasantFamilyAlias() + " date " + believes.getInternalCurrentDate() + " hour " + believes.getTimeLeftOnDay(),believes.getPeasantProfile().getPeasantFamilyAlias());
-
-        if (believes.isNewDay()) {
-            return false;
-        } else {
-            return true;
-        }
+        //wpsReport.debug(wpsStart.getTime() + " DoVitalsTask:checkFinish " + believes.isNewDay() + " " + believes.getPeasantProfile().getPeasantFamilyAlias() + " date " + believes.getInternalCurrentDate() + " hour " + believes.getTimeLeftOnDay(), believes.getPeasantProfile().getPeasantFamilyAlias());
+        return !believes.isNewDay();
     }
 
     /**
      * Check for the loan pay amount only on first day of month
+     *
      * @param believes
      */
     private void checkBankDebt(PeasantFamilyBDIAgentBelieves believes) {

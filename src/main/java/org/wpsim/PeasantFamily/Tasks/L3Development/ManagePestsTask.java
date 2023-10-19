@@ -56,7 +56,7 @@ public class ManagePestsTask extends Task {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        believes.setCurrentCropCare(CropCareType.NONE);
+        //believes.setCurrentCropCare(CropCareType.NONE);
         
         try {
             AdmBESA adm = AdmBESA.getInstance();

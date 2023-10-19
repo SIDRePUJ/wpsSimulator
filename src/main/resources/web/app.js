@@ -11,7 +11,7 @@ function showData(name) {
         document.getElementById("activeAgent").value =
             agentData[name]["name"];
         $("#agentInfo").JSONView(agentData[name]["state"]);
-        $("#agentTasks").JSONView(agentData[name]["taskLog"]);
+        //$("#agentTasks").JSONView(agentData[name]["taskLog"]);
         $("#unblockDateList").JSONView(agentData[name]["unblockDateList"]);
     });
 
@@ -36,7 +36,19 @@ function showData(name) {
         taskList.appendChild(listItem);
     }
 
-    createOptions(agentData[name]["state"]);
+    const agentLands = document.getElementById("agentLands");
+    agentLands.innerHTML = `<h5>${JSON.parse(agentData[name]["state"]).peasantFamilyLandAlias}</h5><br />`;
+    JSON.parse(agentData[name]["state"]).assignedLands.forEach(land => {
+        const landInfo = `
+            Tipo: ${land.kind}<br />
+            Current Season: ${land.currentSeason}<br />
+            En uso: ${land.used} <br />
+            Nombre parcela: ${land.landName}<br /><hr>
+        `;
+        agentLands.innerHTML += landInfo;
+    });
+
+    //createOptions(agentData[name]["state"]);
 }
 
 function addPeasantFamily(name) {
@@ -101,9 +113,8 @@ function updateAgent(jsonData) {
     agent.innerHTML = `${jsonData.name}<br>
                 ${state.health} 💊<br>
                 $${state.money.toLocaleString("es-CO")} 💰<br>
-                ${state.internalCurrentDate} 📅${unSynchronized}<br>
-                ${state.currentSeason} 🚜<br>
-                ${state.peasantFamilyLandAlias} 🌱<br>`;  ;
+                ${state.internalCurrentDate} 📅${unSynchronized}<br>                
+                ${state.peasantFamilyLandAlias} 🌱 <br>`;
 
     if (state.robberyAccount > 0) {
         agent.innerHTML = agent.innerHTML + " 🦹";
@@ -121,16 +132,6 @@ function updateAgent(jsonData) {
         agent.className = "btn btn-primary";
     } else {
         agent.className = "btn btn-success";
-    }
-
-    if (state.currentSeason=="PREPARATION"){
-        color = "bisque";
-    } else if (state.currentSeason=="PLANTING"){
-        color = "yellow";
-    } else if (state.currentSeason=="GROWING"){
-        color = "green";
-    } else if (state.currentSeason=="HARVEST"){
-        color = "olive";
     }
 
     // Update land show
@@ -179,8 +180,39 @@ function createOptions(options) {
     }
 }
 
+function updateWebsocketStatusButton(status) {
+    let button = document.getElementById("websocketButton");
+
+    if (status) {
+        button.classList.remove("btn-danger");
+        button.classList.add("btn-success");
+        button.textContent = "Conectado";
+    } else {
+        button.classList.remove("btn-success");
+        button.classList.add("btn-danger");
+        button.textContent = "Desconectado";
+    }
+}
+
+function connectWebSocket() {
+    const url = socket ? "ws://wpsim01:8000/wpsViewer" : "ws://0.0.0.0:8000/wpsViewer";
+
+    socket = new WebSocket(url);
+
+    socket.onopen = function (event) {
+        console.log("Conexión exitosa a la dirección: " + url);
+        updateWebsocketStatusButton(true);
+    };
+
+    socket.onerror = function (event) {
+        console.error("Error en la conexión a la dirección: " + url);
+        updateWebsocketStatusButton(false);
+        setTimeout(connectWebSocket, 5000);
+    };
+}
+
 if (window.WebSocket) {
-    socket = new WebSocket("ws://0.0.0.0:8080/wpsViewer");
+    connectWebSocket();
     socket.onmessage = function (event) {
         let prefix = event.data.substring(0, 2);
         let data = event.data.substring(2);
@@ -433,24 +465,38 @@ async function loadData() {
 window.onload = loadData;
 
 function modifyLand(name, landDataUse, color, newTooltip) {
+    //console.log(name + " <--> " + landDataUse);
     const borderStyleUnique = borderStyles[name];
-    for (let land in landDataUse) {
-        let landLayer = landData[land];
+
+    landDataUse.forEach(landObj => {
+        let landLayer = landData[landObj.landName];
+        //console.log(landObj);
+        if (landObj.currentSeason==="PREPARATION"){
+            color = "Peru";
+        } else if (landObj.currentSeason==="PLANTING"){
+            color = "Chocolate";
+        } else if (landObj.currentSeason==="GROWING"){
+            color = "YellowGreen";
+        } else if (landObj.currentSeason==="HARVEST"){
+            color = "Maroon";
+        }
+
         if (landLayer) {
             landLayer.setStyle({
                 fillColor: color,
                 fillOpacity: 0.5,
-                color: borderStyleUnique.color, // Color del borde
-                weight: borderStyleUnique.weight, // Grosor del borde
-                dashArray: borderStyleUnique.dashArray // Estilo de línea del borde
+                color: borderStyleUnique.color,
+                weight: borderStyleUnique.weight,
+                dashArray: borderStyleUnique.dashArray
             });
+
             landLayer.on('click', function () {
                 document.getElementById('agent-info-panel').innerHTML = newTooltip;
             });
         } else {
             console.error("No finca found with name:", name);
         }
-    }
+    });
 }
 
 
@@ -476,7 +522,7 @@ for (let i = 1; i <= 100; i++) {
         const farmName = `farm_${i}_${size}`;
         borderStyles[farmName] = {
             color: getRandomColor(),
-            weight: Math.floor(Math.random() * 0.7) + 1, // Grosor aleatorio entre 1 y 4
+            weight: Math.floor(Math.random() * 0.7) + 1,
             dashArray: getRandomLineStyle()
         };
     });

@@ -18,7 +18,7 @@ HighriskPeasant:
   rainfallConditions: dry
   cropSize: 2000
   seeds: 500
-  startRiceSeason: 01/05/2022
+  startRiceSeason: 15/01/2022
   currentCropName: ñame
   money: 1100000
   waterAvailable: 0

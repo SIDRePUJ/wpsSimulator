@@ -21,8 +21,6 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Government.GovernmentAgentLandGuard;
 import org.wpsim.Government.GovernmentLandData;
-import org.wpsim.Market.MarketAgentGuard;
-import org.wpsim.Market.MarketMessage;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.wpsReport;
 import org.wpsim.World.Agent.WorldAgent;
@@ -46,8 +44,6 @@ import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
-
-import static org.wpsim.Market.MarketMessageType.BUY_LIVESTOCK;
 
 /**
  *
@@ -93,7 +89,7 @@ public class ObtainALandTask extends Task {
         }
 
         // @TODO: setFarmName lo cambia el gobierno o el campesino
-        believes.getPeasantProfile().setLand(true);
+        believes.getPeasantProfile().setFarmName(true);
         believes.setCurrentActivity(PeasantActivityType.PRICE_LIST);
         believes.getPeasantProfile().setHousing(1);
         believes.getPeasantProfile().setServicesPresence(1);
@@ -258,6 +254,6 @@ public class ObtainALandTask extends Task {
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getPeasantProfile().getLand();
+        return believes.getPeasantProfile().getFarmName();
     }
 }

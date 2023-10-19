@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.Government.LandInfo;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.CropCareType;
@@ -93,12 +94,12 @@ public class ManagePestsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.info("getCropHealth=" + believes.getProfile().getCropHealth());
-        if (believes.getCurrentCropCare() == CropCareType.PESTICIDE) {
-            return 1;
-        } else {
-            return 0;
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.PESTICIDE)) {
+                return 1;
+            }
         }
+        return 0;
     }
 
     /**

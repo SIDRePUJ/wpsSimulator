@@ -18,6 +18,8 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.Government.LandInfo;
+import org.wpsim.PeasantFamily.Data.SeasonType;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.CropCareType;
@@ -85,14 +87,18 @@ public class IrrigateCropsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        int waterUsed = (believes.getPeasantProfile().getCropSize()/1000) * 30;
-        if (believes.getCurrentCropCare() == CropCareType.IRRIGATION
-                && believes.getPeasantProfile().getWaterAvailable() >= waterUsed) {
-            //wpsReport.info(believes.getCurrentCropCare() + " -- " + believes.getPeasantProfile().getWaterAvailable());
-            return 1;
-        } else {
-            return 0;
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
+                int waterUsed = (believes.getPeasantProfile().getCropSize()/1000) * 30;
+                for (LandInfo currentLandInfoWater : believes.getAssignedLands()) {
+                    if (currentLandInfoWater.getKind().equals("water") ||
+                            believes.getPeasantProfile().getWaterAvailable() >= waterUsed) {
+                        return 1;
+                    }
+                }
+            }
         }
+        return 0;
     }
 
     /**

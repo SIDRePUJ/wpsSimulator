@@ -14,6 +14,9 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import org.wpsim.Government.LandInfo;
+import org.wpsim.PeasantFamily.Data.CropCareType;
+import org.wpsim.Viewer.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -26,6 +29,7 @@ import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
  */
 public class PrepareLandTask extends Task {
 
+    private String landName = "";
     /**
      *
      */
@@ -38,11 +42,29 @@ public class PrepareLandTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.setCurrentSeason(SeasonType.PLANTING);
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.PREPARATION)) {
+                System.out.println("Planting season for " + currentLandInfo.getLandName());
+                landName = currentLandInfo.getLandName();
+                break;
+            }
+        }
+        LandInfo landInfo = believes.getLandInfo(landName);
+        System.out.println("Preparing land " + landName + " de tipo " + landInfo.getKind());
+        // Revisa si es bosque se toma varias horas en preparar y lo pasa a tipo "tierra"
+        if (landInfo.getKind().equals("forest")) {
+            landInfo.setKind("land");
+            landInfo.setCurrentSeason(SeasonType.PREPARATION);
+            believes.updateAssignedLands(landInfo);
+            believes.useTime(TimeConsumedBy.Deforestation.getTime());
+            wpsReport.info("Deforesting process " + landInfo.getFarmName(), believes.getPeasantProfile().getPeasantFamilyAlias());
+        }else{
+            // Si es tierra normal, se pasa a plantando
+            believes.setCurrentSeason(landInfo.getLandName(), SeasonType.PLANTING);
+            believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());
+        }
         this.setTaskFinalized();
     }
 
@@ -67,12 +89,18 @@ public class PrepareLandTask extends Task {
 
     /**
      *
-     * @param believes
-     * @return
+     * @param parameters believes from agent
+     * @return true if the task was finished
      */
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getCurrentSeason() == SeasonType.PLANTING;
+        LandInfo landInfo = believes.getLandInfo(landName);
+        if (landInfo == null) {
+            System.out.println("nulo para " + landName);
+            return true;
+        }
+        System.out.println("checking for " + landInfo.getLandName() +" " + landInfo.getCurrentSeason().equals(SeasonType.PLANTING));
+        return landInfo.getCurrentSeason().equals(SeasonType.PLANTING);
     }
 }

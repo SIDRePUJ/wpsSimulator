@@ -23,7 +23,7 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Log.ReportBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Guards.ControlAgentGuard;
-import org.wpsim.PeasantFamily.PeasantFamilyBDIAgent;
+import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
@@ -64,12 +64,12 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             believes.makeNewDayWOD();
         }
 
-        try {
+        /*try {
             wpsReport.debug(PeasantFamilyAlias + " getEmotionsListCopy " + believes.getEmotionsListCopy().toString(), PeasantFamilyAlias);
             wpsReport.debug(PeasantFamilyAlias + " getMostActivatedEmotion " + believes.getMostActivatedEmotion().toString(),PeasantFamilyAlias);
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
         if (believes.getPeasantProfile().getHealth() <= 0) {
             this.agent.shutdownAgent();

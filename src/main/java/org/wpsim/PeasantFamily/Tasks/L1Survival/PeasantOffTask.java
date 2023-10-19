@@ -57,7 +57,7 @@ public class PeasantOffTask extends Task {
 
         believes.setCurrentActivity(PeasantActivityType.PTW);
         believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
-        believes.setCurrentCropCare(CropCareType.NONE);
+        //believes.setCurrentCropCare(CropCareType.NONE);
 
         this.setTaskFinalized();
     }

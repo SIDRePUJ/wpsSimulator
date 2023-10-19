@@ -18,6 +18,8 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.Government.LandInfo;
+import org.wpsim.PeasantFamily.Data.CropCareType;
 import org.wpsim.Viewer.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
@@ -35,13 +37,13 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_HARVEST;
  */
 public class HarvestCropsTask extends Task {
 
-    private boolean finished;
+    private String landName;
 
     /**
      *
      */
     public HarvestCropsTask() {
-        this.finished = false;
+
     }
 
     /**
@@ -54,13 +56,17 @@ public class HarvestCropsTask extends Task {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        believes.setCurrentSeason(SeasonType.SELL_CROP);
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
+                landName = currentLandInfo.getLandName();
+            }
+        }
+        LandInfo landInfo = believes.getLandInfo(landName);
+        believes.setCurrentSeason(landName, SeasonType.SELL_CROP);
 
         try {
             AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(
-                    believes.getPeasantProfile().getPeasantFamilyLandAlias()
-            );
+            AgHandlerBESA ah = adm.getHandlerByAlias(landName);
 
             WorldMessage worldMessage = new WorldMessage(
                     CROP_HARVEST,
@@ -76,23 +82,7 @@ public class HarvestCropsTask extends Task {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }        
-        this.setFinished();
         this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isFinished() {
-        return finished;
-    }
-
-    /**
-     *
-     */
-    public void setFinished() {
-        this.finished = true;
     }
 
     /**
@@ -101,7 +91,7 @@ public class HarvestCropsTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        this.setFinished();
+
     }
 
     /**
@@ -110,17 +100,18 @@ public class HarvestCropsTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        this.setFinished();
+
     }
 
     /**
      *
-     * @param believes
+     * @param parameters
      * @return
      */
     @Override
-    public boolean checkFinish(Believes believes) {
-        ////wpsReport.info("");
-        return ((PeasantFamilyBDIAgentBelieves) believes).getCurrentSeason() == SeasonType.SELL_CROP;
+    public boolean checkFinish(Believes parameters) {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        LandInfo landInfo = believes.getLandInfo(landName);
+        return landInfo.getCurrentSeason().equals(SeasonType.SELL_CROP);
     }
 }

@@ -18,6 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.Government.LandInfo;
 import org.wpsim.Viewer.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
@@ -35,6 +36,7 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_IRRIGATION;
  */
 public class IrrigateCropsTask extends Task {
 
+    String landName;
     /**
      *
      */
@@ -51,13 +53,23 @@ public class IrrigateCropsTask extends Task {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
+                landName = currentLandInfo.getLandName();
+            }
+        }
+
         double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
+        for (LandInfo currentLandInfoWater : believes.getAssignedLands()) {
+            if (currentLandInfoWater.getKind().equals("water")) {
+                waterUsed = 0;
+                break;
+            }
+        }
 
         try {
             AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(
-                    believes.getPeasantProfile().getPeasantFamilyLandAlias()
-            );
+            AgHandlerBESA ah = adm.getHandlerByAlias(landName);
 
             WorldMessage worldMessage;
             worldMessage = new WorldMessage(
@@ -71,7 +83,7 @@ public class IrrigateCropsTask extends Task {
             ah.sendEvent(ev);
 
             believes.getPeasantProfile().useWater((int) waterUsed);
-            believes.setCurrentCropCare(CropCareType.NONE);
+            believes.setCurrentCropCareType(landName,CropCareType.NONE);
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
@@ -87,7 +99,6 @@ public class IrrigateCropsTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        ((PeasantFamilyBDIAgentBelieves) parameters).setCurrentCropCare(CropCareType.NONE);
         this.setTaskFinalized();
     }
 
@@ -97,7 +108,6 @@ public class IrrigateCropsTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        ((PeasantFamilyBDIAgentBelieves) parameters).setCurrentCropCare(CropCareType.NONE);
         this.setTaskFinalized();
     }
 
@@ -108,6 +118,8 @@ public class IrrigateCropsTask extends Task {
      */
     @Override
     public boolean checkFinish(Believes parameters) {
-        return ((PeasantFamilyBDIAgentBelieves) parameters).getCurrentCropCare() == CropCareType.NONE;
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        LandInfo landInfo = believes.getLandInfo(landName);
+        return landInfo.getCurrentCropCareType().equals(CropCareType.NONE);
     }
 }

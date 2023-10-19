@@ -27,7 +27,7 @@ import org.wpsim.Government.GovernmentAgent;
 import org.wpsim.Market.MarketAgent;
 import org.wpsim.PeasantFamily.Guards.StatusGuard;
 import org.wpsim.PeasantFamily.Guards.HeartBeatGuard;
-import org.wpsim.PeasantFamily.PeasantFamilyBDIAgent;
+import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
 import org.wpsim.Perturbation.PerturbationAgent;
 import org.wpsim.Society.SocietyAgent;
 import org.wpsim.Viewer.wpsReport;
@@ -44,7 +44,7 @@ public class wpsStart {
     public static wpsConfig config;
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
-    public static int peasantFamiliesAgents = 20;
+    public static int peasantFamiliesAgents = 0;
     public static int stepTime = 100;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
@@ -60,6 +60,11 @@ public class wpsStart {
     public static void main(String[] args) {
 
         printHeader();
+        try {
+            peasantFamiliesAgents = Integer.parseInt(args[1]);
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            peasantFamiliesAgents = 2;
+        }
         // Set init date of simulation
         config = wpsConfig.getInstance();
         ControlCurrentDate.getInstance().setCurrentDate(config.getStartSimulationDate());
@@ -91,7 +96,7 @@ public class wpsStart {
                 default -> System.out.println("No se reconoce el nombre del contendor BESA " + args[0]);
             }
         } else {
-            System.out.println("No hay contenedores válidos");
+            System.out.println("No hay contenedores válidos: local <cantidad>");
             System.exit(0);
         }
     }

@@ -48,7 +48,7 @@ public class WebsocketServer implements Runnable {
         }*/
 
         Undertow server = Undertow.builder()
-                .addHttpListener(8080, "0.0.0.0")
+                .addHttpListener(8000, "0.0.0.0")
                 .setHandler(path()
                         .addPrefixPath("/wpsViewer", websocket(new WebSocketConnectionCallback() {
                             @Override
@@ -77,7 +77,7 @@ public class WebsocketServer implements Runnable {
                                 channel.resumeReceives();
                             }
                         }))
-                        //.addPrefixPath("/", resource(resourceManager).addWelcomeFiles("index.html"))
+                        //.addPrefixPath("/", resource(resourceManager).addWelcomeFiles("index-no.html"))
                 )
                 .build();
         System.out.println("WebSocket Server Started on port 80");

@@ -67,7 +67,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
                 String kind = landObject.getString("kind");
 
                 // Usar la estructura LandInfo para almacenar el tipo de tierra y la finca
-                LandInfo landInfo = new LandInfo(kind);
+                LandInfo landInfo = new LandInfo(landName, kind);
                 landOwnership.put(landName, landInfo);
             }
         } catch (Exception e) {
@@ -143,7 +143,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
 
     public synchronized Map.Entry<String, Map<String, String>> assignLandToFamily(String familyName) {
         List<String> availableFarms = farms.entrySet().stream()
-                .filter(e -> e.getValue().stream().allMatch(land -> landOwnership.get(land).farmName == null))
+                .filter(e -> e.getValue().stream().allMatch(land -> landOwnership.get(land).getFarmName() == null))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
@@ -157,24 +157,23 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
         List<String> landsOfSelectedFarm = farms.get(selectedFarm);
         Map<String, String> landsWithKind = new HashMap<>();
         for (String land : landsOfSelectedFarm) {
-            landOwnership.get(land).farmName = familyName;
-            landsWithKind.put(land, landOwnership.get(land).kind);
+            landOwnership.get(land).setFarmName(familyName);
+            landsWithKind.put(land, landOwnership.get(land).getKind());
         }
         return new AbstractMap.SimpleEntry<>(selectedFarm, landsWithKind);
     }
 
     public void createFarms() {
         List<String> availableLands = landOwnership.entrySet().stream()
-                .filter(e -> !e.getValue().kind.equals("road") && e.getValue().farmName == null)
+                .filter(e -> !e.getValue().getKind().equals("road") && e.getValue().getFarmName() == null)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        Random rand = new Random();
         int farmId = 1;
 
         // Asignar fincas grandes
         while (true) {
-            List<String> farmLands = selectBlock(availableLands, 4, 5);
+            List<String> farmLands = selectBlock(availableLands, 3, 4);
             if (farmLands.isEmpty()) {
                 break;
             }
@@ -184,7 +183,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
 
         // Asignar fincas medianas
         while (true) {
-            List<String> farmLands = selectBlock(availableLands, 2, 5);
+            List<String> farmLands = selectBlock(availableLands, 2, 2);
             if (farmLands.isEmpty()) {
                 break;
             }
@@ -198,6 +197,20 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
             if (farmLands.isEmpty()) {
                 break;
             }
+            farms.put("farm_" + farmId + "_small", farmLands);
+            farmId++;
+        }
+        // Lógica adicional para asignar tierras no asignadas a fincas pequeñas
+        while (!availableLands.isEmpty() && availableLands.size() >= 2) {
+            // Tomamos cualquier bloque de 2 tierras contiguas disponibles
+            List<String> farmLands = new ArrayList<>();
+            farmLands.add(availableLands.get(0));
+            farmLands.add(availableLands.get(1));
+
+            // Removemos esas tierras de availableLands
+            availableLands.removeAll(farmLands);
+
+            // Agregamos estas tierras a una finca pequeña
             farms.put("farm_" + farmId + "_small", farmLands);
             farmId++;
         }

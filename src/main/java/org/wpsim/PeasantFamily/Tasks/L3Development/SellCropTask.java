@@ -71,7 +71,8 @@ public class SellCropTask extends Task {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        believes.setCurrentSeason(SeasonType.NONE);
+        // @TODO: cambiar landname
+        believes.setCurrentSeason("", SeasonType.NONE);
         this.setTaskFinalized();
     }
 

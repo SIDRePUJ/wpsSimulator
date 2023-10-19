@@ -18,6 +18,8 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.Government.LandInfo;
+import org.wpsim.PeasantFamily.Data.SeasonType;
 import org.wpsim.Viewer.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
@@ -36,6 +38,7 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_OBSERVE;
  */
 public class CheckCropsTask extends Task {
 
+    private String landName = "";
     /**
      *
      */
@@ -55,7 +58,7 @@ public class CheckCropsTask extends Task {
         // @TODO: falta calcular el tiempo necesario para el cultivo
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
-        double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
+        /*double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
         if (believes.getPeasantProfile().getWaterAvailable() <= waterUsed) {
             believes.setCurrentResourceNeededType(ResourceNeededType.WATER);
         }
@@ -64,6 +67,13 @@ public class CheckCropsTask extends Task {
         }
         if (believes.getPeasantProfile().getSeeds() <= 5){
             believes.setCurrentResourceNeededType(ResourceNeededType.SEEDS);
+        }*/
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
+                landName = currentLandInfo.getLandName();
+                believes.setCheckedToday(landName);
+                break;
+            }
         }
 
         try {
@@ -100,11 +110,7 @@ public class CheckCropsTask extends Task {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-
-        believes.setCheckedToday();
         this.setTaskFinalized();
-
-        //wpsReport.warn(believes.toJson());
     }
 
     /**
@@ -127,12 +133,12 @@ public class CheckCropsTask extends Task {
 
     /**
      *
-     * @param believes
+     * @param parameters
      * @return
      */
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.isCheckedToday();
+        return believes.isCheckedToday(landName);
     }
 }

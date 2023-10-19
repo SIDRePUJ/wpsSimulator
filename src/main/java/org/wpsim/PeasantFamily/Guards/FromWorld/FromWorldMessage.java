@@ -12,6 +12,7 @@ public class FromWorldMessage extends DataBESA {
     private FromWorldMessageType peasantMessageType;
     private String date;
     private String simpleMessage;
+    private String landName;
 
     /**
      *
@@ -19,10 +20,11 @@ public class FromWorldMessage extends DataBESA {
      * @param peasantAlias
      * @param payload
      */
-    public FromWorldMessage(FromWorldMessageType peasantMessageType, String peasantAlias, String payload) {
-        this.peasantAlias = peasantAlias;
-        this.payload = payload;
+    public FromWorldMessage(FromWorldMessageType peasantMessageType, String peasantAlias, String payload, String landName) {
+        setPeasantAlias(peasantAlias);
+        setPayload(payload);
         this.peasantMessageType = peasantMessageType;
+        setLandName(landName);
     }
 
     /**
@@ -31,6 +33,14 @@ public class FromWorldMessage extends DataBESA {
      */
     public FromWorldMessage(String simpleMessage) {
         this.simpleMessage = simpleMessage;
+    }
+
+    public String getLandName() {
+        return landName;
+    }
+
+    public void setLandName(String landName) {
+        this.landName = landName;
     }
 
     /**

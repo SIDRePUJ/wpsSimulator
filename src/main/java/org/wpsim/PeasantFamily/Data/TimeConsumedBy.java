@@ -25,6 +25,7 @@ public enum TimeConsumedBy {
     StealingOutOfNecessityTask(6),
     SeekPurposeTask(12),
     GetPriceListTask(2),
+    Deforestation(6),
     DoHealthCareTask(4),
     DoVitalsTask(12),
     AttendReligiousEventsTask(2),

@@ -18,6 +18,8 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.Control.Data.DateHelper;
+import org.wpsim.Government.LandInfo;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.SeasonType;
@@ -44,12 +46,11 @@ public class PrepareLandGoal extends GoalBDI {
         RationalRole prepareLandRole = new RationalRole(
                 "PrepareLandTask",
                 prepareLandPlan);
-        PrepareLandGoal prepareLandGoal = new PrepareLandGoal(
+        return new PrepareLandGoal(
                 wpsStart.getPlanID(),
                 prepareLandRole,
                 "PrepareLandTask",
                 GoalBDITypes.OPORTUNITY);
-        return prepareLandGoal;
     }
 
     /**
@@ -71,15 +72,7 @@ public class PrepareLandGoal extends GoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (//believes.getPeasantProfile().getTools() > 0
-                //&& believes.getPeasantProfile().getSupplies() > 0
-                //&&
-                believes.getPeasantProfile().getLand()) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return 1;
     }
 
     /**
@@ -91,11 +84,16 @@ public class PrepareLandGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getCurrentSeason() == SeasonType.PREPARATION) {
-            return 1;
-        } else {
-            return 0;
+
+        if (believes.isPlantingSeason()) {
+            LandInfo landInfo = believes.getLandAvailable();
+            if (landInfo != null) {
+                System.out.println("Planting season for " + landInfo.getLandName());
+                return 1;
+            }
         }
+        return 0;
+
     }
 
     /**

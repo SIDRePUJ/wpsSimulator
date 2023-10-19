@@ -18,6 +18,8 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.Government.LandInfo;
+import org.wpsim.PeasantFamily.Data.CropCareType;
 import org.wpsim.Viewer.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
@@ -35,6 +37,7 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_INIT;
  */
 public class PlantCropTask extends Task {
 
+    private String landName = "";
     /**
      *
      */
@@ -47,16 +50,24 @@ public class PlantCropTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
+        /*
+          Se debe decidir que se sembrará en los terrenos.
+         */
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
+                landName = currentLandInfo.getLandName();
+                currentLandInfo.setCurrentSeason(SeasonType.GROWING);
+                believes.updateAssignedLands(currentLandInfo);
+                break;
+            }
+        }
 
         try {
             AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(
-                    believes.getPeasantProfile().getPeasantFamilyLandAlias()
-            );
+            AgHandlerBESA ah = adm.getHandlerByAlias(landName);
 
             WorldMessage worldMessage = new WorldMessage(
                     CROP_INIT,
@@ -64,21 +75,16 @@ public class PlantCropTask extends Task {
                     believes.getInternalCurrentDate(),
                     believes.getPeasantProfile().getPeasantFamilyAlias()
             );
-
             EventBESA ev = new EventBESA(
                     WorldGuard.class.getName(),
                     worldMessage);
             ah.sendEvent(ev);
 
+            // TODO: Estimar el costo de Semillas
             believes.getPeasantProfile().useSeeds(
                     believes.getPeasantProfile().getRiceSeedsByHectare()
             );
-            // 2500 kilo * 20 kilos de semillas
-            /*believes.getPeasantProfile().useMoney(
-                    believes.getPriceList().get("seeds").getCost()
-                    * 20
-            );*/
-            believes.setCurrentSeason(SeasonType.GROWING);
+            believes.setCurrentSeason(landName, SeasonType.GROWING);
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
@@ -110,6 +116,7 @@ public class PlantCropTask extends Task {
     @Override
     public boolean checkFinish(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getCurrentSeason() == SeasonType.GROWING;
+        LandInfo landInfo = believes.getLandInfo(landName);
+        return landInfo.getCurrentSeason().equals(SeasonType.GROWING);
     }
 }

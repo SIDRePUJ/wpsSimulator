@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.json.JSONObject;
+import org.wpsim.Government.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.CropCareType;
 import org.wpsim.PeasantFamily.Data.SeasonType;
@@ -38,9 +39,11 @@ public class FromWorldGuard extends GuardBESA {
         FromWorldMessage peasantCommMessage = (FromWorldMessage) event.getData();
         //wpsReport.warn("🤖🤖🤖 Recibido: " + peasantCommMessage.getPeasantAlias() + " getType=" + peasantCommMessage.getPayload());
         StateBDI state = (StateBDI) this.agent.getState();
+        String landName = peasantCommMessage.getLandName();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        LandInfo landInfo = believes.getLandInfo(landName);
         FromWorldMessageType messageType = peasantCommMessage.getMessageType();
-        //wpsReport.info("🍙🍙🍙: " + peasantCommMessage.getPayload() + ":🍙🍙🍙");
+
         try {
 
             switch (messageType) {
@@ -49,11 +52,11 @@ public class FromWorldGuard extends GuardBESA {
                     //wpsReport.info("🍙🍙🍙: NOTIFY_CROP_DISEASE");
                     break;
                 case CROP_PESTICIDE:
-                    believes.setCurrentCropCare(CropCareType.PESTICIDE);
+                    believes.setCurrentCropCareType(landName, CropCareType.PESTICIDE);
                     //wpsReport.info("🍙🍙🍙: CROP_PESTICIDE");
                     break;
                 case NOTIFY_CROP_WATER_STRESS:
-                    believes.setCurrentCropCare(CropCareType.IRRIGATION);
+                    believes.setCurrentCropCareType(landName, CropCareType.IRRIGATION);
                     wpsReport.info("🍙🍙🍙: NOTIFY_CROP_WATER_STRESS", this.getAgent().getAlias());
                     break;
                 case CROP_INFORMATION_NOTIFICATION:
@@ -61,7 +64,7 @@ public class FromWorldGuard extends GuardBESA {
                     //wpsReport.info("🍙🍙🍙: CROP_INFORMATION_NOTIFICATION");
                     break;
                 case NOTIFY_CROP_READY_HARVEST:
-                    believes.setCurrentSeason(SeasonType.HARVEST);
+                    believes.setCurrentSeason(landName, SeasonType.HARVEST);
                     //wpsReport.info("🍙🍙🍙: NOTIFY_CROP_READY_HARVEST");
                     break;
                 case REQUEST_CROP_INFORMATION:

@@ -18,7 +18,7 @@ StablePeasant:
   rainfallConditions: normal
   cropSize: 5000
   seeds: 1000
-  startRiceSeason: 01/05/2022
+  startRiceSeason: 15/01/2022
   currentCropName: ñame
   money: 2200000
   waterAvailable: 500

@@ -43,12 +43,11 @@ public class ObtainALandGoal extends GoalBDI {
         RationalRole role = new RationalRole(
                 "ObtainALandTask",
                 plan);
-        ObtainALandGoal goal = new ObtainALandGoal(
+        return new ObtainALandGoal(
                 wpsStart.getPlanID(),
                 role,
                 "ObtainALandTask",
                 GoalBDITypes.REQUIREMENT);
-        return goal;
     }
 
     /**
@@ -88,7 +87,7 @@ public class ObtainALandGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getLand()) {
+        if (believes.getPeasantProfile().getFarmName()) {
             return 0;
         } else {
             return 1;
@@ -142,9 +141,8 @@ public class ObtainALandGoal extends GoalBDI {
      */
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getPeasantProfile().getLand();
+        return believes.getPeasantProfile().getFarmName();
     }
 
 }

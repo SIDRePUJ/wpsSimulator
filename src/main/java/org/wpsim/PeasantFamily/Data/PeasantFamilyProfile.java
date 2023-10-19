@@ -14,14 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Data;
 
-import org.json.JSONObject;
-import org.wpsim.Government.LandInfo;
-
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -42,7 +35,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private boolean worker;
     private double peasantQualityFactor;
     private double liveStockAffinity;
-    private boolean land;
+    private boolean farmName;
     private int cropSize;
     private double housing;
     private double servicesPresence;
@@ -460,15 +453,15 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      * @return
      */
-    public boolean getLand() {
-        return land;
+    public boolean getFarmName() {
+        return farmName;
     }
 
     /**
      *
      */
-    public synchronized void setLand(boolean land) {
-        this.land = land;
+    public synchronized void setFarmName(boolean farmName) {
+        this.farmName = farmName;
     }
 
     /**

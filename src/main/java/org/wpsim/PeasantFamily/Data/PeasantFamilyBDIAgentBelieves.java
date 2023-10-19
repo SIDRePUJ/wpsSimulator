@@ -21,6 +21,7 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.json.JSONObject;
 import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.Control.Data.DateHelper;
 import org.wpsim.Government.LandInfo;
 import org.wpsim.PeasantFamily.Emotions.EmotionalComponent;
 import org.wpsim.Simulator.wpsStart;
@@ -30,26 +31,25 @@ import rational.mapping.Believes;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- *
  * @author jairo
  */
 public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements Believes {
 
     private PeasantFamilyProfile peasantProfile;
     private SeasonType currentSeason;
-    private CropCareType currentCropCare;
     private MoneyOriginType currentMoneyOrigin;
     private PeasantActivityType currentPeasantActivityType;
     private PeasantLeisureType currentPeasantLeisureType;
     private ResourceNeededType currentResourceNeededType;
-    private Map<String, LandInfo> assignedLands = new HashMap<>();
+    private LinkedBlockingQueue<LandInfo> assignedLands = new LinkedBlockingQueue<>();
     private int currentDay;
     private int robberyAccount;
     private double timeLeftOnDay;
     private boolean newDay;
-    private boolean checkedToday;
+    private Map<String, Boolean> checkedToday;
     private boolean robbedToday;
     private boolean askedForLoanToday;
     private boolean haveLoan;
@@ -65,8 +65,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private LinkedHashMap<Integer, Boolean> unblockDaysList = new LinkedHashMap<>();
 
     /**
-     *
-     * @param alias Peasant Family Alias
+     * @param alias          Peasant Family Alias
      * @param peasantProfile profile of the peasant family
      */
     public PeasantFamilyBDIAgentBelieves(String alias, PeasantFamilyProfile peasantProfile) {
@@ -78,7 +77,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
         this.currentDay = 1;
         this.timeLeftOnDay = 24;
-        this.checkedToday = true;
+        this.checkedToday = new HashMap<String, Boolean>();
         this.askedForLoanToday = false;
         this.robbedToday = false;
         this.haveLoan = false;
@@ -88,34 +87,127 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.ptwDate = "";
         this.leisureDoneToday = false;
 
-        this.currentSeason = SeasonType.NONE;
-        this.currentCropCare = CropCareType.NONE;
         this.currentMoneyOrigin = MoneyOriginType.NONE;
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
 
     }
 
-    public synchronized Map<String, LandInfo> getAssignedLands() {
+    public synchronized LinkedBlockingQueue<LandInfo> getAssignedLands() {
         return assignedLands;
     }
 
+    /**
+     * Establece los terrenos asignados a partir de un mapa proporcionado.
+     * Limpia la lista actual y la llena con objetos LandInfo basados en las entradas del mapa.
+     *
+     * @param lands Un mapa con nombres de terrenos como claves y tipos de terreno como valores.
+     */
     public void setAssignedLands(Map<String, String> lands) {
-        //System.out.println("Llegó a peasant profile" + this.peasantProfile.getPeasantFamilyAlias() + " - Assigned lands: " + lands);
         if (lands == null) {
             return;
         }
         this.assignedLands.clear();
         for (Map.Entry<String, String> entry : lands.entrySet()) {
-            this.assignedLands.put(entry.getKey(), new LandInfo(entry.getValue()));
+            this.assignedLands.add(
+                    new LandInfo(
+                            entry.getKey(),
+                            entry.getValue(),
+                            getPeasantProfile().getPeasantFamilyLandAlias()
+                    )
+            );
         }
+    }
+
+    /**
+     * Actualiza la información del terreno en la lista.
+     * Si el terreno con el mismo nombre ya existe en la lista, se actualiza con la nueva información.
+     *
+     * @param newLandInfo La nueva información del terreno.
+     * @return true si el terreno fue actualizado exitosamente, false en caso contrario.
+     */
+    public synchronized void updateAssignedLands(LandInfo newLandInfo) {
+        for (LandInfo currentLandInfo : assignedLands) {
+            if (currentLandInfo.getLandName().equals(newLandInfo.getLandName())) {
+                if (assignedLands.remove(currentLandInfo)) {
+                    assignedLands.add(newLandInfo);
+                }
+                return;
+            }
+        }
+    }
+
+    /**
+     * Verifica si hay algún terreno disponible en la lista que no sea de tipo "water" y no esté en uso.
+     * Imprime información sobre cada terreno durante la verificación.
+     *
+     * @return true si hay un terreno disponible, false en caso contrario.
+     */
+    public synchronized boolean isLandAvailable() {
+        for (LandInfo landInfo : assignedLands) {
+            if (!landInfo.getKind().equals("water") && !landInfo.isUsed()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Busca y devuelve un terreno disponible en la lista que no sea de tipo "water" y no esté en uso.
+     * El terreno devuelto se marca como usado.
+     *
+     * @return El terreno disponible o null si no hay ninguno.
+     */
+    public synchronized LandInfo getLandAvailable() {
+        for (LandInfo landInfo : assignedLands) {
+            if (!landInfo.getKind().equals("water") && landInfo.getCurrentSeason().equals(SeasonType.NONE)) {
+                LandInfo newLandInfo = landInfo.clone();
+                newLandInfo.setCurrentSeason(SeasonType.PREPARATION);
+                updateAssignedLands(newLandInfo);
+                return newLandInfo;
+            }
+        }
+        return null;
+    }
+
+    public synchronized LandInfo getLandInfo(String landName) {
+        for (LandInfo landInfo : assignedLands) {
+            if (landInfo.getLandName().equals(landName)) {
+                return landInfo.clone();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Establece la temporada actual para un terreno específico basado en su nombre.
+     * Si se encuentra el terreno en la lista, se actualiza su temporada.
+     *
+     * @param landName      El nombre del terreno cuya temporada se desea actualizar.
+     * @param currentSeason La nueva temporada que se desea establecer para el terreno.
+     */
+    public synchronized void setCurrentSeason(String landName, SeasonType currentSeason) {
+        LandInfo landInfo = getLandInfo(landName);
+        landInfo.setCurrentSeason(currentSeason);
+        updateAssignedLands(landInfo);
+    }
+
+    /**
+     * Sets the current crop care type for the specified land.
+     *
+     * @param landName            the name of the land
+     * @param currentCropCareType the new crop care type
+     */
+    public synchronized void setCurrentCropCareType(String landName, CropCareType currentCropCareType) {
+        LandInfo landInfo = getLandInfo(landName);
+        landInfo.setCurrentCropCareType(currentCropCareType);
+        updateAssignedLands(landInfo);
     }
 
     /**
      * Adds a task to the log.
      *
-     * @param  date  the date of the task
-     * @return       void
+     * @param date the date of the task
      */
     public void addTaskToLog(String date) {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
@@ -167,12 +259,12 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.robbedToday = false;
     }
 
-    public boolean isCheckedToday() {
-        return checkedToday;
+    public boolean isCheckedToday(String landName) {
+        return checkedToday.getOrDefault(landName, false);
     }
 
-    public void setCheckedToday() {
-        this.checkedToday = true;
+    public void setCheckedToday(String landName) {
+        checkedToday.put(landName, true);
     }
 
     public int getRobberyAccount() {
@@ -192,7 +284,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @return
      */
     public int getCurrentDay() {
@@ -200,7 +291,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @param currentDay
      */
     public void setCurrentDay(int currentDay) {
@@ -208,7 +298,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @return
      */
     public double getTimeLeftOnDay() {
@@ -216,7 +305,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @param timeLeftOnDay
      */
     public void setTimeLeftOnDay(double timeLeftOnDay) {
@@ -224,7 +312,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @return
      */
     public String getInternalCurrentDate() {
@@ -232,7 +319,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @param internalCurrentDate
      */
     public void setInternalCurrentDate(String internalCurrentDate) {
@@ -259,7 +345,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * Make variable reset Every Day
      */
     public void makeNewDay() {
@@ -270,9 +355,10 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.askedForLoanToday = false;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
         if (this.currentSeason == SeasonType.GROWING) {
-            this.checkedToday = false;
+            checkedToday.replaceAll((k, v) -> false);
         }
     }
+
     public void makeNewDayWOD() {
         this.currentDay++;
         this.timeLeftOnDay = 24;
@@ -280,7 +366,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.robbedToday = false;
         this.askedForLoanToday = false;
         if (this.currentSeason == SeasonType.GROWING) {
-            this.checkedToday = false;
+            checkedToday.replaceAll((k, v) -> false);
         }
     }
 
@@ -298,7 +384,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @param time
      * @return
      */
@@ -326,7 +411,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
 
     /**
-     *
      * @return
      */
     public ResourceNeededType getCurrentResourceNeededType() {
@@ -335,14 +419,12 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
     /**
      *
-     *
      */
     public void setCurrentResourceNeededType(ResourceNeededType currentResourceNeededType) {
         this.currentResourceNeededType = currentResourceNeededType;
     }
 
     /**
-     *
      * @return
      */
     public PeasantLeisureType getCurrentPeasantLeisureType() {
@@ -350,8 +432,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
-     *
      * @param currentPeasantLeisureType
      */
     public void setCurrentPeasantLeisureType(PeasantLeisureType currentPeasantLeisureType) {
@@ -359,7 +439,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      *
      */
     public void setRandomCurrentPeasantLeisureType() {
@@ -373,7 +452,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @return
      */
     public SeasonType getCurrentSeason() {
@@ -381,31 +459,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
-     * @param currentSeason the currentSeason to set
-     */
-    public void setCurrentSeason(SeasonType currentSeason) {
-        this.currentSeason = currentSeason;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public CropCareType getCurrentCropCare() {
-        return currentCropCare;
-    }
-
-    /**
-     *
-     * @param currentCropCare the currentCropCare to set
-     */
-    public void setCurrentCropCare(CropCareType currentCropCare) {
-        this.currentCropCare = currentCropCare;
-    }
-
-    /**
-     *
      * @return
      */
     public MoneyOriginType getCurrentMoneyOrigin() {
@@ -413,7 +466,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @param currentMoneyOrigin the currentMoneyOrigin to set
      */
     public void setCurrentMoneyOrigin(MoneyOriginType currentMoneyOrigin) {
@@ -429,7 +481,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @return the currentPeasantActivityType
      */
     public PeasantFamilyProfile getPeasantProfile() {
@@ -437,7 +488,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @param peasantProfile the peasantProfile to set
      */
     private void setPeasantProfile(PeasantFamilyProfile peasantProfile) {
@@ -445,7 +495,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @param infoData
      * @return
      */
@@ -455,7 +504,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @return the priceList
      */
     public Map<String, FarmingResource> getPriceList() {
@@ -463,7 +511,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @param priceList the priceList to set
      */
     public void setPriceList(Map<String, FarmingResource> priceList) {
@@ -471,7 +518,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @return @throws CloneNotSupportedException
      */
     @Override
@@ -480,7 +526,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     *
      * @return
      */
     public synchronized String toJson() {
@@ -490,7 +535,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("timeLeftOnDay", timeLeftOnDay);
         dataObject.put("newDay", newDay);
         dataObject.put("currentSeason", currentSeason);
-        dataObject.put("currentCropCare", currentCropCare);
         dataObject.put("robberyAccount", robberyAccount);
         dataObject.put("purpose", peasantProfile.getPurpose());
         dataObject.put("peasantFamilyAffinity", peasantProfile.getPeasantFamilyAffinity());
@@ -512,7 +556,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("spendFamilyTimeDoneToday", spendFamilyTimeDoneToday);
         dataObject.put("friendsTimeDoneToday", friendsTimeDoneToday);
         dataObject.put("currentActivity", currentPeasantActivityType);
-        dataObject.put("farm", peasantProfile.getLand());
+        dataObject.put("farm", peasantProfile.getFarmName());
         dataObject.put("cropSize", peasantProfile.getCropSize());
         dataObject.put("loanAmountToPay", peasantProfile.getLoanAmountToPay());
         dataObject.put("tools", peasantProfile.getTools());
@@ -527,8 +571,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         } else {
             dataObject.put("assignedLands", Collections.emptyList());
         }
-        //dataObject.put("assignedLands", getAssignedLands());
-        //System.out.println(this.peasantProfile.getPeasantFamilyAlias() + " assignedLands: " + getAssignedLands());
 
         try {
             List<EmotionAxis> emotions = this.getEmotionsListCopy();
@@ -592,6 +634,13 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
     public void setLeisureDoneToday(boolean leisureDoneToday) {
         this.leisureDoneToday = leisureDoneToday;
+    }
+
+    public boolean isPlantingSeason() {
+        return DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 0 ||
+                DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 3 ||
+                DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 6 ||
+                DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 8;
     }
 }
 
