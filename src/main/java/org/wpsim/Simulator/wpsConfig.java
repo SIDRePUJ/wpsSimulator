@@ -160,7 +160,6 @@ public final class wpsConfig {
 
         Map<String, FarmingResource> priceList = new HashMap<>();
         Properties properties = new Properties();
-        FileInputStream fileInputStream = null;
 
         try {
             // Carga las propiedades desde el archivo
@@ -184,19 +183,9 @@ public final class wpsConfig {
                         )
                 );
             }
-            fileInputStream.close();
             return priceList;
-
         } catch (IOException e) {
             ReportBESA.error(e.getMessage());
-        } finally {
-            if (fileInputStream != null) {
-                try {
-                    fileInputStream.close();
-                } catch (IOException e) {
-                    ReportBESA.error(e.getMessage());
-                }
-            }
         }
         return null;
     }
@@ -214,7 +203,7 @@ public final class wpsConfig {
             this.ViewerAgentName = properties.getProperty("viewer.name");
             this.GovernmentAgentName = properties.getProperty("government.name");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage() + " no encontré loadWPSConfig");
         }
     }
 
@@ -286,6 +275,7 @@ public final class wpsConfig {
             return stringBuilder.toString();
 
         } catch (IOException e) {
+            System.out.println(e.getMessage() + " no encontré loadFile");
             ReportBESA.error(e);
             return null;
         } finally {
@@ -293,6 +283,7 @@ public final class wpsConfig {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
+                    System.out.println(e.getMessage() + " no encontré loadFile close");
                     ReportBESA.error(e.getMessage());
                 }
             }

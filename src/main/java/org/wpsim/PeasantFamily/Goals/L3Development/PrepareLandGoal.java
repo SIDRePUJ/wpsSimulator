@@ -84,16 +84,10 @@ public class PrepareLandGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-
-        if (believes.isPlantingSeason()) {
-            LandInfo landInfo = believes.getLandAvailable();
-            if (landInfo != null) {
-                System.out.println("Planting season for " + landInfo.getLandName());
-                return 1;
-            }
+        if (believes.isPlantingSeason() && believes.getLandAvailable()) {
+            return 1;
         }
         return 0;
-
     }
 
     /**

@@ -29,6 +29,9 @@ import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.ResourceNeededType;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 
+import java.util.List;
+import java.util.Set;
+
 import static org.wpsim.World.Messages.WorldMessageType.CROP_INFORMATION;
 import static org.wpsim.World.Messages.WorldMessageType.CROP_OBSERVE;
 
@@ -38,11 +41,12 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_OBSERVE;
  */
 public class CheckCropsTask extends Task {
 
-    private String landName = "";
+    private boolean finished;
     /**
      *
      */
     public CheckCropsTask() {
+        finished = false;
     }
 
     /**
@@ -51,66 +55,46 @@ public class CheckCropsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
+        finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        String peasantFamilyAlias = believes.getPeasantProfile().getPeasantFamilyLandAlias();
         // @TODO: falta calcular el tiempo necesario para el cultivo
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-
-        /*double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
-        if (believes.getPeasantProfile().getWaterAvailable() <= waterUsed) {
-            believes.setCurrentResourceNeededType(ResourceNeededType.WATER);
-        }
-        if (believes.getPeasantProfile().getTools() <= 5){
-            believes.setCurrentResourceNeededType(ResourceNeededType.TOOLS);
-        }
-        if (believes.getPeasantProfile().getSeeds() <= 5){
-            believes.setCurrentResourceNeededType(ResourceNeededType.SEEDS);
-        }*/
-        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+        List<LandInfo> landInfos = believes.getAssignedLands();
+        for (LandInfo currentLandInfo : landInfos) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
-                landName = currentLandInfo.getLandName();
-                believes.setCheckedToday(landName);
-                break;
+                believes.useTime(TimeConsumedBy.CheckCropsTask);
+                System.out.println("revisando cultivos en " + currentLandInfo.getLandName());
+                try {
+                    WorldMessage worldMessage;
+                    if (Math.random() < 0.2) {
+                        worldMessage = new WorldMessage(
+                                CROP_INFORMATION,
+                                believes.getPeasantProfile().getCurrentCropName(),
+                                believes.getInternalCurrentDate(),
+                                currentLandInfo.getLandName()
+                        );
+                        wpsReport.warn("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                    } else {
+                        worldMessage = new WorldMessage(
+                                CROP_OBSERVE,
+                                believes.getPeasantProfile().getCurrentCropName(),
+                                believes.getInternalCurrentDate(),
+                                currentLandInfo.getLandName()
+                        );
+                        wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                    }
+                    AdmBESA.getInstance().getHandlerByAlias(
+                            currentLandInfo.getLandName()).sendEvent(
+                                    new EventBESA(
+                                        WorldGuard.class.getName(),
+                                        worldMessage)
+                    );
+                } catch (ExceptionBESA ex) {
+                    wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+                }
             }
         }
-
-        try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(peasantFamilyAlias);
-
-            WorldMessage worldMessage;
-
-            // 80% de probabilidad de ejecutar
-            if (Math.random() < 0.2) {
-                worldMessage = new WorldMessage(
-                        CROP_INFORMATION,
-                        believes.getPeasantProfile().getCurrentCropName(),
-                        believes.getInternalCurrentDate(),
-                        peasantFamilyAlias
-                );
-                wpsReport.warn("enviado CROP_INFORMATION", believes.getPeasantProfile().getPeasantFamilyAlias());
-            } else {
-                worldMessage = new WorldMessage(
-                        CROP_OBSERVE,
-                        believes.getPeasantProfile().getCurrentCropName(),
-                        believes.getInternalCurrentDate(),
-                        peasantFamilyAlias
-                );
-                wpsReport.warn("enviado CROP_OBSERVE", believes.getPeasantProfile().getPeasantFamilyAlias());
-            }
-
-            EventBESA event = new EventBESA(
-                    WorldGuard.class.getName(),
-                    worldMessage
-            );
-            ah.sendEvent(event);
-
-        } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
-        }
-        this.setTaskFinalized();
+        finished = true;
     }
 
     /**
@@ -119,7 +103,6 @@ public class CheckCropsTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        this.setTaskFinalized();
     }
 
     /**
@@ -128,17 +111,15 @@ public class CheckCropsTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        this.setTaskFinalized();
     }
 
     /**
-     *
-     * @param parameters
-     * @return
+     * Check if the task was finished
+     * @param parameters believes from agent
+     * @return true if the task was finished
      */
     @Override
     public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.isCheckedToday(landName);
+        return finished;
     }
 }

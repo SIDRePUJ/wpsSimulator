@@ -295,18 +295,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      * @return
      */
-    public String getPeasantFamilyLandAlias() {
-        return peasantFamilyLandAlias;
-    }
-
-    public synchronized void setPeasantFamilyLandAlias(String peasantFamilyLandAlias) {
-        this.peasantFamilyLandAlias = peasantFamilyLandAlias;
-    }
-
-    /**
-     *
-     * @return
-     */
     public int getHealth() {
         return health;
     }
@@ -1454,4 +1442,11 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
 
+    public String getPeasantFamilyLandAlias() {
+        return peasantFamilyLandAlias;
+    }
+
+    public void setPeasantFamilyLandAlias(String landName) {
+        peasantFamilyLandAlias = landName;
+    }
 }

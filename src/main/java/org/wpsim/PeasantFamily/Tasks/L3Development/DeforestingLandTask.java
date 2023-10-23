@@ -15,25 +15,28 @@
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import org.wpsim.Government.LandInfo;
-import org.wpsim.PeasantFamily.Data.CropCareType;
-import org.wpsim.Viewer.wpsReport;
-import rational.mapping.Believes;
-import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.SeasonType;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
+import org.wpsim.Viewer.wpsReport;
+import rational.mapping.Believes;
+import rational.mapping.Task;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author jairo
  */
-public class PrepareLandTask extends Task {
+public class DeforestingLandTask extends Task {
 
     private boolean finished;
     /**
      *
      */
-    public PrepareLandTask() {
+    public DeforestingLandTask() {
         finished = false;
     }
 
@@ -46,11 +49,14 @@ public class PrepareLandTask extends Task {
         finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());
-        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE) && currentLandInfo.getKind().equals("land")) {
-                System.out.println("Setting Planting season for " + currentLandInfo.getLandName());
-                currentLandInfo.setCurrentSeason(SeasonType.PLANTING);
+        believes.useTime(TimeConsumedBy.DeforestingLandTask);
+
+        // Incluir si tiene tendencias a deforestar
+        List<LandInfo> landInfos = believes.getAssignedLands();
+        for (LandInfo currentLandInfo : landInfos) {
+            if ("forest".equals(currentLandInfo.getKind())) {
+                currentLandInfo.setKind("land");
+                wpsReport.info("Deforesting process " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
             }
         }
         finished = true;
@@ -70,7 +76,9 @@ public class PrepareLandTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
+
     }
+
 
     /**
      *

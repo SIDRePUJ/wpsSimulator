@@ -80,7 +80,7 @@ public class ObtainALandTask extends Task {
             System.out.println(ex);
         }
 
-        while (believes.getPeasantProfile().getPeasantFamilyLandAlias().equals("")) {
+        while (believes.equals("")) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
@@ -97,135 +97,9 @@ public class ObtainALandTask extends Task {
         believes.getPeasantProfile().setHousingLocation(1);
         believes.getPeasantProfile().setFarmDistance(1);
 
-        // Set world perturbation
-        setPerturbation(wpsStart.config.getPerturbation());
-
-        try {
-            WorldAgent worldAgent = buildWorld(
-                    getRainfallFile(believes.getPeasantProfile().getRainfallConditions()),
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    believes.getPeasantProfile().getPeasantFamilyLandAlias(),
-                    believes.getPeasantProfile().getCropSize(),
-                    believes.getPeasantProfile().getCurrentCropName()
-            );
-            initialWorldStateInitialization(
-                    worldAgent,
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    believes.getInternalCurrentDate()
-            );
-
-            worldAgent.start();
-
-        } catch (Exception ex) {
-            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
-        }
-
         wpsReport.info("🥬 " + believes.getPeasantProfile().getPeasantFamilyAlias() + " ya tiene tierra " + believes.getPeasantProfile().getPeasantFamilyLandAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
         this.setTaskFinalized();
 
-    }
-
-    private static void setPerturbation(String arg) {
-        WorldConfiguration worldConfiguration = WorldConfiguration.getPropsInstance();
-        switch (arg) {
-            case "disease" -> worldConfiguration.setPerturbations(true, false);
-            case "course" -> worldConfiguration.setPerturbations(false, true);
-            case "all" -> worldConfiguration.setPerturbations(true, true);
-            default -> worldConfiguration.setPerturbations(false, false);
-        }
-    }
-
-    private static WorldState buildWorldState(
-            String rainfallFile,
-            String agentAlias,
-            int cropSize,
-            String cropName) {
-        WorldConfiguration worldConfiguration = WorldConfiguration.getPropsInstance();
-        ShortWaveRadiationLayer radiationLayer = new ShortWaveRadiationLayer(
-                worldConfiguration.getProperty("data.radiation"),
-                Hemisphere.SOUTHERN,
-                9);
-        TemperatureLayer temperatureLayer = new TemperatureLayer(
-                worldConfiguration.getProperty("data.temperature"));
-        EvapotranspirationLayer evapotranspirationLayer = new EvapotranspirationLayer(
-                worldConfiguration.getProperty("data.evapotranspiration"));
-        RainfallLayer rainfallLayer = new RainfallLayer(rainfallFile);
-        DiseaseLayer diseaseLayer = new DiseaseLayer();
-        DiseaseCell diseaseCellRice = new DiseaseCell("rice1DiseaseCell");
-        diseaseLayer.addVertex(diseaseCellRice);
-        CropLayer cropLayer = new CropLayer();
-        cropLayer.addCrop(new RiceCell(
-                1.05,
-                1.2,
-                0.7,
-                1512,
-                3330,
-                cropSize,
-                0.9,
-                0.2,
-                Soil.SAND,
-                true,
-                diseaseCellRice,
-                cropName,
-                agentAlias));
-        cropLayer.bindLayer("radiation", radiationLayer);
-        cropLayer.bindLayer("rainfall", rainfallLayer);
-        cropLayer.bindLayer("temperature", temperatureLayer);
-        cropLayer.bindLayer("evapotranspiration", evapotranspirationLayer);
-        return new WorldState(
-                temperatureLayer,
-                radiationLayer,
-                cropLayer,
-                diseaseLayer,
-                evapotranspirationLayer,
-                rainfallLayer);
-    }
-
-    private static void initialWorldStateInitialization(WorldAgent worldAgent, String agentAlias, String currentDate) {
-        AdmBESA adm = AdmBESA.getInstance();
-        WorldMessage worldMessage = new WorldMessage(
-                WorldMessageType.CROP_INIT,
-                null,
-                currentDate,
-                agentAlias);
-        try {
-            AgHandlerBESA ah = adm.getHandlerByAid(worldAgent.getAid());
-            EventBESA eventBesa = new EventBESA(WorldGuard.class.getName(), worldMessage);
-            ah.sendEvent(eventBesa);
-        } catch (ExceptionBESA e) {
-            wpsReport.error(e, "ObtainALandTask");
-        }
-    }
-
-    private static WorldAgent buildWorld(
-            String rainfallFile,
-            String agentAlias,
-            String aliasWorldAgent,
-            int cropSize,
-            String cropName) {
-        wpsReport.warn(agentAlias + " " + aliasWorldAgent, "ObtainALandTask");
-        WorldState worldState = buildWorldState(rainfallFile, agentAlias, cropSize, cropName);
-        StructBESA structBESA = new StructBESA();
-        structBESA.bindGuard(WorldGuard.class);
-        try {
-            WorldAgent worldAgent = new WorldAgent(aliasWorldAgent, worldState, structBESA);
-            return worldAgent;
-        } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, "ObtainALandTask");
-        }
-        return null;
-    }
-
-    private static String getRainfallFile(String arg) {
-        WorldConfiguration worldConfiguration = WorldConfiguration.getPropsInstance();
-        String rainfallFile;
-        switch (arg) {
-            case "wet" -> rainfallFile = worldConfiguration.getProperty("data.rainfall.wet");
-            case "dry" -> rainfallFile = worldConfiguration.getProperty("data.rainfall.dry");
-            case "normal" -> rainfallFile = worldConfiguration.getProperty("data.rainfall");
-            default -> rainfallFile = worldConfiguration.getProperty("data.rainfall");
-        }
-        return rainfallFile;
     }
 
     /**
@@ -248,7 +122,7 @@ public class ObtainALandTask extends Task {
 
     /**
      *
-     * @param believes
+     * @param parameters
      * @return
      */
     @Override

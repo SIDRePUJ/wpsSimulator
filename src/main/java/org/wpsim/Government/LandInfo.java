@@ -3,6 +3,8 @@ package org.wpsim.Government;
 import org.wpsim.PeasantFamily.Data.CropCareType;
 import org.wpsim.PeasantFamily.Data.SeasonType;
 
+import java.util.Objects;
+
 public class LandInfo implements Cloneable{
     private String farmName;
     private String kind;
@@ -89,11 +91,15 @@ public class LandInfo implements Cloneable{
     }
 
     @Override
-    public LandInfo clone() {
-        try {
-            return (LandInfo) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LandInfo landInfo = (LandInfo) o;
+        return Objects.equals(landName, landInfo.landName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(landName);
     }
 }

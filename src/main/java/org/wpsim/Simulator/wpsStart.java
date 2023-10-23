@@ -45,7 +45,7 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents = 0;
-    public static int stepTime = 100;
+    public static int stepTime = 200;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;
@@ -139,7 +139,7 @@ public class wpsStart {
             PerturbationAgent perturbationAgent = PerturbationAgent.createAgent(PASSWD);
             perturbationAgent.start();
         } catch (Exception ex) {
-            wpsReport.error(ex, "wpsStart");
+            wpsReport.error(ex.getMessage(), "wpsStart_noOK");
         }
     }
 
@@ -181,8 +181,8 @@ public class wpsStart {
             // first heart beat to families
             for (int i = 1; i <= peasantFamiliesAgents; i++) {
                 AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias("PeasantFamily_" + i);
-                PeriodicDataBESA periodicDataBESAWorld = new PeriodicDataBESA(stepTime, PeriodicGuardBESA.START_PERIODIC_CALL);
-                EventBESA eventPeriodicWorld = new EventBESA(HeartBeatGuard.class.getName(), periodicDataBESAWorld);
+                PeriodicDataBESA periodicDataBESA = new PeriodicDataBESA(stepTime, PeriodicGuardBESA.START_PERIODIC_CALL);
+                EventBESA eventPeriodicWorld = new EventBESA(HeartBeatGuard.class.getName(), periodicDataBESA);
                 ah.sendEvent(eventPeriodicWorld);
             }
         } catch (ExceptionBESA ex) {

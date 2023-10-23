@@ -111,7 +111,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         int waitTime = wpsStart.stepTime;
         if (state.getMainRole() != null) {
             waitTime = TimeConsumedBy.valueOf(state.getMainRole().getRoleName()).getTime() * wpsStart.stepTime;
-            //System.out.println("PeasantFamilyAlias: " + PeasantFamilyAlias + " - waitTime: " + waitTime);
+            System.out.println("PeasantFamilyAlias: " + PeasantFamilyAlias + " - waitTime: " + waitTime + " rol " + state.getMainRole().getRoleName());
         }
 
         this.setDelayTime(waitTime);

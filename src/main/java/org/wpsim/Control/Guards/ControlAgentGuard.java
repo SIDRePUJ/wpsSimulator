@@ -38,7 +38,7 @@ public class ControlAgentGuard extends GuardBESA {
         int currentDay = toControlMessage.getDays();
         ControlAgentState state = (ControlAgentState) this.getAgent().getState();
 
-        wpsReport.debug("ControlAgentGuard: " + agentAlias + " acd " + agentCurrentDate + " gcd " + ControlCurrentDate.getInstance().getCurrentDate(), "ControlAgentGuard");
+        //wpsReport.debug("ControlAgentGuard: " + agentAlias + " acd " + agentCurrentDate + " gcd " + ControlCurrentDate.getInstance().getCurrentDate(), "ControlAgentGuard");
         state.modifyAgentMap(agentAlias);
 
         if (ControlCurrentDate.getInstance().isAfterDate(agentCurrentDate)) {

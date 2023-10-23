@@ -36,11 +36,13 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_IRRIGATION;
  */
 public class IrrigateCropsTask extends Task {
 
-    String landName;
+    private String landName;
+    private boolean finished;
     /**
      *
      */
     public IrrigateCropsTask() {
+        finished = false;
     }
 
     /**
@@ -49,49 +51,43 @@ public class IrrigateCropsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
+        finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
-        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
-                landName = currentLandInfo.getLandName();
-            }
-        }
-
         double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
-        for (LandInfo currentLandInfoWater : believes.getAssignedLands()) {
-            if (currentLandInfoWater.getKind().equals("water")) {
+        boolean foundLandForIrrigation = false;
+
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (!foundLandForIrrigation && currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
+                landName = currentLandInfo.getLandName();
+                foundLandForIrrigation = true;
+            }
+            if (currentLandInfo.getKind().equals("water")) {
                 waterUsed = 0;
                 break;
             }
         }
 
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(landName);
-
-            WorldMessage worldMessage;
-            worldMessage = new WorldMessage(
+            WorldMessage worldMessage = new WorldMessage(
                     CROP_IRRIGATION,
                     believes.getPeasantProfile().getCurrentCropName(),
                     believes.getInternalCurrentDate(),
                     believes.getPeasantProfile().getPeasantFamilyAlias());
-            EventBESA ev = new EventBESA(
-                    WorldGuard.class.getName(),
-                    worldMessage);
-            ah.sendEvent(ev);
-
+            EventBESA ev = new EventBESA(WorldGuard.class.getName(), worldMessage);
+            AdmBESA.getInstance().getHandlerByAlias(landName).sendEvent(ev);
             believes.getPeasantProfile().useWater((int) waterUsed);
-            believes.setCurrentCropCareType(landName,CropCareType.NONE);
-
+            believes.setCurrentCropCareType(landName, CropCareType.NONE);
+            finished = true;
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivos con " + waterUsed, believes.getPeasantProfile().getPeasantFamilyAlias());
-        //this.setTaskFinalized();
 
+        wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivos con " + waterUsed, believes.getPeasantProfile().getPeasantFamilyAlias());
     }
+
 
     /**
      *
@@ -118,8 +114,6 @@ public class IrrigateCropsTask extends Task {
      */
     @Override
     public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        LandInfo landInfo = believes.getLandInfo(landName);
-        return landInfo.getCurrentCropCareType().equals(CropCareType.NONE);
+        return finished;
     }
 }

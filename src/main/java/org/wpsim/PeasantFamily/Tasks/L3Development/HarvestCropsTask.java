@@ -38,12 +38,13 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_HARVEST;
 public class HarvestCropsTask extends Task {
 
     private String landName;
+    private boolean finished;
 
     /**
      *
      */
     public HarvestCropsTask() {
-
+        finished = false;
     }
 
     /**
@@ -52,6 +53,7 @@ public class HarvestCropsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
+        finished = false;
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
@@ -61,12 +63,10 @@ public class HarvestCropsTask extends Task {
                 landName = currentLandInfo.getLandName();
             }
         }
-        LandInfo landInfo = believes.getLandInfo(landName);
         believes.setCurrentSeason(landName, SeasonType.SELL_CROP);
 
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(landName);
+            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(landName);
 
             WorldMessage worldMessage = new WorldMessage(
                     CROP_HARVEST,
@@ -81,8 +81,8 @@ public class HarvestCropsTask extends Task {
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
-        }        
-        this.setTaskFinalized();
+        }
+        finished = true;
     }
 
     /**
@@ -110,8 +110,6 @@ public class HarvestCropsTask extends Task {
      */
     @Override
     public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        LandInfo landInfo = believes.getLandInfo(landName);
-        return landInfo.getCurrentSeason().equals(SeasonType.SELL_CROP);
+        return finished;
     }
 }

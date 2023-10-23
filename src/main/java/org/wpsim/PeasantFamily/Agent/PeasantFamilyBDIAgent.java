@@ -106,6 +106,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         goals.add(ManagePestsGoal.buildGoal());
         goals.add(PlantCropGoal.buildGoal());
         goals.add(PrepareLandGoal.buildGoal());
+        goals.add(DeforestingLandGoal.buildGoal());
         //goals.add(ProcessProductsGoal.buildGoal());
         goals.add(SellCropGoal.buildGoal());
         //goals.add(SellProductsGoal.buildGoal());

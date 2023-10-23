@@ -31,6 +31,7 @@ import rational.mapping.Believes;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -44,7 +45,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private PeasantActivityType currentPeasantActivityType;
     private PeasantLeisureType currentPeasantLeisureType;
     private ResourceNeededType currentResourceNeededType;
-    private LinkedBlockingQueue<LandInfo> assignedLands = new LinkedBlockingQueue<>();
+    private List<LandInfo> assignedLands = new CopyOnWriteArrayList<>();
     private int currentDay;
     private int robberyAccount;
     private double timeLeftOnDay;
@@ -93,7 +94,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
     }
 
-    public synchronized LinkedBlockingQueue<LandInfo> getAssignedLands() {
+    public List<LandInfo> getAssignedLands() {
         return assignedLands;
     }
 
@@ -107,9 +108,11 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         if (lands == null) {
             return;
         }
-        this.assignedLands.clear();
+
+        List<LandInfo> newAssignedLands = new ArrayList<>();
+
         for (Map.Entry<String, String> entry : lands.entrySet()) {
-            this.assignedLands.add(
+            newAssignedLands.add(
                     new LandInfo(
                             entry.getKey(),
                             entry.getValue(),
@@ -117,7 +120,11 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
                     )
             );
         }
+
+        this.assignedLands.clear();
+        this.assignedLands.addAll(newAssignedLands);
     }
+
 
     /**
      * Actualiza la información del terreno en la lista.
@@ -126,15 +133,9 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      * @param newLandInfo La nueva información del terreno.
      * @return true si el terreno fue actualizado exitosamente, false en caso contrario.
      */
-    public synchronized void updateAssignedLands(LandInfo newLandInfo) {
-        for (LandInfo currentLandInfo : assignedLands) {
-            if (currentLandInfo.getLandName().equals(newLandInfo.getLandName())) {
-                if (assignedLands.remove(currentLandInfo)) {
-                    assignedLands.add(newLandInfo);
-                }
-                return;
-            }
-        }
+    public void updateAssignedLands(LandInfo newLandInfo) {
+        assignedLands.remove(newLandInfo);
+        assignedLands.add(newLandInfo);
     }
 
     /**
@@ -143,7 +144,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      *
      * @return true si hay un terreno disponible, false en caso contrario.
      */
-    public synchronized boolean isLandAvailable() {
+    public boolean isLandAvailable() {
         for (LandInfo landInfo : assignedLands) {
             if (!landInfo.getKind().equals("water") && !landInfo.isUsed()) {
                 return true;
@@ -158,22 +159,20 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      *
      * @return El terreno disponible o null si no hay ninguno.
      */
-    public synchronized LandInfo getLandAvailable() {
+    public boolean getLandAvailable() {
         for (LandInfo landInfo : assignedLands) {
             if (!landInfo.getKind().equals("water") && landInfo.getCurrentSeason().equals(SeasonType.NONE)) {
-                LandInfo newLandInfo = landInfo.clone();
-                newLandInfo.setCurrentSeason(SeasonType.PREPARATION);
-                updateAssignedLands(newLandInfo);
-                return newLandInfo;
+                return true;
             }
         }
-        return null;
+        return false;
     }
+
 
     public synchronized LandInfo getLandInfo(String landName) {
         for (LandInfo landInfo : assignedLands) {
             if (landInfo.getLandName().equals(landName)) {
-                return landInfo.clone();
+                return landInfo;
             }
         }
         return null;
@@ -186,11 +185,20 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      * @param landName      El nombre del terreno cuya temporada se desea actualizar.
      * @param currentSeason La nueva temporada que se desea establecer para el terreno.
      */
-    public synchronized void setCurrentSeason(String landName, SeasonType currentSeason) {
+    public void setCurrentSeason(String landName, SeasonType currentSeason) {
         LandInfo landInfo = getLandInfo(landName);
-        landInfo.setCurrentSeason(currentSeason);
-        updateAssignedLands(landInfo);
+        if (landInfo != null) {
+            landInfo.setCurrentSeason(currentSeason);
+        }
     }
+
+    public void setCurrentLandKind(String landName, String currentKind) {
+        LandInfo landInfo = getLandInfo(landName);
+        if (landInfo != null) {
+            landInfo.setKind(currentKind);
+        }
+    }
+
 
     /**
      * Sets the current crop care type for the specified land.
@@ -198,10 +206,9 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      * @param landName            the name of the land
      * @param currentCropCareType the new crop care type
      */
-    public synchronized void setCurrentCropCareType(String landName, CropCareType currentCropCareType) {
+    public void setCurrentCropCareType(String landName, CropCareType currentCropCareType) {
         LandInfo landInfo = getLandInfo(landName);
         landInfo.setCurrentCropCareType(currentCropCareType);
-        updateAssignedLands(landInfo);
     }
 
     /**
@@ -331,7 +338,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      * @param time
      */
     public void useTime(TimeConsumedBy time) {
-        //TimeConsumedBy.valueOf(this.getClass().getSimpleName())
         decreaseTime(time.getTime());
     }
 
@@ -376,7 +382,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      * @param time
      */
     public synchronized void decreaseTime(double time) {
-        //wpsReport.debug("decreaseTime: " + time, getPeasantProfile().getPeasantFamilyAlias());
+        wpsReport.debug("decreaseTime: " + time, getPeasantProfile().getPeasantFamilyAlias());
         timeLeftOnDay = timeLeftOnDay - time;
         if (timeLeftOnDay <= 0) {
             this.makeNewDay();

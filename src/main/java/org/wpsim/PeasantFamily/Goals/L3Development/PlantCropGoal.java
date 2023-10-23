@@ -28,6 +28,9 @@ import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  *
  * @author jairo
@@ -72,13 +75,6 @@ public class PlantCropGoal extends GoalBDI {
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
         return 1;
-        /*PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getTools() > 0
-                && believes.getPeasantProfile().getSeeds() > 0) {
-            return 1;
-        } else {
-            return 0;
-        }*/
     }
 
     /**
@@ -90,8 +86,10 @@ public class PlantCropGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+        List<LandInfo> landInfos = believes.getAssignedLands();
+        for (LandInfo currentLandInfo : landInfos) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
+                System.out.println(currentLandInfo.getLandName() + " encontrado por plantar");
                 return 1;
             }
         }

@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- * \ V  V / | |_) |\__ \ *    @since 2023                                  *
- * \_/\_/  | .__/ |___/ *                                                 *
- * | |          *    @author Jairo Serrano                        *
- * |_|          *    @author Enrique Gonzalez                     *
+ *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ *   \_/\_/  | .__/ |___/ *                                                 *
+ *           | |          *    @author Jairo Serrano                        *
+ *           |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -19,11 +19,11 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Government.LandInfo;
-import org.wpsim.PeasantFamily.Data.SeasonType;
-import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Tasks.L3Development.CheckCropsTask;
+import org.wpsim.PeasantFamily.Tasks.L3Development.DeforestingLandTask;
+import org.wpsim.PeasantFamily.Tasks.L3Development.PrepareLandTask;
+import org.wpsim.Simulator.wpsStart;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -32,23 +32,23 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class CheckCropsGoal extends GoalBDI {
+public class DeforestingLandGoal extends GoalBDI {
 
     /**
      *
      * @return
      */
-    public static CheckCropsGoal buildGoal() {
-        CheckCropsTask checkCropsTask = new CheckCropsTask();
-        Plan checkCropsPlan = new Plan();
-        checkCropsPlan.addTask(checkCropsTask);
-        RationalRole checkCropsRole = new RationalRole(
-                "CheckCropsTask",
-                checkCropsPlan);
-        return new CheckCropsGoal(
+    public static DeforestingLandGoal buildGoal() {
+        DeforestingLandTask deforestingLandTask = new DeforestingLandTask();
+        Plan deforestingLandPlan = new Plan();
+        deforestingLandPlan.addTask(deforestingLandTask);
+        RationalRole deforestingLandRole = new RationalRole(
+                "DeforestingLandTask",
+                deforestingLandPlan);
+        return new DeforestingLandGoal(
                 wpsStart.getPlanID(),
-                checkCropsRole,
-                "CheckCropsTask",
+                deforestingLandRole,
+                "DeforestingLandTask",
                 GoalBDITypes.OPORTUNITY);
     }
 
@@ -59,7 +59,7 @@ public class CheckCropsGoal extends GoalBDI {
      * @param description
      * @param type
      */
-    public CheckCropsGoal(long id, RationalRole role, String description, GoalBDITypes type) {
+    public DeforestingLandGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
     }
 
@@ -70,10 +70,21 @@ public class CheckCropsGoal extends GoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        return 1;
+    }
+
+    /**
+     * Detects the goal of the peasant family
+     * @param parameters of the peasant family
+     * @return 1 if the peasant family has enough time to deforest the land
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
+            if (currentLandInfo.getKind().equals("forest")) {
                 return 1;
             }
         }
@@ -89,22 +100,11 @@ public class CheckCropsGoal extends GoalBDI {
     @Override
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.CheckCropsTask)) {
+        if (believes.haveTimeAvailable(TimeConsumedBy.DeforestingLandTask)) {
             return 1;
         } else {
             return 0;
         }
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
     }
 
     /**
@@ -115,7 +115,7 @@ public class CheckCropsGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.3;
+        return 0.7;
     }
 
     /**
