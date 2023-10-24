@@ -29,13 +29,11 @@ import rational.mapping.Believes;
 import rational.mapping.Plan;
 
 /**
- *
  * @author jairo
  */
 public class CheckCropsGoal extends GoalBDI {
 
     /**
-     *
      * @return
      */
     public static CheckCropsGoal buildGoal() {
@@ -53,7 +51,6 @@ public class CheckCropsGoal extends GoalBDI {
     }
 
     /**
-     *
      * @param id
      * @param role
      * @param description
@@ -64,7 +61,6 @@ public class CheckCropsGoal extends GoalBDI {
     }
 
     /**
-     *
      * @param parameters
      * @return
      * @throws KernellAgentEventExceptionBESA
@@ -74,14 +70,15 @@ public class CheckCropsGoal extends GoalBDI {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
-                return 1;
+                if (!believes.isCheckedToday()) {
+                    return 1;
+                }
             }
         }
         return 0;
     }
 
     /**
-     *
      * @param parameters
      * @return
      * @throws KernellAgentEventExceptionBESA
@@ -97,7 +94,6 @@ public class CheckCropsGoal extends GoalBDI {
     }
 
     /**
-     *
      * @param parameters
      * @return
      * @throws KernellAgentEventExceptionBESA
@@ -108,18 +104,16 @@ public class CheckCropsGoal extends GoalBDI {
     }
 
     /**
-     *
      * @param stateBDI
      * @return
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.3;
+        return 0.9;
     }
 
     /**
-     *
      * @param stateBDI
      * @return
      * @throws KernellAgentEventExceptionBESA
@@ -131,7 +125,6 @@ public class CheckCropsGoal extends GoalBDI {
     }
 
     /**
-     *
      * @param parameters
      * @return
      * @throws KernellAgentEventExceptionBESA

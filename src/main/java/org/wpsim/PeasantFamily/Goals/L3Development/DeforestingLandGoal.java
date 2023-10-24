@@ -115,7 +115,7 @@ public class DeforestingLandGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.7;
+        return 1;
     }
 
     /**

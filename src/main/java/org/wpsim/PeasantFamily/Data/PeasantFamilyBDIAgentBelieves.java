@@ -50,7 +50,8 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private int robberyAccount;
     private double timeLeftOnDay;
     private boolean newDay;
-    private Map<String, Boolean> checkedToday;
+    //private Map<String, Boolean> checkedToday;
+    private boolean checkedToday;
     private boolean robbedToday;
     private boolean askedForLoanToday;
     private boolean haveLoan;
@@ -78,7 +79,8 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
         this.currentDay = 1;
         this.timeLeftOnDay = 24;
-        this.checkedToday = new HashMap<String, Boolean>();
+        //this.checkedToday = new HashMap<String, Boolean>();
+        this.checkedToday = false;
         this.askedForLoanToday = false;
         this.robbedToday = false;
         this.haveLoan = false;
@@ -161,7 +163,9 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      */
     public boolean getLandAvailable() {
         for (LandInfo landInfo : assignedLands) {
-            if (!landInfo.getKind().equals("water") && landInfo.getCurrentSeason().equals(SeasonType.NONE)) {
+            if (!landInfo.getKind().equals("water")
+                    && !landInfo.getKind().equals("forest")
+                    && landInfo.getCurrentSeason().equals(SeasonType.NONE)) {
                 return true;
             }
         }
@@ -190,6 +194,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         if (landInfo != null) {
             landInfo.setCurrentSeason(currentSeason);
         }
+        this.currentSeason = currentSeason;
     }
 
     public void setCurrentLandKind(String landName, String currentKind) {
@@ -266,12 +271,13 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.robbedToday = false;
     }
 
-    public boolean isCheckedToday(String landName) {
-        return checkedToday.getOrDefault(landName, false);
+    public boolean isCheckedToday(){//(String landName) {
+        return checkedToday;//.getOrDefault(landName, false);
     }
 
-    public void setCheckedToday(String landName) {
-        checkedToday.put(landName, true);
+    public void setCheckedToday(){//String landName) {
+        //checkedToday.put(landName, true);
+        checkedToday = true;
     }
 
     public int getRobberyAccount() {
@@ -360,9 +366,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.robbedToday = false;
         this.askedForLoanToday = false;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
-        if (this.currentSeason == SeasonType.GROWING) {
-            checkedToday.replaceAll((k, v) -> false);
-        }
+        this.checkedToday = false;
     }
 
     public void makeNewDayWOD() {
@@ -371,9 +375,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.newDay = true;
         this.robbedToday = false;
         this.askedForLoanToday = false;
-        if (this.currentSeason == SeasonType.GROWING) {
-            checkedToday.replaceAll((k, v) -> false);
-        }
+        this.checkedToday = false;
     }
 
     /**

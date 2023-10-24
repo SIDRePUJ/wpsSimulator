@@ -41,12 +41,10 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_OBSERVE;
  */
 public class CheckCropsTask extends Task {
 
-    private boolean finished;
     /**
      *
      */
     public CheckCropsTask() {
-        finished = false;
     }
 
     /**
@@ -55,7 +53,6 @@ public class CheckCropsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         // @TODO: falta calcular el tiempo necesario para el cultivo
@@ -94,7 +91,7 @@ public class CheckCropsTask extends Task {
                 }
             }
         }
-        finished = true;
+        believes.setCheckedToday();
     }
 
     /**
@@ -120,6 +117,7 @@ public class CheckCropsTask extends Task {
      */
     @Override
     public boolean checkFinish(Believes parameters) {
-        return finished;
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        return believes.isCheckedToday();
     }
 }

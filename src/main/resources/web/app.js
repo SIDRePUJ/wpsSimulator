@@ -4,14 +4,11 @@ let agentData = {};
 let family_data = {};
 
 function showData(name) {
-    //var space = document.getElementById("agentInfo");
-    //space.innerHTML = JSON.stringify(agentData[name], null, 2);
-    //console.log("Showing data for:", agentData[name]);
     $(function () {
         document.getElementById("activeAgent").value =
             agentData[name]["name"];
         $("#agentInfo").JSONView(agentData[name]["state"]);
-        //$("#agentTasks").JSONView(agentData[name]["taskLog"]);
+        $("#agentTasks").JSONView(agentData[name]["taskLog"]);
         $("#unblockDateList").JSONView(agentData[name]["unblockDateList"]);
     });
 

@@ -23,6 +23,9 @@ ThrivingPeasant:
   money: 5000000
   waterAvailable: 1000
   variance: 0.4
+  peasantFamilyAffinity: 0.3
+  peasantLeisureAffinity: 0.3
+  peasantFriendsAffinity: 0.3
   #Peasant
   peasantKind: ThrivingPeasant
   purpose: ""  
@@ -90,7 +93,6 @@ ThrivingPeasant:
   #healthAndWellness:
   healthProgramsAvailability: 1
   familyTime: 0
-  peasantFamilyAffinity: 0.7
   familyTimeAvailability: 1
   restingTimeAvailibility: 0.7
   peasantRestAffinity: 0.7

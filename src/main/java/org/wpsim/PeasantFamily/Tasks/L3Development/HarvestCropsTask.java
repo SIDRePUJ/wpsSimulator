@@ -21,6 +21,7 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Government.LandInfo;
 import org.wpsim.PeasantFamily.Data.CropCareType;
 import org.wpsim.Viewer.wpsReport;
+import org.wpsim.World.Agent.WorldAgent;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
 import rational.mapping.Believes;
@@ -61,27 +62,25 @@ public class HarvestCropsTask extends Task {
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
                 landName = currentLandInfo.getLandName();
+                try {
+                    WorldMessage worldMessage = new WorldMessage(
+                            CROP_HARVEST,
+                            believes.getPeasantProfile().getCurrentCropName(),
+                            believes.getInternalCurrentDate(),
+                            believes.getPeasantProfile().getPeasantFamilyAlias());
+                    EventBESA ev = new EventBESA(
+                            WorldGuard.class.getName(),
+                            worldMessage);
+                    AdmBESA.getInstance().getHandlerByAlias(landName).sendEvent(ev);
+                    wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
+                    WorldAgent land = (WorldAgent) AdmBESA.getInstance().getHandlerByAlias(landName).getAg();
+                    land.shutdownAgent();
+                } catch (ExceptionBESA ex) {
+                    wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+                }
             }
         }
         believes.setCurrentSeason(landName, SeasonType.SELL_CROP);
-
-        try {
-            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(landName);
-
-            WorldMessage worldMessage = new WorldMessage(
-                    CROP_HARVEST,
-                    believes.getPeasantProfile().getCurrentCropName(),
-                    believes.getInternalCurrentDate(),
-                    believes.getPeasantProfile().getPeasantFamilyAlias());
-            EventBESA ev = new EventBESA(
-                    WorldGuard.class.getName(),
-                    worldMessage);
-            ah.sendEvent(ev);
-            wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
-
-        } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
-        }
         finished = true;
     }
 

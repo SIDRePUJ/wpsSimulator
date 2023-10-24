@@ -45,7 +45,7 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents = 0;
-    public static int stepTime = 200;
+    public static int stepTime = 600;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;
@@ -63,7 +63,7 @@ public class wpsStart {
         try {
             peasantFamiliesAgents = Integer.parseInt(args[1]);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            peasantFamiliesAgents = 2;
+            peasantFamiliesAgents = 6;
         }
         // Set init date of simulation
         config = wpsConfig.getInstance();

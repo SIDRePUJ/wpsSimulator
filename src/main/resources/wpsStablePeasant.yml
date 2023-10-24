@@ -23,6 +23,9 @@ StablePeasant:
   money: 2200000
   waterAvailable: 500
   variance: 0.4
+  peasantFamilyAffinity: 0.3
+  peasantLeisureAffinity: 0.3
+  peasantFriendsAffinity: 0.3
   #Peasant
   peasantKind: StablePeasant
   purpose: ""  
@@ -31,7 +34,7 @@ StablePeasant:
   worker: true
   employee: false
   peasantQualityFactor: 0.7
-  peasantFamilyConf: 1.0
+  peasantFamilyConf: 0.8
   peasantConsumption: 1.0  
   liveStockAffinity: 0.7
   peasantFamilyAliasLand: ""
@@ -90,7 +93,6 @@ StablePeasant:
   #healthAndWellness:
   healthProgramsAvailability: 1
   familyTime: 0
-  peasantFamilyAffinity: 0.7
   familyTimeAvailability: 1
   restingTimeAvailibility: 0.7
   peasantRestAffinity: 0.7

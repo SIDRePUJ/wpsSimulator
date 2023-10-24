@@ -23,9 +23,9 @@ HighriskPeasant:
   money: 1100000
   waterAvailable: 0
   variance: 0.4
-  peasantFamilyAffinity: 0.9
-  peasantLeisureAffinity: 0.7
-  peasantFriendsAffinity: 0.8
+  peasantFamilyAffinity: 0.3
+  peasantLeisureAffinity: 0.3
+  peasantFriendsAffinity: 0.3
   #Peasant
   peasantKind: HighriskPeasant
   purpose: ""  

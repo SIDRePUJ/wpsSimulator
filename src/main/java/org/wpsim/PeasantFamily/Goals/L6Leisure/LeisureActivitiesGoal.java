@@ -111,7 +111,7 @@ public class LeisureActivitiesGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.4;
+        return 0.2;
     }
 
     /**

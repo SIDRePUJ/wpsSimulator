@@ -48,9 +48,11 @@ public class PrepareLandTask extends Task {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE) && currentLandInfo.getKind().equals("land")) {
-                System.out.println("Setting Planting season for " + currentLandInfo.getLandName());
-                currentLandInfo.setCurrentSeason(SeasonType.PLANTING);
+            if (currentLandInfo.getKind().equals("land")) {
+                if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
+                    System.out.println("Setting Planting season for " + currentLandInfo.getLandName());
+                    currentLandInfo.setCurrentSeason(SeasonType.PLANTING);
+                }
             }
         }
         finished = true;
