@@ -14,23 +14,21 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Government.LandInfo;
+import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.SeasonType;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.ResourceNeededType;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.wpsim.World.Messages.WorldMessageType.CROP_INFORMATION;
 import static org.wpsim.World.Messages.WorldMessageType.CROP_OBSERVE;
@@ -55,12 +53,17 @@ public class CheckCropsTask extends Task {
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
+
+        believes.processEmotionalEvent(
+                new EmotionalEvent("FAMILY", "STARVING", "FOOD")
+        );
+
         // @TODO: falta calcular el tiempo necesario para el cultivo
         List<LandInfo> landInfos = believes.getAssignedLands();
         for (LandInfo currentLandInfo : landInfos) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
                 believes.useTime(TimeConsumedBy.CheckCropsTask);
-                System.out.println("revisando cultivos en " + currentLandInfo.getLandName());
+                //System.out.println("revisando cultivos en " + currentLandInfo.getLandName());
                 try {
                     WorldMessage worldMessage;
                     if (Math.random() < 0.2) {

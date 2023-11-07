@@ -21,7 +21,7 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketMessage;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketMessageType;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 
 import static org.wpsim.Market.MarketMessageType.ASK_FOR_PRICE_LIST;
 import static org.wpsim.Market.MarketMessageType.SELL_CROP;

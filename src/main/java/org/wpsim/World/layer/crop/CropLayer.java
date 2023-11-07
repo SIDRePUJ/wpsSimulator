@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.wpsim.Control.Data.DateHelper;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Helper.WorldConfiguration;
 import org.wpsim.World.Automata.layer.GenericWorldLayer;
 import org.wpsim.World.Automata.layer.LayerExecutionParams;
@@ -229,14 +229,17 @@ public class CropLayer extends GenericWorldLayer {
 
     /**
      *
-     * @param cropId
      * @param waterQuantity
      * @param date
      */
-    public void addIrrigationEvent(String cropId, String waterQuantity, String date) {
+    public void addIrrigationEvent(String waterQuantity, String date) {
         CropCellAction cropCellAction = new CropCellAction(CropCellActionType.IRRIGATION, waterQuantity, date);
-        CropCell cropCell = this.cropCellMap.get(cropId);
-        cropCell.addCellAction(cropCellAction);
+        cropCellMap.forEach((key, value) -> {
+            //System.out.println(key + " " + value);
+            value.addCellAction(cropCellAction);
+        });
+        //CropCell cropCell = this.cropCellMap.get(cropId);
+        //cropCell.addCellAction(cropCellAction);
     }
 
     /**

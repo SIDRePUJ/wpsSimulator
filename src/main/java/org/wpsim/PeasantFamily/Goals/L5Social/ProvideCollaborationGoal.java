@@ -89,13 +89,11 @@ public class ProvideCollaborationGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.info("FamilyTimeAvailability=" + believes.getProfile().getFamilyTimeAvailability());
-        /*if (believes.getProfile().getFamilyTimeAvailability() > 0) {
-            return 0;
-        } else {
+        if (believes.getPeasantProfile().getPurpose().equals("worker")) {
             return 1;
-        }*/
-        return 0;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -106,15 +104,8 @@ public class ProvideCollaborationGoal extends GoalBDI {
      */
     @Override
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         return 1;
-        /*if (believes.getProfile().getHealth() > 0
-        && believes.getProfile().haveTimeAvailable(TimeConsumedBy.WasteTimeAndResourcesGoal)) {
-            return 1;
-        } else {
-            return 0;
-        }*/
     }
 
     /**
@@ -125,7 +116,6 @@ public class ProvideCollaborationGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         return 1;
     }
 

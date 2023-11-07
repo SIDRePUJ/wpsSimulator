@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
+import BESA.Emotional.EmotionalEvent;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -41,6 +42,9 @@ public class SpendFamilyTimeTask extends Task {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.SpendFamilyTimeTask);
         believes.setSpendFamilyTimeDoneToday(true);
+        believes.processEmotionalEvent(
+                new EmotionalEvent("FRIEND", "LEISURE", "FOOD")
+        );
         this.setTaskFinalized();
     }
 

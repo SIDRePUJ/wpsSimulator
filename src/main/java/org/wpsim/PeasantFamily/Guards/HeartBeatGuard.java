@@ -24,11 +24,12 @@ import BESA.Log.ReportBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Guards.ControlAgentGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
+import org.wpsim.PeasantFamily.Data.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.guards.InformationFlowGuard;
 
 /**
@@ -59,8 +60,12 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         String PeasantFamilyAlias = believes.getPeasantProfile().getPeasantFamilyAlias();
 
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -7) {
-            System.out.println("Jump PeasantFamilyAlias: " + PeasantFamilyAlias + " - getDaysBetweenDates" + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
+            System.out.println("Jump PeasantFamilyAlias: " + PeasantFamilyAlias
+                    + " - getDaysBetweenDates" + ControlCurrentDate.getInstance().getDaysBetweenDates(
+                            believes.getInternalCurrentDate()
+            ));
             believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
+            believes.setCurrentActivity(PeasantActivityType.BLOCKED);
             believes.makeNewDayWOD();
         }
 
@@ -111,7 +116,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         int waitTime = wpsStart.stepTime;
         if (state.getMainRole() != null) {
             waitTime = TimeConsumedBy.valueOf(state.getMainRole().getRoleName()).getTime() * wpsStart.stepTime;
-            System.out.println("PeasantFamilyAlias: " + PeasantFamilyAlias + " - waitTime: " + waitTime + " rol " + state.getMainRole().getRoleName());
+            //System.out.println("PeasantFamilyAlias: " + PeasantFamilyAlias + " - waitTime: " + waitTime + " rol " + state.getMainRole().getRoleName());
         }
 
         this.setDelayTime(waitTime);

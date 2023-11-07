@@ -21,7 +21,7 @@ import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L1Survival.PeasantOffTask;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;

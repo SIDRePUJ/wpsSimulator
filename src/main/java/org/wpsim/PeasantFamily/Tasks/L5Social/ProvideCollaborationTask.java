@@ -14,6 +14,13 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L5Social;
 
+import BESA.ExceptionBESA;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.System.AdmBESA;
+import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
+import org.wpsim.Simulator.Config.wpsConfig;
+import org.wpsim.Society.Data.SocietyDataMessage;
+import org.wpsim.Society.Guards.SocietyAgentOffersHelpGuard;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -41,39 +48,34 @@ public class ProvideCollaborationTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
+        this.finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        this.setFinished(true);
-    }
+        believes.useTime(TimeConsumedBy.ProvideCollaborationTask);
 
-    /**
-     *
-     * @return
-     */
-    public boolean isFinished() {
-        //wpsReport.info("");
-        return finished;
-    }
+        try {
+            SocietyDataMessage societyDataMessageToSent = new SocietyDataMessage(
+                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                    5
+            );
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsConfig.getInstance().getSocietyAgentName()
+            ).sendEvent(
+                    new EventBESA(SocietyAgentOffersHelpGuard.class.getName(), societyDataMessageToSent)
+            );
+        } catch (ExceptionBESA ex) {
+            System.out.println(ex.getMessage());
+        }
 
-    /**
-     *
-     * @param finished
-     */
-    public void setFinished(boolean finished) {
-        //wpsReport.info("");
-        this.finished = finished;
+        this.finished = true;
     }
-
     /**
      *
      * @param parameters
      */
     @Override
     public void interruptTask(Believes parameters) {
-        //wpsReport.info("");
-        this.setFinished(true);
     }
 
     /**
@@ -82,17 +84,6 @@ public class ProvideCollaborationTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        //wpsReport.info("");
-        this.setFinished(true);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isExecuted() {
-        //wpsReport.info("");
-        return finished;
     }
 
     /**
@@ -103,6 +94,6 @@ public class ProvideCollaborationTask extends Task {
     @Override
     public boolean checkFinish(Believes believes) {
         //wpsReport.info("");
-        return isExecuted();
+        return this.finished;
     }
 }

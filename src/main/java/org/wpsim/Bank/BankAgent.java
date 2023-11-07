@@ -19,7 +19,8 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
-import org.wpsim.Bank.Guard.BankAgentGuard;
+import org.wpsim.Bank.Data.BankAgentState;
+import org.wpsim.Bank.Guards.BankAgentGuard;
 
 /**
  *

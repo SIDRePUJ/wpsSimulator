@@ -14,9 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
-import org.wpsim.Government.LandInfo;
-import org.wpsim.PeasantFamily.Data.CropCareType;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Government.Data.LandInfo;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -50,7 +48,7 @@ public class PrepareLandTask extends Task {
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getKind().equals("land")) {
                 if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
-                    System.out.println("Setting Planting season for " + currentLandInfo.getLandName());
+                    //System.out.println("Setting Planting season for " + currentLandInfo.getLandName());
                     currentLandInfo.setCurrentSeason(SeasonType.PLANTING);
                 }
             }

@@ -18,11 +18,11 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.json.JSONObject;
-import org.wpsim.Government.LandInfo;
+import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.CropCareType;
 import org.wpsim.PeasantFamily.Data.SeasonType;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 
 /**
  *

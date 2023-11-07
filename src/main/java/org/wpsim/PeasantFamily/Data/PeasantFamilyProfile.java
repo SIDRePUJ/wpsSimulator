@@ -469,7 +469,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     public double getCropSizeHA() {
-        return cropSize / 1000;
+        return cropSize;
     }
 
     /**

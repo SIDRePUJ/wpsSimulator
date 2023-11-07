@@ -12,17 +12,31 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Viewer;
+package org.wpsim.Society.Guards;
 
-import BESA.Kernel.Agent.StateBESA;
-
-import java.io.Serializable;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.Agent.GuardBESA;
+import org.wpsim.Society.Data.SocietyAgentState;
+import org.wpsim.Society.Data.SocietyDataMessage;
+import org.wpsim.Viewer.Data.wpsReport;
 
 /**
  *
  * @author jairo
  */
-public class wpsViewerAgentState extends StateBESA implements Serializable {
+public class SocietyAgentOffersHelpGuard extends GuardBESA  {
 
-
+    /**
+     *
+     * @param event
+     */
+    @Override
+    public void funcExecGuard(EventBESA event) {
+        wpsReport.debug("Llegada al agente Sociedad desde " + event.getSource(), this.getAgent().getAlias());
+        SocietyDataMessage societyDataMessage = (SocietyDataMessage) event.getData();
+        SocietyAgentState state = (SocietyAgentState) this.getAgent().getState();
+        state.addPeasantFamilyToStack(societyDataMessage.getPeasantFamilyHelper());
+        System.out.println("ofertando ayuda " +  societyDataMessage.getPeasantFamilyHelper() + " desde " + societyDataMessage.getPeasantFamilyAgent());
+    }
+    
 }

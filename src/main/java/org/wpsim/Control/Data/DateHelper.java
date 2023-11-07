@@ -1,6 +1,7 @@
 package org.wpsim.Control.Data;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -57,5 +58,17 @@ public class DateHelper {
      */
     public static int getMonthFromStringDate(String date) {
         return getDateInJoda(date).getMonthOfYear() - 1;
+    }
+    /**
+     *
+     * @param date
+     * @return
+     */
+    public static int getDayFromStringDate(String date) {
+        return getDateInJoda(date).getDayOfWeek();
+    }
+
+    public static boolean isSunday(String date){
+        return getDateInJoda(date).getDayOfWeek() == DateTimeConstants.SUNDAY;
     }
 }

@@ -16,9 +16,9 @@ package org.wpsim.Control.Guards;
 
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.Control.ControlAgentState;
+import org.wpsim.Control.Data.ControlAgentState;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 
 /**
  *

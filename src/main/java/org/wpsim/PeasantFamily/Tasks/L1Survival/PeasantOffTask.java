@@ -15,10 +15,9 @@
 package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.CropCareType;
 import org.wpsim.PeasantFamily.Data.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.PeasantLeisureType;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 

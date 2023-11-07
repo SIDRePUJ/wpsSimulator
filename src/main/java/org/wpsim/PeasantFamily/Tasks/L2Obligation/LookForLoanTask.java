@@ -18,12 +18,12 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Bank.Guard.BankAgentGuard;
+import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 

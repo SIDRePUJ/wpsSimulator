@@ -12,19 +12,19 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Bank.Guard;
+package org.wpsim.Bank.Guards;
 
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Bank.BankAgentState;
+import org.wpsim.Bank.Data.BankAgentState;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.Bank.Data.BankMessageType;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankMessage;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankMessageType;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 
 import static org.wpsim.Bank.Data.BankMessageType.ASK_FOR_FORMAL_LOAN;
 import static org.wpsim.Bank.Data.BankMessageType.ASK_FOR_INFORMAL_LOAN;

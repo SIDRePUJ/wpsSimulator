@@ -12,10 +12,9 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Simulator;
+package org.wpsim.Simulator.Config;
 
 import BESA.Log.ReportBESA;
-import BESA.Util.FileLoader;
 import com.google.gson.Gson;
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
@@ -47,16 +46,10 @@ public final class wpsConfig {
     private String startSimulationDate;
     private int peasantSerialID;
 
-    private PeasantFamilyProfile stableFarmerProfile;
+    private PeasantFamilyProfile defaultPeasantFamilyProfile;
     private PeasantFamilyProfile highRiskFarmerProfile;
     private PeasantFamilyProfile thrivingFarmerProfile;
-
-    /**
-     *
-     */
-    public static wpsConfig getInstance() {
-        return INSTANCE;
-    }
+    private int smlv;
 
     /**
      *
@@ -67,6 +60,21 @@ public final class wpsConfig {
         this.peasantSerialID = 1;
         this.perturbation = "";
 
+    }
+
+    /**
+     *
+     */
+    public static wpsConfig getInstance() {
+        return INSTANCE;
+    }
+
+    public int getSmlv() {
+        return smlv;
+    }
+
+    public void setSmlv(int smlv) {
+        this.smlv = smlv;
     }
 
     public String getSocietyAgentName() {
@@ -96,8 +104,8 @@ public final class wpsConfig {
     /**
      * @return
      */
-    public PeasantFamilyProfile getStableFarmerProfile() {
-        return stableFarmerProfile.clone();
+    public PeasantFamilyProfile getDefaultPeasantFamilyProfile() {
+        return defaultPeasantFamilyProfile.clone();
     }
 
     /**
@@ -202,6 +210,7 @@ public final class wpsConfig {
             this.PerturbationAgentName = properties.getProperty("perturbation.name");
             this.ViewerAgentName = properties.getProperty("viewer.name");
             this.GovernmentAgentName = properties.getProperty("government.name");
+            this.smlv = Integer.parseInt(properties.getProperty("government.smlv"));
         } catch (IOException e) {
             System.out.println(e.getMessage() + " no encontré loadWPSConfig");
         }
@@ -216,23 +225,11 @@ public final class wpsConfig {
         String yamlContent;
         Gson gson = new Gson();
 
-        yamlContent = loadFile("wpsStablePeasant.yml");
+        yamlContent = loadFile("defaultPeasantFamilyProfile.yml");
         data = (Map<String, Object>) load.loadFromString(yamlContent);
         Map<String, Object> regularPeasant = (Map<String, Object>) data.get("StablePeasant");
         jsonData = gson.toJson(regularPeasant);
-        stableFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
-
-        yamlContent = loadFile("wpsHighriskPeasant.yml");
-        data = (Map<String, Object>) load.loadFromString(yamlContent);
-        Map<String, Object> lazyPeasant = (Map<String, Object>) data.get("HighriskPeasant");
-        jsonData = gson.toJson(lazyPeasant);
-        highRiskFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
-
-        yamlContent = loadFile("wpsThrivingPeasant.yml");
-        data = (Map<String, Object>) load.loadFromString(yamlContent);
-        Map<String, Object> proactivePeasant = (Map<String, Object>) data.get("ThrivingPeasant");
-        jsonData = gson.toJson(proactivePeasant);
-        thrivingFarmerProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
+        defaultPeasantFamilyProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
     }
 
     private InputStream loadFileAsStream(String fileName) throws FileNotFoundException {
@@ -298,7 +295,7 @@ public final class wpsConfig {
 
     public PeasantFamilyProfile getFarmerProfile() {
 
-        PeasantFamilyProfile pfProfile = this.getHighRiskFarmerProfile();
+        PeasantFamilyProfile pfProfile = this.getDefaultPeasantFamilyProfile();
         //getThrivingFarmerProfile();
         //getStableFarmerProfile()
         //getHighRiskFarmerProfile()
@@ -307,7 +304,6 @@ public final class wpsConfig {
                 pfProfile.getVariance() * -1,
                 pfProfile.getVariance()
         );
-        //ReportBESA.error(rnd + " random number");
 
         pfProfile.setHealth((int) (pfProfile.getHealth() * rnd));
         pfProfile.setMoney((int) (pfProfile.getMoney() * rnd));

@@ -19,6 +19,9 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
+import org.wpsim.Society.Data.SocietyAgentState;
+import org.wpsim.Society.Guards.SocietyAgentOffersHelpGuard;
+import org.wpsim.Society.Guards.SocietyAgentRequestHelpGuard;
 
 /**
  *
@@ -46,7 +49,8 @@ public class SocietyAgent extends AgentBESA {
     
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         structBESA.addBehavior("SocietyAgentGuard");
-        structBESA.bindGuard("SocietyAgentGuard", SocietyAgentGuard.class);
+        structBESA.bindGuard("SocietyAgentGuard", SocietyAgentOffersHelpGuard.class);
+        structBESA.bindGuard("SocietyAgentGuard", SocietyAgentRequestHelpGuard.class);
         return structBESA;
     }
     

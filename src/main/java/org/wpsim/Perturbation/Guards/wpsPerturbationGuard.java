@@ -12,14 +12,25 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Perturbation;
+package org.wpsim.Perturbation.Guards;
 
-import BESA.Kernel.Agent.Event.DataBESA;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.Agent.GuardBESA;
+import org.wpsim.Viewer.Data.wpsReport;
 
 /**
  *
  * @author jairo
  */
-public class wpsPerturbationData extends DataBESA  {
+public class wpsPerturbationGuard extends GuardBESA  {
+
+    /**
+     *
+     * @param event
+     */
+    @Override
+    public void funcExecGuard(EventBESA event) {
+        wpsReport.debug("Contacto con perturbación desde  " + event.getSource(), this.getAgent().getAlias());
+    }
     
 }

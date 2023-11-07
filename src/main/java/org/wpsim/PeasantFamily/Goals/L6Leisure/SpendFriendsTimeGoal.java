@@ -22,7 +22,6 @@ import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L6Leisure.SpendFriendsTimeTask;
-import org.wpsim.Viewer.wpsReport;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -74,10 +73,8 @@ public class SpendFriendsTimeGoal extends GoalBDI {
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.isFriendsTimeDoneToday()){
-            //wpsReport.trace("NO " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 0;
         }else {
-            //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         }
     }

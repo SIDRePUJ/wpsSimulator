@@ -12,25 +12,17 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Government;
+package org.wpsim.Viewer.Data;
 
-import BESA.Kernel.Agent.Event.EventBESA;
-import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.Viewer.wpsReport;
+import BESA.Kernel.Agent.StateBESA;
+
+import java.io.Serializable;
 
 /**
  *
  * @author jairo
  */
-public class GovernmentAgentHelpGuard extends GuardBESA  {
+public class wpsViewerAgentState extends StateBESA implements Serializable {
 
-    /**
-     *
-     * @param event
-     */
-    @Override
-    public void funcExecGuard(EventBESA event) {
-        wpsReport.debug("Llegada al agente GovernmentAgentHelpGuard desde " + event.getSource(), this.getAgent().getAlias());
-    }
-    
+
 }

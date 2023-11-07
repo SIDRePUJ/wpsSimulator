@@ -1,19 +1,13 @@
-package org.wpsim.Viewer;
+package org.wpsim.Viewer.Server;
 
-import BESA.ExceptionBESA;
 import io.undertow.Undertow;
-import io.undertow.server.handlers.resource.ResourceManager;
 import io.undertow.websockets.core.AbstractReceiveListener;
 import io.undertow.websockets.core.BufferedTextMessage;
 import io.undertow.websockets.core.WebSocketChannel;
 import io.undertow.websockets.core.WebSockets;
 import io.undertow.websockets.WebSocketConnectionCallback;
 import io.undertow.websockets.spi.WebSocketHttpExchange;
-import io.undertow.server.handlers.resource.PathResourceManager;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +16,6 @@ import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Simulator.wpsStart;
 
 import static io.undertow.Handlers.path;
-import static io.undertow.Handlers.resource;
 import static io.undertow.Handlers.websocket;
 
 public class WebsocketServer implements Runnable {

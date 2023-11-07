@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Viewer;
+package org.wpsim.Viewer.Data;
 
 import BESA.Kernel.Agent.Event.DataBESA;
 

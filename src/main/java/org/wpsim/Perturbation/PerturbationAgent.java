@@ -19,6 +19,8 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
+import org.wpsim.Perturbation.Data.wpsPerturbationState;
+import org.wpsim.Perturbation.Guards.wpsPerturbationGuard;
 import org.wpsim.Simulator.wpsStart;
 
 /**

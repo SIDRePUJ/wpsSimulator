@@ -12,17 +12,17 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Society;
+package org.wpsim.Government.Guards;
 
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 
 /**
  *
  * @author jairo
  */
-public class SocietyAgentGuard extends GuardBESA  {
+public class GovernmentAgentHelpGuard extends GuardBESA  {
 
     /**
      *
@@ -30,7 +30,7 @@ public class SocietyAgentGuard extends GuardBESA  {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        wpsReport.debug("Llegada al agente Sociedad desde " + event.getSource(), this.getAgent().getAlias());
+        wpsReport.debug("Llegada al agente GovernmentAgentHelpGuard desde " + event.getSource(), this.getAgent().getAlias());
     }
     
 }

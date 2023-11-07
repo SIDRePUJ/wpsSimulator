@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Government;
+package org.wpsim.Society.Guards;
 
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
@@ -21,17 +21,16 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
 import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentMessage;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.wpsReport;
-
-import java.util.List;
-import java.util.Map;
+import org.wpsim.PeasantFamily.Guards.FromSociety.FromSocietyGuard;
+import org.wpsim.Society.Data.SocietyAgentState;
+import org.wpsim.Society.Data.SocietyDataMessage;
+import org.wpsim.Viewer.Data.wpsReport;
 
 /**
  *
  * @author jairo
  */
-public class GovernmentAgentLandGuard extends GuardBESA  {
+public class SocietyAgentRequestHelpGuard extends GuardBESA  {
 
     /**
      *
@@ -39,22 +38,25 @@ public class GovernmentAgentLandGuard extends GuardBESA  {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        GovernmentLandData data = (GovernmentLandData) event.getData();
-        GovernmentAgentState state = (GovernmentAgentState) this.getAgent().getState();
-
-        Map.Entry<String, Map<String, String>> assignedFarmData = state.assignLandToFamily(data.getFamilyName());
-        String assignedFarmName = assignedFarmData != null ? assignedFarmData.getKey() : null;
-        Map<String, String> assignedLands = assignedFarmData != null ? assignedFarmData.getValue() : null;
-
+        wpsReport.debug("Llegada al agente Sociedad desde " + event.getSource(), this.getAgent().getAlias());
+        SocietyDataMessage societyDataMessage = (SocietyDataMessage) event.getData();
+        SocietyAgentState state = (SocietyAgentState) this.getAgent().getState();
+        String agentHelper = state.getPeasantFamilyFromStack();
         try {
-            //System.out.println("peaasant family: " + data.getFamilyName() + " Assigned farm: " + assignedFarmName + " Assigned lands: " + assignedLands);
-            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(data.getFamilyName());
-            FromGovernmentMessage fromGovernmentMessage = new FromGovernmentMessage(assignedFarmName, assignedLands);
-            EventBESA ev = new EventBESA(FromGovernmentGuard.class.getName(), fromGovernmentMessage);
-            ah.sendEvent(ev);
+            SocietyDataMessage societyDataMessageToSent = new SocietyDataMessage(
+                    agentHelper,
+                    societyDataMessage.getPeasantFamilyAgent(),
+                    5
+            );
+            System.out.println("enviando ayuda " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyAgent());
+            AdmBESA.getInstance().getHandlerByAlias(
+                    societyDataMessage.getPeasantFamilyAgent()
+            ).sendEvent(
+                    new EventBESA(FromSocietyGuard.class.getName(), societyDataMessageToSent)
+            );
         } catch (ExceptionBESA ex) {
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
     }
-
+    
 }

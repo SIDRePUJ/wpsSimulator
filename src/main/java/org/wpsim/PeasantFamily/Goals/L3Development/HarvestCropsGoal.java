@@ -18,7 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.Government.LandInfo;
+import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.SeasonType;
@@ -45,12 +45,11 @@ public class HarvestCropsGoal extends GoalBDI {
         RationalRole harvestCropsRole = new RationalRole(
                 "HarvestCropsTask",
                 harvestCropsPlan);
-        HarvestCropsGoal harvestCropsGoalBDI = new HarvestCropsGoal(
+        return new HarvestCropsGoal(
                 wpsStart.getPlanID(),
                 harvestCropsRole,
                 "HarvestCropsTask",
                 GoalBDITypes.OPORTUNITY);
-        return harvestCropsGoalBDI;
     }
 
     /**
@@ -62,7 +61,6 @@ public class HarvestCropsGoal extends GoalBDI {
      */
     public HarvestCropsGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
-        //wpsReport.info("");
     }
 
     /**

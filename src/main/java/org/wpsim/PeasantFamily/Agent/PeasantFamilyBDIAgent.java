@@ -22,21 +22,19 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import BESA.Log.ReportBESA;
 import org.wpsim.Control.Guards.AliveAgentGuard;
-import org.wpsim.Control.Guards.ControlAgentGuard;
 import org.wpsim.Control.Guards.DeadAgentGuard;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
-import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
-import org.wpsim.PeasantFamily.Goals.L1Survival.SelfEvaluationGoal;
 import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
 import org.wpsim.PeasantFamily.Goals.L2Obligation.PayDebtsGoal;
 import org.wpsim.PeasantFamily.Goals.L3Development.*;
 import org.wpsim.PeasantFamily.Goals.L4SkillsResources.*;
+import org.wpsim.PeasantFamily.Goals.L5Social.LookForCollaborationGoal;
+import org.wpsim.PeasantFamily.Goals.L5Social.ProvideCollaborationGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFamilyTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFriendsTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.LeisureActivitiesGoal;
@@ -45,9 +43,10 @@ import org.wpsim.PeasantFamily.Guards.*;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
 import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
+import org.wpsim.PeasantFamily.Guards.FromSociety.FromSocietyGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +71,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         structBESA.bindGuard("DefaultPFamilyBehavior", FromBankGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", FromMarketGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", FromGovernmentGuard.class);
+        structBESA.bindGuard("DefaultPFamilyBehavior", FromSocietyGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", StatusGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", KillZombieGuard.class);
 
@@ -99,6 +99,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
         //Level 3 Goals: Development        
         //goals.add(AttendToLivestockGoal.buildGoal());
+        goals.add(AttendReligiousEventsGoal.buildGoal());
         goals.add(CheckCropsGoal.buildGoal());
         goals.add(HarvestCropsGoal.buildGoal());
         goals.add(IrrigateCropsGoal.buildGoal());
@@ -125,8 +126,8 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
         //Level 5 Goals: Social
         //goals.add(CommunicateGoal.buildGoal());
-        //goals.add(LookForCollaborationGoal.buildGoal());
-        //goals.add(ProvideCollaborationGoal.buildGoal());
+        goals.add(LookForCollaborationGoal.buildGoal());
+        goals.add(ProvideCollaborationGoal.buildGoal());
 
         //Level 6 Goals: Leisure
         goals.add(SpendFamilyTimeGoal.buildGoal());

@@ -12,22 +12,39 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Perturbation;
+package org.wpsim.Society.Data;
 
 import BESA.Kernel.Agent.StateBESA;
 
 import java.io.Serializable;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  *
  * @author jairo
  */
-public class wpsPerturbationState extends StateBESA implements Serializable {
+public class SocietyAgentState extends StateBESA implements Serializable {
 
+    // @TODO: Incluir medio de pago y tiempo de contrato. el tiempo según el cultivo.
+    // @TODO: revisar los jornales por precio.
+    ConcurrentLinkedDeque<String> peasantFamilyHelperStack = new ConcurrentLinkedDeque<>();
     /**
      *
      */
-    public wpsPerturbationState() {
+    public SocietyAgentState() {
         super();
+    }
+
+    public void addPeasantFamilyToStack(String peasantFamilyHelper) {
+        if (!peasantFamilyHelper.isEmpty()) {
+            peasantFamilyHelperStack.push(peasantFamilyHelper);
+        }
+    }
+    public String getPeasantFamilyFromStack() {
+        if (peasantFamilyHelperStack.isEmpty()) {
+            return null;
+        }else{
+            return peasantFamilyHelperStack.pop();
+        }
     }
 }

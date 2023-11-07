@@ -14,12 +14,9 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.PeasantLeisureType;
 
 /**
  *

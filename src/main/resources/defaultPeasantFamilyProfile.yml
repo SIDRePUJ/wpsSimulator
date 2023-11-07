@@ -11,30 +11,30 @@
 ## * management and emotional reasoning BDI.                                  *
 ## * ======================================================================== *
 ---
-HighriskPeasant:
+StablePeasant:
   #Variables
-  health: 70
-  peasantFamilyMinimalVital: 5000
-  rainfallConditions: dry
-  cropSize: 2000
-  seeds: 500
+  health: 100
+  peasantFamilyMinimalVital: 10000
+  rainfallConditions: normal
+  cropSize: 1
+  seeds: 1000
   startRiceSeason: 15/01/2022
   currentCropName: ñame
-  money: 1100000
+  money: 2200000
   waterAvailable: 0
-  variance: 0.4
+  variance: 0.2
   peasantFamilyAffinity: 0.3
   peasantLeisureAffinity: 0.3
   peasantFriendsAffinity: 0.3
   #Peasant
-  peasantKind: HighriskPeasant
+  peasantKind: StablePeasant
   purpose: ""  
   productivity: 0.0
   wellBeging: 1.0
   worker: true
   employee: false
   peasantQualityFactor: 0.7
-  peasantFamilyConf: 1.0
+  peasantFamilyConf: 0.8
   peasantConsumption: 1.0  
   liveStockAffinity: 0.7
   peasantFamilyAliasLand: ""
@@ -62,12 +62,12 @@ HighriskPeasant:
   processingTime: 1.0
   riceSeedsByHectare: 20
   #toolsAndSupplies:
-  tools: 100
-  toolsAvailability: 100
-  toolsCost: 100
-  supplies: 100
-  suppliesAvailability: 100
-  suppliesCost: 100
+  tools: 10
+  toolsAvailability: 1.0
+  toolsCost: 1.0
+  supplies: 1.0
+  suppliesAvailability: 1.0
+  suppliesCost: 1.0
   #housing:
   housing: 1.0
   servicesPresence: 1.0

@@ -1,4 +1,4 @@
-package org.wpsim.Government;
+package org.wpsim.Government.Data;
 
 import org.wpsim.PeasantFamily.Data.CropCareType;
 import org.wpsim.PeasantFamily.Data.SeasonType;

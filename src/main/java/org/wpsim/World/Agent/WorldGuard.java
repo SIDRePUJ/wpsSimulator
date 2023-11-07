@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldMessage;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldMessageType;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Helper.WorldConfiguration;
 import org.wpsim.World.Messages.WorldMessage;
 import org.wpsim.World.layer.crop.CropLayer;
@@ -100,9 +100,9 @@ public class WorldGuard extends GuardBESA {
                 //wpsReport.info("Irrigation on the crop, date: " + worldMessage.getDate());
                 String cropIdToIrrigate = worldMessage.getCropId();
                 String defaultWaterQuantity = this.worldConfig.getProperty("crop.defaultValuePerIrrigation");
-                int irrigateValue = Integer.valueOf(defaultWaterQuantity) * worldState.getCropLayer().getCropCellById(cropIdToIrrigate).getCropArea();
+                //int irrigateValue = Integer.parseInt(defaultWaterQuantity) * worldState.getCropLayer().getCropCellById(cropIdToIrrigate).getCropArea();
+                int irrigateValue = (int) (Integer.parseInt(defaultWaterQuantity) * 1.1);
                 worldState.getCropLayer().addIrrigationEvent(
-                        cropIdToIrrigate,
                         String.valueOf(irrigateValue),
                         worldMessage.getDate()
                 );
@@ -151,6 +151,7 @@ public class WorldGuard extends GuardBESA {
                 this.replyToPeasantAgent(
                         worldMessage.getPeasantAgentAlias(),
                         peasantMessage);
+                //this.getAgent().shutdownAgent();
                 break;
         }
     }

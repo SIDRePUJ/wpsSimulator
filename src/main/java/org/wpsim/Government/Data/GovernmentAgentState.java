@@ -12,12 +12,12 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Government;
+package org.wpsim.Government.Data;
 
 import BESA.Kernel.Agent.StateBESA;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.wpsim.Simulator.wpsConfig;
+import org.wpsim.Simulator.Config.wpsConfig;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -55,7 +55,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
     private void initializeLands() {
         try {
             // Cargar el archivo JSON
-            String content = wpsConfig.getInstance().loadFile("web/world.json");
+            String content = wpsConfig.getInstance().loadFile("web/data/world.json");
 
             // Parsear el contenido del archivo JSON
             JSONArray landsArray = new JSONArray(content);

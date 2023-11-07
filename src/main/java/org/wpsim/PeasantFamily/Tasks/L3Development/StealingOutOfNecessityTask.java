@@ -15,7 +15,6 @@
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import BESA.Emotional.EmotionalEvent;
-import org.wpsim.Viewer.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;

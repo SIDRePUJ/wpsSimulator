@@ -22,17 +22,16 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.json.JSONObject;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Data.DateHelper;
-import org.wpsim.Government.LandInfo;
+import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Emotions.EmotionalComponent;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.data.InfoData;
 import rational.mapping.Believes;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * @author jairo
@@ -49,6 +48,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private int currentDay;
     private int robberyAccount;
     private double timeLeftOnDay;
+    private boolean workerWithoutLand;
     private boolean newDay;
     //private Map<String, Boolean> checkedToday;
     private boolean checkedToday;
@@ -60,11 +60,14 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private boolean leisureDoneToday;
     private boolean spendFamilyTimeDoneToday;
     private boolean friendsTimeDoneToday;
+    private String peasantFamilyToHelp;
     private String internalCurrentDate;
     private String ptwDate;
     private Map<String, FarmingResource> priceList = new HashMap<>();
     private Map<Long, TaskLog> taskLog = new ConcurrentHashMap<>();
     private LinkedHashMap<Integer, Boolean> unblockDaysList = new LinkedHashMap<>();
+    private int daysToWorkForOther;
+    private boolean religiousEventDone;
 
     /**
      * @param alias          Peasant Family Alias
@@ -89,11 +92,28 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.loanDenied = false;
         this.ptwDate = "";
         this.leisureDoneToday = false;
+        this.religiousEventDone = false;
 
         this.currentMoneyOrigin = MoneyOriginType.NONE;
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
 
+    }
+
+    public String getPeasantFamilyToHelp() {
+        return peasantFamilyToHelp;
+    }
+
+    public void setPeasantFamilyToHelp(String peasantFamilyToHelp) {
+        this.peasantFamilyToHelp = peasantFamilyToHelp;
+    }
+
+    public boolean isWorkerWithoutLand() {
+        return workerWithoutLand;
+    }
+
+    public void setWorkerWithoutLand() {
+        this.workerWithoutLand = true;
     }
 
     public List<LandInfo> getAssignedLands() {
@@ -357,7 +377,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     * Make variable reset Every Day
+     * Make variable reset Every Day and increment date
      */
     public void makeNewDay() {
         this.currentDay++;
@@ -367,8 +387,12 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.askedForLoanToday = false;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
         this.checkedToday = false;
+        this.religiousEventDone = false;
     }
 
+    /**
+     * Make variable reset Every Day without change date
+     */
     public void makeNewDayWOD() {
         this.currentDay++;
         this.timeLeftOnDay = 24;
@@ -376,6 +400,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.robbedToday = false;
         this.askedForLoanToday = false;
         this.checkedToday = false;
+        this.religiousEventDone = false;
     }
 
     /**
@@ -649,6 +674,25 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
                 DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 3 ||
                 DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 6 ||
                 DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 8;
+    }
+
+    public void discountDaysToWorkForOther() {
+        this.daysToWorkForOther -= 1;
+    }
+    public int getDaysToWorkForOther() {
+        return daysToWorkForOther;
+    }
+
+    public void setDaysToWorkForOther(int daysToWorkForOther) {
+        this.daysToWorkForOther = daysToWorkForOther;
+    }
+
+    public void setReligiousEventDone() {
+        this.religiousEventDone = true;
+    }
+
+    public boolean isReligiousEventDone() {
+        return this.religiousEventDone;
     }
 }
 

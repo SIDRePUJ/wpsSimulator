@@ -18,7 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.Government.LandInfo;
+import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.SeasonType;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -68,10 +68,13 @@ public class CheckCropsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
-                if (!believes.isCheckedToday()) {
-                    return 1;
+        //System.out.println("Energized " + believes.getEmotionCurrentValue("Energized"));
+        if (believes.isEnergized()) {
+            for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+                if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
+                    if (!believes.isCheckedToday()) {
+                        return 1;
+                    }
                 }
             }
         }

@@ -23,7 +23,7 @@ import org.wpsim.Market.MarketMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 

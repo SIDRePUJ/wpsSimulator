@@ -19,6 +19,7 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
+import org.wpsim.Control.Data.ControlAgentState;
 import org.wpsim.Control.Guards.AliveAgentGuard;
 import org.wpsim.Control.Guards.ControlAgentGuard;
 import org.wpsim.Control.Guards.DeadAgentGuard;

@@ -12,13 +12,16 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Viewer;
+package org.wpsim.Viewer.Guards;
 
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.Viewer.Data.wpsViewerMessage;
+import org.wpsim.Viewer.Server.WebsocketServer;
 
 
 /**

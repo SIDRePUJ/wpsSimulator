@@ -19,12 +19,12 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Control.ControlAgentState;
+import org.wpsim.Control.Data.ControlAgentState;
 import org.wpsim.Control.Data.ControlMessage;
 import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.PeasantFamily.Guards.FromControlGuard;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 
 /**
  *

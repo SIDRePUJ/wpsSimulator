@@ -37,11 +37,11 @@ public class AttendReligiousEventsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.AttendReligiousEventsTask);
-        this.setTaskFinalized();
+        believes.useTime(believes.getTimeLeftOnDay());
+        believes.setReligiousEventDone();
+        // @TODO: MEJORAR SUS EMOCIONES
     }
 
     /**
@@ -50,7 +50,7 @@ public class AttendReligiousEventsTask extends Task {
      */
     @Override
     public void interruptTask(Believes parameters) {
-        this.setTaskFinalized();
+
     }
 
     /**
@@ -59,16 +59,17 @@ public class AttendReligiousEventsTask extends Task {
      */
     @Override
     public void cancelTask(Believes parameters) {
-        this.setTaskFinalized();
+
     }
 
     /**
      *
-     * @param believes
+     * @param parameters
      * @return
      */
     @Override
-    public boolean checkFinish(Believes believes) {
-        return true;
+    public boolean checkFinish(Believes parameters) {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        return believes.isReligiousEventDone();
     }
 }

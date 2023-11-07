@@ -19,6 +19,9 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
+import org.wpsim.Viewer.Data.wpsViewerAgentState;
+import org.wpsim.Viewer.Guards.wpsViewerAgentGuard;
+import org.wpsim.Viewer.Server.WebsocketServer;
 
 /**
  *

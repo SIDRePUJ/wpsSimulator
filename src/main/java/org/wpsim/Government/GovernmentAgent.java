@@ -19,7 +19,9 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
-import org.wpsim.PeasantFamily.Guards.StatusGuard;
+import org.wpsim.Government.Data.GovernmentAgentState;
+import org.wpsim.Government.Guards.GovernmentAgentHelpGuard;
+import org.wpsim.Government.Guards.GovernmentAgentLandGuard;
 
 /**
  *

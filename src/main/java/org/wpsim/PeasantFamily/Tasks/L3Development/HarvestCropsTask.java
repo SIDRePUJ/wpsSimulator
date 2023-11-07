@@ -17,11 +17,8 @@ package org.wpsim.PeasantFamily.Tasks.L3Development;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Government.LandInfo;
-import org.wpsim.PeasantFamily.Data.CropCareType;
-import org.wpsim.Viewer.wpsReport;
-import org.wpsim.World.Agent.WorldAgent;
+import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
 import rational.mapping.Believes;
@@ -38,7 +35,6 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_HARVEST;
  */
 public class HarvestCropsTask extends Task {
 
-    private String landName;
     private boolean finished;
 
     /**
@@ -61,26 +57,23 @@ public class HarvestCropsTask extends Task {
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
-                landName = currentLandInfo.getLandName();
                 try {
                     WorldMessage worldMessage = new WorldMessage(
                             CROP_HARVEST,
-                            believes.getPeasantProfile().getCurrentCropName(),
+                            currentLandInfo.getLandName(),
                             believes.getInternalCurrentDate(),
                             believes.getPeasantProfile().getPeasantFamilyAlias());
                     EventBESA ev = new EventBESA(
                             WorldGuard.class.getName(),
                             worldMessage);
-                    AdmBESA.getInstance().getHandlerByAlias(landName).sendEvent(ev);
+                    AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
+                    currentLandInfo.setCurrentSeason(SeasonType.SELL_CROP);
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
-                    WorldAgent land = (WorldAgent) AdmBESA.getInstance().getHandlerByAlias(landName).getAg();
-                    land.shutdownAgent();
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                 }
             }
         }
-        believes.setCurrentSeason(landName, SeasonType.SELL_CROP);
         finished = true;
     }
 

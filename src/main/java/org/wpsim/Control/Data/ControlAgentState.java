@@ -12,22 +12,17 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Control;
+package org.wpsim.Control.Data;
 
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Control.Data.ControlCurrentDate;
-import org.wpsim.Control.Data.ControlMessage;
-import org.wpsim.Control.Guards.DeadAgentGuard;
-import org.wpsim.PeasantFamily.Data.ToControlMessage;
 import org.wpsim.PeasantFamily.Guards.FromControlGuard;
-import org.wpsim.PeasantFamily.Guards.KillZombieGuard;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.WebsocketServer;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Server.WebsocketServer;
+import org.wpsim.Viewer.Data.wpsReport;
 
 import java.io.Serializable;
 import java.util.*;

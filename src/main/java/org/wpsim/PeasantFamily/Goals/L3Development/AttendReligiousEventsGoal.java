@@ -18,10 +18,12 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.Control.Data.DateHelper;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L3Development.AttendReligiousEventsTask;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -43,12 +45,11 @@ public class AttendReligiousEventsGoal extends GoalBDI {
         RationalRole attendReligiousEventsRole = new RationalRole(
                 "AttendReligiousEventsTask",
                 attendReligiousEventsPlan);
-        AttendReligiousEventsGoal attendReligiousEventsGoal = new AttendReligiousEventsGoal(
+        return new AttendReligiousEventsGoal(
                 wpsStart.getPlanID(),
                 attendReligiousEventsRole,
                 "AttendReligiousEventsTask",
                 GoalBDITypes.OPORTUNITY);
-        return attendReligiousEventsGoal;
     }
 
     /**
@@ -60,7 +61,6 @@ public class AttendReligiousEventsGoal extends GoalBDI {
      */
     public AttendReligiousEventsGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
-        //wpsReport.info("");
     }
 
     /**
@@ -71,7 +71,6 @@ public class AttendReligiousEventsGoal extends GoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.AttendReligiousEventsTask)) {
             return 1;
@@ -89,9 +88,7 @@ public class AttendReligiousEventsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.info("getHarvestedWeight=" + believes.getProfile().getHarvestedWeight());
-        // @TODO: Revisar si la iglesia o templo está abierto
-        return 0;
+        return DateHelper.isSunday(believes.getInternalCurrentDate()) ? 1 : 0;
     }
 
     /**
@@ -102,10 +99,7 @@ public class AttendReligiousEventsGoal extends GoalBDI {
      */
     @Override
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-
-            return 0;
+        return 1;
     }
 
     /**
@@ -116,7 +110,6 @@ public class AttendReligiousEventsGoal extends GoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
         return 1;
     }
 
@@ -128,8 +121,8 @@ public class AttendReligiousEventsGoal extends GoalBDI {
      */
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
+        wpsReport.info("\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getPeasantProfile().getPeasantFamilyAlias());
         return believes.getPeasantProfile().getHealth() > 0;
     }
 
@@ -143,5 +136,4 @@ public class AttendReligiousEventsGoal extends GoalBDI {
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
         return true;
     }
-
 }

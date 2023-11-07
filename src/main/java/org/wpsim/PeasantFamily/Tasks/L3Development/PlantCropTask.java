@@ -19,10 +19,10 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Government.LandInfo;
+import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldAgent;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Agent.WorldState;
@@ -83,7 +83,7 @@ public class PlantCropTask extends Task {
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
-                System.out.println("plantando " + currentLandInfo.getLandName());
+                //System.out.println("plantando " + currentLandInfo.getLandName());
                 try {
                     WorldAgent landAgent = buildWorld(
                             getRainfallFile(rainfallConditions),

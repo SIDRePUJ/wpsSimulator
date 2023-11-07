@@ -15,21 +15,17 @@
 package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
 import BESA.Emotional.EmotionalEvent;
-import BESA.Emotional.Semantics;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Bank.Guard.BankAgentGuard;
+import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.Control.Data.ControlCurrentDate;
-import org.wpsim.Control.Data.DateHelper;
-import org.wpsim.Government.LandInfo;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.SeasonType;
 import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 
@@ -59,7 +55,7 @@ public class DoVitalsTask extends Task {
         believes.setLeisureDoneToday(false);
         believes.setSpendFamilyTimeDoneToday(false);
         believes.setFriendsTimeDoneToday(false);
-        believes.useTime(TimeConsumedBy.valueOf("DoVitalsTask"));
+        believes.useTime(TimeConsumedBy.DoVitalsTask);
 
         believes.processEmotionalEvent(
                 new EmotionalEvent("FAMILY", "DOVITALS", "FOOD")

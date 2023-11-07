@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Society;
+package org.wpsim.Perturbation.Data;
 
 import BESA.Kernel.Agent.StateBESA;
 
@@ -22,13 +22,12 @@ import java.io.Serializable;
  *
  * @author jairo
  */
-public class SocietyAgentState extends StateBESA implements Serializable {
+public class wpsPerturbationState extends StateBESA implements Serializable {
 
     /**
      *
      */
-    public SocietyAgentState() {
+    public wpsPerturbationState() {
         super();
-
     }
 }

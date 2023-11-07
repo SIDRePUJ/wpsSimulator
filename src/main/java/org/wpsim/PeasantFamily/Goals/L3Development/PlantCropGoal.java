@@ -18,7 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.Government.LandInfo;
+import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.SeasonType;
@@ -29,7 +29,6 @@ import rational.mapping.Believes;
 import rational.mapping.Plan;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -87,10 +86,12 @@ public class PlantCropGoal extends GoalBDI {
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         List<LandInfo> landInfos = believes.getAssignedLands();
-        for (LandInfo currentLandInfo : landInfos) {
-            if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
-                System.out.println(currentLandInfo.getLandName() + " encontrado por plantar");
-                return 1;
+        if (believes.isEnergized()) {
+            for (LandInfo currentLandInfo : landInfos) {
+                if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
+                    //System.out.println(currentLandInfo.getLandName() + " encontrado por plantar");
+                    return 1;
+                }
             }
         }
         return 0;

@@ -44,12 +44,11 @@ public class SellCropGoal extends GoalBDI {
         RationalRole sellCropsRole = new RationalRole(
                 "SellCropTask",
                 sellCropPlan);
-        SellCropGoal sellCropGoal = new SellCropGoal(
+        return new SellCropGoal(
                 wpsStart.getPlanID(),
                 sellCropsRole,
                 "SellCropTask",
                 GoalBDITypes.OPORTUNITY);
-        return sellCropGoal;
     }
 
     /**

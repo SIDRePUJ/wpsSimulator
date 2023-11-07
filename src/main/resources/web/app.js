@@ -110,11 +110,16 @@ function updateAgent(jsonData) {
     agent.innerHTML = `${jsonData.name}<br>
                 ${state.health} 💊<br>
                 $${state.money.toLocaleString("es-CO")} 💰<br>
-                ${state.internalCurrentDate} 📅${unSynchronized}<br>                
-                ${state.peasantFamilyLandAlias} 🌱 <br>`;
+                ${state.internalCurrentDate} 📅${unSynchronized}<br>`;
+
+    if (state.peasantFamilyLandAlias !== "") {
+        agent.innerHTML = agent.innerHTML + `${state.peasantFamilyLandAlias} 🌱 <br>`;
+    }else{
+        agent.innerHTML = agent.innerHTML + `<br>`;
+    }
 
     if (state.robberyAccount > 0) {
-        agent.innerHTML = agent.innerHTML + " 🦹";
+        agent.innerHTML = agent.innerHTML + "r 🦹";
     }
 
     let color;
@@ -419,7 +424,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 async function loadData() {
     try {
-        let response = await fetch("world.json");
+        let response = await fetch("data/world.json");
         let data = await response.text();
         let worldData = JSON.parse(data);
         worldData.forEach(function (fincaData, index) {

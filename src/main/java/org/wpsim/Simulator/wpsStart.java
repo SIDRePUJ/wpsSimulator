@@ -29,8 +29,9 @@ import org.wpsim.PeasantFamily.Guards.StatusGuard;
 import org.wpsim.PeasantFamily.Guards.HeartBeatGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
 import org.wpsim.Perturbation.PerturbationAgent;
+import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Society.SocietyAgent;
-import org.wpsim.Viewer.wpsReport;
+import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.Viewer.wpsViewerAgent;
 
 import java.util.ArrayList;
@@ -44,8 +45,8 @@ public class wpsStart {
     public static wpsConfig config;
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
-    public static int peasantFamiliesAgents = 0;
-    public static int stepTime = 600;
+    public static int peasantFamiliesAgents;
+    public static int stepTime = 200;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;
@@ -63,7 +64,7 @@ public class wpsStart {
         try {
             peasantFamiliesAgents = Integer.parseInt(args[1]);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            peasantFamiliesAgents = 6;
+            peasantFamiliesAgents = 10;
         }
         // Set init date of simulation
         config = wpsConfig.getInstance();
