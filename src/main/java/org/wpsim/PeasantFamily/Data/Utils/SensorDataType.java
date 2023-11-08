@@ -12,32 +12,57 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Data;
+package org.wpsim.PeasantFamily.Data.Utils;
 
 /**
  *
+ * @author jairo
  */
-public enum ResourceNeededType {
+public enum SensorDataType {
 
     /**
      *
      */
-    WATER,
-    /**
-     *
-     */
-    SEEDS,
-    /**
-     *
-     */
-    PESTICIDE,
-    /**
-     *
-     */
-    NONE,
-    /**
-     *
-     */
-    TOOLS
+    ACTIVITY("activity"),
 
+    /**
+     *
+     */
+    EMOTIONS("emotions"),
+
+    /**
+     *
+     */
+    INTERACTION("interaction"),
+
+    /**
+     *
+     */
+    PEASANT("peasant"),
+
+    /**
+     *
+     */
+    PURPOSE("purpose");
+    private final String identif;
+
+    private SensorDataType(String i) {
+        identif = i;
+    }
+
+    /**
+     *
+     * @param ident
+     * @return
+     */
+    public static SensorDataType getFromId(String ident) {
+        SensorDataType ret = null;
+        for (SensorDataType sdt : values()) {
+            if (sdt.identif.equals(ident)) {
+                ret = sdt;
+                break;
+            }
+        }
+        return ret;
+    }
 }

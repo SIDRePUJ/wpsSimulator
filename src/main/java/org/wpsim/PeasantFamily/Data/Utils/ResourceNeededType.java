@@ -12,21 +12,25 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Data;
+package org.wpsim.PeasantFamily.Data.Utils;
 
 /**
  *
  */
-public enum PeasantActivityType {
+public enum ResourceNeededType {
 
     /**
      *
      */
-    FREE,
+    WATER,
     /**
      *
      */
-    BUSY,
+    SEEDS,
+    /**
+     *
+     */
+    PESTICIDE,
     /**
      *
      */
@@ -34,18 +38,6 @@ public enum PeasantActivityType {
     /**
      *
      */
-    LEISURE,
-    /**
-     *
-     */
-    PRICE_LIST,
-    /**
-     *
-     */
-    PTW,
-    /**
-     *
-     */
-    BLOCKED
+    TOOLS
 
 }

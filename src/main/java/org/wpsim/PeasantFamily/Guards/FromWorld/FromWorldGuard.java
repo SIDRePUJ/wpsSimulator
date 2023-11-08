@@ -20,8 +20,8 @@ import BESA.Kernel.Agent.GuardBESA;
 import org.json.JSONObject;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.CropCareType;
-import org.wpsim.PeasantFamily.Data.SeasonType;
+import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
+import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.Viewer.Data.wpsReport;
 
 /**

@@ -21,6 +21,8 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
+import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldAgent;

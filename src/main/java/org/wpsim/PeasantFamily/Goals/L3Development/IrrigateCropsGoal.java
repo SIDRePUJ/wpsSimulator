@@ -21,9 +21,10 @@ import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.CropCareType;
-import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L3Development.IrrigateCropsTask;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -45,12 +46,11 @@ public class IrrigateCropsGoal extends GoalBDI {
         RationalRole irrigateCropsRole = new RationalRole(
                 "IrrigateCropsTask",
                 irrigateCropsPlan);
-        IrrigateCropsGoal irrigateCropsGoalBDI = new IrrigateCropsGoal(
+        return new IrrigateCropsGoal(
                 wpsStart.getPlanID(),
                 irrigateCropsRole,
                 "IrrigateCropsTask",
                 GoalBDITypes.OPORTUNITY);
-        return irrigateCropsGoalBDI;
     }
 
     /**
@@ -62,7 +62,6 @@ public class IrrigateCropsGoal extends GoalBDI {
      */
     public IrrigateCropsGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
-        //wpsReport.info("");
     }
 
     /**
@@ -73,7 +72,6 @@ public class IrrigateCropsGoal extends GoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("viable");
         return 1;
     }
 
@@ -110,7 +108,6 @@ public class IrrigateCropsGoal extends GoalBDI {
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.IrrigateCropsTask)) {
-            //wpsReport.info("Si");
             return 1;
         } else {
             return 0;
@@ -137,8 +134,10 @@ public class IrrigateCropsGoal extends GoalBDI {
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        //wpsReport.info("legal " + believes.getPeasantProfile().getHealth());
-        return believes.getPeasantProfile().getHealth() > 0;
+        wpsReport.info("\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getPeasantProfile().getPeasantFamilyAlias());
+        wpsReport.info("\n" + stateBDI.getMachineBDIParams().getIntention().getDescription(), believes.getPeasantProfile().getPeasantFamilyAlias());
+        //return believes.getPeasantProfile().getHealth() > 0;
+        return true;
     }
 
     /**

@@ -24,10 +24,10 @@ import BESA.Log.ReportBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Guards.ControlAgentGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
-import org.wpsim.PeasantFamily.Data.PeasantActivityType;
+import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Data.ToControlMessage;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Data.Utils.ToControlMessage;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.guards.InformationFlowGuard;
@@ -67,6 +67,8 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
             believes.setCurrentActivity(PeasantActivityType.BLOCKED);
             believes.makeNewDayWOD();
+        }else{
+            believes.setCurrentActivity(PeasantActivityType.NONE);
         }
 
         /*try {

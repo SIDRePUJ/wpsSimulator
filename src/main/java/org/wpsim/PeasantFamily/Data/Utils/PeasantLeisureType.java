@@ -12,43 +12,33 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Data;
+package org.wpsim.PeasantFamily.Data.Utils;
 
 /**
  *
  */
-public enum MoneyOriginType {
-
-    /**
-     *
-     */
-    LOAN,
-    /**
-     *
-     */
-    INFORMAL,
-    /**
-     *
-     */
-    AVANCE,
-    /**
-     *
-     */
-    BENEFICENCIA,
-    /**
-     *
-     */
-    ROBERY,
-    /**
-     *
-     */
-    LOAN_DENIED,
+public enum PeasantLeisureType {
     /**
      *
      */
     NONE,
+    
     /**
-     *
+     * 
      */
-    INFORMAL_DENIED
+    LEISURE,
+    
+    /**
+     * 
+     */    
+    WASTETIME,
+    
+    /**
+     * 
+     */    
+    WASTERESOURCE,
+    /**
+     * 
+     */
+    OFF
 }

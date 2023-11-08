@@ -5,11 +5,8 @@ let family_data = {};
 
 function showData(name) {
     $(function () {
-        document.getElementById("activeAgent").value =
-            agentData[name]["name"];
         $("#agentInfo").JSONView(agentData[name]["state"]);
         $("#agentTasks").JSONView(agentData[name]["taskLog"]);
-        $("#unblockDateList").JSONView(agentData[name]["unblockDateList"]);
     });
 
     const taskLog = JSON.parse(agentData[name]["taskLog"]);
@@ -23,44 +20,30 @@ function showData(name) {
         taskCount[taskName]++;
     }
 
-    const taskList = document.getElementById("taskList");
+    let taskList;
+    taskList = document.getElementById("taskList");
     taskList.innerHTML = "";
 
+    let listItem;
     for (const task in taskCount) {
-        const listItem = document.createElement("li");
+        listItem = document.createElement("li");
         listItem.className = "list-group-item";
         listItem.textContent = `${task}: ${taskCount[task]}`;
         taskList.appendChild(listItem);
     }
-
-    const agentLands = document.getElementById("agentLands");
-    agentLands.innerHTML = `<h5>${JSON.parse(agentData[name]["state"]).peasantFamilyLandAlias}</h5><br />`;
-    JSON.parse(agentData[name]["state"]).assignedLands.forEach(land => {
-        const landInfo = `
-            Tipo: ${land.kind}<br />
-            Current Season: ${land.currentSeason}<br />
-            En uso: ${land.used} <br />
-            Nombre parcela: ${land.landName}<br /><hr>
-        `;
-        agentLands.innerHTML += landInfo;
-    });
-
     //createOptions(agentData[name]["state"]);
 }
 
 function addPeasantFamily(name) {
     let btn = document.createElement("button");
     btn.id = name;
-    btn.className = "btn btn-primary btn-sm rounded-circle";
+    btn.className = "btn btn-primary btn-sm rounded-circle shadow-sm p-3 mb-5 bg-body rounded";
     btn.innerHTML = name;
     btn.style = "width:120px; font-size: xx-small;";
     btn.onclick = function () {
         showData(name);
     };
     document.getElementById("agentList").appendChild(btn);
-    document
-        .getElementById("activeAgent")
-        .appendChild(new Option(name, name));
 }
 
 // Updates the agent's information on the UI based on the provided JSON data.
@@ -107,24 +90,23 @@ function updateAgent(jsonData) {
         }
     }
 
-    agent.innerHTML = `${jsonData.name}<br>
-                ${state.health} 💊<br>
+    agent.innerHTML = `${jsonData.name}`;
+    if (state.robberyAccount > 0) {
+        agent.innerHTML += "🦹";
+    }
+    agent.innerHTML += `<br> ${state.health} 💊<br>
                 $${state.money.toLocaleString("es-CO")} 💰<br>
                 ${state.internalCurrentDate} 📅${unSynchronized}<br>`;
 
-    if (state.peasantFamilyLandAlias !== "") {
-        agent.innerHTML = agent.innerHTML + `${state.peasantFamilyLandAlias} 🌱 <br>`;
-    }else{
-        agent.innerHTML = agent.innerHTML + `<br>`;
-    }
-
-    if (state.robberyAccount > 0) {
-        agent.innerHTML = agent.innerHTML + "r 🦹";
+    if (state.peasantFamilyLandAlias === "") {
+        agent.innerHTML += "Worker Family 🧑‍🌾";
+    } else {
+        agent.innerHTML += `${state.peasantFamilyLandAlias} 🌱`;
     }
 
     let color;
 
-    if (state.currentActivity == "BLOCKED") {
+    if (state.currentActivity === "BLOCKED") {
         agent.className = "btn btn-secondary";
     } else if (state.health <= 0) {
         agent.className = "btn btn-secondary";
@@ -260,7 +242,6 @@ if (window.WebSocket) {
                 console.log("Unknown message prefix:", prefix);
                 break;
         }
-        $("#agentList .btn-secondary").appendTo("#deadAgentList");
     };
     socket.onopen = function (event) {
         console.log("Web Socket opened!");
@@ -292,6 +273,7 @@ function stringToHashCode(str) {
     }
     return hash;
 }
+
 function hashCodeToColor(hash) {
     const r = (hash & 0xff0000) >> 16;
     const g = (hash & 0x00ff00) >> 8;
@@ -401,20 +383,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
 });
 
-/*function periodicUpdate() {
-  if (familySelectValue) {
-    //console.log('Actualizando gráfico para:', familySelectValue);  // Para depuración
-    try {
-      updateChart(familySelectValue);
-    } catch (error) {
-      console.error("Error en updateChart:", error);
-    }
-  }
-}*/
-
-// Configuración del intervalo para actualizar cada 15 segundos
-//setInterval(periodicUpdate, 5000);
-
 let mymap = L.map("mapid").setView([9.9558349, -75.3062724], 14);
 let landData = {};
 
@@ -446,7 +414,7 @@ async function loadData() {
 
             let polygonOptions = {
                 weight: 0.5,
-                fillColor:  fillColor,
+                fillColor: fillColor,
                 fillOpacity: 0.5
             };
 
@@ -473,13 +441,13 @@ function modifyLand(name, landDataUse, color, newTooltip) {
     landDataUse.forEach(landObj => {
         let landLayer = landData[landObj.landName];
         //console.log(landObj);
-        if (landObj.currentSeason==="PREPARATION"){
+        if (landObj.currentSeason === "PREPARATION") {
             color = "Peru";
-        } else if (landObj.currentSeason==="PLANTING"){
+        } else if (landObj.currentSeason === "PLANTING") {
             color = "Chocolate";
-        } else if (landObj.currentSeason==="GROWING"){
+        } else if (landObj.currentSeason === "GROWING") {
             color = "YellowGreen";
-        } else if (landObj.currentSeason==="HARVEST"){
+        } else if (landObj.currentSeason === "HARVEST") {
             color = "Maroon";
         }
 

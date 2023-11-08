@@ -18,7 +18,7 @@ import BESA.Log.ReportBESA;
 import com.google.gson.Gson;
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
-import org.wpsim.PeasantFamily.Data.FarmingResource;
+import org.wpsim.PeasantFamily.Data.Utils.FarmingResource;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
 
 import java.io.*;

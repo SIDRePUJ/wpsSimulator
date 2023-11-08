@@ -21,7 +21,7 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Market.MarketAgentGuard;
 import org.wpsim.Market.MarketMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;

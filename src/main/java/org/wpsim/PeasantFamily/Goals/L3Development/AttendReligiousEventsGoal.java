@@ -21,7 +21,7 @@ import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Control.Data.DateHelper;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L3Development.AttendReligiousEventsTask;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.RationalRole;

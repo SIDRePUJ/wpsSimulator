@@ -13,7 +13,7 @@
  * ==========================================================================
  */
 
-package org.wpsim.PeasantFamily.Data;
+package org.wpsim.PeasantFamily.Data.Utils;
 
 /**
  *

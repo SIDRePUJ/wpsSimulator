@@ -26,7 +26,7 @@ import org.wpsim.Control.Guards.AliveAgentGuard;
 import org.wpsim.Control.Guards.DeadAgentGuard;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
-import org.wpsim.PeasantFamily.Data.ToControlMessage;
+import org.wpsim.PeasantFamily.Data.Utils.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
 import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
@@ -102,7 +102,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         goals.add(AttendReligiousEventsGoal.buildGoal());
         goals.add(CheckCropsGoal.buildGoal());
         goals.add(HarvestCropsGoal.buildGoal());
-        goals.add(IrrigateCropsGoal.buildGoal());
+        //goals.add(IrrigateCropsGoal.buildGoal());
         //goals.add(MaintainHouseGoal.buildGoal());
         goals.add(ManagePestsGoal.buildGoal());
         goals.add(PlantCropGoal.buildGoal());

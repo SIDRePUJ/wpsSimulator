@@ -136,8 +136,8 @@ public class WorldGuard extends GuardBESA {
                 break;
             case CROP_HARVEST:
                 this.harvestCrop(worldState.getCropLayer());
-                cropCellState = worldState.getCropLayer().getCropStateById(worldMessage.getCropId());
-                cropCellInfo = worldState.getCropLayer().getCropCellById(worldMessage.getCropId());
+                cropCellState = worldState.getCropLayer().getCropState();
+                cropCellInfo = worldState.getCropLayer().getCropCell();
                 diseaseCellState = (DiseaseCellState) cropCellInfo.getDiseaseCell().getCellState();
                 cropDataJson = new JSONObject(cropCellState);
                 cropDataJson.put("disease", diseaseCellState.isInfected());

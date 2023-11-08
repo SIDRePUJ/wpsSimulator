@@ -20,7 +20,7 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
-import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Viewer.Data.wpsReport;

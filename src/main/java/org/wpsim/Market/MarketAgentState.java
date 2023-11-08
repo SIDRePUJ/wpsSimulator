@@ -15,7 +15,7 @@
 package org.wpsim.Market;
 
 import BESA.Kernel.Agent.StateBESA;
-import org.wpsim.PeasantFamily.Data.FarmingResource;
+import org.wpsim.PeasantFamily.Data.Utils.FarmingResource;
 import org.wpsim.Simulator.wpsStart;
 
 import java.io.Serializable;

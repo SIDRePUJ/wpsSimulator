@@ -19,14 +19,14 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Government.Data.LandInfo;
-import org.wpsim.PeasantFamily.Data.SeasonType;
+import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
 import java.util.List;
 

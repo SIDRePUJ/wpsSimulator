@@ -202,7 +202,6 @@ public class CropLayer extends GenericWorldLayer {
     }
 
     /**
-     *
      * @param crop
      */
     public void addCrop(CropCell crop) {
@@ -210,7 +209,6 @@ public class CropLayer extends GenericWorldLayer {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -218,17 +216,24 @@ public class CropLayer extends GenericWorldLayer {
         return (CropCellState) this.cropCellMap.get(id).getCellState();
     }
 
+    public CropCellState getCropState() {
+        return this.cropCellMap.values().stream().findFirst().map(
+                cropCell -> (CropCellState) cropCell.getCellState()
+        ).orElse(null);
+    }
+
     /**
-     *
      * @param id
      * @return
      */
+    public CropCell getCropCell() {
+        return this.cropCellMap.values().stream().findFirst().orElse(null);
+    }
     public CropCell getCropCellById(String id) {
         return this.cropCellMap.get(id);
     }
 
     /**
-     *
      * @param waterQuantity
      * @param date
      */
@@ -291,7 +296,6 @@ public class CropLayer extends GenericWorldLayer {
     }
 
     /**
-     *
      * @return
      */
     public List<CropCell> getAllCrops() {

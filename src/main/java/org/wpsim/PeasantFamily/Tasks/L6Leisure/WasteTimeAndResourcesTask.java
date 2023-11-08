@@ -17,7 +17,7 @@ package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.PeasantLeisureType;
+import org.wpsim.PeasantFamily.Data.Utils.PeasantLeisureType;
 
 /**
  *

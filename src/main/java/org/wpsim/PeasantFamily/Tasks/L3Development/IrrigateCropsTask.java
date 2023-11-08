@@ -24,8 +24,8 @@ import org.wpsim.World.Messages.WorldMessage;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.CropCareType;
-import org.wpsim.PeasantFamily.Data.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
 import static org.wpsim.World.Messages.WorldMessageType.CROP_IRRIGATION;
 
@@ -56,17 +56,24 @@ public class IrrigateCropsTask extends Task {
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
-        boolean foundLandForIrrigation = false;
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getKind().equals("water")) {
                 waterUsed = 0;
+                System.out.println("tiene agua");
                 break;
+            }else{
+                System.out.println("No tiene agua");
             }
         }
 
+        finished = true;
+
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (!foundLandForIrrigation && currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
+            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
+                //System.out.println("🚰🚰🚰🚰 Irrigación de cultivo " + currentLandInfo.getLandName() + " con " + waterUsed + " de " + believes.getPeasantProfile().getPeasantFamilyAlias());
+                currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
+                believes.getPeasantProfile().useWater((int) waterUsed);
                 try {
                     WorldMessage worldMessage = new WorldMessage(
                             CROP_IRRIGATION,
@@ -76,15 +83,13 @@ public class IrrigateCropsTask extends Task {
                     AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(
                             new EventBESA(WorldGuard.class.getName(), worldMessage)
                     );
-                    believes.getPeasantProfile().useWater((int) waterUsed);
-                    currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
+                    System.out.println("🚰🚰🚰🚰 Mensaje de Irrigación " + currentLandInfo.getLandName() + " con " + waterUsed + " de " + believes.getPeasantProfile().getPeasantFamilyAlias());
                     wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivos con " + waterUsed, believes.getPeasantProfile().getPeasantFamilyAlias());
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                 }
             }
         }
-        finished = true;
     }
 
 

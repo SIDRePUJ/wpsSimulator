@@ -1,7 +1,7 @@
 package org.wpsim.Government.Data;
 
-import org.wpsim.PeasantFamily.Data.CropCareType;
-import org.wpsim.PeasantFamily.Data.SeasonType;
+import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
+import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 
 import java.util.Objects;
 

@@ -12,37 +12,41 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Data;
+package org.wpsim.PeasantFamily.Data.Utils;
 
 /**
  *
  */
-public enum CropCareType {
+public enum SeasonType {
 
     /**
      *
      */
-    PESTICIDE,
+    PREPARATION,
 
     /**
      *
      */
-    IRRIGATION,
+    PLANTING,
     
     /**
      *
      */
-    CHECK,
+    GROWING,
+    
+    /**
+     *
+     */
+    HARVEST,
     
     /**
      * 
      */
-    BADWEED, 
+    NONE,
     
     /**
      * 
      */
-    NONE
-    
+    SELL_CROP
     
 }

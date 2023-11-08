@@ -18,7 +18,7 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Data.MoneyOriginType;
+import org.wpsim.PeasantFamily.Data.Utils.MoneyOriginType;
 import org.wpsim.Viewer.Data.wpsReport;
 
 /**

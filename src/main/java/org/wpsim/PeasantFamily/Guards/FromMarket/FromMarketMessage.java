@@ -15,7 +15,7 @@
 package org.wpsim.PeasantFamily.Guards.FromMarket;
 
 import BESA.Kernel.Agent.Event.DataBESA;
-import org.wpsim.PeasantFamily.Data.FarmingResource;
+import org.wpsim.PeasantFamily.Data.Utils.FarmingResource;
 
 import java.util.HashMap;
 import java.util.Map;

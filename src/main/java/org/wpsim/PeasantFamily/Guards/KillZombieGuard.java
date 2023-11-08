@@ -17,7 +17,7 @@ package org.wpsim.PeasantFamily.Guards;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.PeasantFamily.Data.PeasantActivityType;
+import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 
 /**

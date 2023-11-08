@@ -1,122 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <title>WellProd Simulator</title>
     <script src=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
-    <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js" 
-        integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js"
+            integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer">
     </script>
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css"
-      integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css"
+            integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css"/>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
 
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: black">
-      <a class="navbar-brand" href="#" style="color: #fff">&nbsp;WellProd Simulator</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: black">
+    <a class="navbar-brand" href="#" style="color: #fff">&nbsp;WellProd Simulator</a>
+    <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item">
-            <input
-              type="button"
-              value="Start"
-              class="btn btn-success btn-sm"
-              onclick="socket.send('start')"
-            />
-          </li>
-          <li class="nav-item">
-            <input
-              type="button"
-              value="Stop"
-              class="btn btn-danger btn-sm"
-              onclick="socket.send('stop')"
-            />
-          </li>
-          <li class="nav-item">&nbsp;</li>
-          <li class="nav-item">
-            <button class="btn btn-outline-dark btn-sm text-bg-light">
-              <span class="badge text-bg-light" id="currentDate">--/--/--</span>
-            </button>
-          </li>
-          <li>
-            <button id="websocketButton" class="btn btn-success btn-sm">WebSocket</button>
-          </li>
+            <li class="nav-item">
+                <input
+                        type="button"
+                        value="Start"
+                        class="btn btn-success btn-sm"
+                        onclick="socket.send('start')"
+                />
+            </li>
+            <li class="nav-item">
+                <input
+                        type="button"
+                        value="Stop"
+                        class="btn btn-danger btn-sm"
+                        onclick="socket.send('stop')"
+                />
+            </li>
+            <li class="nav-item">&nbsp;</li>
+            <li class="nav-item">
+                <button class="btn btn-outline-dark btn-sm text-bg-light">
+                    <span class="badge text-bg-light" id="currentDate">--/--/--</span>
+                </button>
+            </li>
+            <li>
+                <button id="websocketButton" class="btn btn-success btn-sm">WebSocket</button>
+            </li>
         </ul>
-      </div>
-    </nav>
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-6">
-          <div id="mapid" style="height: 600px"></div>
-          <div class="alert alert-light" role="alert">Agentes Inactivos</div>
-          <div id="deadAgentList"></div>
-        </div>
-        <div class="col-6 border-left border-info">
-          <select class="form-select" id="activeAgent" aria-label="Select active agent" >
-            <option selected>Select active agent</option>
-          </select>
-          <div class="row">
-            <div class="col-4">
-              <div class="alert alert-light" role="alert">Agentes Activos</div>
-              <div id="agentList"></div>
-            </div>
-            <div class="col-4">
-              <div
-                id="agentInfo"
-                style="font-size: x-small; height: 80vh; overflow-y: scroll"
-                class="border-left border-primary"
-              ></div>
-              <div id="agentLands"
-                   style="font-size: xx-small; height: 50vh; overflow-y: scroll"
-                   class="border-left border-primary"
-              ></div>
-            </div>
-            <div class="col-4">
-              <div style="font-size: x-small; height: 60vh; overflow-y: scroll">
-                <ul class="list-group" id="taskList"></ul>
-              </div>
-              <div id="agentTasks" style="font-size: xx-small; height: 50vh; overflow-y: scroll"
-                   class="border-left border-primary"></div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-    <footer class="bg-light text-center py-3" style="height: 5vh">
-        <canvas id="myChart" width="400" height="200"></canvas>
-        <a class="icon-link" href=""><i class="bi bi-github"></i></a>
-    </footer>
-    <script src="app.js"></script>
-  </body>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-5">
+            <div id="mapid" style="height: 550px"></div>
+        </div>
+        <div class="col-7">
+            <div id="agentList"></div>
+            <div class="row">
+                <div class="col-4">
+                    <div id="agentInfo"
+                            style="font-size: x-small; height: 55vh; overflow-y: scroll"
+                            class="border-left border-primary">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div style="font-size: x-small; height: 50vh; overflow-y: scroll">
+                        <ul class="list-group" id="taskList"></ul>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div id="agentTasks" style="font-size: xx-small; height: 50vh; overflow-y: scroll"
+                         class="border-left border-primary"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="app.js"></script>
+</body>
 </html>
