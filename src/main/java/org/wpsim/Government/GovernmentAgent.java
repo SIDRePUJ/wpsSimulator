@@ -22,6 +22,7 @@ import BESA.Kernel.Agent.StructBESA;
 import org.wpsim.Government.Data.GovernmentAgentState;
 import org.wpsim.Government.Guards.GovernmentAgentHelpGuard;
 import org.wpsim.Government.Guards.GovernmentAgentLandGuard;
+import org.wpsim.Government.Guards.GovernmentAgentReleaseLandGuard;
 
 /**
  *
@@ -51,6 +52,7 @@ public class GovernmentAgent extends AgentBESA {
         structBESA.addBehavior("GovernmentAgentGuards");
         structBESA.bindGuard("GovernmentAgentGuards", GovernmentAgentHelpGuard.class);
         structBESA.bindGuard("GovernmentAgentGuards", GovernmentAgentLandGuard.class);
+        structBESA.bindGuard("GovernmentAgentGuards", GovernmentAgentReleaseLandGuard.class);
         return structBESA;
     }
     

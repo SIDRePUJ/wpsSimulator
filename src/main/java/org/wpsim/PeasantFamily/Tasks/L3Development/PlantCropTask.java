@@ -25,6 +25,7 @@ import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.World.Agent.KillWorldGuard;
 import org.wpsim.World.Agent.WorldAgent;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Agent.WorldState;
@@ -47,7 +48,6 @@ import rational.mapping.Task;
 import static org.wpsim.World.Messages.WorldMessageType.CROP_INIT;
 
 /**
- *
  * @author jairo
  */
 public class PlantCropTask extends Task {
@@ -63,7 +63,6 @@ public class PlantCropTask extends Task {
     }
 
     /**
-     *
      * @param parameters
      */
     @Override
@@ -86,39 +85,70 @@ public class PlantCropTask extends Task {
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
                 //System.out.println("plantando " + currentLandInfo.getLandName());
+                boolean isRunning = false;
                 try {
-                    WorldAgent landAgent = buildWorld(
-                            getRainfallFile(rainfallConditions),
-                            peasantAlias,
-                            currentLandInfo.getLandName(),
-                            cropSize,
-                            currentCropName
-                    );
-                    assert landAgent != null;
-                    initialWorldStateInitialization(
-                            landAgent,
-                            peasantAlias,
-                            believes.getInternalCurrentDate()
-                    );
-                    landAgent.start();
-
-                    WorldMessage worldMessage = new WorldMessage(
+                    AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
+                    isRunning = true;
+                } catch (ExceptionBESA ex) {
+                    System.out.println("Se debe crear el agente mundo " + currentLandInfo.getLandName());
+                }
+                WorldMessage worldMessage = null;
+                if (isRunning) {
+                    System.out.println("Renovando cultivo " + currentLandInfo.getLandName());
+                    worldMessage = new WorldMessage(
                             CROP_INIT,
                             currentLandInfo.getLandName(),
                             believes.getInternalCurrentDate(),
                             peasantAlias
                     );
-
-                    EventBESA ev = new EventBESA(WorldGuard.class.getName(), worldMessage);
-                    AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
+                    try {
+                        EventBESA ev = new EventBESA(WorldGuard.class.getName(), worldMessage);
+                        AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
+                    } catch (ExceptionBESA ex) {
+                        System.out.println("Error renovando tierra " + currentLandInfo.getLandName());
+                    }
 
                     // TODO: Estimar el costo de Semillas
                     profile.useSeeds(profile.getRiceSeedsByHectare());
                     currentLandInfo.setCurrentSeason(SeasonType.GROWING);
                     finished = true;
 
-                } catch (ExceptionBESA ex) {
-                    wpsReport.error(ex, peasantAlias);
+                } else {
+                    try {
+
+                        WorldAgent landAgent = buildWorld(
+                                getRainfallFile(rainfallConditions),
+                                peasantAlias,
+                                currentLandInfo.getLandName(),
+                                cropSize,
+                                currentCropName
+                        );
+                        assert landAgent != null;
+                        initialWorldStateInitialization(
+                                landAgent,
+                                peasantAlias,
+                                believes.getInternalCurrentDate()
+                        );
+                        landAgent.start();
+
+                        worldMessage = new WorldMessage(
+                                CROP_INIT,
+                                currentLandInfo.getLandName(),
+                                believes.getInternalCurrentDate(),
+                                peasantAlias
+                        );
+
+                        EventBESA ev = new EventBESA(WorldGuard.class.getName(), worldMessage);
+                        AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
+
+                        // TODO: Estimar el costo de Semillas
+                        profile.useSeeds(profile.getRiceSeedsByHectare());
+                        currentLandInfo.setCurrentSeason(SeasonType.GROWING);
+                        finished = true;
+
+                    } catch (ExceptionBESA ex) {
+                        wpsReport.error(ex, peasantAlias);
+                    }
                 }
             }
         }
@@ -126,7 +156,6 @@ public class PlantCropTask extends Task {
 
 
     /**
-     *
      * @param parameters
      */
     @Override
@@ -134,7 +163,6 @@ public class PlantCropTask extends Task {
     }
 
     /**
-     *
      * @param parameters
      */
     @Override
@@ -142,7 +170,6 @@ public class PlantCropTask extends Task {
     }
 
     /**
-     *
      * @param parameters
      * @return
      */
@@ -229,10 +256,11 @@ public class PlantCropTask extends Task {
             String aliasWorldAgent,
             int cropSize,
             String cropName) {
-        wpsReport.warn(agentAlias + " " + aliasWorldAgent, "ObtainALandTask");
+        //wpsReport.warn(agentAlias + " " + aliasWorldAgent, "ObtainALandTask");
         WorldState worldState = buildWorldState(rainfallFile, agentAlias, cropSize, cropName);
         StructBESA structBESA = new StructBESA();
         structBESA.bindGuard(WorldGuard.class);
+        structBESA.bindGuard(KillWorldGuard.class);
         try {
             WorldAgent worldAgent = new WorldAgent(aliasWorldAgent, worldState, structBESA);
             return worldAgent;

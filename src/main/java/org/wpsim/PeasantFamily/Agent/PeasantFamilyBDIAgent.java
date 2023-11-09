@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -24,6 +24,7 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Control.Guards.AliveAgentGuard;
 import org.wpsim.Control.Guards.DeadAgentGuard;
+import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
 import org.wpsim.PeasantFamily.Data.Utils.ToControlMessage;
@@ -47,6 +48,9 @@ import org.wpsim.PeasantFamily.Guards.FromSociety.FromSocietyGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.World.Agent.KillWorldGuard;
+import org.wpsim.World.Messages.WorldMessage;
+import org.wpsim.World.Messages.WorldMessageType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +77,6 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         structBESA.bindGuard("DefaultPFamilyBehavior", FromGovernmentGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", FromSocietyGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", StatusGuard.class);
-        structBESA.bindGuard("DefaultPFamilyBehavior", KillZombieGuard.class);
 
         return structBESA;
     }
@@ -94,7 +97,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(PeasantOffGoal.buildGoal());
 
         //Level 2 Goals: Obligations
-        goals.add(LookForLoanGoal.buildGoal());
+        //goals.add(LookForLoanGoal.buildGoal());
         goals.add(PayDebtsGoal.buildGoal());
 
         //Level 3 Goals: Development        
@@ -180,24 +183,26 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
      *
      */
     @Override
-    public void shutdownAgentBDI() {
+    public synchronized void shutdownAgentBDI() {
         wpsReport.debug("Shutdown " + this.getAlias(), this.getAlias());
         // Anuncio de que el agente está muerto
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) this.getState()).getBelieves();
-        wpsReport.debug(believes.toJson(), this.getAlias());
+        //wpsReport.debug(believes.toJson(), this.getAlias());
 
         //Eliminar la tierra del agente
-        try {
-            AdmBESA adm = AdmBESA.getInstance();
-            EventBESA eventBesa = new EventBESA(KillZombieGuard.class.getName(), null);
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(believes.getPeasantProfile().getPeasantFamilyAlias() + "_land");
-            agHandler.sendEvent(eventBesa);
-        } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, "ControlAgentState");
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (!currentLandInfo.getKind().equals("water")) {
+                try {
+                    //System.out.println("Eliminando la tierra " + currentLandInfo.getLandName());
+                    String agID = AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
+                    AdmBESA.getInstance().killAgent(agID, wpsStart.PASSWD);
+                } catch (Exception ex) {
+                    wpsReport.error("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage(), this.getAlias());
+                }
+            }
         }
         //Eliminar el agente
         try {
-            AdmBESA adm = AdmBESA.getInstance();
             ToControlMessage toControlMessage = new ToControlMessage(
                     believes.getPeasantProfile().getPeasantFamilyAlias(),
                     believes.getCurrentDay()
@@ -206,15 +211,18 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
                     DeadAgentGuard.class.getName(),
                     toControlMessage
             );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getControlAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
+            ).sendEvent(eventBesa);
+
+            String agID = AdmBESA.getInstance().getHandlerByAlias(this.getAlias()).getAgId();
+            AdmBESA.getInstance().killAgent(agID, wpsStart.PASSWD);
 
             wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-        } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+        } catch (Exception ex) {
+            System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " " + ex.getMessage());
         }
+
     }
 
 }

@@ -18,6 +18,8 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
+import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
@@ -51,12 +53,12 @@ public class HarvestCropsTask extends Task {
     @Override
     public void executeTask(Believes parameters) {
         finished = false;
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
+                wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
                 try {
                     WorldMessage worldMessage = new WorldMessage(
                             CROP_HARVEST,
@@ -67,10 +69,12 @@ public class HarvestCropsTask extends Task {
                             WorldGuard.class.getName(),
                             worldMessage);
                     AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
-                    currentLandInfo.setCurrentSeason(SeasonType.SELL_CROP);
-                    wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
+                    // Reset Land
+                    currentLandInfo.setCurrentSeason(SeasonType.NONE);
+                    currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
+                    finished = true;
                 } catch (ExceptionBESA ex) {
-                    wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+                    wpsReport.error(ex.getMessage(), believes.getPeasantProfile().getPeasantFamilyAlias());
                 }
             }
         }

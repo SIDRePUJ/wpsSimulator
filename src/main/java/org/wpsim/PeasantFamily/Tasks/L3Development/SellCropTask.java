@@ -36,10 +36,13 @@ import static org.wpsim.Market.MarketMessageType.SELL_CROP;
  */
 public class SellCropTask extends Task {
 
+    private boolean finished;
+
     /**
      *
      */
     public SellCropTask() {
+        this.finished = false;
     }
 
     /**
@@ -48,6 +51,7 @@ public class SellCropTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
@@ -73,7 +77,7 @@ public class SellCropTask extends Task {
         }
         // @TODO: cambiar landname
         believes.setCurrentSeason("", SeasonType.NONE);
-        this.setTaskFinalized();
+        this.finished = true;
     }
 
     /**
@@ -99,6 +103,6 @@ public class SellCropTask extends Task {
      */
     @Override
     public boolean checkFinish(Believes believes) {
-        return ((PeasantFamilyBDIAgentBelieves) believes).getPeasantProfile().getHarvestedWeight() == 0;
+        return this.finished;
     }
 }

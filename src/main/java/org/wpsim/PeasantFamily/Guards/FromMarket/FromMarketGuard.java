@@ -37,6 +37,7 @@ public class FromMarketGuard extends GuardBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
         
         FromMarketMessageType fromMarketMessageType = fromMarketMessage.getMessageType();
+        wpsReport.debug(fromMarketMessageType, believes.getPeasantProfile().getPeasantFamilyAlias());
         int discount = 0;
         
         //wpsReport.warn(fromMarketMessage.getMessageType());
@@ -45,9 +46,10 @@ public class FromMarketGuard extends GuardBESA {
             switch (fromMarketMessageType) {
                 case SOLD_CROP:
                     // Incrementa el dinero
+                    // @TODO: Hacer funcionar los precios
                     believes.getPeasantProfile().increaseMoney(
-                            believes.getPeasantProfile().getHarvestedWeight()
-                            * believes.getPriceList().get("ñame").getCost()
+                            believes.getPeasantProfile().getHarvestedWeight() * 1000
+                            //* believes.getPriceList().get("rice").getCost()
                     );
                     // Incrementa el total
                     believes.getPeasantProfile().increaseTotalHarvestedWeight(
@@ -106,7 +108,7 @@ public class FromMarketGuard extends GuardBESA {
             
             believes.getPeasantProfile().useMoney(discount);
             
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             wpsReport.error("Mensaje no reconocido de FromWorldMessageType", "FromMarketGuard");
         }
         

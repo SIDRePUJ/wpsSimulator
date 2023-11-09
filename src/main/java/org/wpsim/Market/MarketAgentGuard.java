@@ -104,7 +104,7 @@ public class MarketAgentGuard extends GuardBESA {
             ah.sendEvent(ev);
             wpsReport.debug(marketMessage.getPeasantAlias() + " sending... " + productType, this.getAgent().getAlias());
 
-        } catch (ExceptionBESA | IllegalArgumentException e) {
+        } catch (Exception e) {
             wpsReport.error("Mensaje no reconocido de funcExecGuard", this.getAgent().getAlias());
         }
     }

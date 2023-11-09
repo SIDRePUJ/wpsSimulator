@@ -19,10 +19,10 @@ StablePeasant:
   cropSize: 1
   seeds: 1000
   startRiceSeason: 15/01/2022
-  currentCropName: ñame
-  money: 1100000
+  currentCropName: rice
+  money: 2200000
   waterAvailable: 1000
-  variance: 0.2
+  variance: 0.4
   peasantFamilyAffinity: 0.3
   peasantLeisureAffinity: 0.3
   peasantFriendsAffinity: 0.3

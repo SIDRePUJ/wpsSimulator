@@ -90,8 +90,7 @@ public class SellCropGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getCurrentSeason() == SeasonType.SELL_CROP) {
-            //wpsReport.debug("Detectado ------");
+        if (believes.getPeasantProfile().getHarvestedWeight() > 0) {
             return 1;
         } else {
             return 0;

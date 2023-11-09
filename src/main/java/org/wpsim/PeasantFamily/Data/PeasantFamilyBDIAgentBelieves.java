@@ -216,6 +216,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
             landInfo.setCurrentSeason(currentSeason);
         }
         this.currentSeason = currentSeason;
+        this.currentSeason = currentSeason;
     }
 
     public void setCurrentLandKind(String landName, String currentKind) {
@@ -410,7 +411,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      * @param time
      */
     public synchronized void decreaseTime(double time) {
-        wpsReport.debug("decreaseTime: " + time, getPeasantProfile().getPeasantFamilyAlias());
+        //wpsReport.debug("decreaseTime: " + time, getPeasantProfile().getPeasantFamilyAlias());
         timeLeftOnDay = timeLeftOnDay - time;
         if (timeLeftOnDay <= 0) {
             this.makeNewDay();
@@ -647,7 +648,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
     public void decreaseHealth() {
         this.peasantProfile.decreaseHealth();
-        if (this.getPeasantProfile().getHealth() <= 0) {
+        /*if (this.getPeasantProfile().getHealth() <= 0) {
             try {
                 wpsReport.debug("👻👻 murió agente " + this.peasantProfile.getPeasantFamilyAlias() + " 👻👻", this.peasantProfile.getPeasantFamilyAlias());
                 AdmBESA adm = AdmBESA.getInstance();
@@ -659,7 +660,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
             } catch (ExceptionBESA ex) {
                 wpsReport.error(ex, this.peasantProfile.getPeasantFamilyAlias());
             }
-        }
+        }*/
     }
 
     public boolean isLeisureDoneToday() {

@@ -17,11 +17,13 @@ package org.wpsim.PeasantFamily.Guards.FromWorld;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
+import BESA.Kernel.System.AdmBESA;
 import org.json.JSONObject;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
+import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 
 /**
@@ -91,12 +93,15 @@ public class FromWorldGuard extends GuardBESA {
                                     cropData.get("aboveGroundBiomass").toString()
                             )
                     );
+                    //System.out.println("Eliminando la tierra despues del cultivo " + landName);
+                    //String agID = AdmBESA.getInstance().getHandlerByAlias(landName).getAgId();
+                    //AdmBESA.getInstance().killAgent(agID, wpsStart.PASSWD);
                     break;
                 default:
                     // Código a ejecutar si messageType no coincide con ninguno de los casos anteriores
                     break;
             }
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             wpsReport.warn("error?" + e, this.getAgent().getAlias());
         }
 

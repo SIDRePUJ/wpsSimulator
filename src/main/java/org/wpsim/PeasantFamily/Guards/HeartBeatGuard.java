@@ -56,12 +56,19 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
     public void funcPeriodicExecGuard(EventBESA event) {
         PeasantFamilyBDIAgent PeasantFamily = (PeasantFamilyBDIAgent) this.getAgent();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
+
+        if (believes.getPeasantProfile().getHealth() <= 0) {
+            this.stopPeriodicCall();
+            this.agent.shutdownAgent();
+            return;
+        }
+
         StateBDI state = (StateBDI) PeasantFamily.getState();
         String PeasantFamilyAlias = believes.getPeasantProfile().getPeasantFamilyAlias();
 
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -7) {
             System.out.println("Jump PeasantFamilyAlias: " + PeasantFamilyAlias
-                    + " - getDaysBetweenDates" + ControlCurrentDate.getInstance().getDaysBetweenDates(
+                    + " - getDaysBetweenDates " + ControlCurrentDate.getInstance().getDaysBetweenDates(
                             believes.getInternalCurrentDate()
             ));
             believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
@@ -77,11 +84,6 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }*/
-
-        if (believes.getPeasantProfile().getHealth() <= 0) {
-            this.agent.shutdownAgent();
-            return;
-        }
 
         try {
             ToControlMessage toControlMessage = new ToControlMessage(

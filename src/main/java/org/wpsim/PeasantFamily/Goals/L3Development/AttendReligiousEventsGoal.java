@@ -122,7 +122,7 @@ public class AttendReligiousEventsGoal extends GoalBDI {
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        wpsReport.info("\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getPeasantProfile().getPeasantFamilyAlias());
+        //wpsReport.info("\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getPeasantProfile().getPeasantFamilyAlias());
         return believes.getPeasantProfile().getHealth() > 0;
     }
 
