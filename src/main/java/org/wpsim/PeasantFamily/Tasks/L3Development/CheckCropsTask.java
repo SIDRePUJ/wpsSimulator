@@ -39,6 +39,8 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_OBSERVE;
  */
 public class CheckCropsTask extends Task {
 
+    private int contador = 0;
+
     /**
      *
      */
@@ -51,6 +53,7 @@ public class CheckCropsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
+        System.out.println("CheckCropsTask " + contador++);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
 

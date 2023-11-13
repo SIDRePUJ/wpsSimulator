@@ -64,7 +64,7 @@ public class wpsStart {
         try {
             peasantFamiliesAgents = Integer.parseInt(args[1]);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            peasantFamiliesAgents = 3;
+            peasantFamiliesAgents = 18;
         }
         // Set init date of simulation
         config = wpsConfig.getInstance();

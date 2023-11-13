@@ -65,6 +65,7 @@ public class LookForCollaborationTask extends Task {
             System.out.println(ex.getMessage());
         }
         this.finished = true;
+        this.setTaskFinalized();
     }
     /**
      *

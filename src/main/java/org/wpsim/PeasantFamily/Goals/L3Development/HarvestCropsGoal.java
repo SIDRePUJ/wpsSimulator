@@ -147,11 +147,6 @@ public class HarvestCropsGoal extends GoalBDI {
      */
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //believes.getProfile().setGrowingSeason(true);
-        //return believes.getProfile()
-        // @TODO: Fix cierre de temporada 
         return true;
     }
 

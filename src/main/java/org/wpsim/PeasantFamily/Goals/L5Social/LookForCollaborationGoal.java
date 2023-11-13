@@ -85,7 +85,7 @@ public class LookForCollaborationGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getAssignedLands().size() > 5) {
+        if (believes.getAssignedLands().size() > 1) {
             return 1;
         }
         return 0;

@@ -52,7 +52,7 @@ public enum TimeConsumedBy {
     ObtainWaterTask(4),
     CommunicateTask(1),
     CollaborateTask(1),
-    LookForCollaborationTask(1),
+    LookForCollaborationTask(3),
     ProvideCollaborationTask(2),
     LeisureActivitiesTask(2),
     FindNewsTask(2),

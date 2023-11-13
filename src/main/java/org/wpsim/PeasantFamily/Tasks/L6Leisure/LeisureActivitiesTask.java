@@ -64,8 +64,8 @@ public class LeisureActivitiesTask extends Task {
      */
     @Override
     public boolean checkFinish(Believes parameters) {
-        //PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //return believes.isLeisureDoneToday();
-        return false;
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        return believes.isLeisureDoneToday();
+        //return false;
     }
 }

@@ -69,6 +69,7 @@ public class CheckCropsGoal extends GoalBDI {
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         //System.out.println("Energized " + believes.getEmotionCurrentValue("Energized"));
+
         if (believes.isEnergized()) {
             for (LandInfo currentLandInfo : believes.getAssignedLands()) {
                 if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
