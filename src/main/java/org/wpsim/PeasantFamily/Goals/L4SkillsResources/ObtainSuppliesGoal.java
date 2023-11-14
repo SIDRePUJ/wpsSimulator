@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -30,7 +31,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class ObtainSuppliesGoal extends GoalBDI {
+public class ObtainSuppliesGoal extends wpsGoalBDI {
 
     /**
      *
@@ -43,12 +44,11 @@ public class ObtainSuppliesGoal extends GoalBDI {
         RationalRole obtainSuppliesRole = new RationalRole(
                 "ObtainSuppliesTask",
                 obtainSuppliesPlan);
-        ObtainSuppliesGoal obtainSuppliesGoalBDI = new ObtainSuppliesGoal(
+        return new ObtainSuppliesGoal(
                 wpsStart.getPlanID(),
                 obtainSuppliesRole,
                 "ObtainSuppliesTask",
                 GoalBDITypes.REQUIREMENT);
-        return obtainSuppliesGoalBDI;
     }
 
     /**
@@ -89,6 +89,11 @@ public class ObtainSuppliesGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         //wpsReport.info("PlantingSeason=" + believes.getProfile().isPlantingSeason());
         return 0;
         /*if (believes.getPeasantProfile().getSupplies() < 1) {
@@ -139,19 +144,6 @@ public class ObtainSuppliesGoal extends GoalBDI {
         //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getPeasantProfile().getSupplies() == 1;
     }
 
 }

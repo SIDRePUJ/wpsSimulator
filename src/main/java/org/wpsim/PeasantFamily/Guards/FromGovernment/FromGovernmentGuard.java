@@ -43,7 +43,6 @@ public class FromGovernmentGuard extends GuardBESA {
 
         if (landName == null){ // Campesino sin tierras
             believes.setWorkerWithoutLand();
-            //System.out.println("campesino sin tierra " + believes.getPeasantProfile().getPeasantFamilyAlias());
         } else if (landName != null && !landName.equals("")) {
             believes.getPeasantProfile().setPeasantFamilyLandAlias(landName);
             believes.setAssignedLands(assignedLands);

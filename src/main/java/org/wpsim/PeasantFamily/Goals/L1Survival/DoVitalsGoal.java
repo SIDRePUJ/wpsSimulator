@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L1Survival.DoVitalsTask;
@@ -29,7 +30,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class DoVitalsGoal extends GoalBDI {
+public class DoVitalsGoal extends wpsGoalBDI {
 
     /**
      *
@@ -53,12 +54,11 @@ public class DoVitalsGoal extends GoalBDI {
         RationalRole doVitalsRole = new RationalRole(
                 "DoVitalsTask",
                 doVitalsPlan);
-        DoVitalsGoal doVitalsGoal = new DoVitalsGoal(
+        return new DoVitalsGoal(
                 wpsStart.getPlanID(),
                 doVitalsRole,
                 "DoVitalsTask",
                 GoalBDITypes.SURVIVAL);
-        return doVitalsGoal;
     }
 
     /**
@@ -86,6 +86,11 @@ public class DoVitalsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (believes.isNewDay()) {
             //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
@@ -127,23 +132,4 @@ public class DoVitalsGoal extends GoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return true;
     }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.debug(wpsStart.getTime() + " DoVitalsGoal:goalSucceeded " + believes.isNewDay() + " " + believes.getPeasantProfile().getPeasantFamilyAlias() + " date " + believes.getInternalCurrentDate() + " hour " + believes.getTimeLeftOnDay(),believes.getPeasantProfile().getPeasantFamilyAlias());
-
-        if (believes.isNewDay()) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
 }

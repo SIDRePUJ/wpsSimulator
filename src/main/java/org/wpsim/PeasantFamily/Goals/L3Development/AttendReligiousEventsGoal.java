@@ -19,6 +19,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Control.Data.DateHelper;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -32,7 +33,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class AttendReligiousEventsGoal extends GoalBDI {
+public class AttendReligiousEventsGoal extends wpsGoalBDI {
 
     /**
      *
@@ -88,6 +89,11 @@ public class AttendReligiousEventsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         return DateHelper.isSunday(believes.getInternalCurrentDate()) ? 1 : 0;
     }
 
@@ -124,16 +130,5 @@ public class AttendReligiousEventsGoal extends GoalBDI {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         //wpsReport.info("\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getPeasantProfile().getPeasantFamilyAlias());
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return true;
     }
 }

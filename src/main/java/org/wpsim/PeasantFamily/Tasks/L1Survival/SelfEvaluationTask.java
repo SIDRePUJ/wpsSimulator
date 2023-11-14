@@ -16,6 +16,7 @@ package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 
@@ -23,7 +24,7 @@ import rational.mapping.Task;
  *
  * @author jairo
  */
-public class SelfEvaluationTask extends Task {
+public class SelfEvaluationTask extends wpsTask {
     
 
     /**
@@ -44,36 +45,4 @@ public class SelfEvaluationTask extends Task {
         this.setTaskFinalized();
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) > 7) {
-            return false;
-        }else {
-            return true;
-        }
-    }
 }

@@ -9,29 +9,29 @@ function showData(name) {
         $("#agentTasks").JSONView(agentData[name]["taskLog"]);
     });
 
-    const taskLog = JSON.parse(agentData[name]["taskLog"]);
-
+    const taskLog = agentData[name]["taskLog"];
     const taskCount = {};
-    for (const key in taskLog) {
-        const taskName = taskLog[key].task;
-        if (!taskCount[taskName]) {
-            taskCount[taskName] = 0;
-        }
-        taskCount[taskName]++;
+
+    for (const date in taskLog) {
+        const tasks = taskLog[date];
+        tasks.forEach(taskName => {
+            if (!taskCount[taskName]) {
+                taskCount[taskName] = 0;
+            }
+            taskCount[taskName]++;
+        });
     }
 
-    let taskList;
-    taskList = document.getElementById("taskList");
+    let taskList = document.getElementById("taskList");
     taskList.innerHTML = "";
 
-    let listItem;
     for (const task in taskCount) {
-        listItem = document.createElement("li");
+        let listItem = document.createElement("li");
         listItem.className = "list-group-item";
         listItem.textContent = `${task}: ${taskCount[task]}`;
         taskList.appendChild(listItem);
     }
-    //createOptions(agentData[name]["state"]);
+
 }
 
 function addPeasantFamily(name) {
@@ -184,12 +184,12 @@ function connectWebSocket() {
     socket = new WebSocket(url);
 
     socket.onopen = function (event) {
-        console.log("Conexión exitosa a la dirección: " + url);
+        //console.log("Conexión exitosa a la dirección: " + url);
         updateWebsocketStatusButton(true);
     };
 
     socket.onerror = function (event) {
-        console.error("Error en la conexión a la dirección: " + url);
+        //console.error("Error en la conexión a la dirección: " + url);
         updateWebsocketStatusButton(false);
         setTimeout(connectWebSocket, 5000);
     };
@@ -198,6 +198,7 @@ function connectWebSocket() {
 if (window.WebSocket) {
     connectWebSocket();
     socket.onmessage = function (event) {
+        //console.log(event.data);
         let prefix = event.data.substring(0, 2);
         let data = event.data.substring(2);
         switch (prefix) {
@@ -265,97 +266,7 @@ function send(message) {
     }
 }
 
-function stringToHashCode(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash = (hash << 5) - hash + str.charCodeAt(i);
-        hash = hash & hash;
-    }
-    return hash;
-}
-
-function hashCodeToColor(hash) {
-    const r = (hash & 0xff0000) >> 16;
-    const g = (hash & 0x00ff00) >> 8;
-    const b = hash & 0x0000ff;
-    return `rgba(${r}, ${g}, ${b}, 1)`;
-}
-
 const familySelect = document.getElementById("activeAgent");
-let myChart;
-
-function updateChart(familyName) {
-    const selectedFamily = family_data[familyName];
-    // Crear una función para convertir la fecha al formato YYYY/MM/DD para comparación
-    const convertDate = (dateStr) => {
-        const [day, month, year] = dateStr.split("/");
-        return `${day}/${month}/${year}`;
-    };
-
-    // Obtener todas las claves (fechas) y ordenarlas
-    const dates = Object.keys(selectedFamily).sort((a, b) => {
-        return new Date(convertDate(a)) - new Date(convertDate(b));
-    });
-
-    const datasets = [];
-
-    // Buscar todos los checkboxes con id que empiezan con "opt_"
-    const checkboxes = document.querySelectorAll('[id^="opt_"]');
-    checkboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-            // Obtén el nombre del campo del checkbox seleccionado, por ejemplo, "peasantLeisureAffinity" de "opt_peasantLeisureAffinity"
-            const fieldName = checkbox.id.substring(4);
-
-            if (
-                dates.every(
-                    (date) => selectedFamily[date][fieldName] !== undefined
-                )
-            ) {
-                const data = dates.map((date) => selectedFamily[date][fieldName]);
-
-                const hash = stringToHashCode(fieldName);
-                const color = hashCodeToColor(hash);
-
-                datasets.push({
-                    label: fieldName,
-                    data: data,
-                    borderColor: color,
-                    borderWidth: 1,
-                });
-            }
-        }
-    });
-
-    if (!myChart) {
-        // Crea el gráfico utilizando Chart.js.
-        const ctx = document.getElementById("myChart").getContext("2d");
-        myChart = new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: dates,
-                datasets: datasets,
-            },
-            options: {
-                animation: false,
-                scales: {
-                    x: {
-                        type: "time",
-                        time: {
-                            parser: "DD/MM/YYYY",
-                        },
-                    },
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-    } else {
-        myChart.data.labels = dates;
-        myChart.data.datasets = datasets;
-        myChart.update();
-    }
-}
 
 let familySelectValue;
 

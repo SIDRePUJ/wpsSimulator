@@ -15,6 +15,7 @@
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 
@@ -22,16 +23,7 @@ import rational.mapping.Task;
  *
  * @author jairo
  */
-public class WorkForOtherTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public WorkForOtherTask() {
-        finished = false;
-    }
+public class WorkForOtherTask extends wpsTask {
 
     /**
      *
@@ -39,38 +31,9 @@ public class WorkForOtherTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.discountDaysToWorkForOther();
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        finished = true;
-    }
-
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        return finished;
     }
 
 }

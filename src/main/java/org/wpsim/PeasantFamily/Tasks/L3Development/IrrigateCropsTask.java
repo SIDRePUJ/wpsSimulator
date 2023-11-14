@@ -18,6 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
@@ -33,16 +34,7 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_IRRIGATION;
  *
  * @author jairo
  */
-public class IrrigateCropsTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public IrrigateCropsTask() {
-        finished = false;
-    }
+public class IrrigateCropsTask extends wpsTask {
 
     /**
      *
@@ -50,7 +42,6 @@ public class IrrigateCropsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
@@ -66,8 +57,6 @@ public class IrrigateCropsTask extends Task {
                 System.out.println("No tiene agua");
             }
         }
-
-        finished = true;
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
@@ -90,32 +79,5 @@ public class IrrigateCropsTask extends Task {
                 }
             }
         }
-    }
-
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        return finished;
     }
 }

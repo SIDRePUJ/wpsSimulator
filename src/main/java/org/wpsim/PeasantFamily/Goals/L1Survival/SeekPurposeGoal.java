@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L1Survival.SeekPurposeTask;
@@ -29,7 +30,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class SeekPurposeGoal extends GoalBDI {
+public class SeekPurposeGoal extends wpsGoalBDI {
 
     /**
      *
@@ -42,12 +43,11 @@ public class SeekPurposeGoal extends GoalBDI {
         RationalRole seekPurposeRole = new RationalRole(
                 "SeekPurposeTask",
                 seekPurposePlan);
-        SeekPurposeGoal seekPurposeGoal = new SeekPurposeGoal(
+        return new SeekPurposeGoal(
                 wpsStart.getPlanID(),
                 seekPurposeRole,
                 "SeekPurposeTask",
                 GoalBDITypes.SURVIVAL);
-        return seekPurposeGoal;
     }
 
     /**

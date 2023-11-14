@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -23,17 +24,8 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
  *
  * @author jairo
  */
-public class ProcessProductsTask extends Task {
+public class ProcessProductsTask extends wpsTask {
 
-    private boolean finished;
-
-    /**
-     *
-     */
-    public ProcessProductsTask() {
-        ////wpsReport.info("");
-        this.finished = false;
-    }
 
     /**
      *
@@ -41,70 +33,10 @@ public class ProcessProductsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         // @TODO: Cambiar a la venta real con el agente social market
-        //believes.getProfile().increaseFarmReady();
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        this.setFinished();
     }
 
-    /**
-     *
-     * @return
-     */
-    public boolean isFinished() {
-        ////wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     * @param finished
-     */
-    public void setFinished() {
-        this.finished = true;
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-        ////wpsReport.info("");
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        ////wpsReport.info("");
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isExecuted() {
-        ////wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     * @param believes
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes believes) {
-        ////wpsReport.info("");
-        return isExecuted();
-    }
 }

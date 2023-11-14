@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -23,13 +24,7 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
  *
  * @author jairo
  */
-public class SpendFriendsTimeTask extends Task {
-
-    /**
-     *
-     */
-    public SpendFriendsTimeTask() {
-    }
+public class SpendFriendsTimeTask extends wpsTask {
 
     /**
      *
@@ -41,33 +36,6 @@ public class SpendFriendsTimeTask extends Task {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.SpendFriendsTimeTask);
         believes.setFriendsTimeDoneToday(true);
-        this.setTaskFinalized();
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.isFriendsTimeDoneToday();
-    }
 }

@@ -20,11 +20,11 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
@@ -37,23 +37,15 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_OBSERVE;
  *
  * @author jairo
  */
-public class CheckCropsTask extends Task {
-
-    private int contador = 0;
+public class CheckCropsTask extends wpsTask {
 
     /**
+     * Executes the CheckCropsTask
      *
-     */
-    public CheckCropsTask() {
-    }
-
-    /**
-     *
-     * @param parameters
+     * @param parameters Believes of the agent
      */
     @Override
     public void executeTask(Believes parameters) {
-        System.out.println("CheckCropsTask " + contador++);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
 
@@ -65,8 +57,8 @@ public class CheckCropsTask extends Task {
         List<LandInfo> landInfos = believes.getAssignedLands();
         for (LandInfo currentLandInfo : landInfos) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
+                // TODO: Usar menos tiempo si tiene ayuda
                 believes.useTime(TimeConsumedBy.CheckCropsTask);
-                //System.out.println("revisando cultivos en " + currentLandInfo.getLandName());
                 try {
                     WorldMessage worldMessage;
                     if (Math.random() < 0.2) {
@@ -97,33 +89,6 @@ public class CheckCropsTask extends Task {
                 }
             }
         }
-        believes.setCheckedToday();
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     * Check if the task was finished
-     * @param parameters believes from agent
-     * @return true if the task was finished
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.isCheckedToday();
-    }
 }

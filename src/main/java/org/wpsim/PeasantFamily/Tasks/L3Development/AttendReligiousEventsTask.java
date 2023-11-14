@@ -15,6 +15,7 @@
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 
@@ -22,7 +23,7 @@ import rational.mapping.Task;
  *
  * @author jairo
  */
-public class AttendReligiousEventsTask extends Task {
+public class AttendReligiousEventsTask extends wpsTask {
 
     /**
      *
@@ -43,32 +44,4 @@ public class AttendReligiousEventsTask extends Task {
         // @TODO: MEJORAR SUS EMOCIONES
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.isReligiousEventDone();
-    }
 }

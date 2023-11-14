@@ -41,6 +41,6 @@ public class FromSocietyGuard extends GuardBESA {
         System.out.println("Ayudando a " + societyDataMessage.getPeasantFamilyHelper());
         believes.setPeasantFamilyToHelp(societyDataMessage.getPeasantFamilyHelper());
         believes.setDaysToWorkForOther(societyDataMessage.getAvailableDays());
-        believes.getPeasantProfile().setPurpose("worker");
+        //believes.getPeasantProfile().setPurpose("worker");
     }
 }

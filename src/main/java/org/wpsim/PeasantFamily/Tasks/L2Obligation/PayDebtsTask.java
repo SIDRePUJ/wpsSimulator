@@ -20,6 +20,7 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Viewer.Data.wpsReport;
@@ -32,7 +33,7 @@ import static org.wpsim.Bank.Data.BankMessageType.PAY_LOAN_TERM;
  *
  * @author jairo
  */
-public class PayDebtsTask extends Task {
+public class PayDebtsTask extends wpsTask {
 
 
     /**
@@ -76,32 +77,4 @@ public class PayDebtsTask extends Task {
         
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        //wpsReport.info("");
-        return ((PeasantFamilyBDIAgentBelieves) parameters).getPeasantProfile().getLoanAmountToPay() == 0;
-    }
 }

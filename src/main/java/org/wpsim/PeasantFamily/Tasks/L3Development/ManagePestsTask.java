@@ -19,6 +19,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
@@ -33,17 +34,7 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_PESTICIDE;
  *
  * @author jairo
  */
-public class ManagePestsTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public ManagePestsTask() {
-        ////wpsReport.info("");
-        this.finished = false;
-    }
+public class ManagePestsTask extends wpsTask {
 
     /**
      *
@@ -80,64 +71,6 @@ public class ManagePestsTask extends Task {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        this.setFinished();
     }
 
-    /**
-     *
-     * @return
-     */
-    public boolean isFinished() {
-        ////wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     */
-    public void setFinished() {
-        ////wpsReport.info("");
-        this.finished = true;
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-        ////wpsReport.info("");
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        ////wpsReport.info("");
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isExecuted() {
-        ////wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     * @param believes
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes believes) {
-        ////wpsReport.info("");
-        return isExecuted();
-    }
 }

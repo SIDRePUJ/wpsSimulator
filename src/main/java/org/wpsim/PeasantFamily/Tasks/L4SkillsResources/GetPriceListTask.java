@@ -18,6 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Market.MarketAgentGuard;
 import org.wpsim.Market.MarketMessage;
@@ -34,13 +35,7 @@ import static org.wpsim.Market.MarketMessageType.ASK_FOR_PRICE_LIST;
  *
  * @author jairo
  */
-public class GetPriceListTask extends Task {
-
-    /**
-     *
-     */
-    public GetPriceListTask() {
-    }
+public class GetPriceListTask extends wpsTask {
 
     /**
      *
@@ -75,30 +70,4 @@ public class GetPriceListTask extends Task {
         }
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return !believes.getPriceList().isEmpty();
-    }
 }

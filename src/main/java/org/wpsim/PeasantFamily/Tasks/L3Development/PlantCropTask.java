@@ -23,6 +23,7 @@ import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.KillWorldGuard;
@@ -50,25 +51,13 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_INIT;
 /**
  * @author jairo
  */
-public class PlantCropTask extends Task {
-
-    private String landName = "";
-    private boolean finished;
-
-    /**
-     *
-     */
-    public PlantCropTask() {
-        finished = false;
-    }
+public class PlantCropTask extends wpsTask {
 
     /**
      * @param parameters
      */
     @Override
     public void executeTask(Believes parameters) {
-        finished = false;
-
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
@@ -111,7 +100,6 @@ public class PlantCropTask extends Task {
                     // TODO: Estimar el costo de Semillas
                     profile.useSeeds(profile.getRiceSeedsByHectare());
                     currentLandInfo.setCurrentSeason(SeasonType.GROWING);
-                    finished = true;
 
                 } else {
                     try {
@@ -144,7 +132,6 @@ public class PlantCropTask extends Task {
                         // TODO: Estimar el costo de Semillas
                         profile.useSeeds(profile.getRiceSeedsByHectare());
                         currentLandInfo.setCurrentSeason(SeasonType.GROWING);
-                        finished = true;
 
                     } catch (ExceptionBESA ex) {
                         wpsReport.error(ex, peasantAlias);
@@ -152,30 +139,6 @@ public class PlantCropTask extends Task {
                 }
             }
         }
-    }
-
-
-    /**
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        return finished;
     }
 
     private static void setPerturbation(String arg) {
@@ -262,8 +225,7 @@ public class PlantCropTask extends Task {
         structBESA.bindGuard(WorldGuard.class);
         structBESA.bindGuard(KillWorldGuard.class);
         try {
-            WorldAgent worldAgent = new WorldAgent(aliasWorldAgent, worldState, structBESA);
-            return worldAgent;
+            return new WorldAgent(aliasWorldAgent, worldState, structBESA);
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "ObtainALandTask");
         }

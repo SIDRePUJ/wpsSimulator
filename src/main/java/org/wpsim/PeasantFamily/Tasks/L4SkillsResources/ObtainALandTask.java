@@ -20,6 +20,7 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Government.Guards.GovernmentAgentLandGuard;
 import org.wpsim.Government.Data.GovernmentLandData;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
@@ -32,13 +33,7 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
  *
  * @author jairo
  */
-public class ObtainALandTask extends Task {
-
-    /**
-     *
-     */
-    public ObtainALandTask() {
-    }
+public class ObtainALandTask extends wpsTask {
 
     /**
      *
@@ -81,36 +76,7 @@ public class ObtainALandTask extends Task {
         believes.getPeasantProfile().setFarmDistance(1);
 
         wpsReport.info("🥬 " + believes.getPeasantProfile().getPeasantFamilyAlias() + " ya tiene tierra " + believes.getPeasantProfile().getPeasantFamilyLandAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
-        this.setTaskFinalized();
 
     }
 
-    /**
-     *
-     * @param believes
-     */
-    @Override
-    public void interruptTask(Believes believes) {
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getPeasantProfile().getFarmName();
-    }
 }

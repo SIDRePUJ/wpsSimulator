@@ -23,6 +23,7 @@ import org.wpsim.Market.MarketMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.ResourceNeededType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
@@ -34,13 +35,7 @@ import static org.wpsim.Market.MarketMessageType.BUY_TOOLS;
  *
  * @author jairo
  */
-public class ObtainToolsTask extends Task {
-
-    /**
-     *
-     */
-    public ObtainToolsTask() {
-    }
+public class ObtainToolsTask extends wpsTask {
 
     /**
      *
@@ -75,29 +70,4 @@ public class ObtainToolsTask extends Task {
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);
     }
 
-    /**
-     *
-     * @param parameters Believes
-     */
-    @Override
-    public void interruptTask(Believes parameters) {}
-
-    /**
-     *
-     * @param parameters Believes
-     */
-    @Override
-    public void cancelTask(Believes parameters) {}
-
-
-    /**
-     *
-     * @param parameters Believes
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getCurrentResourceNeededType() == ResourceNeededType.NONE;
-    }
 }

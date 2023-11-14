@@ -15,6 +15,7 @@
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -25,15 +26,7 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
  *
  * @author jairo
  */
-public class PrepareLandTask extends Task {
-
-    private boolean finished;
-    /**
-     *
-     */
-    public PrepareLandTask() {
-        finished = false;
-    }
+public class PrepareLandTask extends wpsTask {
 
     /**
      *
@@ -41,7 +34,6 @@ public class PrepareLandTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());
@@ -53,32 +45,6 @@ public class PrepareLandTask extends Task {
                 }
             }
         }
-        finished = true;
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters believes from agent
-     * @return true if the task was finished
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        return finished;
-    }
 }

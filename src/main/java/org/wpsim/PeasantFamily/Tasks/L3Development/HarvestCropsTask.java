@@ -19,6 +19,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldGuard;
@@ -35,16 +36,7 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_HARVEST;
  *
  * @author jairo
  */
-public class HarvestCropsTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public HarvestCropsTask() {
-        finished = false;
-    }
+public class HarvestCropsTask extends wpsTask {
 
     /**
      *
@@ -52,7 +44,6 @@ public class HarvestCropsTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
@@ -72,40 +63,11 @@ public class HarvestCropsTask extends Task {
                     // Reset Land
                     currentLandInfo.setCurrentSeason(SeasonType.NONE);
                     currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
-                    finished = true;
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex.getMessage(), believes.getPeasantProfile().getPeasantFamilyAlias());
                 }
             }
         }
-        finished = true;
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        return finished;
-    }
 }

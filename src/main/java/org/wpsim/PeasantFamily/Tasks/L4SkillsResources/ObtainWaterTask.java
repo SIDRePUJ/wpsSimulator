@@ -23,6 +23,7 @@ import org.wpsim.Market.MarketMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.ResourceNeededType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
@@ -34,13 +35,7 @@ import static org.wpsim.Market.MarketMessageType.BUY_WATER;
  *
  * @author jairo
  */
-public class ObtainWaterTask extends Task {
-
-    /**
-     *
-     */
-    public ObtainWaterTask() {
-    }
+public class ObtainWaterTask extends wpsTask {
 
     /**
      *
@@ -76,31 +71,4 @@ public class ObtainWaterTask extends Task {
 
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-        ((PeasantFamilyBDIAgentBelieves) parameters).setCurrentResourceNeededType(ResourceNeededType.NONE);
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        ((PeasantFamilyBDIAgentBelieves) parameters).setCurrentResourceNeededType(ResourceNeededType.NONE);
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        return ((PeasantFamilyBDIAgentBelieves) parameters).getCurrentResourceNeededType() != ResourceNeededType.WATER;
-    }
 }

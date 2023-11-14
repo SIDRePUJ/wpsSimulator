@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L2Obligation.PayDebtsTask;
@@ -29,7 +30,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class PayDebtsGoal extends GoalBDI {
+public class PayDebtsGoal extends wpsGoalBDI {
 
     /**
      *
@@ -42,12 +43,11 @@ public class PayDebtsGoal extends GoalBDI {
         RationalRole peasantPayDebtsRole = new RationalRole(
                 "PeasantPayDebtsTaks",
                 peasantPayDebtsPlan);
-        PayDebtsGoal peasantPayDebtsGoalBDI = new PayDebtsGoal(
+        return new PayDebtsGoal(
                 wpsStart.getPlanID(),
                 peasantPayDebtsRole,
                 "PeasantPayDebtsTaks",
                 GoalBDITypes.DUTY);
-        return peasantPayDebtsGoalBDI;
     }
 
     /**
@@ -89,7 +89,11 @@ public class PayDebtsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //wpsReport.info("DebtPayment=" + believes.getProfile().getDebtPayment());
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (believes.getPeasantProfile().getLoanAmountToPay() > 0 ) {
             return 1;
         } else {
@@ -128,17 +132,6 @@ public class PayDebtsGoal extends GoalBDI {
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return true;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return ((PeasantFamilyBDIAgentBelieves) parameters).getPeasantProfile().getLoanAmountToPay() == 0;
     }
 
 }

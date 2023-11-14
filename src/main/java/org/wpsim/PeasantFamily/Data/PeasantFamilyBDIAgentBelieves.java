@@ -15,20 +15,19 @@
 package org.wpsim.PeasantFamily.Data;
 
 import BESA.Emotional.EmotionAxis;
-import BESA.Emotional.EmotionalEvent;
-import BESA.ExceptionBESA;
-import BESA.Kernel.System.AdmBESA;
-import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.json.JSONObject;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Data.DateHelper;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.*;
 import org.wpsim.PeasantFamily.Emotions.EmotionalComponent;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Data.wpsReport;
 import rational.data.InfoData;
 import rational.mapping.Believes;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -65,7 +64,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private String internalCurrentDate;
     private String ptwDate;
     private Map<String, FarmingResource> priceList = new HashMap<>();
-    private Map<Long, TaskLog> taskLog = new ConcurrentHashMap<>();
+    private Map<String, Set<String>> taskLog = new ConcurrentHashMap<>();
     private LinkedHashMap<Integer, Boolean> unblockDaysList = new LinkedHashMap<>();
     private int daysToWorkForOther;
     private boolean religiousEventDone;
@@ -115,6 +114,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
     public void setWorkerWithoutLand() {
         this.workerWithoutLand = true;
+        peasantProfile.setPurpose("worker");
     }
 
     public List<LandInfo> getAssignedLands() {
@@ -239,7 +239,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
 
     /**
-     * Adds a task to the log.
+     * Adds a task to the log for the specified date.
      *
      * @param date the date of the task
      */
@@ -248,9 +248,20 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         String fullClassName = stackTraceElements[2].getClassName();
         String[] parts = fullClassName.split("\\.");
         String taskName = parts[parts.length - 1];
-        long time = System.currentTimeMillis() - wpsStart.startTime;
-        TaskLog taskLog = new TaskLog(date, taskName);
-        this.taskLog.put(time, taskLog);
+        taskLog.computeIfAbsent(date, k -> ConcurrentHashMap.newKeySet()).add(taskName);
+        //TaskLog taskLog = new TaskLog(date, taskName);
+        //this.taskLog.put(time, taskLog);
+    }
+
+    /**
+     * Checks if the specified task was executed on the specified date.
+     * @param date Date to check
+     * @param taskName Name of the task
+     * @return true if the task was executed on the specified date, false otherwise
+     */
+    public boolean isTaskExecutedOnDate(String date, String taskName) {
+        Set<String> tasks = taskLog.getOrDefault(date, new HashSet<>());
+        return tasks.contains(taskName);
     }
 
     public boolean isFamilyTimeDoneToday() {
@@ -620,10 +631,28 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         finalDataObject.put("name", peasantProfile.getPeasantFamilyAlias());
         finalDataObject.put("state", dataObject.toString());
 
-        finalDataObject.put("taskLog", new JSONObject(taskLog).toString());
-        finalDataObject.put("unblockDateList", new JSONObject(unblockDaysList).toString());
+        finalDataObject.put("taskLog", getOrderedTasksByDateJson());
 
         return finalDataObject.toString();
+    }
+
+    public Map<String, Set<String>> getOrderedTasksByDateJson() {
+        Map<LocalDate, Set<String>> sortedTasks = new TreeMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Convertir y ordenar
+        taskLog.forEach((dateString, tasks) -> {
+            LocalDate date = LocalDate.parse(dateString, formatter);
+            sortedTasks.put(date, tasks);
+        });
+
+        // Convertir de vuelta a String y crear JSON
+        Map<String, Set<String>> finalData = new LinkedHashMap<>();
+        sortedTasks.forEach((date, tasks) -> {
+            finalData.put(date.format(formatter), tasks);
+        });
+
+        return finalData;
     }
 
     public double getToPay() {
@@ -696,5 +725,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     public boolean isReligiousEventDone() {
         return this.religiousEventDone;
     }
+
+
 }
 

@@ -21,6 +21,7 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Viewer.Data.wpsReport;
@@ -33,7 +34,7 @@ import static org.wpsim.Bank.Data.BankMessageType.ASK_FOR_FORMAL_LOAN;
  *
  * @author jairo
  */
-public class LookForLoanTask extends Task {
+public class LookForLoanTask extends wpsTask {
     
     /**
      *
@@ -70,30 +71,4 @@ public class LookForLoanTask extends Task {
         this.setTaskFinalized();
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        return ((PeasantFamilyBDIAgentBelieves) parameters).isAskedForLoanToday();
-    }
 }

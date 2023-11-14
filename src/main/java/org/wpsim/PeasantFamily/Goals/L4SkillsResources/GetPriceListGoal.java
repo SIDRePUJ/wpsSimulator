@@ -14,7 +14,6 @@
  */
 package org.wpsim.PeasantFamily.Goals.L4SkillsResources;
 
-import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
@@ -23,6 +22,7 @@ import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L4SkillsResources.GetPriceListTask;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -31,7 +31,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class GetPriceListGoal extends GoalBDI {
+public class GetPriceListGoal extends wpsGoalBDI {
 
     /**
      *
@@ -44,12 +44,11 @@ public class GetPriceListGoal extends GoalBDI {
         RationalRole getPriceListRole = new RationalRole(
                 "GetPriceListTask",
                 getPriceListPlan);
-        GetPriceListGoal getPriceListGoal = new GetPriceListGoal(
+        return new GetPriceListGoal(
                 wpsStart.getPlanID(),
                 getPriceListRole,
                 "GetPriceListTask",
                 GoalBDITypes.REQUIREMENT);
-        return getPriceListGoal;
     }
 
     /**
@@ -83,6 +82,11 @@ public class GetPriceListGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (believes.getCurrentActivity() == PeasantActivityType.PRICE_LIST) {
             return 1;
         } else {
@@ -127,17 +131,6 @@ public class GetPriceListGoal extends GoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return true;
     }
 
 }

@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.ResourceNeededType;
@@ -32,7 +33,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class ObtainWaterGoal extends GoalBDI {
+public class ObtainWaterGoal extends wpsGoalBDI {
 
     /**
      *
@@ -45,12 +46,11 @@ public class ObtainWaterGoal extends GoalBDI {
         RationalRole obtainWaterRole = new RationalRole(
                 "ObtainWaterTask",
                 obtainWaterPlan);
-        ObtainWaterGoal obtainWaterGoal = new ObtainWaterGoal(
+        return new ObtainWaterGoal(
                 wpsStart.getPlanID(),
                 obtainWaterRole,
                 "ObtainWaterTask",
                 GoalBDITypes.REQUIREMENT);
-        return obtainWaterGoal;
     }
 
     /**
@@ -74,6 +74,11 @@ public class ObtainWaterGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (believes.getCurrentResourceNeededType() == ResourceNeededType.WATER
                 && believes.getPeasantProfile().getMoney() >= 1000000) {
             wpsReport.warn("Detectada necesidad de comprar agua ", believes.getPeasantProfile().getPeasantFamilyAlias());
@@ -133,16 +138,4 @@ public class ObtainWaterGoal extends GoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return true;
     }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return true;
-    }
-
 }

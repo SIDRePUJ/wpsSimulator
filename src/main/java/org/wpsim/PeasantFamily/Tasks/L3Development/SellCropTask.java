@@ -18,6 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Market.MarketAgentGuard;
 import org.wpsim.Market.MarketMessage;
@@ -34,16 +35,7 @@ import static org.wpsim.Market.MarketMessageType.SELL_CROP;
  *
  * @author jairo
  */
-public class SellCropTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public SellCropTask() {
-        this.finished = false;
-    }
+public class SellCropTask extends wpsTask {
 
     /**
      *
@@ -51,7 +43,6 @@ public class SellCropTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        this.finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
@@ -77,32 +68,6 @@ public class SellCropTask extends Task {
         }
         // @TODO: cambiar landname
         believes.setCurrentSeason("", SeasonType.NONE);
-        this.finished = true;
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param believes
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes believes) {
-        return this.finished;
-    }
 }

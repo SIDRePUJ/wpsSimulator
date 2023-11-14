@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -23,13 +24,7 @@ import org.wpsim.PeasantFamily.Data.Utils.PeasantLeisureType;
  *
  * @author jairo
  */
-public class WasteTimeAndResourcesTask extends Task {
-
-    /**
-     *
-     */
-    public WasteTimeAndResourcesTask() {
-    }
+public class WasteTimeAndResourcesTask extends wpsTask {
 
     /**
      *
@@ -45,30 +40,4 @@ public class WasteTimeAndResourcesTask extends Task {
         this.setTaskFinalized();
     }
 
-    /**
-     *
-     * @param parameters Believes
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters Believes
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters Believes
-     * @return boolean
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getCurrentPeasantLeisureType() == PeasantLeisureType.NONE;
-    }
 }

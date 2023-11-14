@@ -20,6 +20,7 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -31,7 +32,7 @@ import rational.mapping.Plan;
 /**
  * @author jairo
  */
-public class CheckCropsGoal extends GoalBDI {
+public class CheckCropsGoal extends wpsGoalBDI {
 
     /**
      * @return
@@ -68,14 +69,17 @@ public class CheckCropsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
         //System.out.println("Energized " + believes.getEmotionCurrentValue("Energized"));
 
         if (believes.isEnergized()) {
             for (LandInfo currentLandInfo : believes.getAssignedLands()) {
                 if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
-                    if (!believes.isCheckedToday()) {
-                        return 1;
-                    }
+                    System.out.println("Goal detected for task " + CheckCropsTask.class.getSimpleName());
+                    return 1;
                 }
             }
         }
@@ -125,17 +129,9 @@ public class CheckCropsGoal extends GoalBDI {
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
+        //System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals().toString());
+        System.out.println(stateBDI.getMachineBDIParams().getIntention().toString());
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return true;
     }
 
 }

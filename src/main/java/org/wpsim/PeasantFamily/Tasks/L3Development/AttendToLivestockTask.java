@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -22,17 +23,7 @@ import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
  *
  * @author jairo
  */
-public class AttendToLivestockTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public AttendToLivestockTask() {
-        //wpsReport.info("");
-        this.finished = false;
-    }
+public class AttendToLivestockTask extends wpsTask {
 
     /**
      *
@@ -46,64 +37,6 @@ public class AttendToLivestockTask extends Task {
         /*believes.getPeasantProfile().increaseHealth();
         believes.getPeasantProfile().increaseLeisureOptions();
         believes.getPeasantProfile().useFamilyTimeAvailability();*/
-        this.setFinished();
     }
 
-    /**
-     *
-     * @return
-     */
-    public boolean isFinished() {
-        //wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     */
-    public void setFinished() {
-        //wpsReport.info("");
-        this.finished = true;
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-        //wpsReport.info("");
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        //wpsReport.info("");
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isExecuted() {
-        //wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     * @param believes
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes believes) {
-        //wpsReport.info("");
-        return isExecuted();
-    }
 }

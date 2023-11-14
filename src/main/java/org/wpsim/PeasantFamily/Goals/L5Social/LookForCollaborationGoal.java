@@ -14,10 +14,10 @@
  */
 package org.wpsim.PeasantFamily.Goals.L5Social;
 
-import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L5Social.LookForCollaborationTask;
@@ -29,7 +29,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class LookForCollaborationGoal extends GoalBDI {
+public class LookForCollaborationGoal extends wpsGoalBDI {
 
     /**
      *
@@ -37,15 +37,15 @@ public class LookForCollaborationGoal extends GoalBDI {
      */
     public static LookForCollaborationGoal buildGoal() {
         LookForCollaborationTask lookForCollaborationTask = new LookForCollaborationTask();
-        Plan askForCollaborationPlan = new Plan();
-        askForCollaborationPlan.addTask(lookForCollaborationTask);
-        RationalRole askForCollaborationRole = new RationalRole(
-                "AskForCollaborationTask",
-                askForCollaborationPlan);
+        Plan lookForCollaborationPlan = new Plan();
+        lookForCollaborationPlan.addTask(lookForCollaborationTask);
+        RationalRole lookForCollaborationRole = new RationalRole(
+                "LookForCollaborationTask",
+                lookForCollaborationPlan);
         return new LookForCollaborationGoal(
                 wpsStart.getPlanID(),
-                askForCollaborationRole,
-                "AskForCollaborationTask",
+                lookForCollaborationRole,
+                "LookForCollaborationTask",
                 GoalBDITypes.NEED);
     }
 
@@ -85,6 +85,11 @@ public class LookForCollaborationGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (believes.getAssignedLands().size() > 1) {
             return 1;
         }
@@ -123,17 +128,6 @@ public class LookForCollaborationGoal extends GoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return true;
     }
 
 }

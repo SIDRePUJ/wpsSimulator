@@ -18,6 +18,8 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
+import org.wpsim.PeasantFamily.Tasks.L6Leisure.FindNewsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -30,25 +32,24 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class FindNewsGoal extends GoalBDI {
+public class FindNewsGoal extends wpsGoalBDI {
 
     /**
      *
      * @return
      */
     public static FindNewsGoal buildGoal() {
-        LeisureActivitiesTask peasantLeisureTask = new LeisureActivitiesTask();
-        Plan peasantLeisurePlan = new Plan();
-        peasantLeisurePlan.addTask(peasantLeisureTask);
-        RationalRole peasantLeisureRole = new RationalRole(
-                "PeasantLeisureTask",
-                peasantLeisurePlan);
-        FindNewsGoal peasantLeisureGoalBDI = new FindNewsGoal(
+        FindNewsTask findNewsTask = new FindNewsTask();
+        Plan findNewsPlan = new Plan();
+        findNewsPlan.addTask(findNewsTask);
+        RationalRole findNewsRole = new RationalRole(
+                "FindNewsTask",
+                findNewsPlan);
+        return new FindNewsGoal(
                 wpsStart.getPlanID(),
-                peasantLeisureRole,
-                "PeasantLeisureTask",
+                findNewsRole,
+                "FindNewsTask",
                 GoalBDITypes.ATTENTION_CYCLE);
-        return peasantLeisureGoalBDI;
     }
 
     /**
@@ -89,6 +90,11 @@ public class FindNewsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         //wpsReport.info("isBusy=" + believes.getProfile().isBusy());
         return 0;
     }
@@ -134,19 +140,6 @@ public class FindNewsGoal extends GoalBDI {
         //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getPeasantProfile().getLeisureOptions() == 0;
     }
 
 }

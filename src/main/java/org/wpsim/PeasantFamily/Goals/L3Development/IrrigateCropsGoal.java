@@ -19,6 +19,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
@@ -33,7 +34,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class IrrigateCropsGoal extends GoalBDI {
+public class IrrigateCropsGoal extends wpsGoalBDI {
 
     /**
      *
@@ -84,6 +85,11 @@ public class IrrigateCropsGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
                 int waterUsed = (int) ((believes.getPeasantProfile().getCropSizeHA()) * 30);
@@ -137,17 +143,6 @@ public class IrrigateCropsGoal extends GoalBDI {
         wpsReport.info("\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getPeasantProfile().getPeasantFamilyAlias());
         wpsReport.info("\n" + stateBDI.getMachineBDIParams().getIntention().getDescription(), believes.getPeasantProfile().getPeasantFamilyAlias());
         //return believes.getPeasantProfile().getHealth() > 0;
-        return true;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
         return true;
     }
 

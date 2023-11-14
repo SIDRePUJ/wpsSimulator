@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -30,7 +31,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class StealingOutOfNecessityGoal extends GoalBDI {
+public class StealingOutOfNecessityGoal extends wpsGoalBDI {
 
     /**
      *
@@ -43,12 +44,11 @@ public class StealingOutOfNecessityGoal extends GoalBDI {
         RationalRole stealingOutOfNecessityRole = new RationalRole(
                 "StealingOutOfNecessityTask",
                 stealingOutOfNecessityPlan);
-        StealingOutOfNecessityGoal stealingOutOfNecessityGoal = new StealingOutOfNecessityGoal(
+        return new StealingOutOfNecessityGoal(
                 wpsStart.getPlanID(),
                 stealingOutOfNecessityRole,
                 "StealingOutOfNecessityTask",
                 GoalBDITypes.OPORTUNITY);
-        return stealingOutOfNecessityGoal;
     }
 
     /**
@@ -72,6 +72,11 @@ public class StealingOutOfNecessityGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (believes.getPeasantProfile().getMoney() <= 15000) {
             //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
@@ -138,17 +143,6 @@ public class StealingOutOfNecessityGoal extends GoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return ((PeasantFamilyBDIAgentBelieves) parameters).isRobbedToday();
     }
 
 }

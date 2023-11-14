@@ -14,12 +14,12 @@
  */
 package org.wpsim.PeasantFamily.Goals.L3Development;
 
-import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.PeasantFamily.Tasks.L3Development.WorkForOtherTask;
 import org.wpsim.Simulator.wpsStart;
 import rational.RationalRole;
@@ -30,7 +30,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class WorkForOtherGoal extends GoalBDI {
+public class WorkForOtherGoal extends wpsGoalBDI {
 
     /**
      *
@@ -82,6 +82,11 @@ public class WorkForOtherGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (believes.isWorkerWithoutLand() && !believes.getPeasantFamilyToHelp().isBlank()) {
                 return 1;
         }
@@ -125,18 +130,6 @@ public class WorkForOtherGoal extends GoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.getPeasantProfile().getCropHealth() == 1;
     }
 
 }

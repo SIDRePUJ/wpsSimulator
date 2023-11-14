@@ -15,6 +15,7 @@
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import BESA.Emotional.EmotionalEvent;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -24,13 +25,7 @@ import org.wpsim.PeasantFamily.Data.Utils.MoneyOriginType;
  *
  * @author jairo
  */
-public class StealingOutOfNecessityTask extends Task {
-
-    /**
-     *
-     */
-    public StealingOutOfNecessityTask() {
-    }
+public class StealingOutOfNecessityTask extends wpsTask {
 
     /**
      *
@@ -56,33 +51,6 @@ public class StealingOutOfNecessityTask extends Task {
         believes.processEmotionalEvent(
                 new EmotionalEvent("FAMILY", "THIEVING", "MONEY")
         );
-        this.setTaskFinalized();
     }
 
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        //wpsReport.warn("today "+((PeasantFamilyBDIAgentBelieves) parameters).isRobbedToday());
-        return ((PeasantFamilyBDIAgentBelieves) parameters).isRobbedToday();
-    }
 }

@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -30,7 +31,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class SpendFriendsTimeGoal extends GoalBDI {
+public class SpendFriendsTimeGoal extends wpsGoalBDI {
 
     /**
      *
@@ -43,12 +44,11 @@ public class SpendFriendsTimeGoal extends GoalBDI {
         RationalRole spendFriendsTimeRole = new RationalRole(
                 "SpendFriendsTimeTask",
                 spendFriendsTimePlan);
-        SpendFriendsTimeGoal spendFriendsTimeGoal = new SpendFriendsTimeGoal(
+        return new SpendFriendsTimeGoal(
                 wpsStart.getPlanID(),
                 spendFriendsTimeRole,
                 "SpendFriendsTimeTask",
                 GoalBDITypes.ATTENTION_CYCLE);
-        return spendFriendsTimeGoal;
     }
 
     /**
@@ -72,6 +72,11 @@ public class SpendFriendsTimeGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (believes.isFriendsTimeDoneToday()){
             return 0;
         }else {
@@ -131,18 +136,6 @@ public class SpendFriendsTimeGoal extends GoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.isFamilyTimeDoneToday();
     }
 
 }

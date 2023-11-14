@@ -18,6 +18,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L5Social.CommunicateTask;
@@ -29,7 +30,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class CommunicateGoal extends GoalBDI {
+public class CommunicateGoal extends wpsGoalBDI {
 
     /**
      *
@@ -42,12 +43,11 @@ public class CommunicateGoal extends GoalBDI {
         RationalRole communicateRole = new RationalRole(
                 "CommunicateTask",
                 communicatePlan);
-        CommunicateGoal communicateGoalBDI = new CommunicateGoal(
+        return new CommunicateGoal(
                 wpsStart.getPlanID(),
                 communicateRole,
                 "CommunicateTask",
                 GoalBDITypes.NEED);
-        return communicateGoalBDI;
     }
 
     /**
@@ -88,6 +88,11 @@ public class CommunicateGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         //wpsReport.info("isBusy=" + believes.getProfile().isBusy());
         return 0;
     }
@@ -134,18 +139,6 @@ public class CommunicateGoal extends GoalBDI {
         //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         return believes.getPeasantProfile().getHealth() > 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        return false;
     }
 
 }

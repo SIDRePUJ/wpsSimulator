@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L4SkillsResources;
 
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -23,17 +24,7 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
  *
  * @author jairo
  */
-public class GetTrainingTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public GetTrainingTask() {
-        ////wpsReport.info("");
-        this.finished = false;
-    }
+public class GetTrainingTask extends wpsTask {
 
     /**
      *
@@ -47,58 +38,6 @@ public class GetTrainingTask extends Task {
         // @TODO: Cambiar a la venta real con el agente social market
         believes.getPeasantProfile().increaseTrainingLevel();
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        this.setFinished();
     }
 
-    /**
-     *
-     * @return
-     */
-    public boolean isFinished() {
-        return finished;
-    }
-
-    /**
-     *
-     */
-    public void setFinished() {
-        this.finished = true;
-        this.setTaskFinalized();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        this.setFinished();
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isExecuted() {
-        return finished;
-    }
-
-    /**
-     *
-     * @param believes
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes believes) {
-        return isExecuted();
-    }
 }

@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L5Social;
 
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -23,17 +24,7 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
  *
  * @author jairo
  */
-public class CommunicateTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public CommunicateTask() {
-        //wpsReport.info("");
-        this.finished = false;
-    }
+public class CommunicateTask extends wpsTask {
 
     /**
      *
@@ -48,65 +39,7 @@ public class CommunicateTask extends Task {
         believes.getPeasantProfile().useLeisureOptions();
         believes.getPeasantProfile().increaseFamilyTimeAvailability();
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        this.setFinished(true);
         //wpsReport.info("new healt" + believes.getProfile().getHealth());
     }
 
-    /**
-     *
-     * @return
-     */
-    public boolean isFinished() {
-        //wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     * @param finished
-     */
-    public void setFinished(boolean finished) {
-        //wpsReport.info("");
-        this.finished = finished;
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-        //wpsReport.info("");
-        this.setFinished(true);
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-        //wpsReport.info("");
-        this.setFinished(true);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public boolean isExecuted() {
-        //wpsReport.info("");
-        return finished;
-    }
-
-    /**
-     *
-     * @param believes
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes believes) {
-        //wpsReport.info("");
-        return isExecuted();
-    }
 }

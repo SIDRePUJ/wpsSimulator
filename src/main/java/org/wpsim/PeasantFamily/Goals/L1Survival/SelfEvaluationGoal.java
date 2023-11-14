@@ -19,6 +19,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L1Survival.SelfEvaluationTask;
@@ -30,7 +31,7 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class SelfEvaluationGoal extends GoalBDI {
+public class SelfEvaluationGoal extends wpsGoalBDI {
 
     /**
      *
@@ -43,12 +44,11 @@ public class SelfEvaluationGoal extends GoalBDI {
         RationalRole selfEvaluationRole = new RationalRole(
                 "SelfEvaluationTask",
                 selfEvaluationPlan);
-        SelfEvaluationGoal selfEvaluationGoalBDI = new SelfEvaluationGoal(
+        return new SelfEvaluationGoal(
                 wpsStart.getPlanID(),
                 selfEvaluationRole,
                 "SelfEvaluationTask",
                 GoalBDITypes.SURVIVAL);
-        return selfEvaluationGoalBDI;
     }
 
     /**
@@ -83,6 +83,11 @@ public class SelfEvaluationGoal extends GoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+
+        if (this.isAlreadyExecutedToday(believes)) {
+            return 0;
+        }
+
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -7) {
             System.out.println("Jump detectado para PeasantFamilyAlias: " + believes.getPeasantProfile().getPeasantFamilyAlias() + " getDaysBetweenDates" + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
             return 1;
@@ -122,22 +127,6 @@ public class SelfEvaluationGoal extends GoalBDI {
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return true;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) > 7) {
-            return false;
-        }else {
-            return true;
-        }
     }
 
 }

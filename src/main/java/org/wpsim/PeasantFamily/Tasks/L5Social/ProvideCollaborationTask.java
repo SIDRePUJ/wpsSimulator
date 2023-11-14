@@ -17,6 +17,7 @@ package org.wpsim.PeasantFamily.Tasks.L5Social;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Society.Data.SocietyDataMessage;
 import org.wpsim.Society.Guards.SocietyAgentOffersHelpGuard;
@@ -29,17 +30,7 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
  *
  * @author jairo
  */
-public class ProvideCollaborationTask extends Task {
-
-    private boolean finished;
-
-    /**
-     *
-     */
-    public ProvideCollaborationTask() {
-        //wpsReport.info("");
-        this.finished = false;
-    }
+public class ProvideCollaborationTask extends wpsTask {
 
     /**
      *
@@ -47,10 +38,9 @@ public class ProvideCollaborationTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
-        this.finished = false;
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.ProvideCollaborationTask);
+        believes.useTime(believes.getTimeLeftOnDay());
 
         try {
             SocietyDataMessage societyDataMessageToSent = new SocietyDataMessage(
@@ -66,33 +56,5 @@ public class ProvideCollaborationTask extends Task {
         } catch (ExceptionBESA ex) {
             System.out.println(ex.getMessage());
         }
-
-        this.finished = true;
-    }
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void interruptTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param parameters
-     */
-    @Override
-    public void cancelTask(Believes parameters) {
-    }
-
-    /**
-     *
-     * @param believes
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes believes) {
-        //wpsReport.info("");
-        return this.finished;
     }
 }
