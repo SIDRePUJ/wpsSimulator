@@ -21,8 +21,8 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Control.Data.ControlAgentState;
 import org.wpsim.Control.Data.ControlMessage;
-import org.wpsim.PeasantFamily.Data.Utils.ToControlMessage;
-import org.wpsim.PeasantFamily.Guards.FromControlGuard;
+import org.wpsim.PeasantFamily.Guards.FromControl.ToControlMessage;
+import org.wpsim.PeasantFamily.Guards.FromControl.FromControlGuard;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 

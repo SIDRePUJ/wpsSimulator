@@ -40,7 +40,6 @@ public class AttendReligiousEventsTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
-        believes.setReligiousEventDone();
         // @TODO: MEJORAR SUS EMOCIONES
     }
 

@@ -12,6 +12,8 @@ function showData(name) {
     const taskLog = agentData[name]["taskLog"];
     const taskCount = {};
 
+    createTimeline(agentData[name]["taskLog"]);
+
     for (const date in taskLog) {
         const tasks = taskLog[date];
         tasks.forEach(taskName => {
@@ -266,34 +268,6 @@ function send(message) {
     }
 }
 
-const familySelect = document.getElementById("activeAgent");
-
-let familySelectValue;
-
-document.addEventListener("DOMContentLoaded", (event) => {
-    const familySelect = document.getElementById("activeAgent");
-
-    if (!familySelect) {
-        console.error('El elemento "activeAgent" no se encuentra en el DOM.');
-        return;
-    }
-
-    familySelectValue = familySelect.value;
-    //console.log("Valor inicial:", familySelectValue); // Para depuración
-
-    familySelect.addEventListener("change", (event) => {
-        familySelectValue = event.target.value;
-        //console.log("Valor cambiado:", familySelectValue); // Para depuración
-
-        try {
-            updateChart(familySelectValue); // Actualizar el gráfico
-            showData(familySelectValue); // Mostrar datos
-        } catch (error) {
-            console.error("Error en updateChart o showData:", error);
-        }
-    });
-});
-
 let mymap = L.map("mapid").setView([9.9558349, -75.3062724], 14);
 let landData = {};
 
@@ -407,4 +381,30 @@ for (let i = 1; i <= 100; i++) {
             dashArray: getRandomLineStyle()
         };
     });
+}
+
+let timeline = null;
+function createTimeline(data) {
+
+    if (timeline !== null) {
+        timeline.destroy();
+    }
+    // Parsea y ordena las fechas
+    let items = [];
+    Object.keys(data).forEach(dateStr => {
+        let date = moment(dateStr, "DD/MM/YYYY").toDate();
+        data[dateStr].forEach(task => {
+            items.push({start: date, content: task});
+        });
+    });
+
+    // Ordena los elementos por fecha
+    items.sort((a, b) => a.start - b.start);
+
+    // Configuración de la línea de tiempo
+    let container = document.getElementById('visualization');
+    let options = {};
+
+    // Crea la línea de tiempo
+    timeline = new vis.Timeline(container, items, options);
 }

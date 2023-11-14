@@ -591,6 +591,9 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public synchronized void increaseMoney(Integer money) {
         this.money += money;
     }
+    public synchronized void decreaseMoney(Integer money) {
+        this.money -= money;
+    }
 
     /**
      *

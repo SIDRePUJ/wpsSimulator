@@ -25,10 +25,6 @@ import rational.data.InfoData;
 import rational.mapping.Believes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -50,24 +46,18 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private double timeLeftOnDay;
     private boolean workerWithoutLand;
     private boolean newDay;
-    //private Map<String, Boolean> checkedToday;
-    private boolean checkedToday;
-    private boolean robbedToday;
-    private boolean askedForLoanToday;
     private boolean haveLoan;
     private double toPay;
     private boolean loanDenied;
-    private boolean leisureDoneToday;
-    private boolean spendFamilyTimeDoneToday;
-    private boolean friendsTimeDoneToday;
-    private String peasantFamilyToHelp;
     private String internalCurrentDate;
     private String ptwDate;
     private Map<String, FarmingResource> priceList = new HashMap<>();
     private Map<String, Set<String>> taskLog = new ConcurrentHashMap<>();
-    private LinkedHashMap<Integer, Boolean> unblockDaysList = new LinkedHashMap<>();
     private int daysToWorkForOther;
-    private boolean religiousEventDone;
+    private String peasantFamilyHelper;
+    private int peasantFamilyHelperDays;
+    private String Contractor;
+    private String contractorStartDate;
 
     /**
      * @param alias          Peasant Family Alias
@@ -82,17 +72,15 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
         this.currentDay = 1;
         this.timeLeftOnDay = 24;
-        //this.checkedToday = new HashMap<String, Boolean>();
-        this.checkedToday = false;
-        this.askedForLoanToday = false;
-        this.robbedToday = false;
         this.haveLoan = false;
         this.newDay = true;
         this.priceList.clear();
         this.loanDenied = false;
         this.ptwDate = "";
-        this.leisureDoneToday = false;
-        this.religiousEventDone = false;
+        this.peasantFamilyHelper = "";
+        this.peasantFamilyHelperDays = 0;
+        this.contractorStartDate = "";
+        this.Contractor = "";
 
         this.currentMoneyOrigin = MoneyOriginType.NONE;
         this.currentPeasantActivityType = PeasantActivityType.NONE;
@@ -100,12 +88,12 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
     }
 
-    public String getPeasantFamilyToHelp() {
-        return peasantFamilyToHelp;
+    public String getContractor() {
+        return Contractor;
     }
 
-    public void setPeasantFamilyToHelp(String peasantFamilyToHelp) {
-        this.peasantFamilyToHelp = peasantFamilyToHelp;
+    public void setContractor(String peasantFamilyToHelp) {
+        this.Contractor = peasantFamilyToHelp;
     }
 
     public boolean isWorkerWithoutLand() {
@@ -264,53 +252,12 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         return tasks.contains(taskName);
     }
 
-    public boolean isFamilyTimeDoneToday() {
-        return spendFamilyTimeDoneToday;
-    }
-
-    public void setSpendFamilyTimeDoneToday(boolean spendFamilyTimeDoneToday) {
-        this.spendFamilyTimeDoneToday = spendFamilyTimeDoneToday;
-    }
-
-    public boolean isFriendsTimeDoneToday() {
-        return friendsTimeDoneToday;
-    }
-
-    public void setFriendsTimeDoneToday(boolean friendsTimeDoneToday) {
-        this.friendsTimeDoneToday = friendsTimeDoneToday;
-    }
-
     public boolean isHaveLoan() {
         return haveLoan;
     }
 
     public void setHaveLoan(boolean haveLoan) {
         this.haveLoan = haveLoan;
-    }
-
-    public boolean isAskedForLoanToday() {
-        return askedForLoanToday;
-    }
-
-    public void setAskedForLoanToday() {
-        this.askedForLoanToday = true;
-    }
-
-    public boolean isRobbedToday() {
-        return robbedToday;
-    }
-
-    public void setRobbedToday() {
-        this.robbedToday = false;
-    }
-
-    public boolean isCheckedToday(){//(String landName) {
-        return checkedToday;//.getOrDefault(landName, false);
-    }
-
-    public void setCheckedToday(){//String landName) {
-        //checkedToday.put(landName, true);
-        checkedToday = true;
     }
 
     public int getRobberyAccount() {
@@ -396,11 +343,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.currentDay++;
         this.timeLeftOnDay = 24;
         this.newDay = true;
-        this.robbedToday = false;
-        this.askedForLoanToday = false;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
-        this.checkedToday = false;
-        this.religiousEventDone = false;
     }
 
     /**
@@ -410,10 +353,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.currentDay++;
         this.timeLeftOnDay = 24;
         this.newDay = true;
-        this.robbedToday = false;
-        this.askedForLoanToday = false;
-        this.checkedToday = false;
-        this.religiousEventDone = false;
     }
 
     /**
@@ -589,18 +528,12 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("currentPeasantLeisureType", currentPeasantLeisureType);
         dataObject.put("currentResourceNeededType", currentResourceNeededType);
         dataObject.put("currentDay", currentDay);
-        dataObject.put("askedForLoanToday", askedForLoanToday);
-        dataObject.put("robbedToday", robbedToday);
-        dataObject.put("checkedToday", checkedToday);
         dataObject.put("internalCurrentDate", internalCurrentDate);
         dataObject.put("toPay", toPay);
         dataObject.put("peasantKind", peasantProfile.getPeasantKind());
         dataObject.put("rainfallConditions", peasantProfile.getRainfallConditions());
         dataObject.put("peasantFamilyMinimalVital", peasantProfile.getPeasantFamilyMinimalVital());
         dataObject.put("peasantFamilyLandAlias", peasantProfile.getPeasantFamilyLandAlias());
-        dataObject.put("leisureDoneToday", leisureDoneToday);
-        dataObject.put("spendFamilyTimeDoneToday", spendFamilyTimeDoneToday);
-        dataObject.put("friendsTimeDoneToday", friendsTimeDoneToday);
         dataObject.put("currentActivity", currentPeasantActivityType);
         dataObject.put("farm", peasantProfile.getFarmName());
         dataObject.put("cropSize", peasantProfile.getCropSize());
@@ -692,14 +625,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         }*/
     }
 
-    public boolean isLeisureDoneToday() {
-        return leisureDoneToday;
-    }
-
-    public void setLeisureDoneToday(boolean leisureDoneToday) {
-        this.leisureDoneToday = leisureDoneToday;
-    }
-
     public boolean isPlantingSeason() {
         return DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 0 ||
                 DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 3 ||
@@ -718,14 +643,25 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.daysToWorkForOther = daysToWorkForOther;
     }
 
-    public void setReligiousEventDone() {
-        this.religiousEventDone = true;
+    public String getPeasantFamilyHelper() {
+        return peasantFamilyHelper;
+    }
+    public void setPeasantFamilyHelper(String peasantFamilyHelper) {
+        this.peasantFamilyHelper = peasantFamilyHelper;
     }
 
-    public boolean isReligiousEventDone() {
-        return this.religiousEventDone;
+    public void setPeasantFamilyHelperDays(int availableDays) {
+        this.peasantFamilyHelperDays = availableDays;
+    }
+    public int getPeasantFamilyHelperDays() {
+        return peasantFamilyHelperDays;
     }
 
-
+    public void setContractorStartDate(String contractorStartDate) {
+        this.contractorStartDate = contractorStartDate;
+    }
+    public String getContractorStartDate() {
+        return this.contractorStartDate;
+    }
 }
 

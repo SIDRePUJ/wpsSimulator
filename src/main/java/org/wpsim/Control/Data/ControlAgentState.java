@@ -19,7 +19,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.PeasantFamily.Guards.FromControlGuard;
+import org.wpsim.PeasantFamily.Guards.FromControl.FromControlGuard;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Server.WebsocketServer;
 import org.wpsim.Viewer.Data.wpsReport;

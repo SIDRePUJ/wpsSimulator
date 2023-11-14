@@ -27,7 +27,7 @@ import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
 import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Data.Utils.ToControlMessage;
+import org.wpsim.PeasantFamily.Guards.FromControl.ToControlMessage;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.guards.InformationFlowGuard;

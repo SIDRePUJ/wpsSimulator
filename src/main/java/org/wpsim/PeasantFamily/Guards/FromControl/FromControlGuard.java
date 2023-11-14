@@ -12,28 +12,32 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Tasks.L6Leisure;
+package org.wpsim.PeasantFamily.Guards.FromControl;
 
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
-import rational.mapping.Believes;
-import rational.mapping.Task;
+import BESA.BDI.AgentStructuralModel.StateBDI;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.Agent.GuardBESA;
+import org.wpsim.Control.Data.ControlMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.Viewer.Data.wpsReport;
 
 /**
  *
  * @author jairo
  */
-public class LeisureActivitiesTask extends wpsTask {
+public class FromControlGuard extends GuardBESA {
 
     /**
      *
-     * @param parameters
+     * @param event Event rising the Guard
      */
     @Override
-    public void executeTask(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(believes.getTimeLeftOnDay());
+    public void funcExecGuard(EventBESA event) {
+        StateBDI state = (StateBDI) this.agent.getState();
+        ControlMessage controlMessage = (ControlMessage) event.getData();
+        int unblockDay = controlMessage.getCurrentDay();
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        //believes.setUnblockDay(unblockDay);
+        wpsReport.debug("desbloqueando " + believes.getPeasantProfile().getPeasantFamilyAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
     }
-
 }

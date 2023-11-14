@@ -51,11 +51,7 @@ public class DoVitalsTask extends wpsTask {
 
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-
         believes.setNewDay(false);
-        believes.setLeisureDoneToday(false);
-        believes.setSpendFamilyTimeDoneToday(false);
-        believes.setFriendsTimeDoneToday(false);
         believes.useTime(TimeConsumedBy.DoVitalsTask);
 
         believes.processEmotionalEvent(
@@ -66,7 +62,22 @@ public class DoVitalsTask extends wpsTask {
         //checkBankDebt(believes);
 
         believes.getPeasantProfile().discountDailyMoney();
-        this.setTaskFinalized();
+
+        // TODO: Setear pago adecuado
+        if (!believes.getContractorStartDate().isBlank()) {
+            if (ControlCurrentDate.getInstance().isAfterDate(believes.getContractorStartDate())) {
+                if (believes.getContractor().isBlank()) {
+                    System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " Pagando por el contrato a " + believes.getPeasantFamilyHelper());
+                    believes.setPeasantFamilyHelper("");
+                    believes.getPeasantProfile().decreaseMoney(250000);
+                } else {
+                    System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " Recibiendo pago por el contrato da " + believes.getContractor());
+                    believes.setContractor("");
+                    believes.getPeasantProfile().increaseMoney(250000);
+                }
+                believes.setContractorStartDate("");
+            }
+        }
 
     }
 

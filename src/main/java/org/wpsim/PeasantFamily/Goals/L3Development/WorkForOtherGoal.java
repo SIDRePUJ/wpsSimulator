@@ -87,7 +87,7 @@ public class WorkForOtherGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.isWorkerWithoutLand() && !believes.getPeasantFamilyToHelp().isBlank()) {
+        if (believes.isWorkerWithoutLand() && !believes.getContractor().isBlank()) {
                 return 1;
         }
         return 0;

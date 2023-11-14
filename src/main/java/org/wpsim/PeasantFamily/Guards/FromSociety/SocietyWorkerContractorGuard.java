@@ -17,17 +17,15 @@ package org.wpsim.PeasantFamily.Guards.FromSociety;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentMessage;
 import org.wpsim.Society.Data.SocietyDataMessage;
-
-import java.util.Map;
 
 /**
  *
  * @author jairo
  */
-public class FromSocietyGuard extends GuardBESA {
+public class SocietyWorkerContractorGuard extends GuardBESA {
 
     /**
      *
@@ -39,8 +37,8 @@ public class FromSocietyGuard extends GuardBESA {
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
         System.out.println("Ayudando a " + societyDataMessage.getPeasantFamilyHelper());
-        believes.setPeasantFamilyToHelp(societyDataMessage.getPeasantFamilyHelper());
-        believes.setDaysToWorkForOther(societyDataMessage.getAvailableDays());
-        //believes.getPeasantProfile().setPurpose("worker");
+        believes.setPeasantFamilyHelper(societyDataMessage.getPeasantFamilyHelper());
+        believes.setPeasantFamilyHelperDays(societyDataMessage.getAvailableDays());
+        believes.setContractorStartDate(ControlCurrentDate.getInstance().getCurrentDate());
     }
 }

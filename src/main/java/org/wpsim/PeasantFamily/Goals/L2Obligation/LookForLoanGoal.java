@@ -79,7 +79,6 @@ public class LookForLoanGoal extends wpsGoalBDI {
 
         if (believes.getPeasantProfile().getMoney() <= 70000
                 //&& !believes.isLoanDenied()
-                    && !believes.isAskedForLoanToday()
                         && believes.getToPay()==0 ){
             return 1;
         } else {

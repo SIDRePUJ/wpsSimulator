@@ -18,7 +18,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.Control.Data.ControlAgentState;
 import org.wpsim.Control.Data.ControlCurrentDate;
-import org.wpsim.PeasantFamily.Data.Utils.ToControlMessage;
+import org.wpsim.PeasantFamily.Guards.FromControl.ToControlMessage;
 import org.wpsim.Viewer.Server.WebsocketServer;
 
 /**

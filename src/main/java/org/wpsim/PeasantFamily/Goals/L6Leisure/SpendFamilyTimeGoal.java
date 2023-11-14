@@ -75,12 +75,7 @@ public class SpendFamilyTimeGoal extends wpsGoalBDI {
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
-
-        if (believes.isFamilyTimeDoneToday()){
-            return 0;
-        }else {
-            return 1;
-        }
+        return 1;
     }
 
     /**

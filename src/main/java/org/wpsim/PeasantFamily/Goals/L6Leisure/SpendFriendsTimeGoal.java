@@ -76,12 +76,7 @@ public class SpendFriendsTimeGoal extends wpsGoalBDI {
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
-
-        if (believes.isFriendsTimeDoneToday()){
-            return 0;
-        }else {
-            return 1;
-        }
+        return 1;
     }
 
     /**

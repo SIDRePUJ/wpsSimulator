@@ -75,8 +75,7 @@ public class ProvideCollaborationGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getFamilyTimeAvailability() > 0
-                && believes.getPeasantProfile().getHealth() > 0) {
+        if (believes.getContractor().isEmpty()) {
             return 1;
         } else {
             return 0;

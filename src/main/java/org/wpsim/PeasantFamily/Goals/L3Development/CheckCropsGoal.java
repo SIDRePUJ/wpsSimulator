@@ -75,14 +75,13 @@ public class CheckCropsGoal extends wpsGoalBDI {
         }
         //System.out.println("Energized " + believes.getEmotionCurrentValue("Energized"));
 
-        if (believes.isEnergized()) {
+        //if (believes.isEnergized()) {
             for (LandInfo currentLandInfo : believes.getAssignedLands()) {
                 if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
-                    System.out.println("Goal detected for task " + CheckCropsTask.class.getSimpleName());
                     return 1;
                 }
             }
-        }
+        //}
         return 0;
     }
 
@@ -130,7 +129,7 @@ public class CheckCropsGoal extends wpsGoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         //System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals().toString());
-        System.out.println(stateBDI.getMachineBDIParams().getIntention().toString());
+        //System.out.println(stateBDI.getMachineBDIParams().getIntention().toString());
         return believes.getPeasantProfile().getHealth() > 0;
     }
 

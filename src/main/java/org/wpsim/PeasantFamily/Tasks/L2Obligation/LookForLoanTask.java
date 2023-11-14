@@ -50,7 +50,6 @@ public class LookForLoanTask extends wpsTask {
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.setAskedForLoanToday();
         believes.useTime(TimeConsumedBy.LookForLoanTask);
         wpsReport.debug("LookForLoanTask", believes.getPeasantProfile().getPeasantFamilyAlias());
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.

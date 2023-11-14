@@ -35,7 +35,6 @@ public class SpendFriendsTimeTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.SpendFriendsTimeTask);
-        believes.setFriendsTimeDoneToday(true);
     }
 
 }

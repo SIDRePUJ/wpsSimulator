@@ -90,7 +90,7 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getAssignedLands().size() > 1) {
+        if (believes.getAssignedLands().size() > 1 && believes.getPeasantFamilyHelper().isBlank()) {
             return 1;
         }
         return 0;

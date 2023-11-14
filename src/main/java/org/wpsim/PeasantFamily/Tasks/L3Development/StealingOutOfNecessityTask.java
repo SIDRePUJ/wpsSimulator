@@ -47,7 +47,6 @@ public class StealingOutOfNecessityTask extends wpsTask {
             believes.decreaseHealth();
         }
         believes.setCurrentMoneyOrigin(MoneyOriginType.ROBERY);
-        believes.setRobbedToday();
         believes.processEmotionalEvent(
                 new EmotionalEvent("FAMILY", "THIEVING", "MONEY")
         );

@@ -53,12 +53,12 @@ public class CheckCropsTask extends wpsTask {
                 new EmotionalEvent("FAMILY", "STARVING", "FOOD")
         );
 
+        believes.useTime(TimeConsumedBy.CheckCropsTask);
         // @TODO: falta calcular el tiempo necesario para el cultivo
         List<LandInfo> landInfos = believes.getAssignedLands();
         for (LandInfo currentLandInfo : landInfos) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
                 // TODO: Usar menos tiempo si tiene ayuda
-                believes.useTime(TimeConsumedBy.CheckCropsTask);
                 try {
                     WorldMessage worldMessage;
                     if (Math.random() < 0.2) {
@@ -79,10 +79,12 @@ public class CheckCropsTask extends wpsTask {
                         wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
                     }
                     AdmBESA.getInstance().getHandlerByAlias(
-                            currentLandInfo.getLandName()).sendEvent(
+                            currentLandInfo.getLandName()
+                    ).sendEvent(
                                     new EventBESA(
                                         WorldGuard.class.getName(),
-                                        worldMessage)
+                                        worldMessage
+                                    )
                     );
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
