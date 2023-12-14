@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Guards;
 
+import BESA.BDI.AgentStructuralModel.DesireHierarchyPyramid;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
@@ -50,10 +51,10 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
      * It logs the agent's beliefs as a JSON string along with the agent's alias.
      * It calculates the wait time based on the agent's main role and sets the delay time for the next execution of the method.
      *
-     * @param event
+     * @param event The BESA event triggering the execution of the method.
      */
     @Override
-    public void funcPeriodicExecGuard(EventBESA event) {
+    public synchronized void funcPeriodicExecGuard(EventBESA event) {
         PeasantFamilyBDIAgent PeasantFamily = (PeasantFamilyBDIAgent) this.getAgent();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
 
@@ -103,6 +104,9 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             ReportBESA.error(ex);
         }
 
+        /*
+          BDI Information Flow Guard - sends an event to continue the BDI flow
+         */
         try {
             AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(PeasantFamilyAlias);
             EventBESA eventBesa = new EventBESA(
@@ -120,9 +124,8 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         int waitTime = wpsStart.stepTime;
         if (state.getMainRole() != null) {
             waitTime = TimeConsumedBy.valueOf(state.getMainRole().getRoleName()).getTime() * wpsStart.stepTime;
-            //System.out.println("PeasantFamilyAlias: " + PeasantFamilyAlias + " - waitTime: " + waitTime + " rol " + state.getMainRole().getRoleName());
+            System.out.println("PeasantFamilyAlias: " + PeasantFamilyAlias + " - waitTime: " + waitTime + " rol " + state.getMainRole().getRoleName());
         }
-
         this.setDelayTime(waitTime);
 
     }

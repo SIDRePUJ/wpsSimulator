@@ -116,16 +116,4 @@ public class SpendFamilyTimeGoal extends wpsGoalBDI {
         return believes.getPeasantProfile().getPeasantFamilyAffinity();
     }
 
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
-    }
-
 }

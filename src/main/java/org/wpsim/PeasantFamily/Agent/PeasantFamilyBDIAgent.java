@@ -27,6 +27,7 @@ import org.wpsim.Control.Guards.DeadAgentGuard;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
+import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
 import org.wpsim.PeasantFamily.Guards.FromControl.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
@@ -64,10 +65,8 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         // Cada comportamiento es un hilo.
-        structBESA.addBehavior("PFamilyHeartBeatGuard");
-        structBESA.bindGuard("PFamilyHeartBeatGuard", HeartBeatGuard.class);
-
         structBESA.addBehavior("DefaultPFamilyBehavior");
+        structBESA.bindGuard("DefaultPFamilyBehavior", HeartBeatGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", FromControlGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", FromWorldGuard.class);
         structBESA.bindGuard("DefaultPFamilyBehavior", FromBankGuard.class);
@@ -97,7 +96,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
         //Level 2 Goals: Obligations
         //goals.add(LookForLoanGoal.buildGoal());
-        goals.add(PayDebtsGoal.buildGoal());
+        //goals.add(PayDebtsGoal.buildGoal());
 
         //Level 3 Goals: Development        
         //goals.add(AttendToLivestockGoal.buildGoal());
@@ -128,8 +127,8 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
         //Level 5 Goals: Social
         //goals.add(CommunicateGoal.buildGoal());
-        goals.add(LookForCollaborationGoal.buildGoal());
-        goals.add(ProvideCollaborationGoal.buildGoal());
+        //goals.add(LookForCollaborationGoal.buildGoal());
+        //goals.add(ProvideCollaborationGoal.buildGoal());
 
         //Level 6 Goals: Leisure
         goals.add(SpendFamilyTimeGoal.buildGoal());

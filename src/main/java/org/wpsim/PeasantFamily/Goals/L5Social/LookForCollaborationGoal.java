@@ -17,6 +17,8 @@ package org.wpsim.PeasantFamily.Goals.L5Social;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -91,7 +93,11 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
         }
 
         if (believes.getAssignedLands().size() > 1 && believes.getPeasantFamilyHelper().isBlank()) {
-            return 1;
+            for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+                if (!currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
+                    return 1;
+                }
+            }
         }
         return 0;
     }
@@ -116,18 +122,6 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return 1;
-    }
-
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
     }
 
 }

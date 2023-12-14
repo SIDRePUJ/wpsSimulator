@@ -249,6 +249,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
      */
     public boolean isTaskExecutedOnDate(String date, String taskName) {
         Set<String> tasks = taskLog.getOrDefault(date, new HashSet<>());
+        //System.out.println(tasks + " " + taskName + " on " + date + " r " + tasks.contains(taskName));
         return tasks.contains(taskName);
     }
 

@@ -120,17 +120,4 @@ public class CheckCropsGoal extends wpsGoalBDI {
         return 0.9;
     }
 
-    /**
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        //System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals().toString());
-        //System.out.println(stateBDI.getMachineBDIParams().getIntention().toString());
-        return believes.getPeasantProfile().getHealth() > 0;
-    }
-
 }

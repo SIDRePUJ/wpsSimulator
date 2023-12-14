@@ -69,12 +69,7 @@ public class DoVitalsGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getHealth() > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return 1;
     }
 
     /**
@@ -92,10 +87,8 @@ public class DoVitalsGoal extends wpsGoalBDI {
         }
 
         if (believes.isNewDay()) {
-            //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;
         } else {
-            //wpsReport.trace("NO " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 0;
         }
     }
@@ -120,16 +113,5 @@ public class DoVitalsGoal extends wpsGoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return 1;
-    }
-
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return true;
     }
 }

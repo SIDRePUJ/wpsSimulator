@@ -36,7 +36,7 @@ public class wpsGoalBDI extends GoalBDI {
 
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return false;
+        return true;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class wpsGoalBDI extends GoalBDI {
      */
     public boolean isAlreadyExecutedToday(PeasantFamilyBDIAgentBelieves believes) {
         //System.out.println("Checking Finish for " + this.getClass().getSimpleName() + " on " + believes.getInternalCurrentDate() + " con " + believes.isTaskExecutedOnDate(believes.getInternalCurrentDate(), this.getClass().getSimpleName()));
-        return believes.isTaskExecutedOnDate(believes.getInternalCurrentDate(), this.getClass().getSimpleName());
+        return believes.isTaskExecutedOnDate(believes.getInternalCurrentDate(), this.getClass().getSimpleName().replace("Goal", "Task"));
     }
 
 }

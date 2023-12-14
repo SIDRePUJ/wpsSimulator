@@ -45,12 +45,12 @@ public class IrrigateCropsGoal extends wpsGoalBDI {
         Plan irrigateCropsPlan = new Plan();
         irrigateCropsPlan.addTask(irrigateCropsTask);
         RationalRole irrigateCropsRole = new RationalRole(
-                "IrrigateCropsTask",
+                "irrigateCropsTask",
                 irrigateCropsPlan);
         return new IrrigateCropsGoal(
                 wpsStart.getPlanID(),
                 irrigateCropsRole,
-                "IrrigateCropsTask",
+                "irrigateCropsTask",
                 GoalBDITypes.OPORTUNITY);
     }
 
@@ -129,21 +129,6 @@ public class IrrigateCropsGoal extends wpsGoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return 1;
-    }
-
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        wpsReport.info("\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getPeasantProfile().getPeasantFamilyAlias());
-        wpsReport.info("\n" + stateBDI.getMachineBDIParams().getIntention().getDescription(), believes.getPeasantProfile().getPeasantFamilyAlias());
-        //return believes.getPeasantProfile().getHealth() > 0;
-        return true;
     }
 
 }
