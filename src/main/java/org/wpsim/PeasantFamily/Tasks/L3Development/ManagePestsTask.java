@@ -21,10 +21,9 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Viewer.Data.wpsReport;
-import org.wpsim.World.Agent.WorldGuard;
+import org.wpsim.World.Guards.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 

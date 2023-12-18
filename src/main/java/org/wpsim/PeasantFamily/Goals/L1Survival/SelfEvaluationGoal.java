@@ -115,7 +115,7 @@ public class SelfEvaluationGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 1;
+        return 0.9;
     }
 
     /**

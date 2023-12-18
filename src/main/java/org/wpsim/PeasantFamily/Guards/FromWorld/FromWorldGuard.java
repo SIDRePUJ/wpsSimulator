@@ -38,10 +38,14 @@ public class FromWorldGuard extends GuardBESA {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
+
         FromWorldMessage peasantCommMessage = (FromWorldMessage) event.getData();
-        //wpsReport.warn("🤖🤖🤖 Recibido: " + peasantCommMessage.getPeasantAlias() + " getType=" + peasantCommMessage.getPayload());
         StateBDI state = (StateBDI) this.agent.getState();
         String landName = peasantCommMessage.getLandName();
+
+        long initTime = System.currentTimeMillis();
+        System.out.println("Llegó a FromWorldGuard: " + initTime + " " + landName + " " + this.getAgent().getAlias());
+
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
         LandInfo landInfo = believes.getLandInfo(landName);
         FromWorldMessageType messageType = peasantCommMessage.getMessageType();
@@ -104,6 +108,8 @@ public class FromWorldGuard extends GuardBESA {
         } catch (Exception e) {
             wpsReport.warn("error?" + e, this.getAgent().getAlias());
         }
+
+        System.out.println("Mensaje procesado: " + (System.currentTimeMillis()-initTime) + " " + landName + " " + this.getAgent().getAlias());
 
     }
 

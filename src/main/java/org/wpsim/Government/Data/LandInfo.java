@@ -12,6 +12,8 @@ public class LandInfo implements Cloneable{
     private boolean isUsed;
     private SeasonType currentSeason;
     private CropCareType currentCropCareType;
+    private int totalRequiredTime;  // Total time required (in hours or days, as you prefer)
+    private int elapsedWorkTime;    // Elapsed work time (in hours or days)
 
     public LandInfo(String landName, String kind, String farmName) {
         this.setKind(kind);
@@ -88,6 +90,34 @@ public class LandInfo implements Cloneable{
 
     public void setLandName(String landName) {
         this.landName = landName;
+    }
+
+    public int getTotalRequiredTime() {
+        return totalRequiredTime;
+    }
+
+    public void setTotalRequiredTime(int totalRequiredTime) {
+        this.totalRequiredTime = totalRequiredTime;
+    }
+
+    public int getElapsedWorkTime() {
+        return elapsedWorkTime;
+    }
+
+    public void setElapsedWorkTime(int elapsedWorkTime) {
+        this.elapsedWorkTime = elapsedWorkTime;
+    }
+
+    public void increaseElapsedWorkTime(int workDone) {
+        this.elapsedWorkTime += (int) workDone;
+    }
+
+    public boolean elapsedWorkTimeIsDone() {
+        return elapsedWorkTime >= totalRequiredTime;
+    }
+
+    public void resetElapsedWorkTime() {
+        this.elapsedWorkTime = 0;
     }
 
     @Override

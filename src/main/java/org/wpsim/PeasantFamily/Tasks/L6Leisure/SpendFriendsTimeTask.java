@@ -14,11 +14,14 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
+import org.wpsim.Control.Data.Coin;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+
+import java.util.Random;
 
 /**
  *
@@ -27,14 +30,19 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 public class SpendFriendsTimeTask extends wpsTask {
 
     /**
-     *
-     * @param parameters
+     * Executes the SpendFamilyTimeTask
+     * @param parameters Believes of the agent
      */
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.SpendFriendsTimeTask);
+
+        if (Coin.flipCoin()) {
+            believes.useTime(TimeConsumedBy.SpendFriendsTimeTask);
+        } else {
+            believes.useTime(believes.getTimeLeftOnDay());
+        }
     }
 
 }

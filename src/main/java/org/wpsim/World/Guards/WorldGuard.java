@@ -1,4 +1,4 @@
-package org.wpsim.World.Agent;
+package org.wpsim.World.Guards;
 
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
@@ -11,6 +11,7 @@ import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldMessage;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldMessageType;
 import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.World.Agent.WorldState;
 import org.wpsim.World.Helper.WorldConfiguration;
 import org.wpsim.World.Messages.WorldMessage;
 import org.wpsim.World.layer.crop.CropLayer;
@@ -38,11 +39,13 @@ public class WorldGuard extends GuardBESA {
         CropCell cropCellInfo;
         DiseaseCellState diseaseCellState;
         JSONObject cropDataJson;
+
+        //long initTime = System.currentTimeMillis();
+        //System.out.println(" Llegó a WorldGuard: " + initTime + " " + worldMessage.getPeasantAgentAlias());
+
         switch (worldMessage.getWorldMessageType()) {
             case CROP_INIT:
-                //wpsReport.info("Start event, initialize first layers state");
                 worldState.lazyUpdateCropsForDate(worldMessage.getDate());
-                //wpsCurrentDate.getInstance().getDatePlusOneDayAndUpdate();
                 peasantMessage = new FromWorldMessage(
                         FromWorldMessageType.CROP_INIT,
                         worldMessage.getPeasantAgentAlias(),
@@ -150,9 +153,11 @@ public class WorldGuard extends GuardBESA {
                 this.replyToPeasantAgent(
                         worldMessage.getPeasantAgentAlias(),
                         peasantMessage);
-                //this.getAgent().shutdownAgent();
                 break;
         }
+
+        //System.out.println("Se fue de WorldGuard: " + (System.currentTimeMillis()-initTime) + " " + worldMessage.getPeasantAgentAlias());
+
     }
 
     /**
@@ -162,11 +167,14 @@ public class WorldGuard extends GuardBESA {
      */
     public synchronized void replyToPeasantAgent(String peasantAgentAlias, FromWorldMessage peasantMessage) {
         try {
-            AgHandlerBESA ah = this.agent.getAdmLocal().getHandlerByAlias(peasantAgentAlias);
             EventBESA event = new EventBESA(
                     FromWorldGuard.class.getName(),
                     peasantMessage);
-            ah.sendEvent(event);
+            this.agent.getAdmLocal().getHandlerByAlias(
+                    peasantAgentAlias
+            ).sendEvent(
+                    event
+            );
             //wpsReport.debug("Sent: " + peasantMessage.getPayload());
         } catch (ExceptionBESA e) {
             wpsReport.error(e.getMessage(), "WorldAgent.replyToPeasantAgent");

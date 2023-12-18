@@ -43,17 +43,17 @@ public class DeforestingLandGoal extends wpsGoalBDI {
         Plan deforestingLandPlan = new Plan();
         deforestingLandPlan.addTask(deforestingLandTask);
         RationalRole deforestingLandRole = new RationalRole(
-                "deforestingLandTask",
+                "DeforestingLandTask",
                 deforestingLandPlan);
         return new DeforestingLandGoal(
                 wpsStart.getPlanID(),
                 deforestingLandRole,
-                "deforestingLandTask",
+                "DeforestingLandTask",
                 GoalBDITypes.OPORTUNITY);
     }
 
     /**
-     *
+     * Creates the DeforestingLandGoal
      * @param id
      * @param role
      * @param description

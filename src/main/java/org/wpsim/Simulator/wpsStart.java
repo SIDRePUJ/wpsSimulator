@@ -46,11 +46,11 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 500;
+    public static int stepTime = 250;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;
-    public final static int DEFAULT_AGENTS_TO_TEST = 27;
+    public final static int DEFAULT_AGENTS_TO_TEST = 16;
     public static final long startTime = System.currentTimeMillis();
     static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 

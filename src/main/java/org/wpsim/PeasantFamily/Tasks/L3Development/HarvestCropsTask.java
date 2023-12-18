@@ -19,13 +19,11 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
-import org.wpsim.Simulator.wpsStart;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsLandTask;
 import org.wpsim.Viewer.Data.wpsReport;
-import org.wpsim.World.Agent.WorldGuard;
+import org.wpsim.World.Guards.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -36,7 +34,7 @@ import static org.wpsim.World.Messages.WorldMessageType.CROP_HARVEST;
  *
  * @author jairo
  */
-public class HarvestCropsTask extends wpsTask {
+public class HarvestCropsTask extends wpsLandTask {
 
     /**
      *
@@ -45,27 +43,33 @@ public class HarvestCropsTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        updateConfig(believes, 56);
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
-                wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
-                try {
-                    WorldMessage worldMessage = new WorldMessage(
-                            CROP_HARVEST,
-                            currentLandInfo.getLandName(),
-                            believes.getInternalCurrentDate(),
-                            believes.getPeasantProfile().getPeasantFamilyAlias());
-                    EventBESA ev = new EventBESA(
-                            WorldGuard.class.getName(),
-                            worldMessage);
-                    AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
-                    // Reset Land
-                    currentLandInfo.setCurrentSeason(SeasonType.NONE);
-                    currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
-                } catch (ExceptionBESA ex) {
-                    wpsReport.error(ex.getMessage(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime());
+                if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
+                    this.resetLand(believes, currentLandInfo.getLandName());
+                    wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
+                    try {
+                        WorldMessage worldMessage = new WorldMessage(
+                                CROP_HARVEST,
+                                currentLandInfo.getLandName(),
+                                believes.getInternalCurrentDate(),
+                                believes.getPeasantProfile().getPeasantFamilyAlias());
+                        EventBESA ev = new EventBESA(
+                                WorldGuard.class.getName(),
+                                worldMessage);
+                        AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
+                        // Reset Land
+                        currentLandInfo.setCurrentSeason(SeasonType.NONE);
+                        currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
+                    } catch (ExceptionBESA ex) {
+                        wpsReport.error(ex.getMessage(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                    }
                 }
+                return;
             }
         }
     }

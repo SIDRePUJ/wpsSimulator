@@ -16,7 +16,7 @@ public class wpsGoalBDI extends GoalBDI {
 
     @Override
     public double evaluateViability(Believes believes) throws KernellAgentEventExceptionBESA {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -26,7 +26,7 @@ public class wpsGoalBDI extends GoalBDI {
 
     @Override
     public double evaluatePlausibility(Believes believes) throws KernellAgentEventExceptionBESA {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -52,7 +52,12 @@ public class wpsGoalBDI extends GoalBDI {
      */
     public boolean isAlreadyExecutedToday(PeasantFamilyBDIAgentBelieves believes) {
         //System.out.println("Checking Finish for " + this.getClass().getSimpleName() + " on " + believes.getInternalCurrentDate() + " con " + believes.isTaskExecutedOnDate(believes.getInternalCurrentDate(), this.getClass().getSimpleName()));
-        return believes.isTaskExecutedOnDate(believes.getInternalCurrentDate(), this.getClass().getSimpleName().replace("Goal", "Task"));
+        return believes.isTaskExecutedOnDate(
+                believes.getInternalCurrentDate(),
+                this.getClass().getSimpleName().replace(
+                        "Goal", "Task"
+                )
+        );
     }
 
 }
