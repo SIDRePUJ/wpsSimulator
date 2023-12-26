@@ -14,6 +14,7 @@ import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.WorldState;
 import org.wpsim.World.Helper.WorldConfiguration;
 import org.wpsim.World.Messages.WorldMessage;
+import org.wpsim.World.Messages.WorldMessageType;
 import org.wpsim.World.layer.crop.CropLayer;
 import org.wpsim.World.layer.crop.cell.CropCell;
 import org.wpsim.World.layer.crop.cell.CropCellState;
@@ -25,9 +26,9 @@ import org.wpsim.World.layer.disease.DiseaseCellState;
 public class WorldGuard extends GuardBESA {
 
     private WorldConfiguration worldConfig = WorldConfiguration.getPropsInstance();
+    private boolean isExecutingCropObserveOrInformation = false;
 
     /**
-     *
      * @param eventBESA
      */
     @Override
@@ -40,128 +41,132 @@ public class WorldGuard extends GuardBESA {
         DiseaseCellState diseaseCellState;
         JSONObject cropDataJson;
 
-        //long initTime = System.currentTimeMillis();
-        //System.out.println(" Llegó a WorldGuard: " + initTime + " " + worldMessage.getPeasantAgentAlias());
-
-        switch (worldMessage.getWorldMessageType()) {
-            case CROP_INIT:
-                worldState.lazyUpdateCropsForDate(worldMessage.getDate());
-                peasantMessage = new FromWorldMessage(
-                        FromWorldMessageType.CROP_INIT,
-                        worldMessage.getPeasantAgentAlias(),
-                        "CROP_INIT",
-                        this.getAgent().getAlias());
-                peasantMessage.setDate(worldMessage.getDate());
-                this.replyToPeasantAgent(
-                        worldMessage.getPeasantAgentAlias(),
-                        peasantMessage);
-                break;
-            case CROP_INFORMATION:
-                //wpsReport.info("Message received:"
-                //        + " Crop - " + worldMessage.getCropId()
-                //        + " Information " + worldMessage.getPayload()
-                //        + " Date: " + worldMessage.getDate());
-                worldState.lazyUpdateCropsForDate(worldMessage.getDate());
-                cropCellState = worldState.getCropLayer().getCropStateById(worldMessage.getCropId());
-                cropCellInfo = worldState.getCropLayer().getCropCellById(worldMessage.getCropId());
-                diseaseCellState = (DiseaseCellState) cropCellInfo.getDiseaseCell().getCellState();
-                cropDataJson = new JSONObject(cropCellState);
-                cropDataJson.put("disease", diseaseCellState.isInfected());
-                cropDataJson.put("cropHarvestReady", cropCellInfo.isHarvestReady());
-                peasantMessage = new FromWorldMessage(
-                        FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
-                        worldMessage.getPeasantAgentAlias(),
-                        cropDataJson.toString(),
-                        this.getAgent().getAlias());
-                peasantMessage.setDate(worldMessage.getDate());
-                this.replyToPeasantAgent(worldMessage.getPeasantAgentAlias(), peasantMessage);
-                break;
-            case CROP_OBSERVE:
-                //wpsReport.info("Observing crops (lazy mode).... on date: "
-                //        + worldMessage.getDate());
-                worldState.getCropLayer().getAllCrops().forEach(cropCell -> {
-                    if (((CropCellState) cropCell.getCellState()).isWaterStress()) {
-                        this.notifyPeasantCropProblem(FromWorldMessageType.NOTIFY_CROP_WATER_STRESS,
-                                cropCell.getAgentPeasantId(),
-                                worldMessage.getDate());
-                    }
-                    if (((DiseaseCellState) cropCell.getDiseaseCell().getCellState()).isInfected()) {
-                        this.notifyPeasantCropProblem(FromWorldMessageType.NOTIFY_CROP_DISEASE,
-                                cropCell.getAgentPeasantId(),
-                                worldMessage.getDate());
-                    }
-                    if (cropCell.isHarvestReady()) {
-                        this.notifyPeasantCropReadyToHarvest(
-                                cropCell.getAgentPeasantId(),
-                                worldMessage.getDate());
-                    }
-                });
-                break;
-            case CROP_IRRIGATION:
-                // Adding the event of irrigation, will be reflected in the next layers execution
-                //wpsReport.info("Irrigation on the crop, date: " + worldMessage.getDate());
-                String cropIdToIrrigate = worldMessage.getCropId();
-                String defaultWaterQuantity = this.worldConfig.getProperty("crop.defaultValuePerIrrigation");
-                //int irrigateValue = Integer.parseInt(defaultWaterQuantity) * worldState.getCropLayer().getCropCellById(cropIdToIrrigate).getCropArea();
-                int irrigateValue = (int) (Integer.parseInt(defaultWaterQuantity) * 1.1);
-                worldState.getCropLayer().addIrrigationEvent(
-                        String.valueOf(irrigateValue),
-                        worldMessage.getDate()
-                );
-                peasantMessage = new FromWorldMessage(
-                        FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
-                        worldMessage.getPeasantAgentAlias(),
-                        "CROP_IRRIGATION",
-                        this.getAgent().getAlias());
-                peasantMessage.setDate(worldMessage.getDate());
-                this.replyToPeasantAgent(
-                        worldMessage.getPeasantAgentAlias(),
-                        peasantMessage);
-                break;
-            case CROP_PESTICIDE:
-                // Adding the event of pesticide, will be reflected in the next layers execution
-                //wpsReport.info("Adding pesticide to the crop, date: " + worldMessage.getDate());
-                String cropIdToAddPesticide = worldMessage.getCropId();
-                String defaultCropInsecticideCoverage = this.worldConfig.getProperty("disease.insecticideDefaultCoverage");
-                String diseaseCellId = worldState.getCropLayer().getCropCellById(cropIdToAddPesticide).getDiseaseCell().getId();
-                worldState.getDiseaseLayer().addInsecticideEvent(
-                        diseaseCellId,
-                        defaultCropInsecticideCoverage,
-                        worldMessage.getDate());
-                peasantMessage = new FromWorldMessage(
-                        FromWorldMessageType.CROP_PESTICIDE,
-                        worldMessage.getPeasantAgentAlias(),
-                        defaultCropInsecticideCoverage + " " + diseaseCellId,
-                        this.getAgent().getAlias());
-                peasantMessage.setDate(worldMessage.getDate());
-                this.replyToPeasantAgent(worldMessage.getPeasantAgentAlias(), peasantMessage);
-                break;
-            case CROP_HARVEST:
-                this.harvestCrop(worldState.getCropLayer());
-                cropCellState = worldState.getCropLayer().getCropState();
-                cropCellInfo = worldState.getCropLayer().getCropCell();
-                diseaseCellState = (DiseaseCellState) cropCellInfo.getDiseaseCell().getCellState();
-                cropDataJson = new JSONObject(cropCellState);
-                cropDataJson.put("disease", diseaseCellState.isInfected());
-                cropDataJson.put("cropHarvestReady", cropCellInfo.isHarvestReady());
-                peasantMessage = new FromWorldMessage(
-                        FromWorldMessageType.CROP_HARVEST,
-                        worldMessage.getPeasantAgentAlias(),
-                        cropDataJson.toString(),
-                        this.getAgent().getAlias());
-                peasantMessage.setDate(worldMessage.getDate());
-                this.replyToPeasantAgent(
-                        worldMessage.getPeasantAgentAlias(),
-                        peasantMessage);
-                break;
+        // Verificar y establecer el estado para CROP_OBSERVE y CROP_INFORMATION
+        if ((worldMessage.getWorldMessageType() == WorldMessageType.CROP_OBSERVE ||
+                worldMessage.getWorldMessageType() == WorldMessageType.CROP_INFORMATION) &&
+                isExecutingCropObserveOrInformation) {
+            return;
         }
 
-        //System.out.println("Se fue de WorldGuard: " + (System.currentTimeMillis()-initTime) + " " + worldMessage.getPeasantAgentAlias());
+        try {
+            if (worldMessage.getWorldMessageType() == WorldMessageType.CROP_OBSERVE ||
+                    worldMessage.getWorldMessageType() == WorldMessageType.CROP_INFORMATION) {
+                isExecutingCropObserveOrInformation = true;
+            }
 
+            switch (worldMessage.getWorldMessageType()) {
+                case CROP_INIT:
+                    worldState.lazyUpdateCropsForDate(worldMessage.getDate());
+                    peasantMessage = new FromWorldMessage(
+                            FromWorldMessageType.CROP_INIT,
+                            worldMessage.getPeasantAgentAlias(),
+                            "CROP_INIT",
+                            this.getAgent().getAlias());
+                    peasantMessage.setDate(worldMessage.getDate());
+                    this.replyToPeasantAgent(
+                            worldMessage.getPeasantAgentAlias(),
+                            peasantMessage);
+                    break;
+                case CROP_INFORMATION:
+                    worldState.lazyUpdateCropsForDate(worldMessage.getDate());
+                    cropCellState = worldState.getCropLayer().getCropStateById(worldMessage.getCropId());
+                    cropCellInfo = worldState.getCropLayer().getCropCellById(worldMessage.getCropId());
+                    diseaseCellState = (DiseaseCellState) cropCellInfo.getDiseaseCell().getCellState();
+                    cropDataJson = new JSONObject(cropCellState);
+                    cropDataJson.put("disease", diseaseCellState.isInfected());
+                    cropDataJson.put("cropHarvestReady", cropCellInfo.isHarvestReady());
+                    peasantMessage = new FromWorldMessage(
+                            FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
+                            worldMessage.getPeasantAgentAlias(),
+                            cropDataJson.toString(),
+                            this.getAgent().getAlias());
+                    peasantMessage.setDate(worldMessage.getDate());
+                    this.replyToPeasantAgent(worldMessage.getPeasantAgentAlias(), peasantMessage);
+                    break;
+                case CROP_OBSERVE:
+                    worldState.getCropLayer().getAllCrops().forEach(cropCell -> {
+                        if (((CropCellState) cropCell.getCellState()).isWaterStress()) {
+                            this.notifyPeasantCropProblem(FromWorldMessageType.NOTIFY_CROP_WATER_STRESS,
+                                    cropCell.getAgentPeasantId(),
+                                    worldMessage.getDate());
+                        }
+                        if (((DiseaseCellState) cropCell.getDiseaseCell().getCellState()).isInfected()) {
+                            this.notifyPeasantCropProblem(FromWorldMessageType.NOTIFY_CROP_DISEASE,
+                                    cropCell.getAgentPeasantId(),
+                                    worldMessage.getDate());
+                        }
+                        if (cropCell.isHarvestReady()) {
+                            this.notifyPeasantCropReadyToHarvest(
+                                    cropCell.getAgentPeasantId(),
+                                    worldMessage.getDate());
+                        }
+                    });
+                    break;
+                case CROP_IRRIGATION:
+                    String cropIdToIrrigate = worldMessage.getCropId();
+                    String defaultWaterQuantity = this.worldConfig.getProperty("crop.defaultValuePerIrrigation");
+                    //int irrigateValue = Integer.parseInt(defaultWaterQuantity) * worldState.getCropLayer().getCropCellById(cropIdToIrrigate).getCropArea();
+                    int irrigateValue = (int) (Integer.parseInt(defaultWaterQuantity) * 1.1);
+                    worldState.getCropLayer().addIrrigationEvent(
+                            String.valueOf(irrigateValue),
+                            worldMessage.getDate()
+                    );
+                    peasantMessage = new FromWorldMessage(
+                            FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
+                            worldMessage.getPeasantAgentAlias(),
+                            "CROP_IRRIGATION",
+                            this.getAgent().getAlias());
+                    peasantMessage.setDate(worldMessage.getDate());
+                    this.replyToPeasantAgent(
+                            worldMessage.getPeasantAgentAlias(),
+                            peasantMessage);
+                    break;
+                case CROP_PESTICIDE:
+                    String cropIdToAddPesticide = worldMessage.getCropId();
+                    String defaultCropInsecticideCoverage = this.worldConfig.getProperty("disease.insecticideDefaultCoverage");
+                    String diseaseCellId = worldState.getCropLayer().getCropCellById(cropIdToAddPesticide).getDiseaseCell().getId();
+                    worldState.getDiseaseLayer().addInsecticideEvent(
+                            diseaseCellId,
+                            defaultCropInsecticideCoverage,
+                            worldMessage.getDate());
+                    peasantMessage = new FromWorldMessage(
+                            FromWorldMessageType.CROP_PESTICIDE,
+                            worldMessage.getPeasantAgentAlias(),
+                            defaultCropInsecticideCoverage + " " + diseaseCellId,
+                            this.getAgent().getAlias());
+                    peasantMessage.setDate(worldMessage.getDate());
+                    this.replyToPeasantAgent(worldMessage.getPeasantAgentAlias(), peasantMessage);
+                    break;
+                case CROP_HARVEST:
+                    this.harvestCrop(worldState.getCropLayer());
+                    cropCellState = worldState.getCropLayer().getCropState();
+                    cropCellInfo = worldState.getCropLayer().getCropCell();
+                    diseaseCellState = (DiseaseCellState) cropCellInfo.getDiseaseCell().getCellState();
+                    cropDataJson = new JSONObject(cropCellState);
+                    cropDataJson.put("disease", diseaseCellState.isInfected());
+                    cropDataJson.put("cropHarvestReady", cropCellInfo.isHarvestReady());
+                    peasantMessage = new FromWorldMessage(
+                            FromWorldMessageType.CROP_HARVEST,
+                            worldMessage.getPeasantAgentAlias(),
+                            cropDataJson.toString(),
+                            this.getAgent().getAlias());
+                    peasantMessage.setDate(worldMessage.getDate());
+                    this.replyToPeasantAgent(
+                            worldMessage.getPeasantAgentAlias(),
+                            peasantMessage);
+                    break;
+            }
+
+        } finally {
+            // Restablecer el estado para permitir futuras ejecuciones
+            if (worldMessage.getWorldMessageType() == WorldMessageType.CROP_OBSERVE ||
+                    worldMessage.getWorldMessageType() == WorldMessageType.CROP_INFORMATION) {
+                isExecutingCropObserveOrInformation = false;
+            }
+        }
     }
 
     /**
-     *
      * @param peasantAgentAlias
      * @param peasantMessage
      */
@@ -182,7 +187,6 @@ public class WorldGuard extends GuardBESA {
     }
 
     /**
-     *
      * @param messageType
      * @param agentAlias
      * @param date
@@ -208,7 +212,6 @@ public class WorldGuard extends GuardBESA {
     }
 
     /**
-     *
      * @param agentAlias
      * @param date
      */
@@ -233,7 +236,6 @@ public class WorldGuard extends GuardBESA {
     }
 
     /**
-     *
      * @param cropLayer
      */
     public synchronized void harvestCrop(CropLayer cropLayer) {

@@ -68,18 +68,6 @@ public class WorkForOtherGoal extends wpsGoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return 1;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
 
@@ -87,9 +75,14 @@ public class WorkForOtherGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.isWorkerWithoutLand() && !believes.getContractor().isBlank()) {
+        try {
+            if (!believes.getContractor().isEmpty()) {
                 return 1;
+            }
+        } catch (Exception e) {
+            return 0;
         }
+
         return 0;
     }
 
@@ -118,18 +111,6 @@ public class WorkForOtherGoal extends wpsGoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return 1;
-    }
-
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
     }
 
 }

@@ -64,18 +64,24 @@ public class DoVitalsTask extends wpsTask {
         believes.getPeasantProfile().discountDailyMoney();
 
         // TODO: Setear pago adecuado
-        if (!believes.getContractorStartDate().isBlank()) {
-            if (ControlCurrentDate.getInstance().isAfterDate(believes.getContractorStartDate())) {
+        if (believes.getDaysToWorkForOther() > 0) {
+            believes.decreaseDaysToWorkForOther();
+            if (believes.getDaysToWorkForOther() == 0) {
+                System.out.println("Pagar contratos ... Cerrar ciclo.");
                 if (believes.getContractor().isBlank()) {
                     System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " Pagando por el contrato a " + believes.getPeasantFamilyHelper());
                     believes.setPeasantFamilyHelper("");
+                    believes.setContractor("");
                     believes.getPeasantProfile().decreaseMoney(250000);
                 } else {
                     System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " Recibiendo pago por el contrato da " + believes.getContractor());
                     believes.setContractor("");
+                    believes.setPeasantFamilyHelper("");
+                    believes.setAskedForContractor(false);
                     believes.getPeasantProfile().increaseMoney(250000);
                 }
-                believes.setContractorStartDate("");
+            }else{
+                System.out.println("Seguimos trabajando, faltan " + believes.getDaysToWorkForOther() + " dias, para " + believes.getContractor());
             }
         }
 

@@ -32,7 +32,6 @@ public class WorkForOtherTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.discountDaysToWorkForOther();
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 

@@ -36,31 +36,44 @@ public class SocietyAgentRequestHelpGuard extends GuardBESA  {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        wpsReport.debug("Llegada al agente Sociedad desde " + event.getSource(), this.getAgent().getAlias());
+        //wpsReport.debug("Llegada al agente Sociedad desde " + event.getSource(), this.getAgent().getAlias());
         SocietyDataMessage societyDataMessage = (SocietyDataMessage) event.getData();
         SocietyAgentState state = (SocietyAgentState) this.getAgent().getState();
-        // Agente que ayuda
-        String agentHelper = state.getPeasantFamilyFromStack();
-        // Agente que pidió ayuda
-        String agentContractor = societyDataMessage.getPeasantFamilyAgent();
 
         try {
-            SocietyDataMessage societyDataMessageToSent = new SocietyDataMessage(
-                    agentHelper, //Ayudante
-                    agentContractor, //Contratista
-                    5
-            );
-            System.out.println("enviando ayuda " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyAgent());
+
+            String agentHelper = state.getPeasantFamilyFromStack(); // Agente que ayuda
+            String agentContractor = societyDataMessage.getPeasantFamilyContractor(); // Agente que pidió ayuda
+
+            if (agentHelper == null) {
+                return;
+            }else{
+                wpsReport.info("Disponible " + agentHelper + " para ayudar a " + agentContractor, this.getAgent().getAlias());
+            }
+
+            //wpsReport.info("enviando ayuda " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyAgent(), this.getAgent().getAlias());
+            //System.out.println("enviando contrato como ayudante a " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyContractor());
             AdmBESA.getInstance().getHandlerByAlias(
-                    societyDataMessage.getPeasantFamilyAgent()
+                    agentHelper
             ).sendEvent(
-                    new EventBESA(SocietyWorkerContractGuard.class.getName(), societyDataMessageToSent)
+                    new EventBESA(SocietyWorkerContractGuard.class.getName(),
+                            new SocietyDataMessage(
+                                    agentContractor, // Contratador
+                                    agentHelper, // Ayudante
+                                    5
+                            ))
             );
-            System.out.println("enviando contrato " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyAgent());
+            //wpsReport.info("enviando contrato " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyAgent(), this.getAgent().getAlias());
+            //System.out.println("enviando contrato como contratista a " + agentContractor);
             AdmBESA.getInstance().getHandlerByAlias(
-                    societyDataMessage.getPeasantFamilyAgent()
+                    agentContractor
             ).sendEvent(
-                    new EventBESA(SocietyWorkerContractorGuard.class.getName(), societyDataMessageToSent)
+                    new EventBESA(SocietyWorkerContractorGuard.class.getName(),
+                            new SocietyDataMessage(
+                                    agentContractor, // Contratador
+                                    agentHelper, // Ayudante
+                                    5
+                            ))
             );
         } catch (ExceptionBESA ex) {
             System.out.println(ex.getMessage());

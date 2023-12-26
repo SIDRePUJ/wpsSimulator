@@ -36,7 +36,7 @@ import org.wpsim.World.Helper.WorldConfiguration;
 import org.wpsim.World.Messages.WorldMessage;
 import org.wpsim.World.Messages.WorldMessageType;
 import org.wpsim.World.layer.crop.CropLayer;
-import org.wpsim.World.layer.crop.cell.rice.RiceCell;
+import org.wpsim.World.layer.crop.cell.roots.RootsCell;
 import org.wpsim.World.layer.disease.DiseaseCell;
 import org.wpsim.World.layer.disease.DiseaseLayer;
 import org.wpsim.World.layer.evapotranspiration.EvapotranspirationLayer;
@@ -73,22 +73,22 @@ public class PlantCropTask extends wpsLandTask {
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
-                System.out.println("Plantando for " + currentLandInfo.getLandName());
+                wpsReport.info("Plantando for " + currentLandInfo.getLandName(), peasantAlias);
                 this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PlantCropTask.getTime());
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                     this.resetLand(believes, currentLandInfo.getLandName());
-                    System.out.println("Finalización de plantado for " + currentLandInfo.getLandName());
+                    wpsReport.info("Finalización de plantado for " + currentLandInfo.getLandName(), peasantAlias);
                     //System.out.println("plantando " + currentLandInfo.getLandName());
                     boolean isRunning = false;
                     try {
                         AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
                         isRunning = true;
                     } catch (ExceptionBESA ex) {
-                        System.out.println("Se debe crear el agente mundo " + currentLandInfo.getLandName());
+                        wpsReport.info("Se debe crear el agente mundo " + currentLandInfo.getLandName(), peasantAlias);
                     }
                     WorldMessage worldMessage = null;
                     if (isRunning) {
-                        System.out.println("Renovando cultivo " + currentLandInfo.getLandName());
+                        wpsReport.warn("Renovando cultivo " + currentLandInfo.getLandName(), peasantAlias);
                         worldMessage = new WorldMessage(
                                 CROP_INIT,
                                 currentLandInfo.getLandName(),
@@ -99,7 +99,7 @@ public class PlantCropTask extends wpsLandTask {
                             EventBESA ev = new EventBESA(WorldGuard.class.getName(), worldMessage);
                             AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
                         } catch (ExceptionBESA ex) {
-                            System.out.println("Error renovando tierra " + currentLandInfo.getLandName());
+                            wpsReport.error("Error renovando tierra " + currentLandInfo.getLandName(), peasantAlias);
                         }
 
                         // TODO: Estimar el costo de Semillas
@@ -131,8 +131,14 @@ public class PlantCropTask extends wpsLandTask {
                                     peasantAlias
                             );
 
-                            EventBESA ev = new EventBESA(WorldGuard.class.getName(), worldMessage);
-                            AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
+                            AdmBESA.getInstance().getHandlerByAlias(
+                                    currentLandInfo.getLandName()
+                            ).sendEvent(
+                                    new EventBESA(
+                                            WorldGuard.class.getName(),
+                                            worldMessage
+                                    )
+                            );
 
                             // TODO: Estimar el costo de Semillas
                             profile.useSeeds(profile.getRiceSeedsByHectare());
@@ -175,10 +181,11 @@ public class PlantCropTask extends wpsLandTask {
                 worldConfiguration.getProperty("data.evapotranspiration"));
         RainfallLayer rainfallLayer = new RainfallLayer(rainfallFile);
         DiseaseLayer diseaseLayer = new DiseaseLayer();
-        DiseaseCell diseaseCellRice = new DiseaseCell("rice1DiseaseCell");
-        diseaseLayer.addVertex(diseaseCellRice);
+        DiseaseCell diseaseCellRoots = new DiseaseCell("roots1DiseaseCell");
+        diseaseLayer.addVertex(diseaseCellRoots);
         CropLayer cropLayer = new CropLayer();
-        cropLayer.addCrop(new RiceCell(
+        cropLayer.addCrop(
+                new RootsCell(
                 1.05,
                 1.2,
                 0.7,
@@ -189,9 +196,11 @@ public class PlantCropTask extends wpsLandTask {
                 0.2,
                 Soil.SAND,
                 true,
-                diseaseCellRice,
+                diseaseCellRoots,
                 cropName,
-                agentAlias));
+                agentAlias
+                )
+        );
         cropLayer.bindLayer("radiation", radiationLayer);
         cropLayer.bindLayer("rainfall", rainfallLayer);
         cropLayer.bindLayer("temperature", temperatureLayer);

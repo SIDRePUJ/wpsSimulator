@@ -1,4 +1,4 @@
-package org.wpsim.World.layer.crop.cell.root;
+package org.wpsim.World.layer.crop.cell.roots;
 
 import org.wpsim.World.Helper.Soil;
 import org.wpsim.World.layer.crop.cell.CropCell;
@@ -7,7 +7,7 @@ import org.wpsim.World.layer.disease.DiseaseCell;
 /**
  * Root cell implementation
  */
-public class RootCell extends CropCell<RootCellState> {
+public class RootsCell extends CropCell<RootsCellState> {
 
     private String id;
 
@@ -27,7 +27,7 @@ public class RootCell extends CropCell<RootCellState> {
      * @param id
      * @param agentPeasantId
      */
-    public RootCell(
+    public RootsCell(
             double cropFactor_ini,
             double cropFactor_mid,
             double cropFactor_end,

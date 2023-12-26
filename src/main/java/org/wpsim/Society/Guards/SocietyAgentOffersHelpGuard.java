@@ -32,11 +32,9 @@ public class SocietyAgentOffersHelpGuard extends GuardBESA  {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        wpsReport.debug("Llegada al agente Sociedad desde " + event.getSource(), this.getAgent().getAlias());
         SocietyDataMessage societyDataMessage = (SocietyDataMessage) event.getData();
         SocietyAgentState state = (SocietyAgentState) this.getAgent().getState();
         state.addPeasantFamilyToStack(societyDataMessage.getPeasantFamilyHelper());
-        System.out.println("ofertando ayuda " +  societyDataMessage.getPeasantFamilyHelper() + " desde " + societyDataMessage.getPeasantFamilyAgent());
     }
     
 }

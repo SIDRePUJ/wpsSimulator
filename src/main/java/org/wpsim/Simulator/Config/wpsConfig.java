@@ -165,7 +165,6 @@ public final class wpsConfig {
     }
 
     public Map<String, FarmingResource> loadMarketConfig() {
-
         Map<String, FarmingResource> priceList = new HashMap<>();
         Properties properties = new Properties();
 
@@ -175,7 +174,7 @@ public final class wpsConfig {
 
             String[] resourceNames = {
                     "water", "seeds", "pesticides",
-                    "tools", "livestock", "rice", "yuca"
+                    "tools", "livestock", "rice", "roots"
             };
 
             for (String resourceName : resourceNames) {

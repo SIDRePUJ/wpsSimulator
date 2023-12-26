@@ -44,10 +44,11 @@ public class FromWorldGuard extends GuardBESA {
         String landName = peasantCommMessage.getLandName();
 
         long initTime = System.currentTimeMillis();
-        System.out.println("Llegó a FromWorldGuard: " + initTime + " " + landName + " " + this.getAgent().getAlias());
+        wpsReport.info("Llegó a FromWorldGuard: " + initTime + " " + landName, this.getAgent().getAlias());
 
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
         LandInfo landInfo = believes.getLandInfo(landName);
+        landInfo.setProcessing(false);
         FromWorldMessageType messageType = peasantCommMessage.getMessageType();
 
         try {
@@ -55,29 +56,24 @@ public class FromWorldGuard extends GuardBESA {
             switch (messageType) {
                 case NOTIFY_CROP_DISEASE:
                     believes.getPeasantProfile().setCropHealth(0.5);
-                    //wpsReport.info("🍙🍙🍙: NOTIFY_CROP_DISEASE");
+                    wpsReport.info("🍙🍙🍙: NOTIFY_CROP_DISEASE", this.getAgent().getAlias());
                     break;
                 case CROP_PESTICIDE:
                     believes.setCurrentCropCareType(landName, CropCareType.PESTICIDE);
-                    //wpsReport.info("🍙🍙🍙: CROP_PESTICIDE");
+                    wpsReport.info("🍙🍙🍙: CROP_PESTICIDE", this.getAgent().getAlias());
                     break;
                 case NOTIFY_CROP_WATER_STRESS:
                     believes.setCurrentCropCareType(landName, CropCareType.IRRIGATION);
                     wpsReport.info("🍙🍙🍙: NOTIFY_CROP_WATER_STRESS", this.getAgent().getAlias());
                     break;
                 case CROP_INFORMATION_NOTIFICATION:
-                    //believes.getProfile().setPesticideSeason(true);
-                    //wpsReport.info("🍙🍙🍙: CROP_INFORMATION_NOTIFICATION");
                     break;
                 case NOTIFY_CROP_READY_HARVEST:
                     believes.setCurrentSeason(landName, SeasonType.HARVEST);
-                    //wpsReport.info("🍙🍙🍙: NOTIFY_CROP_READY_HARVEST");
                     break;
                 case REQUEST_CROP_INFORMATION:
-                    //wpsReport.info("🍙🍙🍙: " + peasantCommMessage.getPayload());
                     break;
                 case CROP_INIT:
-                    //believes.getProfile().setPlantingSeason(true);
                     break;
                 case CROP_HARVEST:
                     wpsReport.info("🍙🍙🍙: CROP_HARVEST OK", this.getAgent().getAlias());
@@ -89,17 +85,14 @@ public class FromWorldGuard extends GuardBESA {
                             (int) Math.round(
                                     Double.parseDouble(
                                             cropData.get("aboveGroundBiomass").toString()
-                                    )
+                                    ) * 0.2 // Solo es aprovechable el 50% de la biomasa + 30% consumo interno
                             )
                     );
                     believes.getPeasantProfile().increaseTotalHarvestedWeight(
                             Double.parseDouble(
                                     cropData.get("aboveGroundBiomass").toString()
-                            )
+                            ) * 0.2 // Solo es aprovechable el 50% de la biomasa + 30% consumo interno
                     );
-                    //System.out.println("Eliminando la tierra despues del cultivo " + landName);
-                    //String agID = AdmBESA.getInstance().getHandlerByAlias(landName).getAgId();
-                    //AdmBESA.getInstance().killAgent(agID, wpsStart.PASSWD);
                     break;
                 default:
                     // Código a ejecutar si messageType no coincide con ninguno de los casos anteriores
@@ -109,7 +102,7 @@ public class FromWorldGuard extends GuardBESA {
             wpsReport.warn("error?" + e, this.getAgent().getAlias());
         }
 
-        System.out.println("Mensaje procesado: " + (System.currentTimeMillis()-initTime) + " " + landName + " " + this.getAgent().getAlias());
+        wpsReport.info("Mensaje procesado: " + (System.currentTimeMillis()-initTime) + " " + landName, this.getAgent().getAlias());
 
     }
 

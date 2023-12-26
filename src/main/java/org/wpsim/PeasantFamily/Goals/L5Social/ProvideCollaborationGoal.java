@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -68,27 +68,6 @@ public class ProvideCollaborationGoal extends wpsGoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-
-        if (this.isAlreadyExecutedToday(believes)) {
-            return 0;
-        }
-
-        if (believes.getContractor().isEmpty()) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
 
@@ -97,21 +76,14 @@ public class ProvideCollaborationGoal extends wpsGoalBDI {
         }
 
         if (believes.getPeasantProfile().getPurpose().equals("worker")) {
-            return 1;
-        } else {
-            return 0;
+            if (believes.isAskedForContractor()) {
+                return 0;
+            } else {
+                return 1;
+            }
         }
-    }
+        return 0;
 
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
     }
 
     /**

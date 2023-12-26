@@ -37,20 +37,20 @@ import rational.mapping.Plan;
 public class IrrigateCropsGoal extends wpsGoalBDI {
 
     /**
-     *
-     * @return
+     * Builds IrrigateCropsGoal
+     * @return IrrigateCropsGoal with default values
      */
     public static IrrigateCropsGoal buildGoal() {
         IrrigateCropsTask irrigateCropsTask = new IrrigateCropsTask();
         Plan irrigateCropsPlan = new Plan();
         irrigateCropsPlan.addTask(irrigateCropsTask);
         RationalRole irrigateCropsRole = new RationalRole(
-                "irrigateCropsTask",
+                "IrrigateCropsTask",
                 irrigateCropsPlan);
         return new IrrigateCropsGoal(
                 wpsStart.getPlanID(),
                 irrigateCropsRole,
-                "irrigateCropsTask",
+                "IrrigateCropsTask",
                 GoalBDITypes.OPORTUNITY);
     }
 

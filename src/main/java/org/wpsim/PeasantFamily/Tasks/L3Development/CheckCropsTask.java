@@ -48,10 +48,11 @@ public class CheckCropsTask extends wpsTask {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.CheckCropsTask);
 
+        // @TODO: No enviar si no ha regresado todavía el anterior
+
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
                 try {
-                    wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
                     if (Coin.flipCoin()) {
                         AdmBESA.getInstance().getHandlerByAlias(
                                 currentLandInfo.getLandName()
@@ -66,6 +67,7 @@ public class CheckCropsTask extends wpsTask {
                                         )
                                 )
                         );
+                        wpsReport.warn("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
                     } else {
                         AdmBESA.getInstance().getHandlerByAlias(
                                 currentLandInfo.getLandName()
@@ -80,6 +82,7 @@ public class CheckCropsTask extends wpsTask {
                                         )
                                 )
                         );
+                        wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
                     }
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());

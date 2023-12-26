@@ -43,16 +43,18 @@ public class ProvideCollaborationTask extends wpsTask {
         believes.useTime(believes.getTimeLeftOnDay());
 
         try {
-            SocietyDataMessage societyDataMessageToSent = new SocietyDataMessage(
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    5
-            );
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsConfig.getInstance().getSocietyAgentName()
             ).sendEvent(
-                    new EventBESA(SocietyAgentOffersHelpGuard.class.getName(), societyDataMessageToSent)
+                    new EventBESA(SocietyAgentOffersHelpGuard.class.getName(),
+                            new SocietyDataMessage(
+                                believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                5
+                            )
+                    )
             );
+            believes.setAskedForContractor(true);
         } catch (ExceptionBESA ex) {
             System.out.println(ex.getMessage());
         }

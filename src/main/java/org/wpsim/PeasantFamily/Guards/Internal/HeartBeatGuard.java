@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Guards;
+package org.wpsim.PeasantFamily.Guards.Internal;
 
 import BESA.BDI.AgentStructuralModel.DesireHierarchyPyramid;
 import BESA.BDI.AgentStructuralModel.StateBDI;
@@ -67,7 +67,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         StateBDI state = (StateBDI) PeasantFamily.getState();
         String PeasantFamilyAlias = believes.getPeasantProfile().getPeasantFamilyAlias();
 
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -7) {
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -(wpsStart.DAYS_TO_CHECK)) {
             System.out.println("Jump PeasantFamilyAlias: " + PeasantFamilyAlias
                     + " - getDaysBetweenDates " + ControlCurrentDate.getInstance().getDaysBetweenDates(
                             believes.getInternalCurrentDate()

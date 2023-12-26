@@ -59,6 +59,16 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private String Contractor;
     private String contractorStartDate;
 
+    public boolean isAskedForContractor() {
+        return askedForContractor;
+    }
+
+    public void setAskedForContractor(boolean askedForContractor) {
+        this.askedForContractor = askedForContractor;
+    }
+
+    private boolean askedForContractor;
+
     /**
      * @param alias          Peasant Family Alias
      * @param peasantProfile profile of the peasant family
@@ -633,15 +643,15 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
                 DateHelper.getMonthFromStringDate(getInternalCurrentDate()) == 8;
     }
 
-    public void discountDaysToWorkForOther() {
-        this.daysToWorkForOther -= 1;
-    }
     public int getDaysToWorkForOther() {
         return daysToWorkForOther;
     }
 
     public void setDaysToWorkForOther(int daysToWorkForOther) {
         this.daysToWorkForOther = daysToWorkForOther;
+    }
+    public void decreaseDaysToWorkForOther() {
+        this.daysToWorkForOther = this.daysToWorkForOther - 1;
     }
 
     public String getPeasantFamilyHelper() {

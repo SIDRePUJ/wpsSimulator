@@ -22,7 +22,7 @@ import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Society.Data.SocietyDataMessage;
 
 /**
- *
+ * Peasant Contractor Guard
  * @author jairo
  */
 public class SocietyWorkerContractorGuard extends GuardBESA {
@@ -36,7 +36,9 @@ public class SocietyWorkerContractorGuard extends GuardBESA {
         SocietyDataMessage societyDataMessage = (SocietyDataMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
-        System.out.println("Ayudando a " + societyDataMessage.getPeasantFamilyHelper());
+        /*System.out.println("Contratado por " + societyDataMessage.getPeasantFamilyContractor()
+                + " " + societyDataMessage.getPeasantFamilyHelper()
+                + " llegó a " + believes.getPeasantProfile().getPeasantFamilyAlias());*/
         believes.setPeasantFamilyHelper(societyDataMessage.getPeasantFamilyHelper());
         believes.setPeasantFamilyHelperDays(societyDataMessage.getAvailableDays());
         believes.setContractorStartDate(ControlCurrentDate.getInstance().getCurrentDate());

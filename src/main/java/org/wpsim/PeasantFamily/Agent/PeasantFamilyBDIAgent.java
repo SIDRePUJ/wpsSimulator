@@ -27,11 +27,9 @@ import org.wpsim.Control.Guards.DeadAgentGuard;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
-import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
 import org.wpsim.PeasantFamily.Guards.FromControl.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
-import org.wpsim.PeasantFamily.Goals.L2Obligation.PayDebtsGoal;
 import org.wpsim.PeasantFamily.Goals.L3Development.*;
 import org.wpsim.PeasantFamily.Goals.L4SkillsResources.*;
 import org.wpsim.PeasantFamily.Goals.L5Social.LookForCollaborationGoal;
@@ -40,7 +38,6 @@ import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFamilyTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFriendsTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.LeisureActivitiesGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.WasteTimeAndResourcesGoal;
-import org.wpsim.PeasantFamily.Guards.*;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
 import org.wpsim.PeasantFamily.Guards.FromControl.FromControlGuard;
 import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
@@ -48,6 +45,8 @@ import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
 import org.wpsim.PeasantFamily.Guards.FromSociety.SocietyWorkerContractGuard;
 import org.wpsim.PeasantFamily.Guards.FromSociety.SocietyWorkerContractorGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
+import org.wpsim.PeasantFamily.Guards.Internal.HeartBeatGuard;
+import org.wpsim.PeasantFamily.Guards.Internal.StatusGuard;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 
@@ -65,18 +64,32 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         // Cada comportamiento es un hilo.
-        structBESA.addBehavior("HeartBeatGuardBehavior");
-        structBESA.bindGuard("HeartBeatGuardBehavior", HeartBeatGuard.class);
+        structBESA.addBehavior("HeartBeatBehavior");
+        structBESA.bindGuard("HeartBeatBehavior", HeartBeatGuard.class);
 
-        structBESA.addBehavior("DefaultPFamilyBehavior");
-        structBESA.bindGuard("DefaultPFamilyBehavior", FromWorldGuard.class);
-        structBESA.bindGuard("DefaultPFamilyBehavior", FromControlGuard.class);
-        structBESA.bindGuard("DefaultPFamilyBehavior", FromBankGuard.class);
-        structBESA.bindGuard("DefaultPFamilyBehavior", FromMarketGuard.class);
-        structBESA.bindGuard("DefaultPFamilyBehavior", FromGovernmentGuard.class);
-        structBESA.bindGuard("DefaultPFamilyBehavior", SocietyWorkerContractGuard.class);
-        structBESA.bindGuard("DefaultPFamilyBehavior", SocietyWorkerContractorGuard.class);
-        structBESA.bindGuard("DefaultPFamilyBehavior", StatusGuard.class);
+        structBESA.addBehavior("FromWorldBehavior");
+        structBESA.bindGuard("FromWorldBehavior", FromWorldGuard.class);
+
+        structBESA.addBehavior("SocietyWorkerContractBehavior");
+        structBESA.bindGuard("SocietyWorkerContractBehavior", SocietyWorkerContractGuard.class);
+
+        structBESA.addBehavior("SocietyWorkerContractorBehavior");
+        structBESA.bindGuard("SocietyWorkerContractorBehavior", SocietyWorkerContractorGuard.class);
+
+        structBESA.addBehavior("FromControlBehavior");
+        structBESA.bindGuard("FromControlBehavior", FromControlGuard.class);
+
+        structBESA.addBehavior("FromBankBehavior");
+        structBESA.bindGuard("FromBankBehavior", FromBankGuard.class);
+
+        structBESA.addBehavior("FromMarketBehavior");
+        structBESA.bindGuard("FromMarketBehavior", FromMarketGuard.class);
+
+        structBESA.addBehavior("FromGovernmentBehavior");
+        structBESA.bindGuard("FromGovernmentBehavior", FromGovernmentGuard.class);
+
+        structBESA.addBehavior("StatusBehavior");
+        structBESA.bindGuard("StatusBehavior", StatusGuard.class);
 
 
         return structBESA;
@@ -88,14 +101,13 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
     private static List<GoalBDI> createGoals() {
 
-        List<GoalBDI> goals = new ArrayList();
+        List<GoalBDI> goals = new ArrayList<>();
 
         //Level 1 Goals: Survival        
         goals.add(DoVitalsGoal.buildGoal());
         goals.add(SeekPurposeGoal.buildGoal());
         //goals.add(DoHealthCareGoal.buildGoal());
         //goals.add(SelfEvaluationGoal.buildGoal());
-        //goals.add(PeasantOffGoal.buildGoal());
 
         //Level 2 Goals: Obligations
         //goals.add(LookForLoanGoal.buildGoal());
@@ -106,7 +118,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         goals.add(AttendReligiousEventsGoal.buildGoal());
         goals.add(CheckCropsGoal.buildGoal());
         goals.add(HarvestCropsGoal.buildGoal());
-        //goals.add(IrrigateCropsGoal.buildGoal());
+        goals.add(IrrigateCropsGoal.buildGoal());
         //goals.add(MaintainHouseGoal.buildGoal());
         goals.add(ManagePestsGoal.buildGoal());
         goals.add(PlantCropGoal.buildGoal());
@@ -116,6 +128,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         goals.add(SellCropGoal.buildGoal());
         //goals.add(SellProductsGoal.buildGoal());
         goals.add(StealingOutOfNecessityGoal.buildGoal());
+        goals.add(WorkForOtherGoal.buildGoal());
 
         //Level 4 Goals: Skills And Resources
         goals.add(GetPriceListGoal.buildGoal());
@@ -130,8 +143,8 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
         //Level 5 Goals: Social
         //goals.add(CommunicateGoal.buildGoal());
-        //goals.add(LookForCollaborationGoal.buildGoal());
-        //goals.add(ProvideCollaborationGoal.buildGoal());
+        goals.add(LookForCollaborationGoal.buildGoal());
+        goals.add(ProvideCollaborationGoal.buildGoal());
 
         //Level 6 Goals: Leisure
         goals.add(SpendFamilyTimeGoal.buildGoal());

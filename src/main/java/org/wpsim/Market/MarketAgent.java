@@ -38,7 +38,7 @@ public class MarketAgent extends AgentBESA {
         super(alias, state, structAgent, passwd);
     }
 
-    public static MarketAgent createAgent(String alias, double passwd) throws ExceptionBESA{        
+    public static MarketAgent createAgent(String alias, double passwd) throws ExceptionBESA{
         return new MarketAgent(alias, createState(), createStruct(new StructBESA()), passwd);
     }
     
@@ -57,7 +57,6 @@ public class MarketAgent extends AgentBESA {
      */
     @Override
     public void setupAgent() {
-        
     }
 
     /**
@@ -65,7 +64,6 @@ public class MarketAgent extends AgentBESA {
      */
     @Override
     public void shutdownAgent() {
-        
     }
     
 }

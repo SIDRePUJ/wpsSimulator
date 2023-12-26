@@ -69,22 +69,6 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        //if (believes.getPeasantProfile().getNeighbors() > 0) {
-            return 1;
-        /*} else {
-            return 0;
-        }*/
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
 
@@ -100,17 +84,6 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
             }
         }
         return 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
     }
 
     /**

@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Guards;
+package org.wpsim.PeasantFamily.Guards.Internal;
 
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;

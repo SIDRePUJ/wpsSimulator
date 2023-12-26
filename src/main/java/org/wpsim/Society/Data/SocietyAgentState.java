@@ -15,9 +15,11 @@
 package org.wpsim.Society.Data;
 
 import BESA.Kernel.Agent.StateBESA;
+import org.wpsim.Viewer.Data.wpsReport;
 
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
@@ -28,6 +30,7 @@ public class SocietyAgentState extends StateBESA implements Serializable {
     // @TODO: Incluir medio de pago y tiempo de contrato. el tiempo según el cultivo.
     // @TODO: revisar los jornales por precio.
     ConcurrentLinkedDeque<String> peasantFamilyHelperStack = new ConcurrentLinkedDeque<>();
+    private ReentrantLock lock = new ReentrantLock();
     /**
      *
      */
@@ -36,15 +39,22 @@ public class SocietyAgentState extends StateBESA implements Serializable {
     }
 
     public void addPeasantFamilyToStack(String peasantFamilyHelper) {
-        if (!peasantFamilyHelper.isEmpty()) {
+        if (!peasantFamilyHelper.isEmpty() && !peasantFamilyHelperStack.contains(peasantFamilyHelper)) {
             peasantFamilyHelperStack.push(peasantFamilyHelper);
+            wpsReport.info("ofertando ayuda " +  peasantFamilyHelper, "SocietyAgent");
         }
+        System.out.println("Campesinos disponibles: " + peasantFamilyHelperStack);
     }
     public String getPeasantFamilyFromStack() {
-        if (peasantFamilyHelperStack.isEmpty()) {
-            return null;
-        }else{
-            return peasantFamilyHelperStack.pop();
+        lock.lock();
+        try {
+            if (!peasantFamilyHelperStack.isEmpty()) {
+                return peasantFamilyHelperStack.pop();
+            } else {
+                return null;
+            }
+        } finally {
+            lock.unlock();
         }
     }
 }

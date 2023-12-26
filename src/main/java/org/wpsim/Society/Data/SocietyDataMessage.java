@@ -12,12 +12,12 @@ import BESA.Kernel.Agent.Event.DataBESA;
  */
 public class SocietyDataMessage extends DataBESA  {
 
-    String peasantFamilyAgent;
+    String peasantFamilyContractor;
     String peasantFamilyHelper;
     int availableDays;
 
-    public SocietyDataMessage(String peasantFamilyAgent, String peasantFamilyHelper, int days) {
-        this.peasantFamilyAgent = peasantFamilyAgent;
+    public SocietyDataMessage(String peasantFamilyContractor, String peasantFamilyHelper, int days) {
+        this.peasantFamilyContractor = peasantFamilyContractor;
         this.peasantFamilyHelper = peasantFamilyHelper;
         this.availableDays = days;
     }
@@ -30,12 +30,12 @@ public class SocietyDataMessage extends DataBESA  {
         this.availableDays = availableDays;
     }
 
-    public String getPeasantFamilyAgent() {
-        return peasantFamilyAgent;
+    public String getPeasantFamilyContractor() {
+        return peasantFamilyContractor;
     }
 
-    public void setPeasantFamilyAgent(String peasantFamilyAgent) {
-        this.peasantFamilyAgent = peasantFamilyAgent;
+    public void setPeasantFamilyContractor(String peasantFamilyContractor) {
+        this.peasantFamilyContractor = peasantFamilyContractor;
     }
 
     public String getPeasantFamilyHelper() {

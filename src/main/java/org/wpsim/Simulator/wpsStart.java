@@ -25,8 +25,8 @@ import org.wpsim.Control.ControlAgent;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Government.GovernmentAgent;
 import org.wpsim.Market.MarketAgent;
-import org.wpsim.PeasantFamily.Guards.StatusGuard;
-import org.wpsim.PeasantFamily.Guards.HeartBeatGuard;
+import org.wpsim.PeasantFamily.Guards.Internal.StatusGuard;
+import org.wpsim.PeasantFamily.Guards.Internal.HeartBeatGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
 import org.wpsim.Perturbation.PerturbationAgent;
 import org.wpsim.Simulator.Config.wpsConfig;
@@ -46,11 +46,11 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 250;
+    public static int stepTime = 200;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;
-    public final static int DEFAULT_AGENTS_TO_TEST = 16;
+    public final static int DEFAULT_AGENTS_TO_TEST = 24;
     public static final long startTime = System.currentTimeMillis();
     static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 

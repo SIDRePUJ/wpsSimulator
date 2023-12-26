@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -32,13 +32,11 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import static org.wpsim.Market.MarketMessageType.SELL_CROP;
 
 /**
- *
  * @author jairo
  */
 public class SellCropTask extends wpsTask {
 
     /**
-     *
      * @param parameters
      */
     @Override
@@ -46,22 +44,21 @@ public class SellCropTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        
+
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(wpsStart.config.getMarketAgentName());
-
-            MarketMessage marketMessage = new MarketMessage(
-                    SELL_CROP,
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    believes.getPeasantProfile().getHarvestedWeight(),
-                    believes.getPeasantProfile().getCurrentCropName()
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getMarketAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            MarketAgentGuard.class.getName(),
+                            new MarketMessage(
+                                    SELL_CROP,
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    believes.getPeasantProfile().getHarvestedWeight(),
+                                    believes.getPeasantProfile().getCurrentCropName()
+                            )
+                    )
             );
-
-            EventBESA ev = new EventBESA(
-                    MarketAgentGuard.class.getName(),
-                    marketMessage);
-            ah.sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
