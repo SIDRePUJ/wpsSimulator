@@ -17,7 +17,6 @@ package org.wpsim.PeasantFamily.Tasks.L3Development;
 import BESA.Emotional.EmotionalEvent;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.MoneyOriginType;
 
@@ -25,7 +24,7 @@ import org.wpsim.PeasantFamily.Data.Utils.MoneyOriginType;
  *
  * @author jairo
  */
-public class StealingOutOfNecessityTask extends wpsTask {
+public class SearchForHelpAndNecessityTask extends wpsTask {
 
     /**
      *
@@ -36,20 +35,28 @@ public class StealingOutOfNecessityTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
-        believes.increaseRobberyAccount();
-        if (Math.random() < 0.4) {
-            believes.getPeasantProfile().increaseMoney(65000);
-        } else {
-            believes.getPeasantProfile().increaseMoney(130000);
+
+        // Robo
+        if (Math.random() < 0.3) {
+            believes.increaseRobberyAccount();
+            if (Math.random() < 0.4) {
+                believes.getPeasantProfile().increaseMoney(65000);
+            } else {
+                believes.getPeasantProfile().increaseMoney(130000);
+            }
+            // Puede pasarle algo mal
+            if (Math.random() < 0.6) {
+                believes.decreaseHealth();
+            }
+            believes.setCurrentMoneyOrigin(MoneyOriginType.ROBERY);
+            believes.processEmotionalEvent(
+                    new EmotionalEvent("FAMILY", "THIEVING", "MONEY")
+            );
+        }else{
+            // @TODO: ajustar a cada dos meses como parte de familias en acción
+            believes.getPeasantProfile().increaseMoney(380000);
+            believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
         }
-        // Puede pasarle algo mal
-        if (Math.random() < 0.6) {
-            believes.decreaseHealth();
-        }
-        believes.setCurrentMoneyOrigin(MoneyOriginType.ROBERY);
-        believes.processEmotionalEvent(
-                new EmotionalEvent("FAMILY", "THIEVING", "MONEY")
-        );
     }
 
 }

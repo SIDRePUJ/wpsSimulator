@@ -22,7 +22,7 @@ public enum TimeConsumedBy {
 
     LookForLoanTask(4),
     SelfEvaluationTask(2),
-    StealingOutOfNecessityTask(6),
+    SearchForHelpAndNecessityTask(6),
     SeekPurposeTask(12),
     GetPriceListTask(2),
     DeforestingLandTask(6),

@@ -42,15 +42,16 @@ public class LookForCollaborationTask extends wpsTask {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.LookForCollaborationTask);
         try {
-            SocietyDataMessage societyDataMessageToSent = new SocietyDataMessage(
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    5
-            );
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsConfig.getInstance().getSocietyAgentName()
             ).sendEvent(
-                    new EventBESA(SocietyAgentRequestHelpGuard.class.getName(), societyDataMessageToSent)
+                    new EventBESA(SocietyAgentRequestHelpGuard.class.getName(),
+                            new SocietyDataMessage(
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    5
+                            )
+                    )
             );
         } catch (ExceptionBESA ex) {
             System.out.println(ex.getMessage());

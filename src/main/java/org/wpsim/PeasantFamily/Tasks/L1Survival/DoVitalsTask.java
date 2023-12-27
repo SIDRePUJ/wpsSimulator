@@ -59,31 +59,8 @@ public class DoVitalsTask extends wpsTask {
         );
 
         // Check debts
-        //checkBankDebt(believes);
-
+        checkBankDebt(believes);
         believes.getPeasantProfile().discountDailyMoney();
-
-        // TODO: Setear pago adecuado
-        if (believes.getDaysToWorkForOther() > 0) {
-            believes.decreaseDaysToWorkForOther();
-            if (believes.getDaysToWorkForOther() == 0) {
-                System.out.println("Pagar contratos ... Cerrar ciclo.");
-                if (believes.getContractor().isBlank()) {
-                    System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " Pagando por el contrato a " + believes.getPeasantFamilyHelper());
-                    believes.setPeasantFamilyHelper("");
-                    believes.setContractor("");
-                    believes.getPeasantProfile().decreaseMoney(250000);
-                } else {
-                    System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " Recibiendo pago por el contrato da " + believes.getContractor());
-                    believes.setContractor("");
-                    believes.setPeasantFamilyHelper("");
-                    believes.setAskedForContractor(false);
-                    believes.getPeasantProfile().increaseMoney(250000);
-                }
-            }else{
-                System.out.println("Seguimos trabajando, faltan " + believes.getDaysToWorkForOther() + " dias, para " + believes.getContractor());
-            }
-        }
 
     }
 
@@ -96,15 +73,17 @@ public class DoVitalsTask extends wpsTask {
         if (ControlCurrentDate.getInstance().isFirstDayOfMonth(believes.getInternalCurrentDate())
                 && believes.getCurrentDay() > 6) {
             try {
-                AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(wpsStart.config.getBankAgentName());
-                BankMessage bankMessage = new BankMessage(
-                        ASK_CURRENT_TERM,
-                        believes.getPeasantProfile().getPeasantFamilyAlias()
+                AdmBESA.getInstance().getHandlerByAlias(
+                        wpsStart.config.getBankAgentName()
+                ).sendEvent(
+                        new EventBESA(
+                                BankAgentGuard.class.getName(),
+                                new BankMessage(
+                                        ASK_CURRENT_TERM,
+                                        believes.getPeasantProfile().getPeasantFamilyAlias()
+                                )
+                        )
                 );
-                EventBESA ev = new EventBESA(
-                        BankAgentGuard.class.getName(),
-                        bankMessage);
-                ah.sendEvent(ev);
             } catch (ExceptionBESA ex) {
                 wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
             }

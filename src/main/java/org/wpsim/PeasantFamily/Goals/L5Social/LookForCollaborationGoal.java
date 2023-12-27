@@ -76,7 +76,7 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getAssignedLands().size() > 1 && believes.getPeasantFamilyHelper().isBlank()) {
+        if (believes.getAssignedLands().size() > 1 && believes.getPeasantFamilyHelper().isEmpty()) {
             for (LandInfo currentLandInfo : believes.getAssignedLands()) {
                 if (!currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
                     return 1;
@@ -97,4 +97,13 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
         return 1;
     }
 
+    @Override
+    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        // Para dos semanas de ayuda @TODO: AJUSTAR
+        if (believes.getPeasantProfile().getMoney() > (50000*believes.getAssignedLands().size()*10)) {
+            return 1;
+        }
+        return 0;
+    }
 }

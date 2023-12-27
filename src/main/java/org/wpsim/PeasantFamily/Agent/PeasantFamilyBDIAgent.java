@@ -42,6 +42,7 @@ import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
 import org.wpsim.PeasantFamily.Guards.FromControl.FromControlGuard;
 import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
+import org.wpsim.PeasantFamily.Guards.FromSociety.PeasantWorkerContractFinishedGuard;
 import org.wpsim.PeasantFamily.Guards.FromSociety.SocietyWorkerContractGuard;
 import org.wpsim.PeasantFamily.Guards.FromSociety.SocietyWorkerContractorGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
@@ -70,11 +71,10 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         structBESA.addBehavior("FromWorldBehavior");
         structBESA.bindGuard("FromWorldBehavior", FromWorldGuard.class);
 
-        structBESA.addBehavior("SocietyWorkerContractBehavior");
-        structBESA.bindGuard("SocietyWorkerContractBehavior", SocietyWorkerContractGuard.class);
-
-        structBESA.addBehavior("SocietyWorkerContractorBehavior");
-        structBESA.bindGuard("SocietyWorkerContractorBehavior", SocietyWorkerContractorGuard.class);
+        structBESA.addBehavior("SocietyBehavior");
+        structBESA.bindGuard("SocietyBehavior", SocietyWorkerContractGuard.class);
+        structBESA.bindGuard("SocietyBehavior", SocietyWorkerContractorGuard.class);
+        structBESA.bindGuard("SocietyBehavior", PeasantWorkerContractFinishedGuard.class);
 
         structBESA.addBehavior("FromControlBehavior");
         structBESA.bindGuard("FromControlBehavior", FromControlGuard.class);
@@ -127,7 +127,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(ProcessProductsGoal.buildGoal());
         goals.add(SellCropGoal.buildGoal());
         //goals.add(SellProductsGoal.buildGoal());
-        goals.add(StealingOutOfNecessityGoal.buildGoal());
+        goals.add(SearchForHelpAndNecessityGoal.buildGoal());
         goals.add(WorkForOtherGoal.buildGoal());
 
         //Level 4 Goals: Skills And Resources

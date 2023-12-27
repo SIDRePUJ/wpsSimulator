@@ -75,12 +75,8 @@ public class WorkForOtherGoal extends wpsGoalBDI {
             return 0;
         }
 
-        try {
-            if (!believes.getContractor().isEmpty()) {
-                return 1;
-            }
-        } catch (Exception e) {
-            return 0;
+        if (believes.getDaysToWorkForOther() > 0){
+            return 1;
         }
 
         return 0;

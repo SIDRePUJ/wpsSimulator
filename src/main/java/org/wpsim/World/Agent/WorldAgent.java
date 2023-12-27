@@ -21,7 +21,7 @@ public class WorldAgent extends AgentBESA {
      */
     public WorldAgent(String alias, StateBESA state, StructBESA structAgent) throws KernelAgentExceptionBESA {
         super(alias, state, structAgent, TH);
-        System.out.println("Creando WorldAgent tierra " + alias);
+        //System.out.println("Creando WorldAgent tierra " + alias);
     }
 
     /**

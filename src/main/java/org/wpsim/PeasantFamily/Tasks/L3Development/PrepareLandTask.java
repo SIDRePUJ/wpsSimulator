@@ -39,11 +39,18 @@ public class PrepareLandTask extends wpsLandTask {
         updateConfig(believes, 56); // 56 horas para preparar una hectarea de cultivo
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());
+
+        int factor = 1;
+        if (!believes.getPeasantFamilyHelper().isBlank())
+        {
+            factor = 2;
+        }
+
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getKind().equals("land")) {
                 if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
                     //System.out.println("Preparing Planting season for " + currentLandInfo.getLandName());
-                    this.increaseWorkDone(believes,currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime());
+                    this.increaseWorkDone(believes,currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime()*factor);
                     if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                         this.resetLand(believes, currentLandInfo.getLandName());
                         //System.out.println("Finishing Preparing Planting season for " + currentLandInfo.getLandName());

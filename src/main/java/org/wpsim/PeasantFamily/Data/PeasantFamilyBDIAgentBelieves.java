@@ -55,9 +55,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private Map<String, Set<String>> taskLog = new ConcurrentHashMap<>();
     private int daysToWorkForOther;
     private String peasantFamilyHelper;
-    private int peasantFamilyHelperDays;
     private String Contractor;
-    private String contractorStartDate;
 
     public boolean isAskedForContractor() {
         return askedForContractor;
@@ -88,8 +86,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.loanDenied = false;
         this.ptwDate = "";
         this.peasantFamilyHelper = "";
-        this.peasantFamilyHelperDays = 0;
-        this.contractorStartDate = "";
         this.Contractor = "";
 
         this.currentMoneyOrigin = MoneyOriginType.NONE;
@@ -553,8 +549,10 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("seeds", peasantProfile.getSeeds());
         dataObject.put("waterAvailable", peasantProfile.getWaterAvailable());
         dataObject.put("pesticidesAvailable", peasantProfile.getPesticidesAvailable());
-        dataObject.put("riceSeedsByHectare", peasantProfile.getRiceSeedsByHectare());
         dataObject.put("harvestedWeight", peasantProfile.getHarvestedWeight());
+        dataObject.put("contractor", getContractor());
+        dataObject.put("daysToWorkForOther", getDaysToWorkForOther());
+        dataObject.put("peasantFamilyHelper", getPeasantFamilyHelper());
 
         if (!getAssignedLands().isEmpty()) {
             dataObject.put("assignedLands", getAssignedLands());
@@ -661,18 +659,5 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.peasantFamilyHelper = peasantFamilyHelper;
     }
 
-    public void setPeasantFamilyHelperDays(int availableDays) {
-        this.peasantFamilyHelperDays = availableDays;
-    }
-    public int getPeasantFamilyHelperDays() {
-        return peasantFamilyHelperDays;
-    }
-
-    public void setContractorStartDate(String contractorStartDate) {
-        this.contractorStartDate = contractorStartDate;
-    }
-    public String getContractorStartDate() {
-        return this.contractorStartDate;
-    }
 }
 

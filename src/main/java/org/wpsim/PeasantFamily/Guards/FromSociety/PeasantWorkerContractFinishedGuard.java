@@ -24,18 +24,23 @@ import org.wpsim.Society.Data.SocietyDataMessage;
  * Peasant Helper Guard
  * @author jairo
  */
-public class SocietyWorkerContractGuard extends GuardBESA {
+public class PeasantWorkerContractFinishedGuard extends GuardBESA {
 
     /**
-     *
-     * @param event
+     * Peasant Worker Contract Finished Guard
+     * @param event event
      */
     @Override
     public void funcExecGuard(EventBESA event) {
         SocietyDataMessage societyDataMessage = (SocietyDataMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
-        believes.setContractor(societyDataMessage.getPeasantFamilyContractor());
-        believes.setDaysToWorkForOther(societyDataMessage.getAvailableDays());
+
+        //System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " Pagando por el contrato a " + believes.getPeasantFamilyHelper());
+        believes.setContractor("");
+        believes.setPeasantFamilyHelper("");
+        believes.setDaysToWorkForOther(0);
+        believes.setAskedForContractor(false);
+        believes.getPeasantProfile().decreaseMoney(250000);
     }
 }

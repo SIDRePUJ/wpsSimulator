@@ -46,9 +46,16 @@ public class HarvestCropsTask extends wpsLandTask {
         updateConfig(believes, 56);
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+
+        int factor = 1;
+        if (!believes.getPeasantFamilyHelper().isBlank())
+        {
+            factor = 2;
+        }
+
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
-                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime());
+                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime()*factor);
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                     this.resetLand(believes, currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());

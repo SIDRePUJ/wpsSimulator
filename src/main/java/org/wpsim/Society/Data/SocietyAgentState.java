@@ -41,9 +41,9 @@ public class SocietyAgentState extends StateBESA implements Serializable {
     public void addPeasantFamilyToStack(String peasantFamilyHelper) {
         if (!peasantFamilyHelper.isEmpty() && !peasantFamilyHelperStack.contains(peasantFamilyHelper)) {
             peasantFamilyHelperStack.push(peasantFamilyHelper);
-            wpsReport.info("ofertando ayuda " +  peasantFamilyHelper, "SocietyAgent");
+            wpsReport.info("Ofertando ayuda " +  peasantFamilyHelper, "SocietyAgent");
         }
-        System.out.println("Campesinos disponibles: " + peasantFamilyHelperStack);
+        //System.out.println("Campesinos disponibles: " + peasantFamilyHelperStack);
     }
     public String getPeasantFamilyFromStack() {
         lock.lock();

@@ -14,7 +14,6 @@
  */
 package org.wpsim.PeasantFamily.Goals.L3Development;
 
-import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
@@ -22,7 +21,7 @@ import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Tasks.L3Development.StealingOutOfNecessityTask;
+import org.wpsim.PeasantFamily.Tasks.L3Development.SearchForHelpAndNecessityTask;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -31,23 +30,23 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class StealingOutOfNecessityGoal extends wpsGoalBDI {
+public class SearchForHelpAndNecessityGoal extends wpsGoalBDI {
 
     /**
      *
      * @return
      */
-    public static StealingOutOfNecessityGoal buildGoal() {
-        StealingOutOfNecessityTask stealingOutOfNecessityTask = new StealingOutOfNecessityTask();
-        Plan stealingOutOfNecessityPlan = new Plan();
-        stealingOutOfNecessityPlan.addTask(stealingOutOfNecessityTask);
-        RationalRole stealingOutOfNecessityRole = new RationalRole(
-                "StealingOutOfNecessityTask",
-                stealingOutOfNecessityPlan);
-        return new StealingOutOfNecessityGoal(
+    public static SearchForHelpAndNecessityGoal buildGoal() {
+        SearchForHelpAndNecessityTask searchForHelpAndNecessityTask = new SearchForHelpAndNecessityTask();
+        Plan searchForHelpAndNecessityPlan = new Plan();
+        searchForHelpAndNecessityPlan.addTask(searchForHelpAndNecessityTask);
+        RationalRole searchForHelpAndNecessityRole = new RationalRole(
+                "SearchForHelpAndNecessityTask",
+                searchForHelpAndNecessityPlan);
+        return new SearchForHelpAndNecessityGoal(
                 wpsStart.getPlanID(),
-                stealingOutOfNecessityRole,
-                "StealingOutOfNecessityTask",
+                searchForHelpAndNecessityRole,
+                "SearchForHelpAndNecessityTask",
                 GoalBDITypes.OPORTUNITY);
     }
 
@@ -58,7 +57,7 @@ public class StealingOutOfNecessityGoal extends wpsGoalBDI {
      * @param description
      * @param type
      */
-    public StealingOutOfNecessityGoal(long id, RationalRole role, String description, GoalBDITypes type) {
+    public SearchForHelpAndNecessityGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
         //wpsReport.info("");
     }
@@ -88,42 +87,6 @@ public class StealingOutOfNecessityGoal extends wpsGoalBDI {
 
     /**
      *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getHealth() > 0) {
-            //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-            return 1;
-        } else {
-            //wpsReport.trace("NO " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-            return 0;
-        }
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.StealingOutOfNecessityTask)) {
-            //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-            return 1;
-        } else {
-            //wpsReport.trace("NO " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-            return 0;
-        }
-    }
-
-    /**
-     *
      * @param stateBDI
      * @return
      * @throws KernellAgentEventExceptionBESA
@@ -133,16 +96,5 @@ public class StealingOutOfNecessityGoal extends wpsGoalBDI {
         return 0.9;
     }
 
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
-    }
 
 }
