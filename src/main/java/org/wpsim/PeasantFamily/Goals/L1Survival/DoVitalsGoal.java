@@ -112,6 +112,7 @@ public class DoVitalsGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
+        //System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
         return 1;
     }
 }

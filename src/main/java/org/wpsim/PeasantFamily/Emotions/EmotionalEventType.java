@@ -4,6 +4,8 @@ import BESA.Emotional.EmotionalConfig;
 
 public enum EmotionalEventType {
     PLANTING("PLANTING", EmotionalConfig.Events.Desirable),
+    PLANTINGFAILED("PLANTINGFAILED", EmotionalConfig.Events.Undesirable),
+    HOUSEHOLDING("HOUSEHOLDING", EmotionalConfig.Events.Desirable),
     IRRIGATING("IRRIGATING", EmotionalConfig.Events.SomewhatDesirable),
     HARVESTING("HARVESTING", EmotionalConfig.Events.Desirable),
     SELLING("SELLING", EmotionalConfig.Events.Desirable),
@@ -11,7 +13,7 @@ public enum EmotionalEventType {
     DOVITALS("EATING", EmotionalConfig.Events.Desirable),
     STARVING("STARVING", EmotionalConfig.Events.Undesirable),
     THIEVING("THIEVING", EmotionalConfig.Events.Undesirable),
-    CHECKCROP("CHECKCROP", EmotionalConfig.Events.SomewhatDesirable),
+    CHECKCROPS("CHECKCROPS", EmotionalConfig.Events.SomewhatDesirable),
     LEISURE("LEISURE", EmotionalConfig.Events.SomewhatDesirable);
 
     private final String emoType;

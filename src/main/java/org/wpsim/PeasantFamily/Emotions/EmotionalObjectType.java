@@ -8,6 +8,7 @@ public enum EmotionalObjectType {
     FOOD("FOOD", EmotionalConfig.Objects.Important),
     WATER("WATER", EmotionalConfig.Objects.Neutral),
     SEEDS("SEEDS", EmotionalConfig.Objects.Valuable),
+    TIME("TIME", EmotionalConfig.Objects.Valuable),
     NULL("", EmotionalConfig.Objects.Neutral);
 
     private final String emoType;

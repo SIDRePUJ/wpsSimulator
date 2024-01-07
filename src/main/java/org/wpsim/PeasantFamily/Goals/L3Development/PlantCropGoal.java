@@ -92,12 +92,10 @@ public class PlantCropGoal extends wpsGoalBDI {
         }
 
         List<LandInfo> landInfos = believes.getAssignedLands();
-        if (believes.isEnergized()) {
-            for (LandInfo currentLandInfo : landInfos) {
-                if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
-                    //System.out.println(currentLandInfo.getLandName() + " encontrado por plantar");
-                    return 1;
-                }
+        for (LandInfo currentLandInfo : landInfos) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
+                //System.out.println(currentLandInfo.getLandName() + " encontrado por plantar");
+                return 1;
             }
         }
         return 0;

@@ -49,9 +49,7 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
                 believes.decreaseHealth();
             }
             believes.setCurrentMoneyOrigin(MoneyOriginType.ROBERY);
-            believes.processEmotionalEvent(
-                    new EmotionalEvent("FAMILY", "THIEVING", "MONEY")
-            );
+            //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "THIEVING", "MONEY"));
         }else{
             // @TODO: ajustar a cada dos meses como parte de familias en acción
             believes.getPeasantProfile().increaseMoney(380000);

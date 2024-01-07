@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
@@ -61,6 +62,8 @@ public class PlantCropTask extends wpsLandTask {
         updateConfig(believes, 32);
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+
+        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
 
         // Set world perturbation
         setPerturbation(wpsStart.config.getPerturbation());

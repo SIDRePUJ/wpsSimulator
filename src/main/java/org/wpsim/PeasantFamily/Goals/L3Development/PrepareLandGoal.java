@@ -77,8 +77,8 @@ public class PrepareLandGoal extends wpsGoalBDI {
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
-
-        if (believes.isPlantingSeason() && believes.isEnergized()) {
+        // && believes.isEnergized()
+        if (believes.isPlantingSeason()) {
             for (LandInfo currentLandInfo : believes.getAssignedLands()) {
                 if (currentLandInfo.getKind().equals("land")) {
                     if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
@@ -115,18 +115,6 @@ public class PrepareLandGoal extends wpsGoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return 1;
-    }
-
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
     }
 
 }

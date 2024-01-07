@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import BESA.Emotional.EmotionalEvent;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsLandTask;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
@@ -39,6 +40,8 @@ public class PrepareLandTask extends wpsLandTask {
         updateConfig(believes, 56); // 56 horas para preparar una hectarea de cultivo
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());
+
+        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
 
         int factor = 1;
         if (!believes.getPeasantFamilyHelper().isBlank())

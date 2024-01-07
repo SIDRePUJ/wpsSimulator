@@ -30,28 +30,15 @@ public abstract class EmotionalComponent extends EmotionalModel {
 
     @Override
     public void emotionalStateChanged() {
-        //System.out.println("Emotional State Changed " + this.toString());
-        /*try {
-            System.out.println("Emotional State Changed " + this.getTopEmotionAxis().getDescription());//.getMostActivatedEmotion().getDescription());
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     public float getEmotionCurrentValue(String emotionName){
         for (EmotionAxis emotion: emotionalState.getEmotions()){
-            //System.out.println("P " + emotion.getPositiveName() + " - N " + emotion.getNegativeName());
             if (emotion.getPositiveName().equals(emotionName) || emotion.getNegativeName().equals(emotionName)){
                 return emotion.getCurrentValue();
             }
         }
         return 0;
-    }
-
-    public boolean isEnergized(){
-        // @TODO: revisar relación con salud o parte física
-        // @TODO: En la tabla incluir emoción, salud, fisico y dinero para las metas.
-        return getEmotionCurrentValue("Energized") > 0.2f;
     }
 
     @Override
@@ -69,8 +56,6 @@ public abstract class EmotionalComponent extends EmotionalModel {
         for (EmotionalConfig.Objects obj : EmotionalConfig.Objects.values()) {
             sd.addSemanticItem(Personality.EmotionElementType.Object, new SemanticValue(obj.toString(), obj.getValue()));
         }
-
-        //System.out.println("Semantic Dictionary: " + sd.toString());
 
     }
 
@@ -98,57 +83,55 @@ public abstract class EmotionalComponent extends EmotionalModel {
 
     @Override
     public void loadEmotionalAxes() {
-        //EmotionAxis emoAxis;
 
-        /*
-        // Emotions related to the Health axis
-        emoAxis = new EmotionAxis(
-                Semantics.Sensations.Healthy,
-                Semantics.Sensations.Sick,
-                0.5f, 0.0f, 0.1f
-        );
-        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.3f);
-        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), 0.6f);
-        this.addEmotionAxis(emoAxis);
-        */
-        // Emotions related to the Energy axis
-        EmotionAxis emoAxis = new EmotionAxis(
-                Semantics.Sensations.Energized,
-                Semantics.Sensations.Exhausted,
-                0.0f, 0.0f, 0.2f
-        );
-        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 1.0f);
-        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), 0.5f);
-        emoAxis.setEventInfluence(EmotionalEventType.CHECKCROP.name(), 0.5f);
-        emoAxis.setEventInfluence(EmotionalEventType.PLANTING.name(), 0.5f);
-        emoAxis.setEventInfluence(EmotionalEventType.IRRIGATING.name(), 0.2f);
-        emoAxis.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.5f);
-        emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), 0.2f);
-        this.addEmotionAxis(emoAxis);
-
-        /*
-        // Emotions related to the Happiness axis
-        emoAxis = new EmotionAxis(
+        EmotionAxis HappinessSadness = new EmotionAxis(
                 Semantics.Emotions.Happiness,
                 Semantics.Emotions.Sadness,
-                0.0f, 0.0f, 0.01f
+                0.0f, 0.0f, 0.0f
         );
-        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.2f);
-        emoAxis.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.4f);
-        emoAxis.setEventInfluence(EmotionalEventType.STARVING.name(), 0.4f);
-        emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), 0.2f);
-        this.addEmotionAxis(emoAxis);
-        // Emotions related to the Security axis
-        emoAxis = new EmotionAxis(
-                Semantics.Emotions.Confident,
+        HappinessSadness.setEventInfluence(EmotionalEventType.LEISURE.name(), 0.7f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.STARVING.name(), 0.6f);
+        //HappinessSadness.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.6f);
+        this.addEmotionAxis(HappinessSadness);
+
+        EmotionAxis HopefulUncertainty = new EmotionAxis(
+                Semantics.Emotions.Hopeful,
+                Semantics.Emotions.Uncertainty,
+                0.0f, 0.0f, 0.0f
+        );
+        HopefulUncertainty.setEventInfluence(EmotionalEventType.PLANTING.name(), 1.0f);
+        //HopefulUncertainty.setEventInfluence(EmotionalEventType.PLANTINGFAILED.name(), 1.0f);
+        HopefulUncertainty.setEventInfluence(EmotionalEventType.SELLING.name(), 0.8f);
+        HopefulUncertainty.setEventInfluence(EmotionalEventType.CHECKCROPS.name(), 0.1f);
+        HopefulUncertainty.setEventInfluence(EmotionalEventType.PLANTINGFAILED.name(), 0.3f);
+        //HopefulUncertainty.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.5f);
+        this.addEmotionAxis(HopefulUncertainty);
+
+        /*
+        EmotionAxis SecureInsecure = new EmotionAxis(
+                Semantics.Emotions.Secure,
                 Semantics.Emotions.Insecure,
-                0.5f, 0.0f, 0.1f
+                0.0f, 0.0f, 0.2f
         );
-        emoAxis.setEventInfluence(EmotionalEventType.IRRIGATING.name(), 0.2f);
-        emoAxis.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.4f);
-        emoAxis.setEventInfluence(EmotionalEventType.SELLING.name(), 0.2f);
-        emoAxis.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.2f);
-        this.addEmotionAxis(emoAxis);
+        SecureInsecure.setEventInfluence(EmotionalEventType.HOUSEHOLDING.name(), 0.5f);
+        this.addEmotionAxis(SecureInsecure);
+
+        EmotionAxis RelievedOverwhelmed = new EmotionAxis(
+                Semantics.Emotions.Relieved,
+                Semantics.Emotions.Overwhelmed,
+                0.0f, 0.0f, 0.2f
+        );
+        RelievedOverwhelmed.setEventInfluence(EmotionalEventType.HOUSEHOLDING.name(), 0.5f);
+        this.addEmotionAxis(RelievedOverwhelmed);
+
+        EmotionAxis FocusedDistracted = new EmotionAxis(
+                Semantics.Emotions.Focused,
+                Semantics.Emotions.Distracted,
+                0.0f, 0.0f, 0.2f
+        );
+        FocusedDistracted.setEventInfluence(EmotionalEventType.HOUSEHOLDING.name(), 0.5f);
+        this.addEmotionAxis(FocusedDistracted);
         */
 
     }

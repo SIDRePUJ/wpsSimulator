@@ -22,6 +22,7 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -54,13 +55,16 @@ public class DoVitalsTask extends wpsTask {
         believes.setNewDay(false);
         believes.useTime(TimeConsumedBy.DoVitalsTask);
 
-        believes.processEmotionalEvent(
-                new EmotionalEvent("FAMILY", "DOVITALS", "FOOD")
-        );
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "FOOD"));
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTINGFAILED", "FOOD"));
 
         // Check debts
         checkBankDebt(believes);
         believes.getPeasantProfile().discountDailyMoney();
+
+        EmotionalEvaluator evaluator = new EmotionalEvaluator();
+        double result = evaluator.evaluate(believes.getEmotionsListCopy());
+        System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " " + result + " = " + believes.getEmotionsListCopy().toString());
 
     }
 
