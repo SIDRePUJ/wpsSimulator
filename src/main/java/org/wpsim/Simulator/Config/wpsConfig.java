@@ -22,10 +22,7 @@ import org.wpsim.PeasantFamily.Data.Utils.FarmingResource;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author jairo
@@ -229,6 +226,12 @@ public final class wpsConfig {
         Map<String, Object> regularPeasant = (Map<String, Object>) data.get("StablePeasant");
         jsonData = gson.toJson(regularPeasant);
         defaultPeasantFamilyProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
+    }
+
+    public List<String> getFuzzyRulesList(){
+        String rawFile = loadFile("EmotionalRules.txt");
+        assert rawFile != null;
+        return Arrays.asList(rawFile.split("\n"));
     }
 
     private InputStream loadFileAsStream(String fileName) throws FileNotFoundException {

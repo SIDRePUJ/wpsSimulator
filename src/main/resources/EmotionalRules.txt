@@ -1,9 +1,10 @@
-if HappinessSadness is Sad and HopefulUncertainty is Sad then EmotionalState is Negative
-if HappinessSadness is Sad and HopefulUncertainty is Neutral then EmotionalState is Negative
-if HappinessSadness is Sad and HopefulUncertainty is Happy then EmotionalState is Neutral
-if HappinessSadness is Neutral and HopefulUncertainty is Sad then EmotionalState is Negative
-if HappinessSadness is Neutral and HopefulUncertainty is Neutral then EmotionalState is Neutral
-if HappinessSadness is Neutral and HopefulUncertainty is Happy then EmotionalState is Neutral
-if HappinessSadness is Happy and HopefulUncertainty is Sad then EmotionalState is Neutral
-if HappinessSadness is Happy and HopefulUncertainty is Neutral then EmotionalState is Neutral
-if HappinessSadness is Happy and HopefulUncertainty is Happy then EmotionalState is Positive
+if HappinessSadness is Sad and HopefulUncertainty is Uncertainty and SecureInsecure is Insecure then EmotionalState is Negative
+if HappinessSadness is Neutral and HopefulUncertainty is Neutral and SecureInsecure is Neutral then EmotionalState is Neutral
+if HappinessSadness is Happy and HopefulUncertainty is Hopeful and SecureInsecure is Secure then EmotionalState is Positive
+if HappinessSadness is Happy and HopefulUncertainty is Hopeful and SecureInsecure is Neutral then EmotionalState is Positive
+if HappinessSadness is Sad and HopefulUncertainty is Uncertainty and SecureInsecure is Neutral then EmotionalState is Negative
+if HappinessSadness is Neutral and HopefulUncertainty is Neutral and SecureInsecure is Secure then EmotionalState is Neutral
+if HappinessSadness is Neutral and HopefulUncertainty is Neutral and SecureInsecure is Insecure then EmotionalState is Neutral
+if HappinessSadness is Happy and HopefulUncertainty is Uncertainty and SecureInsecure is Neutral then EmotionalState is Neutral
+if HappinessSadness is Happy and HopefulUncertainty is Uncertainty and SecureInsecure is Insecure then EmotionalState is Negative
+if HappinessSadness is Sad and HopefulUncertainty is Hopeful and SecureInsecure is Secure then EmotionalState is Positive

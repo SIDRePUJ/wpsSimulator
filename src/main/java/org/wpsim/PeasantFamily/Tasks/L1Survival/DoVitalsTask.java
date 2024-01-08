@@ -56,7 +56,8 @@ public class DoVitalsTask extends wpsTask {
         believes.useTime(TimeConsumedBy.DoVitalsTask);
 
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "FOOD"));
-        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTINGFAILED", "FOOD"));
+        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTINGFAILED", "FOOD"));
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
 
         // Check debts
         checkBankDebt(believes);
