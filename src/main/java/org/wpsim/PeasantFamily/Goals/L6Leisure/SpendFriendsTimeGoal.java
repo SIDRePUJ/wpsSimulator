@@ -117,20 +117,7 @@ public class SpendFriendsTimeGoal extends wpsGoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        //wpsReport.trace("SI " + believes.getPeasantProfile().getPeasantFriendsAffinity(), believes.getPeasantProfile().getPeasantFamilyAlias());
-        return believes.getPeasantProfile().getPeasantFriendsAffinity();
-    }
-
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getHealth() > 0;
+        return evaluateEmotionalContribution(stateBDI, believes.getPeasantProfile().getPeasantFriendsAffinity());
     }
 
 }

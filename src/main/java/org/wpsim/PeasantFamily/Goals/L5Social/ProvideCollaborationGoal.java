@@ -94,7 +94,7 @@ public class ProvideCollaborationGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 1;
+        return evaluateEmotionalContribution(stateBDI, 1.0);
     }
 
 }

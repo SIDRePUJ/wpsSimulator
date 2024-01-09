@@ -59,7 +59,7 @@ public class EmotionalEvaluator {
 
     private Engine engine;
 
-    public EmotionalEvaluator() {
+    public EmotionalEvaluator(String mode) {
         engine = new Engine();
         engine.setName("EmotionalEvaluator");
 
@@ -122,7 +122,7 @@ public class EmotionalEvaluator {
         ruleBlock.setImplication(new Minimum());
         ruleBlock.setActivation(new General());
 
-        List<String> rules = wpsStart.config.getFuzzyRulesList();
+        List<String> rules = wpsStart.config.getFuzzyRulesList(mode);
 
         for (String rule : rules) {
             ruleBlock.addRule(Rule.parse(rule, engine));
@@ -137,6 +137,18 @@ public class EmotionalEvaluator {
             engine.setInputValue(emotion.getPositiveName() + emotion.getNegativeName(), emotion.getCurrentValue());
         }
         engine.process();
+        return engine.getOutputValue("EmotionalState");
+    }
+
+    public double evaluateSingleEmotion(List<EmotionAxis> emotions, String emotionToEvaluate) {
+        for (EmotionAxis emotion : emotions) {
+            if (emotion.getPositiveName().equals(emotionToEvaluate)) {
+                System.out.println(emotion.getPositiveName() + emotion.getNegativeName() + " = " + emotion.getCurrentValue());
+                engine.setInputValue(emotion.getPositiveName() + emotion.getNegativeName(), emotion.getCurrentValue());
+            }
+        }
+        engine.process();
+        System.out.println("EmotionalState: " + engine.getOutputValue("EmotionalState"));
         return engine.getOutputValue("EmotionalState");
     }
 

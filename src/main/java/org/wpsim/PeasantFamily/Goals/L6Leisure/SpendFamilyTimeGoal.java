@@ -113,7 +113,7 @@ public class SpendFamilyTimeGoal extends wpsGoalBDI {
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return believes.getPeasantProfile().getPeasantFamilyAffinity();
+        return evaluateEmotionalContribution(stateBDI, believes.getPeasantProfile().getPeasantFamilyAffinity());
     }
 
 }

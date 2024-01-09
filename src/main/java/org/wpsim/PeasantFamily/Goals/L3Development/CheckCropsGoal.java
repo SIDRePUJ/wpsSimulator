@@ -17,6 +17,7 @@ package org.wpsim.PeasantFamily.Goals.L3Development;
 import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
+import BESA.Emotional.Semantics;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
@@ -117,7 +118,8 @@ public class CheckCropsGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.9;
+        return evaluateEmotionalContribution(stateBDI, 0.9);
+        //return evaluateSingleEmotionContribution(stateBDI, Semantics.Emotions.Happiness, 0.9);
     }
 
 }

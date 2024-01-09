@@ -93,7 +93,7 @@ public class SearchForHelpAndNecessityGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.9;
+        return evaluateEmotionalContribution(stateBDI, 0.9);
     }
 
 

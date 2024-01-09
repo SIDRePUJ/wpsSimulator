@@ -63,9 +63,9 @@ public class DoVitalsTask extends wpsTask {
         checkBankDebt(believes);
         believes.getPeasantProfile().discountDailyMoney();
 
-        EmotionalEvaluator evaluator = new EmotionalEvaluator();
-        double result = evaluator.evaluate(believes.getEmotionsListCopy());
-        System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " " + result + " = " + believes.getEmotionsListCopy().toString());
+        //EmotionalEvaluator evaluator = new EmotionalEvaluator();
+        //double result = evaluator.evaluate(believes.getEmotionsListCopy());
+        //System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " " + result + " = " + believes.getEmotionsListCopy().toString());
 
     }
 

@@ -228,8 +228,13 @@ public final class wpsConfig {
         defaultPeasantFamilyProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
     }
 
-    public List<String> getFuzzyRulesList(){
-        String rawFile = loadFile("EmotionalRules.txt");
+    public List<String> getFuzzyRulesList(String mode){
+        String rawFile = null;
+        if (mode.equals("Single")) {
+            rawFile = loadFile("EmotionalRules.txt");
+        }else{
+            rawFile = loadFile("EmotionalRulesFull.txt");
+        }
         assert rawFile != null;
         return Arrays.asList(rawFile.split("\n"));
     }

@@ -5,6 +5,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
 import rational.RationalRole;
 import rational.mapping.Believes;
 
@@ -34,9 +35,22 @@ public class wpsGoalBDI extends GoalBDI {
         return 0;
     }
 
+    public double evaluateEmotionalContribution(StateBDI stateBDI, double contribution) throws KernellAgentEventExceptionBESA {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
+        EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
+        return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
+    }
+
+    public double evaluateSingleEmotionContribution(StateBDI stateBDI, String emotionToEvaluate, double contribution) throws KernellAgentEventExceptionBESA {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
+        EmotionalEvaluator evaluator = new EmotionalEvaluator("Single");
+        return (evaluator.evaluateSingleEmotion(believes.getEmotionsListCopy(), emotionToEvaluate) + contribution) / 2;
+    }
+
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return true;
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
+        return believes.getPeasantProfile().getHealth() > 0;
     }
 
     @Override
@@ -47,6 +61,7 @@ public class wpsGoalBDI extends GoalBDI {
 
     /**
      * Checks if the goal was already executed today
+     *
      * @param believes Peasant Family BDI Believes
      * @return true if the goal was already executed today
      */
