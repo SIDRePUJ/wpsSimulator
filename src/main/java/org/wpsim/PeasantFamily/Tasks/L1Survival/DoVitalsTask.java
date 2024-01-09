@@ -55,18 +55,12 @@ public class DoVitalsTask extends wpsTask {
         believes.setNewDay(false);
         believes.useTime(TimeConsumedBy.DoVitalsTask);
 
-        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "FOOD"));
-        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTINGFAILED", "FOOD"));
-        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HOUSEHOLDING", "TIME"));
 
         // Check debts
         checkBankDebt(believes);
         believes.getPeasantProfile().discountDailyMoney();
-
-        //EmotionalEvaluator evaluator = new EmotionalEvaluator();
-        //double result = evaluator.evaluate(believes.getEmotionsListCopy());
-        //System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " " + result + " = " + believes.getEmotionsListCopy().toString());
-
     }
 
     /**

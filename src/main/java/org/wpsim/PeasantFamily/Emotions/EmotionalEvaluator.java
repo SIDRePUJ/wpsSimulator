@@ -133,22 +133,23 @@ public class EmotionalEvaluator {
 
     public double evaluate(List<EmotionAxis> emotions) {
         for (EmotionAxis emotion : emotions) {
-            System.out.println(emotion.getPositiveName() + emotion.getNegativeName() + " = " + emotion.getCurrentValue());
+            //System.out.println(emotion.getPositiveName() + emotion.getNegativeName() + " = " + emotion.getCurrentValue());
             engine.setInputValue(emotion.getPositiveName() + emotion.getNegativeName(), emotion.getCurrentValue());
         }
         engine.process();
+        //System.out.println("EmotionalState: " + engine.getOutputValue("EmotionalState"));
         return engine.getOutputValue("EmotionalState");
     }
 
     public double evaluateSingleEmotion(List<EmotionAxis> emotions, String emotionToEvaluate) {
         for (EmotionAxis emotion : emotions) {
             if (emotion.getPositiveName().equals(emotionToEvaluate)) {
-                System.out.println(emotion.getPositiveName() + emotion.getNegativeName() + " = " + emotion.getCurrentValue());
+                //System.out.println(emotion.getPositiveName() + emotion.getNegativeName() + " = " + emotion.getCurrentValue());
                 engine.setInputValue(emotion.getPositiveName() + emotion.getNegativeName(), emotion.getCurrentValue());
             }
         }
         engine.process();
-        System.out.println("EmotionalState: " + engine.getOutputValue("EmotionalState"));
+        //System.out.println("EmotionalState: " + engine.getOutputValue("EmotionalState"));
         return engine.getOutputValue("EmotionalState");
     }
 

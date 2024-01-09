@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
@@ -42,7 +43,7 @@ public class WorkForOtherTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.WorkForOtherTask);
-
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "WORK", "MONEY"));
         believes.decreaseDaysToWorkForOther();
         //System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " sigo trabajando, faltan " + believes.getDaysToWorkForOther() + " dias, para " + believes.getContractor());
         if (believes.getDaysToWorkForOther() == 0) {

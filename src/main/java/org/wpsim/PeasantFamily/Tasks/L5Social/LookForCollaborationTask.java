@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L5Social;
 
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
@@ -41,6 +42,7 @@ public class LookForCollaborationTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.LookForCollaborationTask);
+
         try {
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsConfig.getInstance().getSocietyAgentName()

@@ -34,7 +34,7 @@ public class LeisureActivitiesTask extends wpsTask {
     public void executeTask(Believes parameters) {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "TIME"));
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "TIME"));
         believes.useTime(believes.getTimeLeftOnDay());
     }
 

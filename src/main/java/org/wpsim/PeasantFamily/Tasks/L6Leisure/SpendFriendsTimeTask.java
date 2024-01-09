@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
+import BESA.Emotional.EmotionalEvent;
 import org.wpsim.Control.Data.Coin;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
@@ -43,6 +44,9 @@ public class SpendFriendsTimeTask extends wpsTask {
         } else {
             believes.useTime(believes.getTimeLeftOnDay());
         }
+
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "TIME"));
+        believes.processEmotionalEvent(new EmotionalEvent("FRIEND", "LEISURE", "TIME"));
     }
 
 }

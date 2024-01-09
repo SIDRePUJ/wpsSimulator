@@ -63,7 +63,7 @@ public class PlantCropTask extends wpsLandTask {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
-        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
 
         // Set world perturbation
         setPerturbation(wpsStart.config.getPerturbation());

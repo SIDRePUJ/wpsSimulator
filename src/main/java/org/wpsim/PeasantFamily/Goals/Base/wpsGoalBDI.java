@@ -35,12 +35,27 @@ public class wpsGoalBDI extends GoalBDI {
         return 0;
     }
 
+    /**
+     * Evaluates the contribution of the emotion set to the goal.
+     * @param stateBDI agent state
+     * @param contribution default contribution
+     * @return contribution
+     * @throws KernellAgentEventExceptionBESA exception
+     */
     public double evaluateEmotionalContribution(StateBDI stateBDI, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
         return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
     }
 
+    /**
+     * Evaluates the contribution of an emotion to the goal.
+     * @param stateBDI agent state
+     * @param emotionToEvaluate emotion
+     * @param contribution default contribution
+     * @return contribution
+     * @throws KernellAgentEventExceptionBESA exception
+     */
     public double evaluateSingleEmotionContribution(StateBDI stateBDI, String emotionToEvaluate, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Single");
@@ -50,6 +65,7 @@ public class wpsGoalBDI extends GoalBDI {
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
+        System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
         return believes.getPeasantProfile().getHealth() > 0;
     }
 

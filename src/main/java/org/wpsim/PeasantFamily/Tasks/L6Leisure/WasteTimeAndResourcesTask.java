@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
+import BESA.Emotional.EmotionalEvent;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
@@ -37,7 +38,7 @@ public class WasteTimeAndResourcesTask extends wpsTask {
         believes.useTime(believes.getTimeLeftOnDay());
         believes.getPeasantProfile().useMoney(1000);
         believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
-        this.setTaskFinalized();
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "MONEY"));
     }
 
 }

@@ -44,7 +44,7 @@ public class SpendFamilyTimeTask extends wpsTask {
         } else {
             believes.useTime(believes.getTimeLeftOnDay());
         }
-        //believes.processEmotionalEvent(new EmotionalEvent("FRIEND", "LEISURE", "FOOD"));
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "TIME"));
     }
 
 }
