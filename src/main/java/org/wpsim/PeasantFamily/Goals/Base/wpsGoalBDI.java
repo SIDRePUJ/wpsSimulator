@@ -6,6 +6,7 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
+import org.wpsim.Simulator.wpsStart;
 import rational.RationalRole;
 import rational.mapping.Believes;
 
@@ -45,7 +46,11 @@ public class wpsGoalBDI extends GoalBDI {
     public double evaluateEmotionalContribution(StateBDI stateBDI, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
-        return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
+        if (wpsStart.EMOTIONS) {
+            return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
+        }else{
+            return contribution;
+        }
     }
 
     /**
@@ -59,13 +64,18 @@ public class wpsGoalBDI extends GoalBDI {
     public double evaluateSingleEmotionContribution(StateBDI stateBDI, String emotionToEvaluate, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Single");
-        return (evaluator.evaluateSingleEmotion(believes.getEmotionsListCopy(), emotionToEvaluate) + contribution) / 2;
+        if (wpsStart.EMOTIONS) {
+            return (evaluator.evaluateSingleEmotion(believes.getEmotionsListCopy(), emotionToEvaluate) + contribution) / 2;
+        }else{
+            return contribution;
+        }
+
     }
 
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
+        //System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
         return believes.getPeasantProfile().getHealth() > 0;
     }
 

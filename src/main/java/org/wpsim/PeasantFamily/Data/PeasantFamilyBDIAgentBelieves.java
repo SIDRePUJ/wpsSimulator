@@ -565,7 +565,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
             emotions.forEach(emotion -> {
                 dataObject.put(emotion.toString(), emotion.getCurrentValue());
             });
-        } catch (CloneNotSupportedException e) {
+        } catch (Exception e) {
             dataObject.put("emotions", 0);
         }
 

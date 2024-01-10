@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -33,12 +33,14 @@ import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.guards.InformationFlowGuard;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
- *
  * @author jairo
  */
 public class HeartBeatGuard extends PeriodicGuardBESA {
-    
+
     /**
      * It retrieves the current agent and its beliefs.
      * It checks if the current date is more than 7 days before the internal current date to move forward.
@@ -58,9 +60,22 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamilyBDIAgent PeasantFamily = (PeasantFamilyBDIAgent) this.getAgent();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
 
-        if (believes.getPeasantProfile().getHealth() <= 0) {
+        if (believes.getPeasantProfile().getHealth() <= 0 || believes.getInternalCurrentDate().equals("01/01/2023")) {
+            System.out.println("data: " + believes.getPeasantProfile().getPeasantFamilyAlias() + " " + believes.toJson());
             this.stopPeriodicCall();
             this.agent.shutdownAgent();
+
+            Timer timer = new Timer();
+            TimerTask tarea = new TimerTask() {
+                public void run() {
+                    System.out.println("Tiempo terminado. El programa se cerrará.");
+                    System.exit(0); // Termina el programa
+                }
+            };
+
+            // Programa la tarea para que se ejecute después de 2 minutos (120000 milisegundos)
+            timer.schedule(tarea, 60000);
+
             return;
         }
 
@@ -70,12 +85,12 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -(wpsStart.DAYS_TO_CHECK)) {
             System.out.println("Jump PeasantFamilyAlias: " + PeasantFamilyAlias
                     + " - getDaysBetweenDates " + ControlCurrentDate.getInstance().getDaysBetweenDates(
-                            believes.getInternalCurrentDate()
+                    believes.getInternalCurrentDate()
             ));
             believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
             believes.setCurrentActivity(PeasantActivityType.BLOCKED);
             believes.makeNewDayWOD();
-        }else{
+        } else {
             believes.setCurrentActivity(PeasantActivityType.NONE);
         }
 
@@ -87,19 +102,16 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         }*/
 
         try {
-            ToControlMessage toControlMessage = new ToControlMessage(
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    believes.getInternalCurrentDate(),
-                    believes.getCurrentDay()
-            );
-            EventBESA eventBesa = new EventBESA(
-                    ControlAgentGuard.class.getName(),
-                    toControlMessage
-            );
-            AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getControlAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
+            ).sendEvent(new EventBESA(
+                    ControlAgentGuard.class.getName(),
+                    new ToControlMessage(
+                            believes.getPeasantProfile().getPeasantFamilyAlias(),
+                            believes.getInternalCurrentDate(),
+                            believes.getCurrentDay()
+                    )
+            ));
         } catch (ExceptionBESA ex) {
             ReportBESA.error(ex);
         }
@@ -108,14 +120,13 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
           BDI Information Flow Guard - sends an event to continue the BDI flow
          */
         try {
-            AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(PeasantFamilyAlias);
-            EventBESA eventBesa = new EventBESA(
-                    InformationFlowGuard.class.getName(),
-                    null
+            AdmBESA.getInstance().getHandlerByAlias(PeasantFamilyAlias).sendEvent(
+                    new EventBESA(
+                            InformationFlowGuard.class.getName(),
+                            null
+                    )
             );
-            agHandler.sendEvent(eventBesa);
         } catch (ExceptionBESA ex) {
-            //wpsReport.error(ex, PeasantFamilyAlias);
             ReportBESA.error(ex);
         }
 
@@ -129,5 +140,5 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         this.setDelayTime(waitTime);
 
     }
-    
+
 }

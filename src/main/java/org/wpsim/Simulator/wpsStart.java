@@ -46,11 +46,12 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 200;
+    public static int stepTime = 100;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 7;
-    public final static int DEFAULT_AGENTS_TO_TEST = 18;
+    public final static int DEFAULT_AGENTS_TO_TEST = 5;
+    public final static boolean EMOTIONS = false;
     public static final long startTime = System.currentTimeMillis();
     static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 
@@ -94,6 +95,12 @@ public class wpsStart {
                     // Single mode
                     createServices();
                     createPeasants(0, peasantFamiliesAgents);
+                }
+                case "single" -> {
+                    // Single benchmark mode
+                    createServices();
+                    createPeasants(0, peasantFamiliesAgents);
+                    startAgents();
                 }
                 default -> System.out.println("No se reconoce el nombre del contendor BESA " + args[0]);
             }
