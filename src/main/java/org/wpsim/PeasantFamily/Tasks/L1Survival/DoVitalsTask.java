@@ -57,7 +57,11 @@ public class DoVitalsTask extends wpsTask {
 
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HOUSEHOLDING", "TIME"));
+        if (believes.getPeasantProfile().getMoney()<=100000){
+            believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "STARVING", "FOOD"));
+        }
 
+        // Check for loans
         // Check debts
         checkBankDebt(believes);
         believes.getPeasantProfile().discountDailyMoney();

@@ -9,44 +9,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Evaluación de emociones general en todas las metas e inclusión de emociones en las tareas.">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/test01-checkpoint.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/estado_agentes.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_single.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run01-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run02-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run03-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run04-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run05-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/run01.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/run02.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/run03.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/run04.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test01/run05.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run01-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run02-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run03-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run04-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run05-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run06-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run07-checkpoint.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/run01.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/run02.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/run03.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/run04.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/run05.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/run06.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/test02/run07.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/wpsim_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/wpsim_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Nuevo modo benckmark single.">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/emotions.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/emotions/benckmark.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/noemotions.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/noemotions/benckmark.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/test03/benckmark.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/test04NoEmotions/benckmark.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/Base/wpsGoalBDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/Base/wpsGoalBDI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEvaluator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEventType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEventType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromWorld/FromWorldGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromWorld/FromWorldGuard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/Base/wpsLandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/Base/wpsLandTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SearchForHelpAndNecessityTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SearchForHelpAndNecessityTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/defaultPeasantFamilyProfile.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/defaultPeasantFamilyProfile.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/test01-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/test01-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test01.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -286,7 +270,7 @@
       <workItem from="1703605681940" duration="26790000" />
       <workItem from="1703868024990" duration="1218000" />
       <workItem from="1704213310700" duration="35913000" />
-      <workItem from="1704646164699" duration="35501000" />
+      <workItem from="1704646164699" duration="49688000" />
     </task>
     <task id="LOCAL-00001" summary="Nueva versión">
       <option name="closed" value="true" />
@@ -520,7 +504,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704775315603</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Nuevo modo benckmark single.">
+      <option name="closed" value="true" />
+      <created>1704861475404</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1704861475404</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -539,7 +531,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Nueva versión" />
     <MESSAGE value="- Nueva UI&#10;- Adicionando más guardas" />
     <MESSAGE value="- Actualización UI&#10;- Solucionado el avance del tiempo&#10;- Nuevas guardas funcionando" />
     <MESSAGE value="- Actualización UI&#10;- Cambio de estrategia contra bloqueos, liberado" />
@@ -564,7 +555,8 @@
     <MESSAGE value="Reglas Fuzzy funcionando para HappinessSadness y HopefulUncertainty. Listo para jugar con la contribución." />
     <MESSAGE value="Adicionada la evaluación de Emociones General a las Metas." />
     <MESSAGE value="Evaluación de emociones general en todas las metas e inclusión de emociones en las tareas." />
-    <option name="LAST_COMMIT_MESSAGE" value="Evaluación de emociones general en todas las metas e inclusión de emociones en las tareas." />
+    <MESSAGE value="Nuevo modo benckmark single." />
+    <option name="LAST_COMMIT_MESSAGE" value="Nuevo modo benckmark single." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -39,6 +39,7 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
         // Robo
         if (Math.random() < 0.3) {
             believes.increaseRobberyAccount();
+            believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "THIEVING", "MONEY"));
             if (Math.random() < 0.4) {
                 believes.getPeasantProfile().increaseMoney(65000);
             } else {
@@ -52,6 +53,7 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
             //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "THIEVING", "MONEY"));
         }else{
             // @TODO: ajustar a cada dos meses como parte de familias en acción
+            believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HELPED", "MONEY"));
             believes.getPeasantProfile().increaseMoney(380000);
             believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
         }

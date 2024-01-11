@@ -27,6 +27,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private String peasantFamilyAlias;
     private double peasantFamilyMinimalVital;
     private int health;
+    private int initialHealth;
     private double variance;
     private double peasantLeisureAffinity;
     private double peasantFriendsAffinity;
@@ -44,6 +45,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private double housingLocation;
     private double farmDistance;
     private double money;
+    private double initialMoney;
     private double totalIncome;
     private int loanAmountToPay;
     private double housingQuailty;
@@ -92,6 +94,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private int riceSeedsByHectare;
     private int seeds;
     private int harvestedWeight;
+
     private double totalHarvestedWeight;
     private String startRiceSeason;
     private String endRiceSeason;
@@ -129,6 +132,20 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
         this.peasantKind = peasantKind;
     }
 
+    public int getInitialHealth() {
+        return initialHealth;
+    }
+
+    public void setInitialHealth(int initialHealth) {
+        this.initialHealth = initialHealth;
+    }
+    public double getInitialMoney() {
+        return initialMoney;
+    }
+
+    public void setInitialMoney(double initialMoney) {
+        this.initialMoney = initialMoney;
+    }
     /**
      *
      * @return
@@ -1444,6 +1461,13 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
         this.totalHarvestedWeight += harvested;
     }
 
+    public double getTotalHarvestedWeight() {
+        return totalHarvestedWeight;
+    }
+
+    public void setTotalHarvestedWeight(double totalHarvestedWeight) {
+        this.totalHarvestedWeight = totalHarvestedWeight;
+    }
 
     public String getPeasantFamilyLandAlias() {
         return peasantFamilyLandAlias;

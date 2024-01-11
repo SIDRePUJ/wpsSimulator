@@ -1,7 +1,9 @@
 package org.wpsim.PeasantFamily.Tasks.Base;
 
+import BESA.Emotional.Semantics;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
 
 public class wpsLandTask extends wpsTask {
     private boolean isStarted = false;
@@ -17,6 +19,10 @@ public class wpsLandTask extends wpsTask {
     }
 
     protected void increaseWorkDone(PeasantFamilyBDIAgentBelieves believes, String landName, int workDone) {
+        EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
+        double factor = evaluator.emotionalFactor(believes.getEmotionsListCopy(), Semantics.Emotions.Happiness);
+        //System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " - Work done: " + workDone + " Factor: " + factor + " NewWorkDone: " + (workDone * factor));
+        workDone = (int) (workDone * factor);
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getLandName().equals(landName)) {
                 currentLandInfo.increaseElapsedWorkTime(workDone);

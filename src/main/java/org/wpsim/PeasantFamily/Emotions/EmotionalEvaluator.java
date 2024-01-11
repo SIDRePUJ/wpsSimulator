@@ -153,4 +153,15 @@ public class EmotionalEvaluator {
         return engine.getOutputValue("EmotionalState");
     }
 
+    public double emotionalFactor(List<EmotionAxis> emotions, String emotionToEvaluate){
+        double internalFactor = evaluateSingleEmotion(emotions, emotionToEvaluate);
+        if (internalFactor >= 0.5){
+            return 1.1;
+        }else if(internalFactor > 0.4){
+            return 1.0;
+        }else{
+            return 0.90;
+        }
+    }
+
 }

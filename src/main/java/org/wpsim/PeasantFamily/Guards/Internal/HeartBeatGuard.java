@@ -33,6 +33,9 @@ import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.guards.InformationFlowGuard;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -61,7 +64,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
 
         if (believes.getPeasantProfile().getHealth() <= 0 || believes.getInternalCurrentDate().equals("01/01/2023")) {
-            System.out.println("data: " + believes.getPeasantProfile().getPeasantFamilyAlias() + " " + believes.toJson());
+            writeBenchmarkLog(believes.toJson());
             this.stopPeriodicCall();
             this.agent.shutdownAgent();
 
@@ -74,7 +77,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             };
 
             // Programa la tarea para que se ejecute después de 2 minutos (120000 milisegundos)
-            timer.schedule(tarea, 60000);
+            timer.schedule(tarea, 120000);
 
             return;
         }
@@ -139,6 +142,15 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         }
         this.setDelayTime(waitTime);
 
+    }
+
+    public synchronized void writeBenchmarkLog(String texto) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benckmark.log", true))) {
+            writer.write(texto);
+            writer.newLine();
+        } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo: " + e.getMessage());
+        }
     }
 
 }

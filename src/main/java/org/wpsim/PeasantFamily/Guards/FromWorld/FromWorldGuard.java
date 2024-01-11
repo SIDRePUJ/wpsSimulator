@@ -93,6 +93,7 @@ public class FromWorldGuard extends GuardBESA {
                                     cropData.get("aboveGroundBiomass").toString()
                             ) * 0.2 // Solo es aprovechable el 50% de la biomasa + 30% consumo interno
                     );
+                    System.out.println("🍙🍙🍙: CROP_HARVEST OK");
                     break;
                 default:
                     // Código a ejecutar si messageType no coincide con ninguno de los casos anteriores

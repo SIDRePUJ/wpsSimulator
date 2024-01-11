@@ -313,6 +313,8 @@ public final class wpsConfig {
         );
 
         pfProfile.setHealth((int) (pfProfile.getHealth() * rnd));
+        pfProfile.setInitialHealth((int) (pfProfile.getHealth() * rnd));
+        pfProfile.setInitialMoney((int) (pfProfile.getMoney() * rnd));
         pfProfile.setMoney((int) (pfProfile.getMoney() * rnd));
         pfProfile.setWaterAvailable((int) (pfProfile.getWaterAvailable() * rnd));
         pfProfile.setSeeds((int) (pfProfile.getSeeds() * rnd));

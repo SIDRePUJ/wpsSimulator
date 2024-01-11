@@ -87,24 +87,27 @@ public abstract class EmotionalComponent extends EmotionalModel {
         EmotionAxis HappinessSadness = new EmotionAxis(
                 Semantics.Emotions.Happiness,
                 Semantics.Emotions.Sadness,
-                0.0f, 0.0f, 0.2f
+                0.0f, 0.0f, 0.1f
         );
         HappinessSadness.setEventInfluence(EmotionalEventType.LEISURE.name(), 0.7f);
-        HappinessSadness.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.1f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.3f);
         HappinessSadness.setEventInfluence(EmotionalEventType.STARVING.name(), 0.6f);
-        //HappinessSadness.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.6f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.6f);
         this.addEmotionAxis(HappinessSadness);
 
         EmotionAxis HopefulUncertainty = new EmotionAxis(
                 Semantics.Emotions.Hopeful,
                 Semantics.Emotions.Uncertainty,
-                0.0f, 0.0f, 0.2f
+                0.0f, 0.0f, 0.1f
         );
         HopefulUncertainty.setEventInfluence(EmotionalEventType.PLANTING.name(), 1.0f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.SELLING.name(), 0.8f);
+        HopefulUncertainty.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.4f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.CHECKCROPS.name(), 0.2f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.PLANTINGFAILED.name(), 0.3f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.THIEVING.name(), 1.0f);
+        HopefulUncertainty.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.WORK.name(), 0.4f);
         this.addEmotionAxis(HopefulUncertainty);
 
@@ -112,10 +115,11 @@ public abstract class EmotionalComponent extends EmotionalModel {
         EmotionAxis SecureInsecure = new EmotionAxis(
                 Semantics.Emotions.Secure,
                 Semantics.Emotions.Insecure,
-                0.0f, 0.0f, 0.2f
+                0.0f, 0.0f, 0.1f
         );
         SecureInsecure.setEventInfluence(EmotionalEventType.HOUSEHOLDING.name(), 0.5f);
         SecureInsecure.setEventInfluence(EmotionalEventType.THIEVING.name(), 1.0f);
+        SecureInsecure.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.4f);
         SecureInsecure.setEventInfluence(EmotionalEventType.PLANTING.name(), 0.2f);
         this.addEmotionAxis(SecureInsecure);
 

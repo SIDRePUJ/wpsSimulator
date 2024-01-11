@@ -523,7 +523,9 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     public synchronized String toJson() {
         JSONObject dataObject = new JSONObject();
         dataObject.put("money", peasantProfile.getMoney());
+        dataObject.put("initialMoney", peasantProfile.getInitialMoney());
         dataObject.put("health", peasantProfile.getHealth());
+        dataObject.put("initialHealth", peasantProfile.getInitialHealth());
         dataObject.put("timeLeftOnDay", timeLeftOnDay);
         dataObject.put("newDay", newDay);
         dataObject.put("currentSeason", currentSeason);
@@ -549,7 +551,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("seeds", peasantProfile.getSeeds());
         dataObject.put("waterAvailable", peasantProfile.getWaterAvailable());
         dataObject.put("pesticidesAvailable", peasantProfile.getPesticidesAvailable());
-        dataObject.put("harvestedWeight", peasantProfile.getHarvestedWeight());
+        dataObject.put("totalHarvestedWeight", peasantProfile.getTotalHarvestedWeight());
         dataObject.put("contractor", getContractor());
         dataObject.put("daysToWorkForOther", getDaysToWorkForOther());
         dataObject.put("peasantFamilyHelper", getPeasantFamilyHelper());
@@ -573,7 +575,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         finalDataObject.put("name", peasantProfile.getPeasantFamilyAlias());
         finalDataObject.put("state", dataObject.toString());
 
-        finalDataObject.put("taskLog", getOrderedTasksByDateJson());
+        //finalDataObject.put("taskLog", getOrderedTasksByDateJson());
 
         return finalDataObject.toString();
     }
