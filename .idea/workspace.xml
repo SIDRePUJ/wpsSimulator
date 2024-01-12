@@ -9,27 +9,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Nuevo modo benckmark single.">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="versión 0.1 Completa.&#10; - Familias Campesinas BDI&#10; - Emociones&#10; - Tierra&#10; - Mercado">
       <change afterPath="$PROJECT_DIR$/src/main/resources/emotions.csv" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/emotions/benckmark.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/emotions/benckmark.log.10" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/noemotions.csv" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/noemotions/benckmark.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/test03/benckmark.log" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/test04NoEmotions/benckmark.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEvaluator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEventType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEventType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L1Survival/DoVitalsGoal.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromWorld/FromWorldGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromWorld/FromWorldGuard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/Base/wpsLandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/Base/wpsLandTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SearchForHelpAndNecessityTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SearchForHelpAndNecessityTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/Base/wpsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/Base/wpsTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Society/Guards/SocietyAgentRequestHelpGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Society/Guards/SocietyAgentRequestHelpGuard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/test01-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/test01-checkpoint.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/defaultPeasantFamilyProfile.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/defaultPeasantFamilyProfile.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/test01.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test01.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,6 +78,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
+    "ignore.preview.features.used": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/jairo/IdeaProjects/wpsSimulator/src/main/resources",
     "node.js.detected.package.eslint": "true",
@@ -270,7 +271,8 @@
       <workItem from="1703605681940" duration="26790000" />
       <workItem from="1703868024990" duration="1218000" />
       <workItem from="1704213310700" duration="35913000" />
-      <workItem from="1704646164699" duration="49688000" />
+      <workItem from="1704646164699" duration="68003000" />
+      <workItem from="1705037127705" duration="9576000" />
     </task>
     <task id="LOCAL-00001" summary="Nueva versión">
       <option name="closed" value="true" />
@@ -512,7 +514,15 @@
       <option name="project" value="LOCAL" />
       <updated>1704861475404</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="versión 0.1 Completa.&#10; - Familias Campesinas BDI&#10; - Emociones&#10; - Tierra&#10; - Mercado">
+      <option name="closed" value="true" />
+      <created>1704982050897</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1704982050897</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -531,7 +541,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="- Nueva UI&#10;- Adicionando más guardas" />
     <MESSAGE value="- Actualización UI&#10;- Solucionado el avance del tiempo&#10;- Nuevas guardas funcionando" />
     <MESSAGE value="- Actualización UI&#10;- Cambio de estrategia contra bloqueos, liberado" />
     <MESSAGE value="Base del componente Emocional" />
@@ -556,7 +565,8 @@
     <MESSAGE value="Adicionada la evaluación de Emociones General a las Metas." />
     <MESSAGE value="Evaluación de emociones general en todas las metas e inclusión de emociones en las tareas." />
     <MESSAGE value="Nuevo modo benckmark single." />
-    <option name="LAST_COMMIT_MESSAGE" value="Nuevo modo benckmark single." />
+    <MESSAGE value="versión 0.1 Completa.&#10; - Familias Campesinas BDI&#10; - Emociones&#10; - Tierra&#10; - Mercado" />
+    <option name="LAST_COMMIT_MESSAGE" value="versión 0.1 Completa.&#10; - Familias Campesinas BDI&#10; - Emociones&#10; - Tierra&#10; - Mercado" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

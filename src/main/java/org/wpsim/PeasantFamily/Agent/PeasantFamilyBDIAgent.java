@@ -28,7 +28,6 @@ import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
 import org.wpsim.PeasantFamily.Guards.FromControl.ToControlMessage;
-import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
 import org.wpsim.PeasantFamily.Goals.L3Development.*;
 import org.wpsim.PeasantFamily.Goals.L4SkillsResources.*;
@@ -104,7 +103,6 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         List<GoalBDI> goals = new ArrayList<>();
 
         //Level 1 Goals: Survival        
-        goals.add(DoVitalsGoal.buildGoal());
         goals.add(SeekPurposeGoal.buildGoal());
         //goals.add(DoHealthCareGoal.buildGoal());
         //goals.add(SelfEvaluationGoal.buildGoal());

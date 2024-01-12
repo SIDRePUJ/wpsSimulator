@@ -22,7 +22,7 @@ StablePeasant:
   currentCropName: roots
   money: 2200000
   waterAvailable: 1000
-  variance: 0.1
+  variance: 0.4
   peasantFamilyAffinity: 0.7
   peasantLeisureAffinity: 0.4
   peasantFriendsAffinity: 0.5

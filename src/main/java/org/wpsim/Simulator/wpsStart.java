@@ -50,8 +50,9 @@ public class wpsStart {
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 6;
-    public final static int DEFAULT_AGENTS_TO_TEST = 10;
+    public final static int DEFAULT_AGENTS_TO_TEST = 9;
     public final static boolean EMOTIONS = true;
+    public static final String ENDDATE = "01/01/2023";
     public static final long startTime = System.currentTimeMillis();
     static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 

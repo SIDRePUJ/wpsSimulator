@@ -111,7 +111,6 @@ public class PlantCropTask extends wpsLandTask {
 
                     } else {
                         try {
-
                             WorldAgent landAgent = buildWorld(
                                     getRainfallFile(rainfallConditions),
                                     peasantAlias,

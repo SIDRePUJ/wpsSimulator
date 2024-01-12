@@ -22,7 +22,8 @@ public class wpsTask extends Task {
     }
 
     @Override
-    public void cancelTask(Believes believes) {
-
+    public void cancelTask(Believes parameters) {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " Canceling " + this.getClass().getSimpleName());
     }
 }

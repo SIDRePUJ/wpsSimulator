@@ -16,12 +16,15 @@ package org.wpsim.PeasantFamily.Guards.Internal;
 
 import BESA.BDI.AgentStructuralModel.DesireHierarchyPyramid;
 import BESA.BDI.AgentStructuralModel.StateBDI;
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Log.ReportBESA;
+import org.wpsim.Bank.Data.BankMessage;
+import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Guards.ControlAgentGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
@@ -38,6 +41,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static org.wpsim.Bank.Data.BankMessageType.ASK_CURRENT_TERM;
 
 /**
  * @author jairo
@@ -59,12 +64,119 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
      * @param event The BESA event triggering the execution of the method.
      */
     @Override
+    //public synchronized void funcPeriodicExecGuard(EventBESA event) {
     public synchronized void funcPeriodicExecGuard(EventBESA event) {
         PeasantFamilyBDIAgent PeasantFamily = (PeasantFamilyBDIAgent) this.getAgent();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
 
-        if (believes.getPeasantProfile().getHealth() <= 0 || believes.getInternalCurrentDate().equals("01/01/2023")) {
-            writeBenchmarkLog(believes.toJson());
+        // Check if the current date is more than 7 days before the internal current date
+        checkTimeJump(believes);
+        // Check if the agent has finished
+        if (checkDead(believes)) return;
+        // Check if the simulation has finished
+        if (checkFinish(believes)) return;
+        // Execute vital tasks every simulated day
+        this.doVitals(believes);
+
+        // Log the activities the agent
+        wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
+
+        // Check the next time to execute pulse
+        StateBDI state = (StateBDI) PeasantFamily.getState();
+        String role;
+        try {
+            role = state.getMainRole().getRoleName();
+        }catch (Exception e){
+            role = "none";
+        }
+
+        int waitTime = wpsStart.stepTime;
+        if (state.getMainRole() != null) {
+            if (role.equals("PlantCropTask")){
+                waitTime = TimeConsumedBy.valueOf(state.getMainRole().getRoleName()).getTime() * wpsStart.stepTime * 10;
+            }else {
+                waitTime = TimeConsumedBy.valueOf(state.getMainRole().getRoleName()).getTime() * wpsStart.stepTime;
+            }
+        }
+
+        System.out.println(
+                "PeasantFamilyAlias: " + believes.getPeasantProfile().getPeasantFamilyAlias()
+                + " - waitTime: " + waitTime
+                        + " rol " + role);
+        //this.setDelayTime(waitTime);
+        try {
+            Thread.sleep(waitTime);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private static void checkTimeJump(PeasantFamilyBDIAgentBelieves believes) {
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -(wpsStart.DAYS_TO_CHECK)) {
+            System.out.println("Jump PeasantFamilyAlias: " + believes.getPeasantProfile().getPeasantFamilyAlias()
+                    + " - getDaysBetweenDates " + ControlCurrentDate.getInstance().getDaysBetweenDates(
+                    believes.getInternalCurrentDate()
+            ));
+            believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
+            believes.setCurrentActivity(PeasantActivityType.BLOCKED);
+            believes.makeNewDayWOD();
+        } else {
+            believes.setCurrentActivity(PeasantActivityType.NONE);
+        }
+    }
+
+    private void doVitals(PeasantFamilyBDIAgentBelieves believes) {
+        if (!believes.isTaskExecutedOnDate(believes.getInternalCurrentDate(),"DoVitalsTask")){
+            believes.addTaskToLog(believes.getInternalCurrentDate(), "DoVitalsTask");
+            believes.setNewDay(false);
+            believes.useTime(TimeConsumedBy.DoVitalsTask);
+            believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
+            believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HOUSEHOLDING", "TIME"));
+            if (believes.getPeasantProfile().getMoney()<=100000){
+                believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "STARVING", "FOOD"));
+            }
+            // Check debts
+            checkBankDebt(believes);
+            believes.getPeasantProfile().discountDailyMoney();
+        }
+        // BDI Information Flow Guard - sends an event to continue the BDI flow
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(believes.getPeasantProfile().getPeasantFamilyAlias()).sendEvent(
+                    new EventBESA(
+                            InformationFlowGuard.class.getName(),
+                            null
+                    )
+            );
+        } catch (ExceptionBESA ex) {
+            ReportBESA.error(ex);
+        }
+    }
+
+    private void checkBankDebt(PeasantFamilyBDIAgentBelieves believes) {
+        if (ControlCurrentDate.getInstance().isFirstDayOfMonth(believes.getInternalCurrentDate())
+                && believes.getCurrentDay() > 6) {
+            try {
+                AdmBESA.getInstance().getHandlerByAlias(
+                        wpsStart.config.getBankAgentName()
+                ).sendEvent(
+                        new EventBESA(
+                                BankAgentGuard.class.getName(),
+                                new BankMessage(
+                                        ASK_CURRENT_TERM,
+                                        believes.getPeasantProfile().getPeasantFamilyAlias()
+                                )
+                        )
+                );
+            } catch (ExceptionBESA ex) {
+                wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+            }
+        }
+    }
+
+    private boolean checkFinish(PeasantFamilyBDIAgentBelieves believes) {
+        if (believes.getInternalCurrentDate().equals(wpsStart.ENDDATE)) {
+            writeBenchmarkLog(believes.toJsonSimple());
             this.stopPeriodicCall();
             this.agent.shutdownAgent();
 
@@ -75,36 +187,33 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
                     System.exit(0); // Termina el programa
                 }
             };
-
-            // Programa la tarea para que se ejecute después de 2 minutos (120000 milisegundos)
             timer.schedule(tarea, 120000);
-
-            return;
+            return true;
         }
-
-        StateBDI state = (StateBDI) PeasantFamily.getState();
-        String PeasantFamilyAlias = believes.getPeasantProfile().getPeasantFamilyAlias();
-
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -(wpsStart.DAYS_TO_CHECK)) {
-            System.out.println("Jump PeasantFamilyAlias: " + PeasantFamilyAlias
-                    + " - getDaysBetweenDates " + ControlCurrentDate.getInstance().getDaysBetweenDates(
-                    believes.getInternalCurrentDate()
-            ));
-            believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
-            believes.setCurrentActivity(PeasantActivityType.BLOCKED);
-            believes.makeNewDayWOD();
-        } else {
-            believes.setCurrentActivity(PeasantActivityType.NONE);
+        return false;
+    }
+    private boolean checkDead(PeasantFamilyBDIAgentBelieves believes) {
+        if (believes.getPeasantProfile().getHealth() <= 0) {
+            writeBenchmarkLog(believes.toJsonSimple());
+            this.stopPeriodicCall();
+            this.agent.shutdownAgent();
+            return true;
         }
+        return false;
+    }
 
-        /*try {
-            wpsReport.debug(PeasantFamilyAlias + " getEmotionsListCopy " + believes.getEmotionsListCopy().toString(), PeasantFamilyAlias);
-            wpsReport.debug(PeasantFamilyAlias + " getMostActivatedEmotion " + believes.getMostActivatedEmotion().toString(),PeasantFamilyAlias);
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }*/
+    public synchronized void writeBenchmarkLog(String texto) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benckmark.log", true))) {
+            writer.write(texto);
+            writer.newLine();
+        } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo: " + e.getMessage());
+        }
+    }
+}
 
-        try {
+
+/*try {
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getControlAgentName()
             ).sendEvent(new EventBESA(
@@ -117,40 +226,4 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             ));
         } catch (ExceptionBESA ex) {
             ReportBESA.error(ex);
-        }
-
-        /*
-          BDI Information Flow Guard - sends an event to continue the BDI flow
-         */
-        try {
-            AdmBESA.getInstance().getHandlerByAlias(PeasantFamilyAlias).sendEvent(
-                    new EventBESA(
-                            InformationFlowGuard.class.getName(),
-                            null
-                    )
-            );
-        } catch (ExceptionBESA ex) {
-            ReportBESA.error(ex);
-        }
-
-        wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
-
-        int waitTime = wpsStart.stepTime;
-        if (state.getMainRole() != null) {
-            waitTime = TimeConsumedBy.valueOf(state.getMainRole().getRoleName()).getTime() * wpsStart.stepTime;
-            //System.out.println("PeasantFamilyAlias: " + PeasantFamilyAlias + " - waitTime: " + waitTime + " rol " + state.getMainRole().getRoleName());
-        }
-        this.setDelayTime(waitTime);
-
-    }
-
-    public synchronized void writeBenchmarkLog(String texto) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benckmark.log", true))) {
-            writer.write(texto);
-            writer.newLine();
-        } catch (IOException e) {
-            System.err.println("Error al escribir en el archivo: " + e.getMessage());
-        }
-    }
-
-}
+        }*/
