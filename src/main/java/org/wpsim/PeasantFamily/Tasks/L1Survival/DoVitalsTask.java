@@ -18,18 +18,15 @@ import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.Control.Data.ControlCurrentDate;
-import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 
 import static org.wpsim.Bank.Data.BankMessageType.ASK_CURRENT_TERM;
 
@@ -49,9 +46,8 @@ public class DoVitalsTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
-
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.setNewDay(false);
         believes.useTime(TimeConsumedBy.DoVitalsTask);
 
@@ -61,10 +57,10 @@ public class DoVitalsTask extends wpsTask {
             believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "STARVING", "FOOD"));
         }
 
-        // Check for loans
         // Check debts
         checkBankDebt(believes);
         believes.getPeasantProfile().discountDailyMoney();
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
     /**

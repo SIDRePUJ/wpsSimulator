@@ -43,6 +43,7 @@ public class ObtainPesticidesTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());

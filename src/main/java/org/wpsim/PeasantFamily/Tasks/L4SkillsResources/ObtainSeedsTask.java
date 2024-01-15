@@ -43,6 +43,7 @@ public class ObtainSeedsTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());

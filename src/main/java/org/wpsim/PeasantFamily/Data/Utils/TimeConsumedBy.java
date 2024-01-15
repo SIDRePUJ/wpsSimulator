@@ -20,6 +20,7 @@ package org.wpsim.PeasantFamily.Data.Utils;
  */
 public enum TimeConsumedBy {
 
+    Void(1),
     LookForLoanTask(4),
     SelfEvaluationTask(2),
     SearchForHelpAndNecessityTask(6),

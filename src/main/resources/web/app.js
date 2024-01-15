@@ -85,7 +85,7 @@ function updateAgent(jsonData) {
         const differenceInTime =
             buttonDateObj.getTime() - currentDateObj.getTime();
         const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-        if (differenceInDays < -7) {
+        if (differenceInDays < -30) {
             unSynchronized = " 🚫";
         } else {
             unSynchronized = "";
@@ -277,7 +277,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 async function loadData() {
     try {
-        let response = await fetch("data/world.json");
+        let response = await fetch("data/mediumworld.json");
         let data = await response.text();
         let worldData = JSON.parse(data);
         worldData.forEach(function (fincaData, index) {

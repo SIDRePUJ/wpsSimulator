@@ -44,7 +44,7 @@ public class SocietyAgentRequestHelpGuard extends GuardBESA  {
             String agentHelper = state.getPeasantFamilyFromStack(); // Agente que ayuda
             String agentContractor = societyDataMessage.getPeasantFamilyContractor(); // Agente que pidió ayuda
 
-            System.out.println("Buscando ayuda el agente " + agentContractor);
+            //System.out.println("Buscando ayuda el agente " + agentContractor);
 
             if (agentHelper == null) {
                 return;
@@ -53,7 +53,7 @@ public class SocietyAgentRequestHelpGuard extends GuardBESA  {
             }
 
             //wpsReport.info("enviando ayuda " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyAgent(), this.getAgent().getAlias());
-            System.out.println("enviando contrato como ayudante a " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyContractor());
+            //System.out.println("enviando contrato como ayudante a " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyContractor());
             AdmBESA.getInstance().getHandlerByAlias(
                     agentHelper
             ).sendEvent(
@@ -65,7 +65,7 @@ public class SocietyAgentRequestHelpGuard extends GuardBESA  {
                             ))
             );
             //wpsReport.info("enviando contrato " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyAgent(), this.getAgent().getAlias());
-            System.out.println("enviando contrato como contratista a " + agentContractor);
+            //System.out.println("enviando contrato como contratista a " + agentContractor);
             AdmBESA.getInstance().getHandlerByAlias(
                     agentContractor
             ).sendEvent(

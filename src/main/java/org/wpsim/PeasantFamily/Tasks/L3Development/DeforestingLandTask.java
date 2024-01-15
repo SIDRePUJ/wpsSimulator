@@ -38,6 +38,7 @@ public class DeforestingLandTask extends wpsLandTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         updateConfig(believes, 120); // Paso 1: Configurar el tiempo de deforestación
         believes.addTaskToLog(believes.getInternalCurrentDate());

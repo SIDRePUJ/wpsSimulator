@@ -43,7 +43,7 @@ public class ObtainWaterTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
-
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         wpsReport.info("🚰🚰🚰 Comprando Agua", believes.getPeasantProfile().getPeasantFamilyAlias());

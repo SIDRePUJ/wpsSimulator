@@ -39,6 +39,7 @@ public class LookForCollaborationTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.LookForCollaborationTask);

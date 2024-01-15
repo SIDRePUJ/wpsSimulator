@@ -33,6 +33,7 @@ public class ProcessProductsTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         // @TODO: Cambiar a la venta real con el agente social market

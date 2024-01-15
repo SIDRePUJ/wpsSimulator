@@ -36,6 +36,7 @@ public class PrepareLandTask extends wpsLandTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         updateConfig(believes, 56); // 56 horas para preparar una hectarea de cultivo
         believes.addTaskToLog(believes.getInternalCurrentDate());

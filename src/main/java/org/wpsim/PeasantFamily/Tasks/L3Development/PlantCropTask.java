@@ -58,16 +58,14 @@ public class PlantCropTask extends wpsLandTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         updateConfig(believes, 32);
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
-
         // Set world perturbation
         setPerturbation(wpsStart.config.getPerturbation());
-
         PeasantFamilyProfile profile = believes.getPeasantProfile();
         String rainfallConditions = profile.getRainfallConditions();
         String peasantAlias = profile.getPeasantFamilyAlias();
@@ -104,14 +102,12 @@ public class PlantCropTask extends wpsLandTask {
                         } catch (ExceptionBESA ex) {
                             wpsReport.error("Error renovando tierra " + currentLandInfo.getLandName(), peasantAlias);
                         }
-
                         // TODO: Estimar el costo de Semillas
                         profile.useSeeds(profile.getRiceSeedsByHectare());
                         currentLandInfo.setCurrentSeason(SeasonType.GROWING);
 
                     } else {
                         try {
-
                             WorldAgent landAgent = buildWorld(
                                     getRainfallFile(rainfallConditions),
                                     peasantAlias,

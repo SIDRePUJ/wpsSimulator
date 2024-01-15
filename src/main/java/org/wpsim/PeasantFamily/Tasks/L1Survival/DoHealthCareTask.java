@@ -16,6 +16,7 @@ package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import rational.mapping.Task;
 
@@ -23,7 +24,7 @@ import rational.mapping.Task;
  *
  * @author jairo
  */
-public class DoHealthCareTask extends Task {
+public class DoHealthCareTask extends wpsTask {
 
     /**
      *
@@ -37,6 +38,7 @@ public class DoHealthCareTask extends Task {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.DoHealthCareTask);

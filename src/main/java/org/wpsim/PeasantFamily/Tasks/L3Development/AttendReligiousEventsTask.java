@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import BESA.Emotional.EmotionalEvent;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
@@ -37,10 +38,12 @@ public class AttendReligiousEventsTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
-        // @TODO: MEJORAR SUS EMOCIONES
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "SPIRITUALHEALTH", "TIME"));
+        believes.processEmotionalEvent(new EmotionalEvent("FRIEND", "SPIRITUALHEALTH", "TIME"));
     }
 
 }

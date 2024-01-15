@@ -575,7 +575,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         finalDataObject.put("name", peasantProfile.getPeasantFamilyAlias());
         finalDataObject.put("state", dataObject.toString());
 
-        //finalDataObject.put("taskLog", getOrderedTasksByDateJson());
+        finalDataObject.put("taskLog", getOrderedTasksByDateJson());
 
         return finalDataObject.toString();
     }
@@ -661,5 +661,66 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.peasantFamilyHelper = peasantFamilyHelper;
     }
 
+    public String getAlias() {
+        return peasantProfile.getPeasantFamilyAlias();
+    }
+
+    public String toJsonSimple() {
+        JSONObject dataObject = new JSONObject();
+        dataObject.put("money", peasantProfile.getMoney());
+        dataObject.put("initialMoney", peasantProfile.getInitialMoney());
+        dataObject.put("health", peasantProfile.getHealth());
+        dataObject.put("initialHealth", peasantProfile.getInitialHealth());
+        dataObject.put("timeLeftOnDay", timeLeftOnDay);
+        dataObject.put("newDay", newDay);
+        dataObject.put("currentSeason", currentSeason);
+        dataObject.put("robberyAccount", robberyAccount);
+        dataObject.put("purpose", peasantProfile.getPurpose());
+        dataObject.put("peasantFamilyAffinity", peasantProfile.getPeasantFamilyAffinity());
+        dataObject.put("peasantLeisureAffinity", peasantProfile.getPeasantLeisureAffinity());
+        dataObject.put("peasantFriendsAffinity", peasantProfile.getPeasantFriendsAffinity());
+        dataObject.put("currentPeasantLeisureType", currentPeasantLeisureType);
+        dataObject.put("currentResourceNeededType", currentResourceNeededType);
+        dataObject.put("currentDay", currentDay);
+        dataObject.put("internalCurrentDate", internalCurrentDate);
+        dataObject.put("toPay", toPay);
+        dataObject.put("peasantKind", peasantProfile.getPeasantKind());
+        dataObject.put("rainfallConditions", peasantProfile.getRainfallConditions());
+        dataObject.put("peasantFamilyMinimalVital", peasantProfile.getPeasantFamilyMinimalVital());
+        dataObject.put("peasantFamilyLandAlias", peasantProfile.getPeasantFamilyLandAlias());
+        dataObject.put("currentActivity", currentPeasantActivityType);
+        dataObject.put("farm", peasantProfile.getFarmName());
+        dataObject.put("cropSize", peasantProfile.getCropSize());
+        dataObject.put("loanAmountToPay", peasantProfile.getLoanAmountToPay());
+        dataObject.put("tools", peasantProfile.getTools());
+        dataObject.put("seeds", peasantProfile.getSeeds());
+        dataObject.put("waterAvailable", peasantProfile.getWaterAvailable());
+        dataObject.put("pesticidesAvailable", peasantProfile.getPesticidesAvailable());
+        dataObject.put("totalHarvestedWeight", peasantProfile.getTotalHarvestedWeight());
+        dataObject.put("contractor", getContractor());
+        dataObject.put("daysToWorkForOther", getDaysToWorkForOther());
+        dataObject.put("peasantFamilyHelper", getPeasantFamilyHelper());
+
+        if (!getAssignedLands().isEmpty()) {
+            dataObject.put("assignedLands", getAssignedLands());
+        } else {
+            dataObject.put("assignedLands", Collections.emptyList());
+        }
+
+        try {
+            List<EmotionAxis> emotions = this.getEmotionsListCopy();
+            emotions.forEach(emotion -> {
+                dataObject.put(emotion.toString(), emotion.getCurrentValue());
+            });
+        } catch (Exception e) {
+            dataObject.put("emotions", 0);
+        }
+
+        JSONObject finalDataObject = new JSONObject();
+        finalDataObject.put("name", peasantProfile.getPeasantFamilyAlias());
+        finalDataObject.put("state", dataObject.toString());
+
+        return finalDataObject.toString();
+    }
 }
 

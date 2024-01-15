@@ -35,6 +35,7 @@ import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.Viewer.wpsViewerAgent;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -46,12 +47,15 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 200;
+    public static int stepTime = 100;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
-    public final static int DAYS_TO_CHECK = 6;
-    public final static int DEFAULT_AGENTS_TO_TEST = 10;
+    public final static int DAYS_TO_CHECK = 60;
+    public final static int DEFAULT_AGENTS_TO_TEST = 75;
+    public static int CREATED_AGENTS = 0;
     public final static boolean EMOTIONS = true;
+    public static final String ENDDATE = "01/01/2023";
+    public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
     static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 
@@ -80,26 +84,26 @@ public class wpsStart {
             switch (args[0]) {
                 case "main" -> createServices();
                 case "peasants_01" -> {
-                    createPeasants(0,100);
+                    createPeasants(0, 100);
                     startAgents();
                 }
                 case "peasants_02" -> {
-                    createPeasants(101,200);
+                    createPeasants(101, 200);
                     startAgents();
                 }
                 case "peasants_03" -> {
-                    createPeasants(201,300);
+                    createPeasants(201, 300);
                     startAgents();
                 }
                 case "local" -> {
                     // Single mode
                     createServices();
-                    createPeasants(0, peasantFamiliesAgents);
+                    createPeasants(1, peasantFamiliesAgents);
                 }
                 case "single" -> {
                     // Single benchmark mode
                     createServices();
-                    createPeasants(0, peasantFamiliesAgents);
+                    createPeasants(1, peasantFamiliesAgents);
                     startAgents();
                 }
                 default -> System.out.println("No se reconoce el nombre del contendor BESA " + args[0]);
@@ -108,6 +112,20 @@ public class wpsStart {
             System.out.println("No hay contenedores válidos: local <cantidad>");
             System.exit(0);
         }
+        showRunningAgents();
+    }
+
+    private static void showRunningAgents() {
+        Enumeration idList = AdmBESA.getInstance().getIdList();
+        while (idList.hasMoreElements()) {
+            String id = (String) idList.nextElement();
+            CREATED_AGENTS++;
+            try {
+                System.out.println("ID: " + id + " Alias " + AdmBESA.getInstance().getHandlerByAid(id).getAlias());
+            } catch (ExceptionBESA e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**
@@ -115,7 +133,7 @@ public class wpsStart {
      */
     private static void createPeasants(int min, int max) {
         try {
-            for (int i = min; i < max; i++) {
+            for (int i = min; i <= max; i++) {
                 PeasantFamilyBDIAgent peasantFamilyBDIAgent = new PeasantFamilyBDIAgent(
                         config.getUniqueFarmerName(),
                         config.getFarmerProfile()
@@ -226,7 +244,6 @@ public class wpsStart {
         } catch (InterruptedException e) {
             wpsReport.error(e.getMessage(), "wpsStart");
         }
-
     }
 
     /**

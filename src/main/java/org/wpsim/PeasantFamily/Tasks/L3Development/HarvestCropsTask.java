@@ -42,6 +42,7 @@ public class HarvestCropsTask extends wpsLandTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         updateConfig(believes, 56);
         believes.addTaskToLog(believes.getInternalCurrentDate());

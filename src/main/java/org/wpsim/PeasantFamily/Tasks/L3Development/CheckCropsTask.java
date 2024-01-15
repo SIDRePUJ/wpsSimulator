@@ -45,8 +45,8 @@ public class CheckCropsTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
+        this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.CheckCropsTask);
 
         //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CHECKCROPS", "FOOD"));
@@ -71,6 +71,7 @@ public class CheckCropsTask extends wpsTask {
                                 )
                         );
                         wpsReport.warn("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                        //System.out.println(believes.getAlias() + " enviado CROP_INFORMATION a " + currentLandInfo.getLandName());
                     } else {
                         AdmBESA.getInstance().getHandlerByAlias(
                                 currentLandInfo.getLandName()
@@ -85,13 +86,20 @@ public class CheckCropsTask extends wpsTask {
                                         )
                                 )
                         );
+                        //System.out.println(believes.getAlias() + " enviado CROP_OBSERVE a " + currentLandInfo.getLandName());
                         wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
                     }
+//                    try {
+//                        Thread.sleep(500);
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                 }
             }
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }
