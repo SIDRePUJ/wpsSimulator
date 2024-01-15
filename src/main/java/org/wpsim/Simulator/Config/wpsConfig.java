@@ -221,7 +221,7 @@ public final class wpsConfig {
         String yamlContent;
         Gson gson = new Gson();
 
-        yamlContent = loadFile("defaultPeasantFamilyProfile.yml");
+        yamlContent = loadFile("PeasantFamilyProfile.yml");
         data = (Map<String, Object>) load.loadFromString(yamlContent);
         Map<String, Object> regularPeasant = (Map<String, Object>) data.get("StablePeasant");
         jsonData = gson.toJson(regularPeasant);
@@ -231,9 +231,9 @@ public final class wpsConfig {
     public List<String> getFuzzyRulesList(String mode){
         String rawFile = null;
         if (mode.equals("Single")) {
-            rawFile = loadFile("EmotionalRules.txt");
+            rawFile = loadFile("fuzzyRules/EmotionalRules.txt");
         }else{
-            rawFile = loadFile("EmotionalRulesFull.txt");
+            rawFile = loadFile("fuzzyRules/EmotionalRulesFull.txt");
         }
         assert rawFile != null;
         return Arrays.asList(rawFile.split("\n"));

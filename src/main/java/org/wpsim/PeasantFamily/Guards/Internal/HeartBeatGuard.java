@@ -17,7 +17,6 @@ package org.wpsim.PeasantFamily.Guards.Internal;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
-import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Log.ReportBESA;
@@ -64,6 +63,10 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (checkFinish(believes)) return;
         // Update the internal current date
         UpdateControlDate(believes);
+        // Report agent mental status
+        if (believes.isNewDay()) {
+            wpsStart.logData(believes.toCSV());
+        }
         // Report the agent's beliefs to the wpsViewer
         wpsReport.ws(believes.toJson(), believes.getAlias());
         // Wait time for the next execution
@@ -136,17 +139,10 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
 
     private boolean checkFinish(PeasantFamilyBDIAgentBelieves believes) {
         if (believes.getInternalCurrentDate().equals(wpsStart.ENDDATE)) {
-            writeBenchmarkLog(believes.toJsonSimple());
+            //writeBenchmarkLog(believes.toCSV());
             this.stopPeriodicCall();
             this.agent.shutdownAgent();
-
-            Timer timer = new Timer();
-            TimerTask task = new TimerTask() {
-                public void run() {
-                    wpsStart.stopSimulation();
-                }
-            };
-            timer.schedule(task, 120000);
+            wpsStart.stopSimulation();
             return true;
         }
         return false;
@@ -154,7 +150,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
 
     private boolean checkDead(PeasantFamilyBDIAgentBelieves believes) {
         if (believes.getPeasantProfile().getHealth() <= 0) {
-            writeBenchmarkLog(believes.toJsonSimple());
+            //writeBenchmarkLog(believes.toCSV());
             this.stopPeriodicCall();
             this.agent.shutdownAgent();
             return true;
@@ -162,8 +158,8 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         return false;
     }
 
-    public synchronized void writeBenchmarkLog(String texto) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benckmark.log", true))) {
+    public synchronized void writeBenchmarkLogNo(String texto) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benckmark.csv", true))) {
             writer.write(texto);
             writer.newLine();
         } catch (IOException e) {

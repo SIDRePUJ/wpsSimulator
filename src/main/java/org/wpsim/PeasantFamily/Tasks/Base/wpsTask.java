@@ -21,7 +21,6 @@ public class wpsTask extends Task {
 
     @Override
     public void executeTask(Believes believes) {
-
     }
 
     @Override

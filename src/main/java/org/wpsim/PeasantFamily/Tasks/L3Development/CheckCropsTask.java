@@ -48,11 +48,7 @@ public class CheckCropsTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.useTime(TimeConsumedBy.CheckCropsTask);
-
-        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CHECKCROPS", "FOOD"));
-
-        // @TODO: No enviar si no ha regresado todavía el anterior
-
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CHECKCROPS", "FOOD"));
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
                 try {
@@ -89,11 +85,6 @@ public class CheckCropsTask extends wpsTask {
                         //System.out.println(believes.getAlias() + " enviado CROP_OBSERVE a " + currentLandInfo.getLandName());
                         wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
                     }
-//                    try {
-//                        Thread.sleep(500);
-//                    } catch (InterruptedException e) {
-//                        throw new RuntimeException(e);
-//                    }
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                 }

@@ -14,6 +14,7 @@
  */
 package org.wpsim.Simulator;
 
+import BESA.Emotional.EmotionAxis;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
@@ -34,9 +35,13 @@ import org.wpsim.Society.SocietyAgent;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.Viewer.wpsViewerAgent;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
@@ -51,38 +56,62 @@ public class wpsStart {
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 60;
-    public final static int DEFAULT_AGENTS_TO_TEST = 75;
+    public final static int DEFAULT_AGENTS_TO_TEST = 20;
     public static int CREATED_AGENTS = 0;
-    public final static boolean EMOTIONS = true;
+    public static boolean EMOTIONS = true;
     public static final String ENDDATE = "01/01/2023";
+    public static final boolean WEBUI = true;
+    public static Boolean LOG_HEADER = true;
     public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
+    private static ConcurrentLinkedQueue<String> dataQueue = new ConcurrentLinkedQueue<>();
     static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 
     /**
      * The main method to start the simulation.
-     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-        printHeader();
-        try {
-            peasantFamiliesAgents = Integer.parseInt(args[1]);
-        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-            peasantFamiliesAgents = DEFAULT_AGENTS_TO_TEST;
-        }
-        // Set init date of simulation
+        // Start the Manual Logger for simulation
+        logHeaderData();
+        // Set initial config of simulation
         config = wpsConfig.getInstance();
-        ControlCurrentDate.getInstance().setCurrentDate(config.getStartSimulationDate());
+        // Set initial date of simulation
+        ControlCurrentDate.getInstance().setCurrentDate(
+                config.getStartSimulationDate()
+        );
+        // Print header for simulation
+        printHeader();
+        // Set arguments to config
+        setArgumentsConfig(args);
+        //showRunningAgents();
+    }
+
+    private static void setArgumentsConfig(String[] args) {
         AdmBESA admLocal = null;
         if (args.length > 0) {
+            // Agents to run simulation
+            try {
+                peasantFamiliesAgents = Integer.parseInt(args[1]);
+                // No emotions simulation
+                if (args[2].equals("noemotions")) {
+                    EMOTIONS = false;
+                    System.out.println("Emotional simulation disabled");
+                } else {
+                    System.out.println("Emotional simulation enabled");
+                }
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                peasantFamiliesAgents = DEFAULT_AGENTS_TO_TEST;
+            }
             // Cluster mode
-            System.out.println("Iniciando modo cluster");
             admLocal = AdmBESA.getInstance("server_" + args[0] + ".xml");
-            System.out.println("centralizado " + admLocal.getConfigBESA().getAliasContainer());
+            System.out.println("Centralized " + admLocal.getConfigBESA().getAliasContainer());
+            System.out.println("Starting in " + args[0] + " mode");
+            System.out.println("Simulating " + peasantFamiliesAgents + " agents");
             switch (args[0]) {
-                case "main" -> createServices();
+                case "main" -> {
+                    createServices();
+                }
                 case "peasants_01" -> {
                     createPeasants(0, 100);
                     startAgents();
@@ -112,7 +141,6 @@ public class wpsStart {
             System.out.println("No hay contenedores válidos: local <cantidad>");
             System.exit(0);
         }
-        showRunningAgents();
     }
 
     private static void showRunningAgents() {
@@ -227,10 +255,11 @@ public class wpsStart {
     public static void stopSimulation() {
         getStatus();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        writeDataToFile();
         wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
         System.exit(0);
 
@@ -290,5 +319,32 @@ public class wpsStart {
 
     public static long getTime() {
         return System.currentTimeMillis() - startTime;
+    }
+    public static void logData(String data) {
+        dataQueue.add(data);
+    }
+    public static void logHeaderData() {
+        StringBuilder csvData = new StringBuilder();
+        if (wpsStart.LOG_HEADER) {
+            // Agregar nombres de las columnas (opcional)
+            csvData.append("money,health,timeLeftOnDay,newDay,currentSeason,robberyAccount,purpose,")
+                    .append("peasantFamilyAffinity,peasantLeisureAffinity,peasantFriendsAffinity,currentPeasantLeisureType,")
+                    .append("currentResourceNeededType,currentDay,internalCurrentDate,toPay,peasantKind,rainfallConditions,")
+                    .append("peasantFamilyMinimalVital,peasantFamilyLandAlias,currentActivity,farm,loanAmountToPay,")
+                    .append("tools,seeds,waterAvailable,pesticidesAvailable,totalHarvestedWeight,contractor,daysToWorkForOther,")
+                    .append("Agent,Emotion,peasantFamilyHelper,Happiness/Sadness,Hopeful/Uncertainty,Secure/Insecure");
+            wpsStart.LOG_HEADER = false;
+        }
+        logData(csvData.toString());
+    }
+    public static void writeDataToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benchmark.csv", true))) {
+            while (!dataQueue.isEmpty()) {
+                writer.write(dataQueue.poll());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("Error al escribir en el archivo: " + e.getMessage());
+        }
     }
 }
