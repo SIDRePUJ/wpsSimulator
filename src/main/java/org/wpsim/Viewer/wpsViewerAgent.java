@@ -43,8 +43,7 @@ public class wpsViewerAgent extends AgentBESA {
     }
 
     public static wpsViewerAgent createAgent(String alias, double passwd) throws ExceptionBESA{        
-        wpsViewerAgent viewerAgent = new wpsViewerAgent(alias, createState(), createStruct(new StructBESA()), passwd);
-        return viewerAgent;
+        return new wpsViewerAgent(alias, createState(), createStruct(new StructBESA()), passwd);
     }
     
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
@@ -54,8 +53,7 @@ public class wpsViewerAgent extends AgentBESA {
     }
     
     private static wpsViewerAgentState createState() throws ExceptionBESA {
-        wpsViewerAgentState marketAgentState = new wpsViewerAgentState();
-        return marketAgentState;
+        return new wpsViewerAgentState();
     }
     
     /**

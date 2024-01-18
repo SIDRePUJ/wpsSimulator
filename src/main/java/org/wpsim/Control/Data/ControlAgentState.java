@@ -24,6 +24,9 @@ import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Server.WebsocketServer;
 import org.wpsim.Viewer.Data.wpsReport;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.*;
@@ -31,7 +34,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ControlAgentState extends StateBESA implements Serializable {
-
     private AtomicInteger activeAgentsCount = new AtomicInteger(0);
     private AtomicBoolean unblocking = new AtomicBoolean(false);
     private ConcurrentMap<String, Boolean> agentMap = new ConcurrentHashMap<>();
@@ -50,6 +52,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
     public ConcurrentMap<String, Boolean> getDeadAgentMap() {
         return deadAgentMap;
     }
+
 
     public synchronized boolean allAgentsAlive() {
 

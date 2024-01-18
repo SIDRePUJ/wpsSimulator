@@ -27,12 +27,12 @@ public class wpsReport {
 
     }
 
-    public static void trace(Object message, String alias) {
+    public static void mental_close(Object message, String alias) {
         try {
             AdmBESA adm = AdmBESA.getInstance();
             wpsViewerMessage viewerMessage = new wpsViewerMessage(
                     formatMessage(message),
-                    "TRACE",
+                    "MENTAL_CLOSE",
                     alias
             );
             EventBESA eventBesa = new EventBESA(
@@ -43,6 +43,40 @@ public class wpsReport {
                     wpsStart.config.getViewerAgentName()
             );
             agHandler.sendEvent(eventBesa);
+        } catch (ExceptionBESA e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void mental(Object message, String alias) {
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getViewerAgentName()
+            ).sendEvent(new EventBESA(
+                    wpsViewerAgentGuard.class.getName(),
+                    new wpsViewerMessage(
+                            message.toString(),
+                            "MENTAL",
+                            alias
+                    )
+            ));
+        } catch (ExceptionBESA e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void trace(Object message, String alias) {
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getViewerAgentName()
+            ).sendEvent(new EventBESA(
+                    wpsViewerAgentGuard.class.getName(),
+                    new wpsViewerMessage(
+                            formatMessage(message),
+                            "TRACE",
+                            alias
+                    )
+            ));
         } catch (ExceptionBESA e) {
             throw new RuntimeException(e);
         }
@@ -50,20 +84,16 @@ public class wpsReport {
 
     public static void debug(Object message, String alias) {
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            wpsViewerMessage viewerMessage = new wpsViewerMessage(
-                    formatMessage(message),
-                    "DEBUG",
-                    alias
-            );
-            EventBESA eventBesa = new EventBESA(
-                    wpsViewerAgentGuard.class.getName(),
-                    viewerMessage
-            );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
+            ).sendEvent(new EventBESA(
+                    wpsViewerAgentGuard.class.getName(),
+                    new wpsViewerMessage(
+                            formatMessage(message),
+                            "DEBUG",
+                            alias
+                    )
+            ));
         } catch (ExceptionBESA e) {
             throw new RuntimeException(e);
         }
@@ -71,20 +101,16 @@ public class wpsReport {
 
     public static void info(Object message, String alias) {
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            wpsViewerMessage viewerMessage = new wpsViewerMessage(
-                    formatMessage(message),
-                    "INFO",
-                    alias
-            );
-            EventBESA eventBesa = new EventBESA(
-                    wpsViewerAgentGuard.class.getName(),
-                    viewerMessage
-            );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
+            ).sendEvent(new EventBESA(
+                    wpsViewerAgentGuard.class.getName(),
+                    new wpsViewerMessage(
+                            formatMessage(message),
+                            "INFO",
+                            alias
+                    )
+            ));
         } catch (ExceptionBESA e) {
             throw new RuntimeException(e);
         }
@@ -92,20 +118,16 @@ public class wpsReport {
 
     public static void warn(Object message, String alias) {
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            wpsViewerMessage viewerMessage = new wpsViewerMessage(
-                    formatMessage(message),
-                    "WARN",
-                    alias
-            );
-            EventBESA eventBesa = new EventBESA(
-                    wpsViewerAgentGuard.class.getName(),
-                    viewerMessage
-            );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
+            ).sendEvent(new EventBESA(
+                    wpsViewerAgentGuard.class.getName(),
+                    new wpsViewerMessage(
+                            formatMessage(message),
+                            "WARN",
+                            alias
+                    )
+            ));
         } catch (ExceptionBESA e) {
             throw new RuntimeException(e);
         }
@@ -113,40 +135,33 @@ public class wpsReport {
 
     public static void error(Object message, String alias) {
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            wpsViewerMessage viewerMessage = new wpsViewerMessage(
-                    formatMessage(message),
-                    "ERROR",
-                    alias
-            );
-            EventBESA eventBesa = new EventBESA(
-                    wpsViewerAgentGuard.class.getName(),
-                    viewerMessage
-            );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
+            ).sendEvent(new EventBESA(
+                    wpsViewerAgentGuard.class.getName(),
+                    new wpsViewerMessage(
+                            formatMessage(message),
+                            "ERROR",
+                            alias
+                    )
+            ));
         } catch (ExceptionBESA e) {
             throw new RuntimeException(e);
         }
     }
+
     public static void ws(Object message, String alias) {
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            wpsViewerMessage viewerMessage = new wpsViewerMessage(
-                    message.toString(),
-                    "WS",
-                    alias
-            );
-            EventBESA eventBesa = new EventBESA(
-                    wpsViewerAgentGuard.class.getName(),
-                    viewerMessage
-            );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
+            ).sendEvent(new EventBESA(
+                    wpsViewerAgentGuard.class.getName(),
+                    new wpsViewerMessage(
+                            message.toString(),
+                            "WS",
+                            alias
+                    )
+            ));
         } catch (ExceptionBESA e) {
             throw new RuntimeException(e);
         }

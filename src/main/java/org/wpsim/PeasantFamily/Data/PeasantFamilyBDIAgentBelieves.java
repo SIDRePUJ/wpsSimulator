@@ -22,6 +22,7 @@ import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.*;
 import org.wpsim.PeasantFamily.Emotions.EmotionalComponent;
 import org.wpsim.Simulator.wpsStart;
+import org.wpsim.Viewer.Data.wpsReport;
 import rational.data.InfoData;
 import rational.mapping.Believes;
 
@@ -354,6 +355,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.timeLeftOnDay = 24;
         this.newDay = true;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
+        wpsReport.mental(this.toCSV(), this.getAlias());
     }
 
     /**
@@ -363,6 +365,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.currentDay++;
         this.timeLeftOnDay = 24;
         this.newDay = true;
+        wpsReport.mental(this.toCSV(), this.getAlias());
     }
 
     /**

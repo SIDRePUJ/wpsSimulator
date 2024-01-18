@@ -61,10 +61,8 @@ public class wpsStart {
     public static boolean EMOTIONS = true;
     public static final String ENDDATE = "01/01/2023";
     public static final boolean WEBUI = true;
-    public static Boolean LOG_HEADER = true;
     public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
-    private static ConcurrentLinkedQueue<String> dataQueue = new ConcurrentLinkedQueue<>();
     static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 
     /**
@@ -72,8 +70,6 @@ public class wpsStart {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Start the Manual Logger for simulation
-        logHeaderData();
         // Set initial config of simulation
         config = wpsConfig.getInstance();
         // Set initial date of simulation
@@ -226,7 +222,6 @@ public class wpsStart {
      * @throws ExceptionBESA if there is an exception while starting the agents
      */
     private static void startPFAgents(List<PeasantFamilyBDIAgent> peasantFamilies) throws ExceptionBESA {
-
         try {
             // Starting families agents
             for (PeasantFamilyBDIAgent peasantFamily : peasantFamilies) {
@@ -243,24 +238,21 @@ public class wpsStart {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "wpsStart");
         }
-
     }
 
     /**
      * Stops the simulation after a specified time.
-     *
-     * @throws ExceptionBESA if there is an exception while stopping the agents
      */
     @SuppressWarnings("rawtypes")
     public static void stopSimulation() {
         getStatus();
         try {
-            Thread.sleep(5000);
+            Thread.sleep(60000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        writeDataToFile();
         wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
+        wpsReport.mental_close("Simulation finished", "wpsStart");
         System.exit(0);
 
     }
@@ -320,31 +312,5 @@ public class wpsStart {
     public static long getTime() {
         return System.currentTimeMillis() - startTime;
     }
-    public static void logData(String data) {
-        dataQueue.add(data);
-    }
-    public static void logHeaderData() {
-        StringBuilder csvData = new StringBuilder();
-        if (wpsStart.LOG_HEADER) {
-            // Agregar nombres de las columnas (opcional)
-            csvData.append("money,health,timeLeftOnDay,newDay,currentSeason,robberyAccount,purpose,")
-                    .append("peasantFamilyAffinity,peasantLeisureAffinity,peasantFriendsAffinity,currentPeasantLeisureType,")
-                    .append("currentResourceNeededType,currentDay,internalCurrentDate,toPay,peasantKind,rainfallConditions,")
-                    .append("peasantFamilyMinimalVital,peasantFamilyLandAlias,currentActivity,farm,loanAmountToPay,")
-                    .append("tools,seeds,waterAvailable,pesticidesAvailable,totalHarvestedWeight,contractor,daysToWorkForOther,")
-                    .append("Agent,Emotion,peasantFamilyHelper,Happiness/Sadness,Hopeful/Uncertainty,Secure/Insecure");
-            wpsStart.LOG_HEADER = false;
-        }
-        logData(csvData.toString());
-    }
-    public static void writeDataToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benchmark.csv", true))) {
-            while (!dataQueue.isEmpty()) {
-                writer.write(dataQueue.poll());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.err.println("Error al escribir en el archivo: " + e.getMessage());
-        }
-    }
+
 }

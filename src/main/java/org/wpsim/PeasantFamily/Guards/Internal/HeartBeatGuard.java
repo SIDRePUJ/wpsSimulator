@@ -30,6 +30,7 @@ import org.wpsim.PeasantFamily.Guards.FromControl.ToControlMessage;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.guards.InformationFlowGuard;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -63,10 +64,6 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (checkFinish(believes)) return;
         // Update the internal current date
         UpdateControlDate(believes);
-        // Report agent mental status
-        if (believes.isNewDay()) {
-            wpsStart.logData(believes.toCSV());
-        }
         // Report the agent's beliefs to the wpsViewer
         wpsReport.ws(believes.toJson(), believes.getAlias());
         // Wait time for the next execution

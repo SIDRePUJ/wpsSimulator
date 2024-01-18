@@ -9,27 +9,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="versión 0.2 Completa.&#10;Menos bloqueos, simulador acelerado con el manejo más eficiente de las tareas.">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/ControlAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/ControlAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlAgentState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/Base/wpsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/Base/wpsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/CheckCropsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/CheckCropsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/EmotionalRules.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fuzzyRules/EmotionalRules.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/EmotionalRulesFull.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fuzzyRules/EmotionalRulesFull.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/TestingFullReview.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/TestingFullReview.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/TestingReview.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/TestingReview.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Data/wpsReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Data/wpsReport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Guards/wpsViewerAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Guards/wpsViewerAgentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/wpsViewerAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/wpsViewerAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/benckmark-full.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/benckmark-full.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/benckmark-fullem.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/benckmark-fullem.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/defaultPeasantFamilyProfile.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/estado_agentes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/estado_agentes.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fromLogtoCSV.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/fromLogtoCSV.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/no.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/no.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/si.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/si.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/test01.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/test01.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/web/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/app.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +73,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/home/jairo/IdeaProjects/wpsSimulator/src/main/resources&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -271,6 +267,8 @@
       <workItem from="1703868024990" duration="1218000" />
       <workItem from="1704213310700" duration="35913000" />
       <workItem from="1704646164699" duration="49688000" />
+      <workItem from="1705499919918" duration="605000" />
+      <workItem from="1705586375958" duration="7265000" />
     </task>
     <task id="LOCAL-00001" summary="Nueva versión">
       <option name="closed" value="true" />
@@ -520,7 +518,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705289161656</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo.">
+      <option name="closed" value="true" />
+      <created>1705358994236</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1705358994236</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -571,7 +577,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="- Actualización UI&#10;- Solucionado el avance del tiempo&#10;- Nuevas guardas funcionando" />
     <MESSAGE value="- Actualización UI&#10;- Cambio de estrategia contra bloqueos, liberado" />
     <MESSAGE value="Base del componente Emocional" />
     <MESSAGE value="Componente emocional configurado&#10;Incluidas gráficas en la UI" />
@@ -596,7 +601,8 @@
     <MESSAGE value="Evaluación de emociones general en todas las metas e inclusión de emociones en las tareas." />
     <MESSAGE value="Nuevo modo benckmark single." />
     <MESSAGE value="versión 0.2 Completa.&#10;Menos bloqueos, simulador acelerado con el manejo más eficiente de las tareas." />
-    <option name="LAST_COMMIT_MESSAGE" value="versión 0.2 Completa.&#10;Menos bloqueos, simulador acelerado con el manejo más eficiente de las tareas." />
+    <MESSAGE value="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo." />
+    <option name="LAST_COMMIT_MESSAGE" value="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

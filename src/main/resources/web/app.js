@@ -85,7 +85,7 @@ function updateAgent(jsonData) {
         const differenceInTime =
             buttonDateObj.getTime() - currentDateObj.getTime();
         const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-        if (differenceInDays < -30) {
+        if (differenceInDays < -15) {
             unSynchronized = " 🚫";
         } else {
             unSynchronized = "";

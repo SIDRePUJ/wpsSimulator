@@ -47,16 +47,17 @@ public class ControlAgent extends AgentBESA {
     }
     
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
-        structBESA.addBehavior("ControlGuards");
-        structBESA.bindGuard("ControlGuards", ControlAgentGuard.class);
-        structBESA.bindGuard("ControlGuards", AliveAgentGuard.class);
-        structBESA.bindGuard("ControlGuards", DeadAgentGuard.class);
+        structBESA.addBehavior("ControlAgentGuard");
+        structBESA.bindGuard("ControlAgentGuard", ControlAgentGuard.class);
+        structBESA.addBehavior("AliveAgentGuard");
+        structBESA.bindGuard("AliveAgentGuard", AliveAgentGuard.class);
+        structBESA.addBehavior("DeadAgentGuard");
+        structBESA.bindGuard("DeadAgentGuard", DeadAgentGuard.class);
         return structBESA;
     }
     
     private static ControlAgentState createState() throws ExceptionBESA {
-        ControlAgentState controlAgentState = new ControlAgentState();
-        return controlAgentState;
+        return new ControlAgentState();
     }
 
     /**
