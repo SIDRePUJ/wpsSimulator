@@ -338,7 +338,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
         } else if (this.health <= 0) {
             this.health = 0;
         } else {
-            this.health = this.health + 2;
+            this.health = this.health + 20;
         }
     }
 

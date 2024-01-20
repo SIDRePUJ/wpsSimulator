@@ -2,13 +2,12 @@
 <!DOCTYPE configuration>
 
 <configuration>
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="wpsReport" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/wpsSimulator.log</file>
         <append>false</append>
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>logs/wpsSimulator.%i.log.zip</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>3</maxIndex>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/wpsSimulator.%d{yyyy-MM-dd_HH-mm-ss}.log.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>5GB</maxFileSize>
@@ -18,16 +17,32 @@
         </encoder>
     </appender>
 
-    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
-        <appender-ref ref="FILE" />
-        <queueSize>5000</queueSize>
-        <discardingThreshold>0</discardingThreshold>
-        <includeCallerData>true</includeCallerData>
+    <appender name="wpsReportData" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/wpsSimulator.csv</file>
+        <append>false</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>logs/wpsSimulator.%i.csv.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>3</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>5GB</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>%msg%n</pattern>
+        </encoder>
     </appender>
 
-    <root level="ALL">
-        <appender-ref ref="ASYNC" />
+    <!-- Logger específico para capturar solo mensajes TRACE -->
+    <logger name="wpsReportData" level="TRACE" additivity="false">
+        <appender-ref ref="wpsReportData"/>
+    </logger>
+
+    <!-- Root logger captura DEBUG y niveles superiores y los envía a wpsReport -->
+    <root level="DEBUG">
+        <appender-ref ref="wpsReport" />
     </root>
+
     <logger name="io.undertow" level="OFF"/>
     <logger name="org.xnio" level="OFF"/>
 </configuration>

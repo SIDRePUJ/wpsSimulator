@@ -46,7 +46,7 @@ public class wpsGoalBDI extends GoalBDI {
     public double evaluateEmotionalContribution(StateBDI stateBDI, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
-        if (wpsStart.EMOTIONS) {
+        if (wpsStart.EMOTIONS && believes.isHaveEmotions()) {
             return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
         }else{
             return contribution;
@@ -64,7 +64,7 @@ public class wpsGoalBDI extends GoalBDI {
     public double evaluateSingleEmotionContribution(StateBDI stateBDI, String emotionToEvaluate, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Single");
-        if (wpsStart.EMOTIONS) {
+        if (wpsStart.EMOTIONS && believes.isHaveEmotions()) {
             return (evaluator.evaluateSingleEmotion(believes.getEmotionsListCopy(), emotionToEvaluate) + contribution) / 2;
         }else{
             return contribution;

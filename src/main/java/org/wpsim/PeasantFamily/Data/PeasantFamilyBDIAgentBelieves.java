@@ -16,6 +16,7 @@ package org.wpsim.PeasantFamily.Data;
 
 import BESA.Emotional.EmotionAxis;
 import org.json.JSONObject;
+import org.wpsim.Control.Data.Coin;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Control.Data.DateHelper;
 import org.wpsim.Government.Data.LandInfo;
@@ -59,15 +60,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private int daysToWorkForOther;
     private String peasantFamilyHelper;
     private String Contractor;
-
-    public boolean isAskedForContractor() {
-        return askedForContractor;
-    }
-
-    public void setAskedForContractor(boolean askedForContractor) {
-        this.askedForContractor = askedForContractor;
-    }
-
+    private boolean haveEmotions;
     private boolean askedForContractor;
 
     /**
@@ -95,6 +88,26 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
 
+        if (wpsStart.RANDOM_EMOTIONS){
+            this.setHaveEmotions(Coin.flipCoin());
+        }
+
+    }
+
+    public boolean isHaveEmotions() {
+        return haveEmotions;
+    }
+
+    public void setHaveEmotions(boolean haveEmotions) {
+        this.haveEmotions = haveEmotions;
+    }
+
+    public boolean isAskedForContractor() {
+        return askedForContractor;
+    }
+
+    public void setAskedForContractor(boolean askedForContractor) {
+        this.askedForContractor = askedForContractor;
     }
 
     public String getContractor() {
@@ -676,51 +689,61 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     public synchronized String toCSV() {
         StringBuilder csvData = new StringBuilder();
 
-        // Agregar los datos
-        csvData.append(peasantProfile.getMoney()).append(',')
-                .append(peasantProfile.getHealth()).append(',')
-                .append(timeLeftOnDay).append(',')
-                .append(newDay).append(',')
-                .append(currentSeason).append(',')
-                .append(robberyAccount).append(',')
-                .append(peasantProfile.getPurpose()).append(',')
-                .append(peasantProfile.getPeasantFamilyAffinity()).append(',')
-                .append(peasantProfile.getPeasantLeisureAffinity()).append(',')
-                .append(peasantProfile.getPeasantFriendsAffinity()).append(',')
-                .append(currentPeasantLeisureType).append(',')
-                .append(currentResourceNeededType).append(',')
-                .append(currentDay).append(',')
-                .append(internalCurrentDate).append(',')
-                .append(toPay).append(',')
-                .append(peasantProfile.getPeasantKind()).append(',')
-                .append(peasantProfile.getRainfallConditions()).append(',')
-                .append(peasantProfile.getPeasantFamilyMinimalVital()).append(',')
-                .append(peasantProfile.getPeasantFamilyLandAlias()).append(',')
-                .append(currentPeasantActivityType).append(',')
-                .append(peasantProfile.getFarmName()).append(',')
-                .append(peasantProfile.getLoanAmountToPay()).append(',')
-                .append(peasantProfile.getTools()).append(',')
-                .append(peasantProfile.getSeeds()).append(',')
-                .append(peasantProfile.getWaterAvailable()).append(',')
-                .append(peasantProfile.getPesticidesAvailable()).append(',')
-                .append(peasantProfile.getTotalHarvestedWeight()).append(',')
-                .append(getContractor()).append(',')
-                .append(getDaysToWorkForOther()).append(',')
-                .append(getAlias()).append(',')
-                .append(String.valueOf(wpsStart.EMOTIONS)).append(',')
-                .append(getPeasantFamilyHelper()).append(',');
-
         try {
             List<EmotionAxis> emotions = this.getEmotionsListCopy();
             emotions.forEach(emotion -> {
-                csvData.append(emotion.getCurrentValue()).append(',');
+                csvData.append(getOrDefault(emotion.getCurrentValue())).append(',');
             });
         } catch (Exception e) {
-            csvData.append(0);
+            //csvData.append("NONE").append(',');
         }
+
+        // Agregar los datos
+        csvData.append(getOrDefault(peasantProfile.getMoney())).append(',')
+                .append(getOrDefault(peasantProfile.getHealth())).append(',')
+                .append(getOrDefault(timeLeftOnDay)).append(',')
+                .append(getOrDefault(newDay)).append(',')
+                .append(getOrDefault(currentSeason)).append(',')
+                .append(getOrDefault(robberyAccount)).append(',')
+                .append(getOrDefault(peasantProfile.getPurpose())).append(',')
+                .append(getOrDefault(peasantProfile.getPeasantFamilyAffinity())).append(',')
+                .append(getOrDefault(peasantProfile.getPeasantLeisureAffinity())).append(',')
+                .append(getOrDefault(peasantProfile.getPeasantFriendsAffinity())).append(',')
+                .append(getOrDefault(currentPeasantLeisureType)).append(',')
+                .append(getOrDefault(currentResourceNeededType)).append(',')
+                .append(getOrDefault(currentDay)).append(',')
+                .append(getOrDefault(internalCurrentDate)).append(',')
+                .append(getOrDefault(toPay)).append(',')
+                .append(getOrDefault(peasantProfile.getPeasantKind())).append(',')
+                .append(getOrDefault(peasantProfile.getRainfallConditions())).append(',')
+                .append(getOrDefault(peasantProfile.getPeasantFamilyMinimalVital())).append(',')
+                .append(getOrDefault(peasantProfile.getPeasantFamilyLandAlias())).append(',')
+                .append(getOrDefault(currentPeasantActivityType)).append(',')
+                .append(getOrDefault(peasantProfile.getFarmName())).append(',')
+                .append(getOrDefault(peasantProfile.getLoanAmountToPay())).append(',')
+                .append(getOrDefault(peasantProfile.getTools())).append(',')
+                .append(getOrDefault(peasantProfile.getSeeds())).append(',')
+                .append(getOrDefault(peasantProfile.getWaterAvailable())).append(',')
+                .append(getOrDefault(peasantProfile.getPesticidesAvailable())).append(',')
+                .append(getOrDefault(peasantProfile.getTotalHarvestedWeight())).append(',')
+                .append(getOrDefault(getContractor())).append(',')
+                .append(getOrDefault(getDaysToWorkForOther())).append(',')
+                .append(getOrDefault(getAlias())).append(',')
+                .append(getOrDefault(wpsStart.EMOTIONS)).append(',')
+                .append(getOrDefault(getPeasantFamilyHelper())).append(',')
+                .append(getOrDefault(isHaveEmotions()));
+
         //csvData.append('\n');
-        // O simplemente retornar la cadena CSV
         return csvData.toString();
+    }
+    private String getOrDefault(Object value) {
+        if (value == null) {
+            return "NONE";
+        }else if (value == "")  {
+            return "NONE";
+        }else {
+            return value.toString();
+        }
     }
 }
 

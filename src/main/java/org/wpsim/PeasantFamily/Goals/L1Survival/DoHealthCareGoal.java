@@ -72,11 +72,12 @@ public class DoHealthCareGoal extends wpsGoalBDI {
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         //wpsReport.info("getHealthProgramsAvailability=" + believes.getProfile().getHealthProgramsAvailability());
-        if (believes.getPeasantProfile().getHealthProgramsAvailability() > 0) {
+        return 1;
+        /*if (believes.getPeasantProfile().getHealthProgramsAvailability() > 0) {
             return 1;
         } else {
             return 0;
-        }
+        }*/
     }
 
     /**
@@ -94,29 +95,11 @@ public class DoHealthCareGoal extends wpsGoalBDI {
         }
 
         //wpsReport.info("getHealth=" + believes.getProfile().getHealth());
-        if (believes.getPeasantProfile().getHealth() == 0) {
+        if (believes.getPeasantProfile().getHealth() < 40) {
             return 1;
         } else {
             return 0;
         }
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        /*if (believes.getProfile().haveTimeAvailable(TimeConsumedBy.DoHealthCare)) {
-            return 1;
-        } else {
-            return 0;
-        }*/
-        return 1;
     }
 
     /**
@@ -130,19 +113,4 @@ public class DoHealthCareGoal extends wpsGoalBDI {
         //wpsReport.info("");
         return 1;
     }
-
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info(stateBDI.getMachineBDIParams().getPyramidGoals());
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
-        return true;
-        //return believes.getProfile().getHealth() > 0;
-    }
-
 }

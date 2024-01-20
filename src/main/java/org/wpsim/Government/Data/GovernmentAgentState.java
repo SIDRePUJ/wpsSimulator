@@ -165,6 +165,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
     }
 
     public void createFarms() {
+        // @TODO: QUITAR FOREST
         List<String> availableLands = landOwnership.entrySet().stream()
                 .filter(e -> !e.getValue().getKind().equals("road") && e.getValue().getFarmName() == null)
                 .map(Map.Entry::getKey)
@@ -173,24 +174,24 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
         int farmId = 1;
 
         // Asignar fincas grandes
-        while (true) {
+        /*while (true) {
             List<String> farmLands = selectBlock(availableLands, 3, 4);
             if (farmLands.isEmpty()) {
                 break;
             }
             farms.put("farm_" + farmId + "_large", farmLands);
             farmId++;
-        }
+        }*/
 
         // Asignar fincas medianas
-        while (true) {
+        /*while (true) {
             List<String> farmLands = selectBlock(availableLands, 2, 2);
             if (farmLands.isEmpty()) {
                 break;
             }
             farms.put("farm_" + farmId + "_medium", farmLands);
             farmId++;
-        }
+        }*/
 
         // Asignar fincas pequeñas
         while (!availableLands.isEmpty()) {

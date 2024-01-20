@@ -27,27 +27,6 @@ public class wpsReport {
 
     }
 
-    public static void mental_close(Object message, String alias) {
-        try {
-            AdmBESA adm = AdmBESA.getInstance();
-            wpsViewerMessage viewerMessage = new wpsViewerMessage(
-                    formatMessage(message),
-                    "MENTAL_CLOSE",
-                    alias
-            );
-            EventBESA eventBesa = new EventBESA(
-                    wpsViewerAgentGuard.class.getName(),
-                    viewerMessage
-            );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
-                    wpsStart.config.getViewerAgentName()
-            );
-            agHandler.sendEvent(eventBesa);
-        } catch (ExceptionBESA e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public static void mental(Object message, String alias) {
         try {
             AdmBESA.getInstance().getHandlerByAlias(
@@ -72,7 +51,7 @@ public class wpsReport {
             ).sendEvent(new EventBESA(
                     wpsViewerAgentGuard.class.getName(),
                     new wpsViewerMessage(
-                            formatMessage(message),
+                            message.toString(),
                             "TRACE",
                             alias
                     )

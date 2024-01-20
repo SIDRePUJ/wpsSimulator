@@ -23,6 +23,7 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Util.PeriodicDataBESA;
 import org.wpsim.Bank.BankAgent;
 import org.wpsim.Control.ControlAgent;
+import org.wpsim.Control.Data.Coin;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Government.GovernmentAgent;
 import org.wpsim.Market.MarketAgent;
@@ -52,14 +53,15 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 100;
+    public static int stepTime = 50;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 60;
-    public final static int DEFAULT_AGENTS_TO_TEST = 20;
+    public final static int DEFAULT_AGENTS_TO_TEST = 8;
     public static int CREATED_AGENTS = 0;
     public static boolean EMOTIONS = true;
-    public static final String ENDDATE = "01/01/2023";
+    public static boolean RANDOM_EMOTIONS = true;
+    public static final String ENDDATE = "01/01/2028";
     public static final boolean WEBUI = true;
     public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
@@ -70,6 +72,7 @@ public class wpsStart {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
         // Set initial config of simulation
         config = wpsConfig.getInstance();
         // Set initial date of simulation
@@ -143,7 +146,6 @@ public class wpsStart {
         Enumeration idList = AdmBESA.getInstance().getIdList();
         while (idList.hasMoreElements()) {
             String id = (String) idList.nextElement();
-            CREATED_AGENTS++;
             try {
                 System.out.println("ID: " + id + " Alias " + AdmBESA.getInstance().getHandlerByAid(id).getAlias());
             } catch (ExceptionBESA e) {
@@ -162,6 +164,7 @@ public class wpsStart {
                         config.getUniqueFarmerName(),
                         config.getFarmerProfile()
                 );
+                CREATED_AGENTS++;
                 peasantFamilyBDIAgents.add(peasantFamilyBDIAgent);
             }
         } catch (Exception ex) {
@@ -243,18 +246,20 @@ public class wpsStart {
     /**
      * Stops the simulation after a specified time.
      */
-    @SuppressWarnings("rawtypes")
     public static void stopSimulation() {
-        getStatus();
-        try {
-            Thread.sleep(60000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        CREATED_AGENTS--;
+        System.out.println(CREATED_AGENTS + " to Stop");
+        if (CREATED_AGENTS == 0) {
+            System.out.println("All agents stopped");
+            getStatus();
+            try {
+                Thread.sleep(10000);
+            } catch (Exception e) {
+                System.out.println("Something went wrong");
+            }
+            wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
+            System.exit(0);
         }
-        wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
-        wpsReport.mental_close("Simulation finished", "wpsStart");
-        System.exit(0);
-
     }
 
     public static void stopSimulationByTime() throws ExceptionBESA {

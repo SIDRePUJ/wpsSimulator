@@ -9,22 +9,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo.">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="El log de los estados mentales se redirecciona al agente encargado y se concentra la recolección.">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tools/.ipynb_checkpoints/analysis-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tools/analysis.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/ControlAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/ControlAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlAgentState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/Data/GovernmentAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/Data/GovernmentAgentState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/Base/wpsGoalBDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/Base/wpsGoalBDI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L1Survival/DoHealthCareGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L1Survival/DoHealthCareGoal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoHealthCareTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoHealthCareTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Data/wpsReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Data/wpsReport.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Guards/wpsViewerAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Guards/wpsViewerAgentGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/wpsViewerAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/wpsViewerAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/benckmark-full.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/benckmark-full.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/benckmark-fullem.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/benckmark-fullem.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/estado_agentes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/estado_agentes.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/no.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/no.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/si.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/test02/si.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/web/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -268,7 +270,7 @@
       <workItem from="1704213310700" duration="35913000" />
       <workItem from="1704646164699" duration="49688000" />
       <workItem from="1705499919918" duration="605000" />
-      <workItem from="1705586375958" duration="7265000" />
+      <workItem from="1705586375958" duration="32261000" />
     </task>
     <task id="LOCAL-00001" summary="Nueva versión">
       <option name="closed" value="true" />
@@ -526,7 +528,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705358994236</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="El log de los estados mentales se redirecciona al agente encargado y se concentra la recolección.">
+      <option name="closed" value="true" />
+      <created>1705599986388</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1705599986388</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -577,7 +587,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="- Actualización UI&#10;- Cambio de estrategia contra bloqueos, liberado" />
     <MESSAGE value="Base del componente Emocional" />
     <MESSAGE value="Componente emocional configurado&#10;Incluidas gráficas en la UI" />
     <MESSAGE value="Actualización al mapa y paso del tiempo" />
@@ -602,7 +611,8 @@
     <MESSAGE value="Nuevo modo benckmark single." />
     <MESSAGE value="versión 0.2 Completa.&#10;Menos bloqueos, simulador acelerado con el manejo más eficiente de las tareas." />
     <MESSAGE value="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo." />
-    <option name="LAST_COMMIT_MESSAGE" value="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo." />
+    <MESSAGE value="El log de los estados mentales se redirecciona al agente encargado y se concentra la recolección." />
+    <option name="LAST_COMMIT_MESSAGE" value="El log de los estados mentales se redirecciona al agente encargado y se concentra la recolección." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

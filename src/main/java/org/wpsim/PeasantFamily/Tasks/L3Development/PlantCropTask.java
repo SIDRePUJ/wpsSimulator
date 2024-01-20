@@ -183,6 +183,7 @@ public class PlantCropTask extends wpsLandTask {
         DiseaseCell diseaseCellRoots = new DiseaseCell("roots1DiseaseCell");
         diseaseLayer.addVertex(diseaseCellRoots);
         CropLayer cropLayer = new CropLayer();
+        // @TODO: CAMBIAR TIPO DE CULTIVO DEPENDIENDO
         cropLayer.addCrop(
                 new RootsCell(
                 1.05,

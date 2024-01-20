@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
+import BESA.Emotional.EmotionalEvent;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
@@ -33,7 +34,6 @@ public class DoHealthCareTask extends wpsTask {
     }
 
     /**
-     *
      * @param parameters
      */
     @Override
@@ -42,13 +42,12 @@ public class DoHealthCareTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.DoHealthCareTask);
-        //believes.getProfile().increaseHealth();
-        //wpsReport.warn("⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️ MURIÓ -RIP- ⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️⚙️");
+        believes.getPeasantProfile().increaseHealth();
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
     }
 
 
     /**
-     *
      * @param parameters
      */
     @Override
@@ -56,21 +55,10 @@ public class DoHealthCareTask extends wpsTask {
     }
 
     /**
-     *
      * @param parameters
      */
     @Override
     public void cancelTask(Believes parameters) {
     }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     */
-    @Override
-    public boolean checkFinish(Believes parameters) {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        return believes.isTaskExecutedOnDate(believes.getInternalCurrentDate(), this.getClass().getSimpleName());
-    }
 }
+
