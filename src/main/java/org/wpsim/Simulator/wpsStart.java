@@ -47,11 +47,11 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 50;
+    public static int stepTime = 10;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 8;
-    public final static int DEFAULT_AGENTS_TO_TEST = 154;
+    public final static int DEFAULT_AGENTS_TO_TEST = 8;
     public static int CREATED_AGENTS = 0;
     public static boolean EMOTIONS = true;
     public static boolean RANDOM_EMOTIONS = true;
@@ -59,8 +59,8 @@ public class wpsStart {
     public static boolean SMALL_FARMS = true;
     public static boolean MEDIUM_FARMS = false;
     public static boolean LARGE_FARMS = false;
-    public static final String ENDDATE = "01/01/2032";
-    public static final boolean WEBUI = false;
+    public static final String ENDDATE = "01/01/2023";
+    public static final boolean WEBUI = true;
     public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
     private static final List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
@@ -71,7 +71,6 @@ public class wpsStart {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
         // Set initial config of simulation
         config = wpsConfig.getInstance();
         // Set initial date of simulation
@@ -142,7 +141,7 @@ public class wpsStart {
     }
 
     private static void showRunningAgents() {
-        Enumeration idList = AdmBESA.getInstance().getIdList();
+        var idList = AdmBESA.getInstance().getIdList();
         while (idList.hasMoreElements()) {
             String id = (String) idList.nextElement();
             try {

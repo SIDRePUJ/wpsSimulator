@@ -124,4 +124,10 @@ public class ControlCurrentDate {
         DateTime.Property dayOfWeek = date.dayOfWeek();
         return dayOfWeek.get() == 1;
     }
+
+    public String getCurrentYear() {
+        DateTime date = DateHelper.getDateInJoda(getCurrentDate());
+        DateTime.Property year = date.year();
+        return String.valueOf(year.get());
+    }
 }

@@ -20,6 +20,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
@@ -67,7 +68,8 @@ public class PlantCropTask extends wpsLandTask {
         // Set world perturbation
         setPerturbation(wpsStart.config.getPerturbation());
         PeasantFamilyProfile profile = believes.getPeasantProfile();
-        String rainfallConditions = profile.getRainfallConditions();
+        String rainfallConditions = WorldConfiguration.getPropsInstance().getProperty(
+                "data.rainfall." + ControlCurrentDate.getInstance().getCurrentYear());
         String peasantAlias = profile.getPeasantFamilyAlias();
         int cropSize = profile.getCropSize();
         String currentCropName = profile.getCurrentCropName();
