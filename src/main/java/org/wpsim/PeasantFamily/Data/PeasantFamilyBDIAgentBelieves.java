@@ -62,6 +62,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private String Contractor;
     private boolean haveEmotions;
     private boolean askedForContractor;
+    private boolean wait;
 
     /**
      * @param alias          Peasant Family Alias
@@ -744,6 +745,13 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         }else {
             return value.toString();
         }
+    }
+
+    public void setWait(boolean waitStatus) {
+        this.wait = waitStatus;
+    }
+    public boolean isWaiting() {
+        return this.wait;
     }
 }
 

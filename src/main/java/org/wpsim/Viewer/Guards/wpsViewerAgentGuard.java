@@ -20,17 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.Viewer.Data.wpsViewerMessage;
 import org.wpsim.Viewer.Server.WebsocketServer;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 /**
@@ -60,8 +51,9 @@ public class wpsViewerAgentGuard extends GuardBESA {
                 case "WARN" -> logger.warn(viewerMessage.getPeasantMessage());
                 case "ERROR" -> logger.error(viewerMessage.getPeasantMessage());
                 case "WS" -> {
-                    //logger.debug(viewerMessage.getPeasantMessage());
-                    WebsocketServer.getInstance().broadcastMessage("j=" + viewerMessage.getPeasantMessage());
+                    if (wpsStart.WEBUI) {
+                        WebsocketServer.getInstance().broadcastMessage("j=" + viewerMessage.getPeasantMessage());
+                    }
                 }
                 default -> logger.info(viewerMessage.getPeasantMessage());
             }

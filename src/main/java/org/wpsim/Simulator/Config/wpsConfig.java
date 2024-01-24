@@ -196,6 +196,7 @@ public final class wpsConfig {
     }
 
     private void loadWPSConfig() {
+        // @TODO: Incluir todas las config del wpsStart
         Properties properties = new Properties();
         try {
             properties.load(loadFileAsStream("wpsConfig.properties"));

@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -38,25 +38,30 @@ public class AliveAgentGuard extends GuardBESA {
     @Override
     public void funcExecGuard(EventBESA event) {
         ToControlMessage toControlMessage = (ToControlMessage) event.getData();
-        String agentAlias = toControlMessage.getPeasantFamilyAlias();
         ControlAgentState state = (ControlAgentState) this.getAgent().getState();
 
-        wpsReport.debug(agentAlias + " Alive - " + toControlMessage.getDays(), "ControlAgentGuard");
-        state.addAgentToMap(agentAlias);
+        //wpsReport.debug(agentAlias + " Alive - " + toControlMessage.getDays(), "ControlAgentGuard");
+        //System.out.println(agentAlias + " Alive - " + toControlMessage.getDays() +  " ControlAgentGuard");
+        state.addAgentToMap(toControlMessage.getPeasantFamilyAlias(), toControlMessage.getCurrentDay());
 
         try {
             int count = wpsStart.peasantFamiliesAgents;
-            AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(agentAlias);
-            EventBESA eventBesa = new EventBESA(
-                    FromControlGuard.class.getName(),
-                    new ControlMessage(agentAlias, count--, wpsStart.DAYS_TO_CHECK)
+            AdmBESA.getInstance().getHandlerByAlias(
+                    toControlMessage.getPeasantFamilyAlias()
+            ).sendEvent(
+                    new EventBESA(
+                            FromControlGuard.class.getName(),
+                            new ControlMessage(
+                                    toControlMessage.getPeasantFamilyAlias(),
+                                    false
+                            )
+                    )
             );
-            agHandler.sendEvent(eventBesa);
-            wpsReport.debug("Initial Unblock " + agentAlias + " sent " + count, "ControlAgentState");
+            //wpsReport.debug("Initial Unblock " + agentAlias + " sent " + count, "ControlAgentState");
+            //System.out.println("Initial Unblock " + agentAlias + " sent " + count + " ControlAgentState");
         } catch (ExceptionBESA ex) {
             wpsReport.debug(ex, "ControlAgentState");
         }
-
 
     }
 

@@ -55,18 +55,19 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
      */
     private void initializeLands() {
         try {
-            // Cargar el archivo JSON
-            String content = wpsConfig.getInstance().loadFile("web/data/" + wpsStart.CURRENT_WORLD);
-
             // Parsear el contenido del archivo JSON
-            JSONArray landsArray = new JSONArray(content);
-
+            JSONArray landsArray = new JSONArray(
+                    Objects.requireNonNull(
+                            wpsConfig.getInstance().loadFile(
+                                    "web/data/" + wpsStart.CURRENT_WORLD
+                            )
+                    )
+            );
             // Iterar sobre el contenido parseado y asignar los datos al hashmap
             for (int i = 0; i < landsArray.length(); i++) {
                 JSONObject landObject = landsArray.getJSONObject(i);
                 String landName = landObject.getString("name");
                 String kind = landObject.getString("kind");
-
                 // Usar la estructura LandInfo para almacenar el tipo de tierra y la finca
                 LandInfo landInfo = new LandInfo(landName, kind);
                 landOwnership.put(landName, landInfo);
@@ -108,21 +109,23 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
     }
 
     private List<String> selectBlock(List<String> availableLands, int rows, int cols) {
-        for (int i = 0; i < availableLands.size(); i++) {
-            String landName = availableLands.get(i);
-            Point startPoint = landNameToPoint(landName);
-
-            if (isBlockAvailable(startPoint, rows, cols, availableLands)) {
-                return extractBlock(startPoint, rows, cols, availableLands);
+        // Recorrer cada punto posible como punto de inicio del bloque
+        for (int y = 0; y <= GRID_SIZE - rows; y++) {
+            for (int x = 0; x <= GRID_SIZE - cols; x++) {
+                Point startPoint = new Point(x, y);
+                if (isBlockAvailable(startPoint, rows, cols, availableLands)) {
+                    return extractBlock(startPoint, rows, cols, availableLands);
+                }
             }
         }
         return new ArrayList<>();
     }
 
     private boolean isBlockAvailable(Point startPoint, int rows, int cols, List<String> availableLands) {
-        for (int x = startPoint.x; x < startPoint.x + cols; x++) {
-            for (int y = startPoint.y; y < startPoint.y + rows; y++) {
-                if (x >= GRID_SIZE || y >= GRID_SIZE || !availableLands.contains("land_" + (y * GRID_SIZE + x + 1))) {
+        for (int y = startPoint.y; y < startPoint.y + rows; y++) {
+            for (int x = startPoint.x; x < startPoint.x + cols; x++) {
+                String landName = "land_" + (y * GRID_SIZE + x + 1);
+                if (!availableLands.contains(landName)) {
                     return false;
                 }
             }
@@ -132,8 +135,8 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
 
     private List<String> extractBlock(Point startPoint, int rows, int cols, List<String> availableLands) {
         List<String> block = new ArrayList<>();
-        for (int x = startPoint.x; x < startPoint.x + cols; x++) {
-            for (int y = startPoint.y; y < startPoint.y + rows; y++) {
+        for (int y = startPoint.y; y < startPoint.y + rows; y++) {
+            for (int x = startPoint.x; x < startPoint.x + cols; x++) {
                 String landName = "land_" + (y * GRID_SIZE + x + 1);
                 block.add(landName);
                 availableLands.remove(landName);
@@ -165,56 +168,71 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
     }
 
     public void createFarms() {
-        // @TODO: QUITAR FOREST
-        List<String> availableLands = landOwnership.entrySet().stream()
-                .filter(e -> !e.getValue().getKind().equals("road") && e.getValue().getFarmName() == null)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+        List<String> availableLands = null;
+        if (wpsStart.DEFORESTATION) {
+            availableLands = landOwnership.entrySet().stream()
+                    .filter(e -> !e.getValue().getKind().equals("road") && e.getValue().getFarmName() == null)
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+        } else {
+            availableLands = landOwnership.entrySet().stream()
+                    .filter(e -> !e.getValue().getKind().equals("road") && e.getValue().getFarmName() == null && !e.getValue().getKind().equals("forest"))
+                    .map(Map.Entry::getKey)
+                    .collect(Collectors.toList());
+        }
+
+        //System.out.println("Available lands: " + this);
 
         int farmId = 1;
 
         // Asignar fincas grandes
-        /*while (true) {
-            List<String> farmLands = selectBlock(availableLands, 3, 4);
-            if (farmLands.isEmpty()) {
-                break;
+        if (wpsStart.LARGE_FARMS) {
+            while (true) {
+                List<String> farmLands = selectBlock(availableLands, 3, 4);
+                if (farmLands.isEmpty()) {
+                    break;
+                }
+                farms.put("farm_" + farmId + "_large", farmLands);
+                farmId++;
             }
-            farms.put("farm_" + farmId + "_large", farmLands);
-            farmId++;
-        }*/
+        }
 
         // Asignar fincas medianas
-        /*while (true) {
-            List<String> farmLands = selectBlock(availableLands, 2, 2);
-            if (farmLands.isEmpty()) {
-                break;
+        if (wpsStart.MEDIUM_FARMS) {
+            while (true) {
+                List<String> farmLands = selectBlock(availableLands, 2, 2);
+                if (farmLands.isEmpty()) {
+                    break;
+                }
+                farms.put("farm_" + farmId + "_medium", farmLands);
+                farmId++;
             }
-            farms.put("farm_" + farmId + "_medium", farmLands);
-            farmId++;
-        }*/
+        }
 
         // Asignar fincas pequeñas
-        while (!availableLands.isEmpty()) {
-            List<String> farmLands = selectBlock(availableLands, 1, 2);
-            if (farmLands.isEmpty()) {
-                break;
+        if (wpsStart.SMALL_FARMS) {
+            while (!availableLands.isEmpty()) {
+                List<String> farmLands = selectBlock(availableLands, 1, 2);
+                if (farmLands.isEmpty()) {
+                    break;
+                }
+                farms.put("farm_" + farmId + "_small", farmLands);
+                farmId++;
             }
-            farms.put("farm_" + farmId + "_small", farmLands);
-            farmId++;
-        }
-        // Lógica adicional para asignar tierras no asignadas a fincas pequeñas
-        while (!availableLands.isEmpty() && availableLands.size() >= 2) {
-            // Tomamos cualquier bloque de 2 tierras contiguas disponibles
-            List<String> farmLands = new ArrayList<>();
-            farmLands.add(availableLands.get(0));
-            farmLands.add(availableLands.get(1));
+            // Lógica adicional para asignar tierras no asignadas a fincas pequeñas
+            while (!availableLands.isEmpty() && availableLands.size() >= 2) {
+                // Tomamos cualquier bloque de 2 tierras contiguas disponibles
+                List<String> farmLands = new ArrayList<>();
+                farmLands.add(availableLands.get(0));
+                farmLands.add(availableLands.get(1));
 
-            // Removemos esas tierras de availableLands
-            availableLands.removeAll(farmLands);
+                // Removemos esas tierras de availableLands
+                availableLands.removeAll(farmLands);
 
-            // Agregamos estas tierras a una finca pequeña
-            farms.put("farm_" + farmId + "_small", farmLands);
-            farmId++;
+                // Agregamos estas tierras a una finca pequeña
+                farms.put("farm_" + farmId + "_small", farmLands);
+                farmId++;
+            }
         }
     }
 

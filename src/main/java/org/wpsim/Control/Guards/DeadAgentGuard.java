@@ -39,7 +39,6 @@ public class DeadAgentGuard extends GuardBESA {
         agentAlias = toControlMessage.getPeasantFamilyAlias();
         ControlAgentState state = (ControlAgentState) this.getAgent().getState();
 
-        wpsReport.debug(agentAlias + " Dead - " + toControlMessage.getDays(), "ControlAgentGuard");
         state.removeAgentFromMap(agentAlias);
         //wpsReport.debug(state.printDeadAgentMap(), "ControlAgentGuard");
     }

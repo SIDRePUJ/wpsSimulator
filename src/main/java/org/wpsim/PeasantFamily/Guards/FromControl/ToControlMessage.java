@@ -13,26 +13,26 @@ import BESA.Kernel.Agent.Event.DataBESA;
 public class ToControlMessage extends DataBESA {
 
     private String peasantFamilyAlias;
-    private int days;
+    private int currentDay;
     private String currentDate;
     private boolean peasantAlive;
 
     public ToControlMessage(String peasantFamilyAlias) {
         this.setPeasantFamilyAlias(peasantFamilyAlias);
     }
-    public ToControlMessage(String peasantFamilyAlias, int days) {
+    public ToControlMessage(String peasantFamilyAlias, int currentDay) {
         this.setPeasantFamilyAlias(peasantFamilyAlias);
-        this.setDays(days);
+        this.setCurrentDay(currentDay);
     }
     public ToControlMessage(String peasantFamilyAlias, String currentDate) {
         this.setPeasantFamilyAlias(peasantFamilyAlias);
         this.setCurrentDate(currentDate);
     }
 
-    public ToControlMessage(String peasantFamilyAlias, String currentDate, int days) {
+    public ToControlMessage(String peasantFamilyAlias, String currentDate, int currentDay) {
         this.setCurrentDate(currentDate);
         this.setPeasantFamilyAlias(peasantFamilyAlias);
-        this.setDays(days);
+        this.setCurrentDay(currentDay);
     }
 
     public void setPeasantAlive(boolean peasantAlive) {
@@ -47,12 +47,12 @@ public class ToControlMessage extends DataBESA {
         this.peasantFamilyAlias = peasantFamilyAlias;
     }
 
-    public int getDays() {
-        return days;
+    public int getCurrentDay() {
+        return currentDay;
     }
 
-    public void setDays(int days) {
-        this.days = days;
+    public void setCurrentDay(int currentDay) {
+        this.currentDay = currentDay;
     }
 
     public String getCurrentDate() {

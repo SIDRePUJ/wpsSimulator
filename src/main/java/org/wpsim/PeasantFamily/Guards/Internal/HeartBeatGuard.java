@@ -56,20 +56,22 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
         //System.out.println("HeartBeatGuard: " + this.getAgent().getAlias());
-        // Check if the current date is more than 7 days before the internal current date
-        checkTimeJump(believes);
-        // Check if the agent has finished
-        if (checkDead(believes)) return;
-        // Check if the simulation has finished
-        if (checkFinish(believes)) return;
-        // Update the internal current date
-        UpdateControlDate(believes);
-        // Report the agent's beliefs to the wpsViewer
-        wpsReport.ws(believes.toJson(), believes.getAlias());
-        // Wait time for the next execution
-        sleepWave(state, believes);
-        // Send BDI Pulse to BDI Information Flow
-        sendBDIPulse();
+        if (!believes.isWaiting()) {
+            // Check if the current date is more than 7 days before the internal current date
+            checkTimeJump(believes);
+            // Check if the agent has finished
+            if (checkDead(believes)) return;
+            // Check if the simulation has finished
+            if (checkFinish(believes)) return;
+            // Update the internal current date
+            UpdateControlDate(believes);
+            // Report the agent's beliefs to the wpsViewer
+            wpsReport.ws(believes.toJson(), believes.getAlias());
+            // Wait time for the next execution
+            sleepWave(state, believes);
+            // Send BDI Pulse to BDI Information Flow
+            sendBDIPulse();
+        }
     }
 
     private void sleepWave(StateBDI state, PeasantFamilyBDIAgentBelieves believes) {
@@ -79,12 +81,6 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             currentRole = "Void";
         }
         waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * wpsStart.stepTime;
-        //System.out.println(believes.getAlias() + " - waitTime: " + waitTime + " rol " + currentRole);
-        /*try {
-            Thread.sleep(waitTime);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }*/
     }
 
     private void sendBDIPulse() {
@@ -122,13 +118,19 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
 
     private static void checkTimeJump(PeasantFamilyBDIAgentBelieves believes) {
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) <= -(wpsStart.DAYS_TO_CHECK)) {
-            System.out.println("Jump " + believes.getAlias()
+            /*System.out.println("Jump " + believes.getAlias()
                     + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
                     believes.getInternalCurrentDate()
             ));
             believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
             believes.setCurrentActivity(PeasantActivityType.BLOCKED);
             believes.makeNewDayWOD();
+             */
+            /*System.out.println(believes.getAlias() + " en espera " + believes.getAlias()
+                    + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
+                    believes.getInternalCurrentDate()
+            ));*/
+            //believes.setWait(true);
         } else {
             believes.setCurrentActivity(PeasantActivityType.NONE);
         }

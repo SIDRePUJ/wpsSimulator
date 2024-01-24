@@ -41,14 +41,18 @@ public class FromGovernmentGuard extends GuardBESA {
         String landName = fromGovernmentMessage.getLandName();
         Map<String, String> assignedLands = fromGovernmentMessage.getAssignedLands();
 
-        if (landName == null){ // Campesino sin tierras
-            believes.setWorkerWithoutLand();
-        } else if (landName != null && !landName.equals("")) {
+        //System.out.println("REC: peasant family: " + believes.getAlias() + " Assigned land: " + landName + " Assigned lands: " + assignedLands);
+
+        if (landName == null || landName.equals("")) {
+            if (landName == null) {
+                believes.setWorkerWithoutLand();
+            } else {
+                System.err.println("Error: Received empty land name.");
+            }
+        } else {
             believes.getPeasantProfile().setPeasantFamilyLandAlias(landName);
             believes.setAssignedLands(assignedLands);
-        } else {
-            System.err.println("Error: Received null or empty land name.");
         }
-
     }
+
 }

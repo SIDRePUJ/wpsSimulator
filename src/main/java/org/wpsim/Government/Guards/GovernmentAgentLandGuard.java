@@ -46,11 +46,18 @@ public class GovernmentAgentLandGuard extends GuardBESA  {
         Map<String, String> assignedLands = assignedFarmData != null ? assignedFarmData.getValue() : null;
 
         try {
-            //System.out.println("peaasant family: " + data.getFamilyName() + " Assigned farm: " + assignedFarmName + " Assigned lands: " + assignedLands);
-            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(data.getFamilyName());
-            FromGovernmentMessage fromGovernmentMessage = new FromGovernmentMessage(assignedFarmName, assignedLands);
-            EventBESA ev = new EventBESA(FromGovernmentGuard.class.getName(), fromGovernmentMessage);
-            ah.sendEvent(ev);
+            //System.out.println("SENT: peasant family: " + data.getFamilyName() + " Assigned farm: " + assignedFarmName + " Assigned lands: " + assignedLands);
+            AdmBESA.getInstance().getHandlerByAlias(
+                    data.getFamilyName()
+            ).sendEvent(
+                    new EventBESA(
+                            FromGovernmentGuard.class.getName(),
+                            new FromGovernmentMessage(
+                                    assignedFarmName,
+                                    assignedLands
+                            )
+                    )
+            );
         } catch (ExceptionBESA ex) {
             System.out.println(ex);
         }

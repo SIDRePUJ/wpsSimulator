@@ -15,7 +15,7 @@ StablePeasant:
   #Variables
   health: 100
   peasantFamilyMinimalVital: 10000
-  rainfallConditions: normal
+  rainfallConditions: dry
   cropSize: 1
   seeds: 1000
   startRiceSeason: 15/01/2022

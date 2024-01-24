@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- * \ V  V / | |_) |\__ \ *    @since 2023                                  *
- * \_/\_/  | .__/ |___/ *                                                 *
- * | |          *    @author Jairo Serrano                        *
- * |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \  *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/   *                                                 *
+ * | |                    *    @author Jairo Serrano                        *
+ * |_|                    *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -14,7 +14,6 @@
  */
 package org.wpsim.Simulator;
 
-import BESA.Emotional.EmotionAxis;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
@@ -23,7 +22,6 @@ import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Util.PeriodicDataBESA;
 import org.wpsim.Bank.BankAgent;
 import org.wpsim.Control.ControlAgent;
-import org.wpsim.Control.Data.Coin;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Government.GovernmentAgent;
 import org.wpsim.Market.MarketAgent;
@@ -36,13 +34,9 @@ import org.wpsim.Society.SocietyAgent;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.Viewer.wpsViewerAgent;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
@@ -56,19 +50,24 @@ public class wpsStart {
     public static int stepTime = 50;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
-    public final static int DAYS_TO_CHECK = 60;
-    public final static int DEFAULT_AGENTS_TO_TEST = 8;
+    public final static int DAYS_TO_CHECK = 8;
+    public final static int DEFAULT_AGENTS_TO_TEST = 154;
     public static int CREATED_AGENTS = 0;
     public static boolean EMOTIONS = true;
     public static boolean RANDOM_EMOTIONS = true;
-    public static final String ENDDATE = "01/01/2028";
-    public static final boolean WEBUI = true;
+    public static boolean DEFORESTATION = false;
+    public static boolean SMALL_FARMS = true;
+    public static boolean MEDIUM_FARMS = false;
+    public static boolean LARGE_FARMS = false;
+    public static final String ENDDATE = "01/01/2032";
+    public static final boolean WEBUI = false;
     public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
-    static private List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
+    private static final List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 
     /**
      * The main method to start the simulation.
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -252,23 +251,8 @@ public class wpsStart {
         if (CREATED_AGENTS == 0) {
             System.out.println("All agents stopped");
             getStatus();
-            try {
-                Thread.sleep(10000);
-            } catch (Exception e) {
-                System.out.println("Something went wrong");
-            }
             wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
             System.exit(0);
-        }
-    }
-
-    public static void stopSimulationByTime() throws ExceptionBESA {
-
-        try {
-            Thread.sleep((60 * SIMULATION_TIME) * 1000);
-            stopSimulation();
-        } catch (InterruptedException e) {
-            wpsReport.error(e.getMessage(), "wpsStart");
         }
     }
 

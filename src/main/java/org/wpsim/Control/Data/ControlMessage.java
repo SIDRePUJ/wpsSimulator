@@ -13,23 +13,12 @@ import BESA.Kernel.Agent.Event.DataBESA;
 public class ControlMessage extends DataBESA {
 
     private String peasantFamilyAlias;
-    private int wait;
-    private int currentDay;
+    private boolean wait;
 
-    public ControlMessage(String peasantFamilyAlias, int wait, int currentDay) {
-        this.setCurrentDay(currentDay);
+    public ControlMessage(String peasantFamilyAlias, boolean wait) {
         this.setPeasantFamilyAlias(peasantFamilyAlias);
         this.setWait(wait);
     }
-
-    public int getCurrentDay() {
-        return currentDay;
-    }
-
-    public void setCurrentDay(int currentDay) {
-        this.currentDay = currentDay;
-    }
-
     public String getPeasantFamilyAlias() {
         return peasantFamilyAlias;
     }
@@ -38,11 +27,11 @@ public class ControlMessage extends DataBESA {
         this.peasantFamilyAlias = peasantFamilyAlias;
     }
 
-    public int getWait() {
+    public boolean isWaiting() {
         return wait;
     }
 
-    public void setWait(int wait) {
+    public void setWait(boolean wait) {
         this.wait = wait;
     }
 

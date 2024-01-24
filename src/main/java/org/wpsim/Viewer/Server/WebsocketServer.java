@@ -1,3 +1,17 @@
+/**
+ * ==========================================================================
+ * __      __ _ __   ___  *    WellProdSim                                  *
+ * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
+ * \ V  V / | |_) |\__ \  *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/   *                                                 *
+ * | |                    *    @author Jairo Serrano                        *
+ * |_|                    *    @author Enrique Gonzalez                     *
+ * ==========================================================================
+ * Social Simulator used to estimate productivity and well-being of peasant *
+ * families. It is event oriented, high concurrency, heterogeneous time     *
+ * management and emotional reasoning BDI.                                  *
+ * ==========================================================================
+ */
 package org.wpsim.Viewer.Server;
 
 import io.undertow.Undertow;
@@ -18,18 +32,32 @@ import org.wpsim.Simulator.wpsStart;
 import static io.undertow.Handlers.path;
 import static io.undertow.Handlers.websocket;
 
+/**
+ * Websocket server for the wpsViewer agent
+ */
 public class WebsocketServer implements Runnable {
 
     private final List<WebSocketChannel> activeChannels = Collections.synchronizedList(new ArrayList<>());
     private static WebsocketServer instance;
 
+    /**
+     * Websocket server instance
+     * @return the websocket server
+     */
     public static synchronized WebsocketServer getInstance() {
-        if (instance == null) {
-            instance = new WebsocketServer();
+        if (wpsStart.WEBUI) {
+            if (instance == null) {
+                instance = new WebsocketServer();
+            }
+            return instance;
+        } else {
+            return null;
         }
-        return instance;
     }
 
+    /**
+     * Starts the broadcast server
+     */
     @Override
     public void run() {
 
@@ -43,33 +71,33 @@ public class WebsocketServer implements Runnable {
         Undertow server = Undertow.builder()
                 .addHttpListener(8000, "0.0.0.0")
                 .setHandler(path()
-                        .addPrefixPath("/wpsViewer", websocket(new WebSocketConnectionCallback() {
-                            @Override
-                            public void onConnect(WebSocketHttpExchange exchange, WebSocketChannel channel) {
-                                activeChannels.add(channel);
-                                channel.addCloseTask(ch -> activeChannels.remove(ch));
-                                channel.getReceiveSetter().set(new AbstractReceiveListener() {
+                                .addPrefixPath("/wpsViewer", websocket(new WebSocketConnectionCallback() {
                                     @Override
-                                    protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage message) {
-                                        String msg = message.getData();
-                                        System.out.println("Received message: " + msg);
+                                    public void onConnect(WebSocketHttpExchange exchange, WebSocketChannel channel) {
+                                        activeChannels.add(channel);
+                                        channel.addCloseTask(ch -> activeChannels.remove(ch));
+                                        channel.getReceiveSetter().set(new AbstractReceiveListener() {
+                                            @Override
+                                            protected void onFullTextMessage(WebSocketChannel channel, BufferedTextMessage message) {
+                                                String msg = message.getData();
+                                                System.out.println("Received message: " + msg);
 
-                                        if (msg.contains("start")) {
-                                            wpsStart.startAgents();
-                                        } else if (msg.contains("stop")) {
-                                            wpsStart.stopSimulation();
-                                        } else if(msg.contains("setup")) {
-                                            WebSockets.sendText("d=" + ControlCurrentDate.getInstance().getCurrentDate(), channel, null);
-                                            WebSockets.sendText("q=" + wpsStart.peasantFamiliesAgents, channel, null);
-                                        }else{
-                                            System.out.println("Unknown message: " + msg);
-                                        }
+                                                if (msg.contains("start")) {
+                                                    wpsStart.startAgents();
+                                                } else if (msg.contains("stop")) {
+                                                    wpsStart.stopSimulation();
+                                                } else if (msg.contains("setup")) {
+                                                    WebSockets.sendText("d=" + ControlCurrentDate.getInstance().getCurrentDate(), channel, null);
+                                                    WebSockets.sendText("q=" + wpsStart.peasantFamiliesAgents, channel, null);
+                                                } else {
+                                                    System.out.println("Unknown message: " + msg);
+                                                }
 
+                                            }
+                                        });
+                                        channel.resumeReceives();
                                     }
-                                });
-                                channel.resumeReceives();
-                            }
-                        }))
+                                }))
                         //.addPrefixPath("/", resource(resourceManager).addWelcomeFiles("index-no.html"))
                 )
                 .build();
@@ -77,11 +105,14 @@ public class WebsocketServer implements Runnable {
         server.start();
     }
 
+    /**
+     * Sends a message to all connected clients
+     * @param message the message
+     */
     public void broadcastMessage(String message) {
         synchronized (activeChannels) {
             for (WebSocketChannel channel : activeChannels) {
                 if (channel.isOpen()) {
-                    //System.out.println("Sending message: " + message);
                     WebSockets.sendText(message, channel, null);
                 }
             }

@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ControlAgentState extends StateBESA implements Serializable {
     private AtomicInteger activeAgentsCount = new AtomicInteger(0);
     private AtomicBoolean unblocking = new AtomicBoolean(false);
-    private ConcurrentMap<String, Boolean> agentMap = new ConcurrentHashMap<>();
+    private ConcurrentMap<String, AgentInfo> agentMap = new ConcurrentHashMap<>();
     private ConcurrentMap<String, Boolean> deadAgentMap = new ConcurrentHashMap<>();
     //private Timer timer = new Timer();
     private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
@@ -45,7 +45,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
         super();
     }
 
-    public ConcurrentMap<String, Boolean> getAliveAgentMap() {
+    public ConcurrentMap<String, AgentInfo> getAliveAgentMap() {
         return agentMap;
     }
 
@@ -53,64 +53,53 @@ public class ControlAgentState extends StateBESA implements Serializable {
         return deadAgentMap;
     }
 
+    public void checkAgentsStatus() {
+        // Revisar si se cumple la condición para el bloqueo
+        int minDay = agentMap.values()
+                .stream()
+                .mapToInt(AgentInfo::getCurrentDay)
+                .min()
+                .orElse(Integer.MAX_VALUE);
+        int maxDay = agentMap.values()
+                .stream()
+                .mapToInt(AgentInfo::getCurrentDay)
+                .max()
+                .orElse(Integer.MIN_VALUE);
 
-    public synchronized boolean allAgentsAlive() {
-
-        if (!wpsStart.started) {
-            return false;
-        }
-
-        int trueCount = (int) agentMap.values().stream().filter(Boolean::booleanValue).count();
-        int falseCount = agentMap.size() - trueCount;
-
-        WebsocketServer.getInstance().broadcastMessage(
-                "s={" +
-                        "\"alive\":" + trueCount
-                        + ",\"away\":" + falseCount
-                        + ",\"dead\":" + deadAgentMap.size()
-                        + "}"
-        );
-        WebsocketServer.getInstance().broadcastMessage("d=" + ControlCurrentDate.getInstance().getCurrentDate());
-
-        if (wpsStart.peasantFamiliesAgents == (agentMap.size() + deadAgentMap.size())) {
-            return !agentMap.containsValue(false);
-        }
-        return false;
-
-    }
-
-    public boolean checkUnblocking(int days) {
-        //System.out.println("checkUnblocking " + days);
-        if (unblocking.get() && (days % wpsStart.DAYS_TO_CHECK == 0)) {
-            //wpsReport.debug("Unblocking event", "ControlAgentState");
-            try {
-                int count = wpsStart.peasantFamiliesAgents;
-                for (String agentName : getAliveAgentMap().keySet()) {
+        for (String agentName : getAliveAgentMap().keySet()) {
+            AgentInfo info = agentMap.get(agentName);
+            if (info != null) {
+                int currentDay = info.getCurrentDay();
+                try {
                     AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(agentName);
-                    EventBESA eventBesa = new EventBESA(
-                            FromControlGuard.class.getName(),
-                            new ControlMessage(agentName, count--, days + wpsStart.DAYS_TO_CHECK)
-                    );
+                    EventBESA eventBesa = null;
+                    if (currentDay - minDay > wpsStart.DAYS_TO_CHECK) {
+                        // Agente adelantado
+                        eventBesa = new EventBESA(FromControlGuard.class.getName(), new ControlMessage(agentName, true));
+                        //System.out.println("Agent " + agentName + " bloqueo");
+                        // Acciones adicionales para agentes adelantados
+                    } else if (currentDay >= maxDay) {
+                        // Agente resagado que ha alcanzado el día máximo
+                        eventBesa = new EventBESA(FromControlGuard.class.getName(), new ControlMessage(agentName, false));
+                        //System.out.println("Agent " + agentName + " desbloqueo");
+                        // Acciones adicionales para agentes que se han puesto al día
+                    } else {
+                        // Agente en tiempo o atrasado pero aún no ha alcanzado el día máximo
+                        // Posiblemente no se necesite enviar un evento en este caso
+                        eventBesa = new EventBESA(FromControlGuard.class.getName(), new ControlMessage(agentName, false));
+                        //System.out.println("Agent " + agentName + " desbloqueo 2");
+                    }
                     agHandler.sendEvent(eventBesa);
-                    //wpsReport.debug("Unblock " + agentName + " sent " + count, "ControlAgentState");
+                } catch (ExceptionBESA ex) {
+                    wpsReport.debug(ex, "ControlAgentState");
                 }
-                resetActiveAgents();
-                return true;
-            } catch (ExceptionBESA ex) {
-                wpsReport.debug(ex, "ControlAgentState");
             }
         }
-        return false;
     }
 
-    public void resetActiveAgents() {
-        this.agentMap.replaceAll((k, v) -> false);
-        unblocking.set(false);
-    }
-
-    public void addAgentToMap(String agentName) {
+    public void addAgentToMap(String agentName, int currentDay) {
         wpsReport.debug("Agent " + agentName + " is new and alive", "ControlAgentState");
-        this.agentMap.put(agentName, false);
+        this.agentMap.put(agentName, new AgentInfo(false, currentDay));
         //Comienza a revisar el desbloqueo de agentes por tiempo
         if (agentMap.size() == wpsStart.peasantFamiliesAgents) {
             wpsStart.started = true;
@@ -121,53 +110,18 @@ public class ControlAgentState extends StateBESA implements Serializable {
         wpsReport.debug("Agent " + agentName + " is dead", "ControlAgentState");
         this.agentMap.remove(agentName);
         this.deadAgentMap.put(agentName, true);
-        /*Timer existingTimer = agentTimers.get(agentName);
-        if (existingTimer != null) {
-            existingTimer.cancel();
-        }*/
     }
 
-    public void modifyAgentMap(String agentName) {
-        // Cancela cualquier temporizador existente para este agente
-        /*Timer existingTimer = agentTimers.get(agentName);
-        if (existingTimer != null) {
-            existingTimer.cancel();
-        }*/
-        // Marca el agente como "vivo"
-        this.agentMap.put(agentName, true);
-        WebsocketServer.getInstance().broadcastMessage("m=" + agentMap.toString());
-        //unblocking.set(allAgentsAlive());
-        // Inicia un nuevo temporizador para este agente
-        /*Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                //wpsReport.debug("Agent " + agentName + " is dead by ControlAgentState", "ControlAgentState");
-                // Marca el agente como "muerto"
-                try {
-                    AdmBESA adm = AdmBESA.getInstance();
-                    ToControlMessage toControlMessage = new ToControlMessage(agentName);
-                    EventBESA eventBesa = new EventBESA(DeadAgentGuard.class.getName(), toControlMessage);
-                    AgHandlerBESA agHandler = adm.getHandlerByAlias(wpsStart.config.getControlAgentName());
-                    agHandler.sendEvent(eventBesa);
-                } catch (ExceptionBESA ex) {
-                    wpsReport.error(ex, "controlAgentState");
-                }
-                // Enviar señal de matar al agente
-                try {
-                    AdmBESA adm = AdmBESA.getInstance();
-                    EventBESA eventBesa = new EventBESA(KillZombieGuard.class.getName(), null);
-                    AgHandlerBESA agHandler = adm.getHandlerByAlias(agentName);
-                    agHandler.sendEvent(eventBesa);
-                } catch (ExceptionBESA ex) {
-                    wpsReport.error(ex, "ControlAgentState");
-                }
-                removeAgentFromMap(agentName);
-            }
-        }, 2 * 60 * 1000); // 2 minutos
-        agentTimers.put(agentName, timer);
-        */
+    public void modifyAgentMap(String agentName, int currentDay) {
+        AgentInfo info = agentMap.getOrDefault(agentName, new AgentInfo(false, currentDay));
+        info.setState(true);
+        info.setCurrentDay(currentDay);
+        agentMap.put(agentName, info);
+        if (wpsStart.WEBUI) {
+            WebsocketServer.getInstance().broadcastMessage("m=" + agentMap.toString());
+        }
     }
 
 }
+
 
