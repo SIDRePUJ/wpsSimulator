@@ -9,17 +9,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Control de tiempo ajustado, los agentes esperan a los agentes demorados.">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Simulación funcionando sin saltos y de forma acelerada. versión 0.3">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/cell/vegetables/VegetablesCell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/cell/vegetables/VegetablesCellState.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/tools/.ipynb_checkpoints/AnalysisSingle-checkpoint.ipynb" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/tools/.ipynb_checkpoints/analysis-checkpoint.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/tools/AnalysisSingle.ipynb" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/tools/fullDataset.csv" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/tools/wpsSimulator.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlCurrentDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlCurrentDate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/Data/LandInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/Data/LandInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/World/Agent/WorldAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/Agent/WorldAgent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +72,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jairo/IdeaProjects/wpsSimulator/src/main/resources&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jairo/IdeaProjects/wpsSimulator/src/main/java/org/wpsim/World/layer&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -90,11 +92,11 @@
       <recent name="org.wpsim.PeasantFamily.Emotions" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/" />
+      <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/cell" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/resources/web" />
-      <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment" />
-      <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/Government" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/fuzzyRules" />
@@ -267,7 +269,9 @@
       <workItem from="1705586375958" duration="50717000" />
       <workItem from="1706025716287" duration="6796000" />
       <workItem from="1706045220509" duration="198000" />
-      <workItem from="1706045636763" duration="8899000" />
+      <workItem from="1706045636763" duration="9065000" />
+      <workItem from="1706148136985" duration="4262000" />
+      <workItem from="1706205005580" duration="5630000" />
     </task>
     <task id="LOCAL-00001" summary="Nueva versión">
       <option name="closed" value="true" />
@@ -549,7 +553,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706055319996</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Simulación funcionando sin saltos y de forma acelerada. versión 0.3">
+      <option name="closed" value="true" />
+      <created>1706124674772</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1706124674772</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -600,7 +612,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Actualización al mapa y paso del tiempo" />
     <MESSAGE value="Particiones del mapa actualizadas" />
     <MESSAGE value="Asignación y visualización de tierras aleatorias." />
     <MESSAGE value="Ajustes para cluster de 4 servidores" />
@@ -625,7 +636,8 @@
     <MESSAGE value="El log de los estados mentales se redirecciona al agente encargado y se concentra la recolección." />
     <MESSAGE value="log externo usando logger." />
     <MESSAGE value="Control de tiempo ajustado, los agentes esperan a los agentes demorados." />
-    <option name="LAST_COMMIT_MESSAGE" value="Control de tiempo ajustado, los agentes esperan a los agentes demorados." />
+    <MESSAGE value="Simulación funcionando sin saltos y de forma acelerada. versión 0.3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Simulación funcionando sin saltos y de forma acelerada. versión 0.3" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

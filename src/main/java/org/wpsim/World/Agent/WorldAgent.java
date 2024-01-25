@@ -36,6 +36,6 @@ public class WorldAgent extends AgentBESA {
      */
     @Override
     public void shutdownAgent() {
-        System.out.println("Eliminando WorldAgent tierra " + this.getAlias());
+        //System.out.println("Eliminando WorldAgent tierra " + this.getAlias());
     }
 }

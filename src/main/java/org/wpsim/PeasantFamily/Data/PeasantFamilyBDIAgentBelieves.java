@@ -150,7 +150,8 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
                     new LandInfo(
                             entry.getKey(),
                             entry.getValue(),
-                            getPeasantProfile().getPeasantFamilyLandAlias()
+                            getPeasantProfile().getPeasantFamilyLandAlias(),
+                            ControlCurrentDate.getInstance().getCurrentYear()
                     )
             );
         }

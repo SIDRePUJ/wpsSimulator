@@ -62,13 +62,12 @@ public class PlantCropTask extends wpsLandTask {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         updateConfig(believes, 32);
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
         // Set world perturbation
         setPerturbation(wpsStart.config.getPerturbation());
         PeasantFamilyProfile profile = believes.getPeasantProfile();
-        String rainfallConditions = WorldConfiguration.getPropsInstance().getProperty(
+        String initialRainfallConditions = WorldConfiguration.getPropsInstance().getProperty(
                 "data.rainfall." + ControlCurrentDate.getInstance().getCurrentYear());
         String peasantAlias = profile.getPeasantFamilyAlias();
         int cropSize = profile.getCropSize();
@@ -78,6 +77,8 @@ public class PlantCropTask extends wpsLandTask {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
                 wpsReport.info("Plantando for " + currentLandInfo.getLandName(), peasantAlias);
                 this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PlantCropTask.getTime());
+                boolean yearChanged = !currentLandInfo.getYearPlanted().equals(ControlCurrentDate.getInstance().getCurrentYear());
+                //System.out.println("yearChanged: " + yearChanged);
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                     this.resetLand(believes, currentLandInfo.getLandName());
                     wpsReport.info("Finalización de plantado for " + currentLandInfo.getLandName(), peasantAlias);
@@ -92,26 +93,80 @@ public class PlantCropTask extends wpsLandTask {
                     WorldMessage worldMessage = null;
                     if (isRunning) {
                         wpsReport.warn("Renovando cultivo " + currentLandInfo.getLandName(), peasantAlias);
-                        worldMessage = new WorldMessage(
-                                CROP_INIT,
-                                currentLandInfo.getLandName(),
-                                believes.getInternalCurrentDate(),
-                                peasantAlias
-                        );
-                        try {
-                            EventBESA ev = new EventBESA(WorldGuard.class.getName(), worldMessage);
-                            AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
-                        } catch (ExceptionBESA ex) {
-                            wpsReport.error("Error renovando tierra " + currentLandInfo.getLandName(), peasantAlias);
-                        }
-                        // TODO: Estimar el costo de Semillas
-                        profile.useSeeds(profile.getRiceSeedsByHectare());
-                        currentLandInfo.setCurrentSeason(SeasonType.GROWING);
+                        if (yearChanged) {
+                            // Killing the world Agent and restarting
+                            String newRainfallConditions = WorldConfiguration.getPropsInstance().getProperty(
+                                    "data.rainfall." + ControlCurrentDate.getInstance().getCurrentYear());
+                            try {
+                                //System.out.println("Eliminando la tierra por cambio de año " + currentLandInfo.getLandName() + " " + newRainfallConditions);
+                                String agID = AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
+                                AdmBESA.getInstance().killAgent(agID, wpsStart.PASSWD);
+                            } catch (Exception ex) {
+                                wpsReport.error("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage(), peasantAlias);
+                            }
 
+                            //START WORLD
+                            try {
+                                WorldAgent landAgent = buildWorld(
+                                        getRainfallFile(newRainfallConditions),
+                                        peasantAlias,
+                                        currentLandInfo.getLandName(),
+                                        cropSize,
+                                        currentCropName
+                                );
+                                assert landAgent != null;
+                                initialWorldStateInitialization(
+                                        landAgent,
+                                        peasantAlias,
+                                        believes.getInternalCurrentDate()
+                                );
+                                landAgent.start();
+                                AdmBESA.getInstance().getHandlerByAlias(
+                                        currentLandInfo.getLandName()
+                                ).sendEvent(
+                                        new EventBESA(
+                                                WorldGuard.class.getName(),
+                                                new WorldMessage(
+                                                        CROP_INIT,
+                                                        currentLandInfo.getLandName(),
+                                                        believes.getInternalCurrentDate(),
+                                                        peasantAlias
+                                                )
+                                        )
+                                );
+                                //System.out.println("Se renueva el cultivo " + currentLandInfo.getLandName() + " en el año nuevo " + ControlCurrentDate.getInstance().getCurrentYear());
+                                // TODO: Estimar el costo de Semillas
+                                profile.useSeeds(profile.getRiceSeedsByHectare());
+                                currentLandInfo.setCurrentSeason(SeasonType.GROWING);
+                            } catch (ExceptionBESA ex) {
+                                wpsReport.error(ex, peasantAlias);
+                            }
+                        } else {
+                            try {
+                                AdmBESA.getInstance().getHandlerByAlias(
+                                        currentLandInfo.getLandName()
+                                ).sendEvent(
+                                        new EventBESA(
+                                                WorldGuard.class.getName(),
+                                                new WorldMessage(
+                                                        CROP_INIT,
+                                                        currentLandInfo.getLandName(),
+                                                        believes.getInternalCurrentDate(),
+                                                        peasantAlias
+                                                )
+                                        )
+                                );
+                            } catch (ExceptionBESA ex) {
+                                wpsReport.error("Error renovando tierra " + currentLandInfo.getLandName(), peasantAlias);
+                            }
+                            // TODO: Estimar el costo de Semillas
+                            profile.useSeeds(profile.getRiceSeedsByHectare());
+                            currentLandInfo.setCurrentSeason(SeasonType.GROWING);
+                        }
                     } else {
                         try {
                             WorldAgent landAgent = buildWorld(
-                                    getRainfallFile(rainfallConditions),
+                                    getRainfallFile(initialRainfallConditions),
                                     peasantAlias,
                                     currentLandInfo.getLandName(),
                                     cropSize,
@@ -124,27 +179,22 @@ public class PlantCropTask extends wpsLandTask {
                                     believes.getInternalCurrentDate()
                             );
                             landAgent.start();
-
-                            worldMessage = new WorldMessage(
-                                    CROP_INIT,
-                                    currentLandInfo.getLandName(),
-                                    believes.getInternalCurrentDate(),
-                                    peasantAlias
-                            );
-
                             AdmBESA.getInstance().getHandlerByAlias(
                                     currentLandInfo.getLandName()
                             ).sendEvent(
                                     new EventBESA(
                                             WorldGuard.class.getName(),
-                                            worldMessage
+                                            new WorldMessage(
+                                                    CROP_INIT,
+                                                    currentLandInfo.getLandName(),
+                                                    believes.getInternalCurrentDate(),
+                                                    peasantAlias
+                                            )
                                     )
                             );
-
                             // TODO: Estimar el costo de Semillas
                             profile.useSeeds(profile.getRiceSeedsByHectare());
                             currentLandInfo.setCurrentSeason(SeasonType.GROWING);
-
                         } catch (ExceptionBESA ex) {
                             wpsReport.error(ex, peasantAlias);
                         }
@@ -154,6 +204,7 @@ public class PlantCropTask extends wpsLandTask {
                 return;
             }
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
     private static void setPerturbation(String arg) {
@@ -186,23 +237,25 @@ public class PlantCropTask extends wpsLandTask {
         diseaseLayer.addVertex(diseaseCellRoots);
         CropLayer cropLayer = new CropLayer();
         // @TODO: CAMBIAR TIPO DE CULTIVO DEPENDIENDO
-        cropLayer.addCrop(
-                new RootsCell(
-                1.05,
-                1.2,
-                0.7,
-                1512,
-                3330,
-                cropSize,
-                0.9,
-                0.2,
-                Soil.SAND,
-                true,
-                diseaseCellRoots,
-                cropName,
-                agentAlias
-                )
-        );
+        if ("roots".equals("roots")) {
+            cropLayer.addCrop(
+                    new RootsCell(
+                            1.05,
+                            1.2,
+                            0.7,
+                            1512,
+                            3330,
+                            cropSize,
+                            0.9,
+                            0.2,
+                            Soil.SAND,
+                            true,
+                            diseaseCellRoots,
+                            cropName,
+                            agentAlias
+                    )
+            );
+        }
         cropLayer.bindLayer("radiation", radiationLayer);
         cropLayer.bindLayer("rainfall", rainfallLayer);
         cropLayer.bindLayer("temperature", temperatureLayer);
@@ -217,16 +270,20 @@ public class PlantCropTask extends wpsLandTask {
     }
 
     private static void initialWorldStateInitialization(WorldAgent worldAgent, String agentAlias, String currentDate) {
-        AdmBESA adm = AdmBESA.getInstance();
-        WorldMessage worldMessage = new WorldMessage(
-                WorldMessageType.CROP_INIT,
-                null,
-                currentDate,
-                agentAlias);
         try {
-            AgHandlerBESA ah = adm.getHandlerByAid(worldAgent.getAid());
-            EventBESA eventBesa = new EventBESA(WorldGuard.class.getName(), worldMessage);
-            ah.sendEvent(eventBesa);
+            AdmBESA.getInstance().getHandlerByAid(
+                    worldAgent.getAid()
+            ).sendEvent(
+                    new EventBESA(
+                            WorldGuard.class.getName(),
+                            new WorldMessage(
+                                    WorldMessageType.CROP_INIT,
+                                    null,
+                                    currentDate,
+                                    agentAlias
+                            )
+                    )
+            );
         } catch (ExceptionBESA e) {
             wpsReport.error(e, "ObtainALandTask");
         }

@@ -47,7 +47,7 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 10;
+    public static int stepTime = 100;
     public static boolean started = false;
     private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 8;
@@ -59,7 +59,7 @@ public class wpsStart {
     public static boolean SMALL_FARMS = true;
     public static boolean MEDIUM_FARMS = false;
     public static boolean LARGE_FARMS = false;
-    public static final String ENDDATE = "01/01/2023";
+    public static final String ENDDATE = "01/01/2024";
     public static final boolean WEBUI = true;
     public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
