@@ -20,6 +20,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.Control.Data.Coin;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
@@ -38,6 +39,7 @@ import org.wpsim.World.Helper.WorldConfiguration;
 import org.wpsim.World.Messages.WorldMessage;
 import org.wpsim.World.Messages.WorldMessageType;
 import org.wpsim.World.layer.crop.CropLayer;
+import org.wpsim.World.layer.crop.cell.rice.RiceCell;
 import org.wpsim.World.layer.crop.cell.roots.RootsCell;
 import org.wpsim.World.layer.disease.DiseaseCell;
 import org.wpsim.World.layer.disease.DiseaseLayer;
@@ -71,10 +73,14 @@ public class PlantCropTask extends wpsLandTask {
                 "data.rainfall." + ControlCurrentDate.getInstance().getCurrentYear());
         String peasantAlias = profile.getPeasantFamilyAlias();
         int cropSize = profile.getCropSize();
-        String currentCropName = profile.getCurrentCropName();
-
+        String currentCropName = believes.getCurrentCropName();
+        //System.out.println("Plantando " + currentCropName);
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
+                // @TODO: Plantear cambio de cultivos dinámico
+                if (currentLandInfo.getCropName().isEmpty()){
+                    currentLandInfo.setCropName(currentCropName);
+                }
                 wpsReport.info("Plantando for " + currentLandInfo.getLandName(), peasantAlias);
                 this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PlantCropTask.getTime());
                 boolean yearChanged = !currentLandInfo.getYearPlanted().equals(ControlCurrentDate.getInstance().getCurrentYear());
@@ -84,6 +90,7 @@ public class PlantCropTask extends wpsLandTask {
                     wpsReport.info("Finalización de plantado for " + currentLandInfo.getLandName(), peasantAlias);
                     //System.out.println("plantando " + currentLandInfo.getLandName());
                     boolean isRunning = false;
+                    boolean cropChange = !currentLandInfo.getCropName().equals(currentCropName);
                     try {
                         AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
                         isRunning = true;
@@ -92,8 +99,10 @@ public class PlantCropTask extends wpsLandTask {
                     }
                     WorldMessage worldMessage = null;
                     if (isRunning) {
-                        wpsReport.warn("Renovando cultivo " + currentLandInfo.getLandName(), peasantAlias);
-                        if (yearChanged) {
+                        //wpsReport.warn("Renovando cultivo sin cambio de año " + currentLandInfo.getLandName(), peasantAlias);
+                        if (yearChanged || cropChange) { // @TODO: Plantear cambio de cultivos dinámico
+                            //System.out.println("Cambiando cultivo " + cropChange + " Renovando cultivo  " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName);
+                            currentLandInfo.setCropName(currentCropName);
                             // Killing the world Agent and restarting
                             String newRainfallConditions = WorldConfiguration.getPropsInstance().getProperty(
                                     "data.rainfall." + ControlCurrentDate.getInstance().getCurrentYear());
@@ -104,7 +113,6 @@ public class PlantCropTask extends wpsLandTask {
                             } catch (Exception ex) {
                                 wpsReport.error("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage(), peasantAlias);
                             }
-
                             //START WORLD
                             try {
                                 WorldAgent landAgent = buildWorld(
@@ -112,7 +120,7 @@ public class PlantCropTask extends wpsLandTask {
                                         peasantAlias,
                                         currentLandInfo.getLandName(),
                                         cropSize,
-                                        currentCropName
+                                        currentLandInfo.getCropName()
                                 );
                                 assert landAgent != null;
                                 initialWorldStateInitialization(
@@ -121,6 +129,19 @@ public class PlantCropTask extends wpsLandTask {
                                         believes.getInternalCurrentDate()
                                 );
                                 landAgent.start();
+                            } catch (Exception ex) {
+                                wpsReport.error(ex, peasantAlias);
+                            }
+                            boolean confirmation = false;
+                            while (!confirmation) {
+                                try {
+                                    AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
+                                    confirmation = true;
+                                } catch (ExceptionBESA e) {
+                                    wpsReport.error(e, peasantAlias);
+                                }
+                            }
+                            try {
                                 AdmBESA.getInstance().getHandlerByAlias(
                                         currentLandInfo.getLandName()
                                 ).sendEvent(
@@ -142,6 +163,7 @@ public class PlantCropTask extends wpsLandTask {
                                 wpsReport.error(ex, peasantAlias);
                             }
                         } else {
+                            System.out.println("Renovando cultivo SIN cambio de año " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName);
                             try {
                                 AdmBESA.getInstance().getHandlerByAlias(
                                         currentLandInfo.getLandName()
@@ -170,7 +192,7 @@ public class PlantCropTask extends wpsLandTask {
                                     peasantAlias,
                                     currentLandInfo.getLandName(),
                                     cropSize,
-                                    currentCropName
+                                    currentLandInfo.getCropName()
                             );
                             assert landAgent != null;
                             initialWorldStateInitialization(
@@ -237,9 +259,26 @@ public class PlantCropTask extends wpsLandTask {
         diseaseLayer.addVertex(diseaseCellRoots);
         CropLayer cropLayer = new CropLayer();
         // @TODO: CAMBIAR TIPO DE CULTIVO DEPENDIENDO
-        if ("roots".equals("roots")) {
-            cropLayer.addCrop(
+        switch (cropName) {
+            case "roots" -> cropLayer.addCrop(
                     new RootsCell(
+                            1.05,
+                            1.2,
+                            0.7,
+                            1512,
+                            3330,
+                            cropSize,
+                            0.9,
+                            0.2,
+                            Soil.SAND,
+                            true,
+                            diseaseCellRoots,
+                            cropName,
+                            agentAlias
+                    )
+            );
+            case "rice" -> cropLayer.addCrop(
+                    new RiceCell(
                             1.05,
                             1.2,
                             0.7,

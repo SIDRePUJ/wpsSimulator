@@ -213,6 +213,7 @@ public class CropLayer extends GenericWorldLayer {
      * @return
      */
     public CropCellState getCropStateById(String id) {
+        //System.out.println("getCropStateById " + id);
         return (CropCellState) this.cropCellMap.get(id).getCellState();
     }
 
@@ -223,7 +224,6 @@ public class CropLayer extends GenericWorldLayer {
     }
 
     /**
-     * @param id
      * @return
      */
     public CropCell getCropCell() {

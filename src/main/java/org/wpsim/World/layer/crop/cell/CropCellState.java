@@ -44,7 +44,7 @@ public class CropCellState implements LayerCellState {
 
     /**
      *
-     * @param riceEvapotranspiration
+     * @param evapotranspiration
      * @param currentGrowingDegreeDays
      * @param currentAboveGroundBiomass
      * @param cumulatedEvapotranspiration
@@ -53,7 +53,7 @@ public class CropCellState implements LayerCellState {
      * @param waterStress
      */
     public CropCellState(
-            double riceEvapotranspiration,
+            double evapotranspiration,
             double currentGrowingDegreeDays,
             double currentAboveGroundBiomass,
             double cumulatedEvapotranspiration,
@@ -61,7 +61,7 @@ public class CropCellState implements LayerCellState {
             double rootZoneDepletionAtTheEndOfDay,
             boolean waterStress
     ) {
-        this.evapotranspiration = riceEvapotranspiration;
+        this.evapotranspiration = evapotranspiration;
         this.growingDegreeDays = currentGrowingDegreeDays;
         this.aboveGroundBiomass = currentAboveGroundBiomass;
         this.cumulatedEvapotranspiration = cumulatedEvapotranspiration;

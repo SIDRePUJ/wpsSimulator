@@ -65,7 +65,7 @@ public class GetPriceListTask extends wpsTask {
                     marketMessage);
             ah.sendEvent(ev);
 
-
+            believes.setUpdatePriceList(false);
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }

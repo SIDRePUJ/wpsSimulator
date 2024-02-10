@@ -18,6 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketMessage;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketMessageType;
@@ -31,7 +32,7 @@ import static org.wpsim.Market.MarketMessageType.SELL_CROP;
  * @author jairo
  */
 public class MarketAgentGuard extends GuardBESA {
-
+    int currentWeek = 0;
     /**
      *
      * @param event
@@ -63,6 +64,12 @@ public class MarketAgentGuard extends GuardBESA {
                         quantity
                         + marketMessage.getQuantity()
                 );
+                // Update product price
+                state.updateAgentProductMapAndDiversityFactor(marketMessage.getPeasantAlias(), marketMessage.getCropName());
+                if (currentWeek != ControlCurrentDate.getInstance().getCurrentWeek()) {
+                    currentWeek = ControlCurrentDate.getInstance().getCurrentWeek();
+                    state.adjustPrices();
+                }
                 //wpsReport.warn("Comprado");
                 fromMarketMessageType = FromMarketMessageType.SOLD_CROP;
                 fromMarketMessage = new FromMarketMessage(

@@ -63,6 +63,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private boolean haveEmotions;
     private boolean askedForContractor;
     private boolean wait;
+    private boolean updatePriceList;
 
     /**
      * @param alias          Peasant Family Alias
@@ -727,6 +728,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
                 .append(getOrDefault(peasantProfile.getSeeds())).append(',')
                 .append(getOrDefault(peasantProfile.getWaterAvailable())).append(',')
                 .append(getOrDefault(peasantProfile.getPesticidesAvailable())).append(',')
+                .append(getOrDefault(peasantProfile.getHarvestedWeight())).append(',')
                 .append(getOrDefault(peasantProfile.getTotalHarvestedWeight())).append(',')
                 .append(getOrDefault(getContractor())).append(',')
                 .append(getOrDefault(getDaysToWorkForOther())).append(',')
@@ -753,6 +755,21 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
     public boolean isWaiting() {
         return this.wait;
+    }
+
+    public String getCurrentCropName() {
+        if (priceList.get("rice").getCost() > priceList.get("roots").getCost()){
+            return "rice";
+        }else {
+            return "roots";
+        }
+    }
+
+    public void setUpdatePriceList(boolean updatePriceList) {
+        this.updatePriceList = updatePriceList;
+    }
+    public boolean isUpdatePriceList() {
+        return updatePriceList;
     }
 }
 

@@ -127,7 +127,11 @@ public class ControlCurrentDate {
 
     public String getCurrentYear() {
         DateTime date = DateHelper.getDateInJoda(getCurrentDate());
-        DateTime.Property year = date.year();
-        return String.valueOf(year.get());
+        return String.valueOf(date.year().get());
+    }
+
+    public int getCurrentWeek() {
+        DateTime date = DateHelper.getDateInJoda(getCurrentDate());
+        return date.getWeekOfWeekyear();
     }
 }

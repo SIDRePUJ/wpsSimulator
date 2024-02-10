@@ -150,54 +150,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      * @return
      */
-    public String getStartRiceSeason() {
-        return startRiceSeason;
-    }
-
-    /**
-     *
-     * @param startRiceSeason
-     */
-    public void setStartRiceSeason(String startRiceSeason) {
-        this.startRiceSeason = startRiceSeason;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getEndRiceSeason() {
-        return endRiceSeason;
-    }
-
-    /**
-     *
-     * @param endRiceSeason
-     */
-    public void setEndRiceSeason(String endRiceSeason) {
-        this.endRiceSeason = endRiceSeason;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getCurrentCropName() {
-        return this.currentCropName;
-    }
-
-    /**
-     *
-     * @param currentCropName
-     */
-    public void setCurrentCropName(String currentCropName) {
-        this.currentCropName = currentCropName;
-    }
-
-    /**
-     *
-     * @return
-     */
     public int getRiceSeedsByHectare() {
         return riceSeedsByHectare;
     }

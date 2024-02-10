@@ -10,19 +10,26 @@ public class LandInfo implements Cloneable{
     private String kind;
     private String landName;
     private boolean isUsed;
+    private String cropName;
     private SeasonType currentSeason;
     private CropCareType currentCropCareType;
     private int totalRequiredTime;  // Total time required (in hours or days, as you prefer)
     private int elapsedWorkTime;    // Elapsed work time (in hours or days)
     private boolean isProcessing;
     private String yearPlanted;
-
     public LandInfo(String landName, String kind, String farmName, String yearPlanted) {
         setupLandInfo(landName, kind, farmName, yearPlanted);
     }
-
     public LandInfo(String landName, String kind) {
         setupLandInfo(landName, kind, null, null);
+    }
+
+    public String getCropName() {
+        return cropName;
+    }
+
+    public void setCropName(String cropName) {
+        this.cropName = cropName;
     }
 
     private void setupLandInfo(String landName, String kind, String farmName, String yearPlanted) {
@@ -34,6 +41,7 @@ public class LandInfo implements Cloneable{
         this.setCurrentCropCareType(CropCareType.NONE);
         this.setProcessing(false);
         this.setYearPlanted(yearPlanted);
+        this.setCropName("");
     }
 
     public boolean isProcessing() {

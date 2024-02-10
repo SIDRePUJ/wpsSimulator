@@ -111,7 +111,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         HopefulUncertainty.setEventInfluence(EmotionalEventType.WORK.name(), 0.4f);
         this.addEmotionAxis(HopefulUncertainty);
 
-
+        //@TODO: falta eventos de perturbación, rumores, noticias etc llega a un evento de comunicación
         EmotionAxis SecureInsecure = new EmotionAxis(
                 Semantics.Emotions.Secure,
                 Semantics.Emotions.Insecure,
@@ -122,23 +122,6 @@ public abstract class EmotionalComponent extends EmotionalModel {
         SecureInsecure.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.4f);
         SecureInsecure.setEventInfluence(EmotionalEventType.PLANTING.name(), 0.2f);
         this.addEmotionAxis(SecureInsecure);
-
-        /*EmotionAxis RelievedOverwhelmed = new EmotionAxis(
-                Semantics.Emotions.Relieved,
-                Semantics.Emotions.Overwhelmed,
-                0.0f, 0.0f, 0.2f
-        );
-        RelievedOverwhelmed.setEventInfluence(EmotionalEventType.HOUSEHOLDING.name(), 0.5f);
-        this.addEmotionAxis(RelievedOverwhelmed);
-
-        EmotionAxis FocusedDistracted = new EmotionAxis(
-                Semantics.Emotions.Focused,
-                Semantics.Emotions.Distracted,
-                0.0f, 0.0f, 0.2f
-        );
-        FocusedDistracted.setEventInfluence(EmotionalEventType.HOUSEHOLDING.name(), 0.5f);
-        this.addEmotionAxis(FocusedDistracted);
-        */
 
     }
 }
