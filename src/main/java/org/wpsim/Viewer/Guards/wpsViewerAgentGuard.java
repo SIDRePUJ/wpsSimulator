@@ -68,7 +68,7 @@ public class wpsViewerAgentGuard extends GuardBESA {
                 "peasantFriendsAffinity,currentPeasantLeisureType," +
                 "currentResourceNeededType,currentDay,internalCurrentDate,toPay,peasantKind,rainfallConditions," +
                 "peasantFamilyMinimalVital,peasantFamilyLandAlias,currentActivity,farm,loanAmountToPay," +
-                "tools,seeds,waterAvailable,pesticidesAvailable,totalHarvestedWeight,contractor,daysToWorkForOther," +
+                "tools,seeds,waterAvailable,pesticidesAvailable,HarvestedWeight,totalHarvestedWeight,contractor,daysToWorkForOther," +
                 "Agent,Emotion,peasantFamilyHelper,haveEmotions";
         loggerData.trace(csvData);
     }

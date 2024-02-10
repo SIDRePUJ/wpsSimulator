@@ -42,14 +42,14 @@ public class PerturbationAgent extends AgentBESA {
     }
 
     public static PerturbationAgent createAgent(double passwd) throws ExceptionBESA {
-        PerturbationAgent perturbationAgent = new PerturbationAgent(
+        return new PerturbationAgent(
                 wpsStart.config.getPerturbationAgentName(),
                 createState(),
                 createStruct(
-                        new StructBESA()),
+                        new StructBESA()
+                ),
                 passwd
         );
-        return perturbationAgent;
 
     }
 
@@ -60,8 +60,7 @@ public class PerturbationAgent extends AgentBESA {
     }
 
     private static wpsPerturbationState createState() throws ExceptionBESA {
-        wpsPerturbationState perturbationAgentState = new wpsPerturbationState();
-        return perturbationAgentState;
+        return new wpsPerturbationState();
     }
 
     /**

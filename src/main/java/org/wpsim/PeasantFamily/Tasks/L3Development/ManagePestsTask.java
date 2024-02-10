@@ -57,7 +57,7 @@ public class ManagePestsTask extends wpsTask {
             WorldMessage worldMessage;
             worldMessage = new WorldMessage(
                     CROP_PESTICIDE,
-                    believes.getPeasantProfile().getCurrentCropName(),
+                    "rice", // @TODO: CAMBIAR NOMBRE AL REAL
                     believes.getInternalCurrentDate(),
                     believes.getPeasantProfile().getPeasantFamilyAlias());
             EventBESA ev = new EventBESA(

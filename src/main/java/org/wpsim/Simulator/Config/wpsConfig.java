@@ -18,7 +18,6 @@ import BESA.Log.ReportBESA;
 import com.google.gson.Gson;
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
-import org.wpsim.Control.Data.Coin;
 import org.wpsim.PeasantFamily.Data.Utils.FarmingResource;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
 
@@ -233,9 +232,9 @@ public final class wpsConfig {
     public List<String> getFuzzyRulesList(String mode){
         String rawFile = null;
         if (mode.equals("Single")) {
-            rawFile = loadFile("fuzzyRules/EmotionalRules.txt");
+            rawFile = loadFile("data.fuzzyRules/EmotionalRules.txt");
         }else{
-            rawFile = loadFile("fuzzyRules/EmotionalRulesFull.txt");
+            rawFile = loadFile("data.fuzzyRules/EmotionalRulesFull.txt");
         }
         assert rawFile != null;
         return Arrays.asList(rawFile.split("\n"));

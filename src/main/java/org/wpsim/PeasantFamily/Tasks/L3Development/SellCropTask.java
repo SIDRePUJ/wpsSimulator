@@ -44,9 +44,7 @@ public class SellCropTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-
         //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "SELLING", "FOOD"));
 
         try {
@@ -59,16 +57,16 @@ public class SellCropTask extends wpsTask {
                                     SELL_CROP,
                                     believes.getPeasantProfile().getPeasantFamilyAlias(),
                                     believes.getPeasantProfile().getHarvestedWeight(),
-                                    believes.getPeasantProfile().getCurrentCropName()
+                                    "rice" // @TODO: CAMBIAR NOMBRE AL REAL
                             )
                     )
             );
-
+            believes.getPeasantProfile().setHarvestedWeight(0);
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        // @TODO: cambiar landname
         believes.setCurrentSeason("", SeasonType.NONE);
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

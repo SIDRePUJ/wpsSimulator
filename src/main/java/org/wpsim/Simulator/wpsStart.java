@@ -47,11 +47,10 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 100;
+    public static int stepTime = 20;
     public static boolean started = false;
-    private final static int SIMULATION_TIME = 16;
     public final static int DAYS_TO_CHECK = 8;
-    public final static int DEFAULT_AGENTS_TO_TEST = 8;
+    public final static int DEFAULT_AGENTS_TO_TEST = 10;
     public static int CREATED_AGENTS = 0;
     public static boolean EMOTIONS = true;
     public static boolean RANDOM_EMOTIONS = true;
@@ -283,9 +282,9 @@ public class wpsStart {
                                     
                  * ==========================================================================
                  *   __      __ _ __   ___           WellProdSim                            *
-                 *   \\ \\ /\\ / /| '_ \\ / __|          @version 1.0                           *
-                 *    \\ V  V / | |_) |\\__ \\          @since 2023                            *
-                 *     \\_/\\_/  | .__/ |___/                                                 *
+                 *   \\ \\ /\\ / /| '_ \\ / __|      @version 1.0                           *
+                 *    \\ V  V / | |_) |\\__ \\       @since 2023                            *
+                 *     \\_/\\_/  | .__/ |___/                                               *
                  *             | |                   @author Jairo Serrano                  *
                  *             |_|                   @author Enrique Gonzalez               *
                  * ==========================================================================
@@ -302,3 +301,8 @@ public class wpsStart {
     }
 
 }
+
+/**
+ * Bienestar depende de salud y mood - además de tener un ingreso sostenible, con eso siembra más fácil y rápido
+ * El ingreso sostenible es un variable moduladora de las variables que alimentan el bienestar
+ */

@@ -9,19 +9,81 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Simulación funcionando sin saltos y de forma acelerada. versión 0.3">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/cell/vegetables/VegetablesCell.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/cell/vegetables/VegetablesCellState.java" afterDir="false" />
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Siembra cambia las condiciones climáticas según el año">
       <change afterPath="$PROJECT_DIR$/src/main/resources/tools/.ipynb_checkpoints/AnalysisSingle-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tools/.ipynb_checkpoints/Untitled-checkpoint.ipynb" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/tools/.ipynb_checkpoints/analysis-checkpoint.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tools/Untitled.ipynb" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/tools/fullDataset.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tools/simaa.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tools/simab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/tools/wpsSimulator-01.csv" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/resources/tools/wpsSimulator.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlCurrentDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlCurrentDate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/Data/LandInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Government/Data/LandInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketAgentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketAgentState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/Utils/FarmingResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/Utils/FarmingResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/Base/wpsGoalBDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/Base/wpsGoalBDI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L4SkillsResources/GetPriceListGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L4SkillsResources/GetPriceListGoal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L6Leisure/WasteTimeAndResourcesGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L6Leisure/WasteTimeAndResourcesGoal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarket/FromMarketGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarket/FromMarketGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromWorld/FromWorldGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromWorld/FromWorldGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/CheckCropsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/CheckCropsTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/ManagePestsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/ManagePestsTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SellCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SellCropTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/GetPriceListTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/GetPriceListTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Perturbation/PerturbationAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Perturbation/PerturbationAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/World/Agent/WorldAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/Agent/WorldAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Guards/wpsViewerAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Viewer/Guards/wpsViewerAgentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/World/Guards/WorldGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/Guards/WorldGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/CropLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/CropLayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/cell/CropCellState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/crop/cell/CropCellState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fuzzyRules/EmotionalRules.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data.fuzzyRules/EmotionalRules.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fuzzyRules/EmotionalRulesFull.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data.fuzzyRules/EmotionalRulesFull.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run01-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run02-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run03-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run04-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/.ipynb_checkpoints/run05-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/run01.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/run02.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/run03.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/run04.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test01/run05.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run01-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run02-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run03-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run04-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run05-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run06-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/.ipynb_checkpoints/run07-checkpoint.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/TestingFullReview.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/TestingReview.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/benckmark-full.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/benckmark-fullem.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/estado_agentes.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/fromLogtoCSV.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/no.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/run01.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/run02.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/run03.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/run04.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/run05.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/run06.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/run07.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/si.log" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/test02/test01.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/tools/AnalysisSingle.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/tools/AnalysisSingle.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -271,7 +333,13 @@
       <workItem from="1706045220509" duration="198000" />
       <workItem from="1706045636763" duration="9065000" />
       <workItem from="1706148136985" duration="4262000" />
-      <workItem from="1706205005580" duration="5630000" />
+      <workItem from="1706205005580" duration="16718000" />
+      <workItem from="1706307925052" duration="621000" />
+      <workItem from="1706327655666" duration="1298000" />
+      <workItem from="1706672831265" duration="800000" />
+      <workItem from="1706706891406" duration="9469000" />
+      <workItem from="1707060124097" duration="12336000" />
+      <workItem from="1707434931019" duration="19271000" />
     </task>
     <task id="LOCAL-00001" summary="Nueva versión">
       <option name="closed" value="true" />
@@ -561,7 +629,15 @@
       <option name="project" value="LOCAL" />
       <updated>1706124674772</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Siembra cambia las condiciones climáticas según el año">
+      <option name="closed" value="true" />
+      <created>1706213458388</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1706213458388</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -612,7 +688,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Particiones del mapa actualizadas" />
     <MESSAGE value="Asignación y visualización de tierras aleatorias." />
     <MESSAGE value="Ajustes para cluster de 4 servidores" />
     <MESSAGE value="Siembra en multiples tierras y epocas. todavía no funciona totalmente." />
@@ -637,7 +712,8 @@
     <MESSAGE value="log externo usando logger." />
     <MESSAGE value="Control de tiempo ajustado, los agentes esperan a los agentes demorados." />
     <MESSAGE value="Simulación funcionando sin saltos y de forma acelerada. versión 0.3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Simulación funcionando sin saltos y de forma acelerada. versión 0.3" />
+    <MESSAGE value="Siembra cambia las condiciones climáticas según el año" />
+    <option name="LAST_COMMIT_MESSAGE" value="Siembra cambia las condiciones climáticas según el año" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

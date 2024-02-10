@@ -61,14 +61,17 @@ public class WorldGuard extends GuardBESA {
                             FromWorldMessageType.CROP_INIT,
                             worldMessage.getPeasantAgentAlias(),
                             "CROP_INIT",
-                            this.getAgent().getAlias());
+                            this.getAgent().getAlias()
+                    );
                     peasantMessage.setDate(worldMessage.getDate());
                     this.replyToPeasantAgent(
                             worldMessage.getPeasantAgentAlias(),
-                            peasantMessage);
+                            peasantMessage
+                    );
                     break;
                 case CROP_INFORMATION:
                     worldState.lazyUpdateCropsForDate(worldMessage.getDate());
+                    //System.out.println("Received CROP_INFORMATION for " + worldMessage.getCropId());
                     cropCellState = worldState.getCropLayer().getCropStateById(worldMessage.getCropId());
                     cropCellInfo = worldState.getCropLayer().getCropCellById(worldMessage.getCropId());
                     diseaseCellState = (DiseaseCellState) cropCellInfo.getDiseaseCell().getCellState();
@@ -79,21 +82,26 @@ public class WorldGuard extends GuardBESA {
                             FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
                             worldMessage.getPeasantAgentAlias(),
                             cropDataJson.toString(),
-                            this.getAgent().getAlias());
+                            this.getAgent().getAlias()
+                    );
                     peasantMessage.setDate(worldMessage.getDate());
                     this.replyToPeasantAgent(worldMessage.getPeasantAgentAlias(), peasantMessage);
                     break;
                 case CROP_OBSERVE:
                     worldState.getCropLayer().getAllCrops().forEach(cropCell -> {
                         if (((CropCellState) cropCell.getCellState()).isWaterStress()) {
-                            this.notifyPeasantCropProblem(FromWorldMessageType.NOTIFY_CROP_WATER_STRESS,
+                            this.notifyPeasantCropProblem(
+                                    FromWorldMessageType.NOTIFY_CROP_WATER_STRESS,
                                     cropCell.getAgentPeasantId(),
-                                    worldMessage.getDate());
+                                    worldMessage.getDate()
+                            );
                         }
                         if (((DiseaseCellState) cropCell.getDiseaseCell().getCellState()).isInfected()) {
-                            this.notifyPeasantCropProblem(FromWorldMessageType.NOTIFY_CROP_DISEASE,
+                            this.notifyPeasantCropProblem(
+                                    FromWorldMessageType.NOTIFY_CROP_DISEASE,
                                     cropCell.getAgentPeasantId(),
-                                    worldMessage.getDate());
+                                    worldMessage.getDate()
+                            );
                         }
                         if (cropCell.isHarvestReady()) {
                             this.notifyPeasantCropReadyToHarvest(

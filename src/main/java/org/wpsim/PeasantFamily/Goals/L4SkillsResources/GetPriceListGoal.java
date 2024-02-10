@@ -87,7 +87,7 @@ public class GetPriceListGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getCurrentActivity() == PeasantActivityType.PRICE_LIST) {
+        if (believes.getPriceList().isEmpty() || believes.isUpdatePriceList()) {
             return 1;
         } else {
             return 0;

@@ -65,4 +65,12 @@ public class FarmingResource {
     public void discountQuantity(int quantity) {
         this.quantity -= quantity;
     }
+    @Override
+    public String toString() {
+        return "FarmingResource{" +
+                "name='" + name + '\'' +
+                ", cost=" + cost +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

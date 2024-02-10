@@ -60,7 +60,7 @@ public class CheckCropsTask extends wpsTask {
                                         WorldGuard.class.getName(),
                                         new WorldMessage(
                                                 CROP_INFORMATION,
-                                                believes.getPeasantProfile().getCurrentCropName(),
+                                                currentLandInfo.getCropName(),
                                                 believes.getInternalCurrentDate(),
                                                 currentLandInfo.getLandName()
                                         )
@@ -76,7 +76,7 @@ public class CheckCropsTask extends wpsTask {
                                         WorldGuard.class.getName(),
                                         new WorldMessage(
                                                 CROP_OBSERVE,
-                                                believes.getPeasantProfile().getCurrentCropName(),
+                                                currentLandInfo.getCropName(),
                                                 believes.getInternalCurrentDate(),
                                                 currentLandInfo.getLandName()
                                         )

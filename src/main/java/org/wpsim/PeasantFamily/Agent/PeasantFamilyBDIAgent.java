@@ -56,6 +56,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @TODO: Patrones de comunicación
+ */
+
+/**
  *
  * @author jairo
  */
@@ -91,7 +95,6 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
 
         structBESA.addBehavior("StatusBehavior");
         structBESA.bindGuard("StatusBehavior", StatusGuard.class);
-
 
         return structBESA;
     }

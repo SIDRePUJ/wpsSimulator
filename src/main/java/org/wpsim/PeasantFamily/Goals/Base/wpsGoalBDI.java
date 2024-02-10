@@ -33,6 +33,7 @@ public class wpsGoalBDI extends GoalBDI {
 
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
+        // @TODO: IMPLEMENTAR FUZZY LOGIC
         return 0;
     }
 

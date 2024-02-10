@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -83,15 +83,19 @@ public class FromWorldGuard extends GuardBESA {
                     wpsReport.warn(cropData, this.getAgent().getAlias());
                     believes.getPeasantProfile().setHarvestedWeight(
                             (int) Math.round(
-                                    Double.parseDouble(
-                                            cropData.get("aboveGroundBiomass").toString()
-                                    ) * 0.2 // Solo es aprovechable el 50% de la biomasa + 30% consumo interno
+                                    Math.ceil(
+                                            Double.parseDouble(
+                                                    cropData.get("aboveGroundBiomass").toString()
+                                            ) * 0.3 // Solo es aprovechable el 50% de la biomasa + 20% consumo interno
+                                    )
                             )
                     );
                     believes.getPeasantProfile().increaseTotalHarvestedWeight(
-                            Double.parseDouble(
-                                    cropData.get("aboveGroundBiomass").toString()
-                            ) * 0.2 // Solo es aprovechable el 50% de la biomasa + 30% consumo interno
+                            Math.ceil(
+                                    Double.parseDouble(
+                                            cropData.get("aboveGroundBiomass").toString()
+                                    ) * 0.3 // Solo es aprovechable el 50% de la biomasa + 20% consumo interno
+                            )
                     );
                     //System.out.println("🍙🍙🍙: CROP_HARVEST OK");
                     break;
@@ -103,7 +107,7 @@ public class FromWorldGuard extends GuardBESA {
             wpsReport.warn("error?" + e, this.getAgent().getAlias());
         }
 
-        wpsReport.info("Mensaje procesado: " + (System.currentTimeMillis()-initTime) + " " + landName, this.getAgent().getAlias());
+        wpsReport.info("Mensaje procesado: " + (System.currentTimeMillis() - initTime) + " " + landName, this.getAgent().getAlias());
 
     }
 

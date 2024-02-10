@@ -17,10 +17,13 @@ package org.wpsim.Market;
 import BESA.Kernel.Agent.StateBESA;
 import org.wpsim.PeasantFamily.Data.Utils.FarmingResource;
 import org.wpsim.Simulator.wpsStart;
+import org.wpsim.Viewer.Data.wpsReport;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -28,25 +31,91 @@ import java.util.Map;
  */
 public class MarketAgentState extends StateBESA implements Serializable {
 
-    /**
-     *
-     */
     Map<String, FarmingResource> resources = new HashMap<>();
-
-    @Override
-    public String toString() {
-        return "MarketAgentState{" +
-                "resources=" + resources +
-                '}';
-    }
-
+    private Map<String, Integer> basePrices = new HashMap<>();
+    private Map<String, Set<String>> productAgentMap = new HashMap<>();
+    private double diversityFactor;
+    private final int maxPeasantFamiliesAgents;
     /**
-     *
+     * Constructor for MarketAgentState
      */
     public MarketAgentState() {
         super();
         this.resources = wpsStart.config.loadMarketConfig();
+        this.diversityFactor = 0.5;
+        this.maxPeasantFamiliesAgents = wpsStart.peasantFamiliesAgents;
+        resources.forEach((key, value) -> basePrices.put(key, value.getCost()));
     }
+
+    /**
+     * Actualiza el conjunto de agentes para un producto específico y ajusta el diversityFactor.
+     * @param agentName El nombre del agente que ofrece el producto.
+     * @param productName El nombre del producto ofrecido.
+     */
+    public void updateAgentProductMapAndDiversityFactor(String agentName, String productName) {
+        productAgentMap.computeIfAbsent(productName, k -> new HashSet<>()).add(agentName);
+        adjustDiversityFactor();
+    }
+
+    /**
+     * Ajusta el diversityFactor basado en la distribución actual de productos.
+     */
+    private void adjustDiversityFactor() {
+        int productTypeCount = productAgentMap.size();
+        int uniqueAgentsOffering = productAgentMap.values().stream()
+                .mapToInt(Set::size)
+                .sum();
+        int leastOfferedProductAgentCount = productAgentMap.values().stream()
+                .mapToInt(Set::size)
+                .min()
+                .orElse(0);
+
+        if (uniqueAgentsOffering > 0) {
+            double leastOfferedRatio = (double) leastOfferedProductAgentCount / uniqueAgentsOffering;
+            diversityFactor = 1.0 - ((double) productTypeCount / maxPeasantFamiliesAgents) * leastOfferedRatio;
+        }
+    }
+
+    /**
+     * Lógica para ajustar precios basados en la rareza de cada producto.
+     */
+    public void adjustPrices() {
+        for (Map.Entry<String, Set<String>> entry : productAgentMap.entrySet()) {
+            String productName = entry.getKey();
+            Set<String> agents = entry.getValue();
+            double price = resources.get(productName).getCost();
+            double basePrice = basePrices.getOrDefault(productName, 0);
+            double newPrice = price * Math.pow(diversityFactor, agents.size());
+            newPrice = Math.max(newPrice, basePrice / 2.0);
+            resources.get(productName).setCost((int) newPrice);
+            System.out.println("Adjusted price for " + productName + " from " + price + " to " + newPrice);
+        }
+        wpsReport.info("Adjusted prices based on rarity " + this.toString(), "wpsMarket");
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("MarketAgentState{");
+        sb.append("resources=");
+
+        if (resources.isEmpty()) {
+            sb.append("No resources available");
+        } else {
+            sb.append("[");
+            resources.forEach((key, value) -> sb.append("{Product Name: ")
+                    .append(key)
+                    .append(", Details: ")
+                    .append(value.toString())
+                    .append("}, "));
+            // Remueve la última coma y espacio si hay elementos en el mapa
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append("]");
+        }
+
+        sb.append('}');
+        return sb.toString();
+    }
+
     public Map<String, FarmingResource> getResources() {
         return resources;
     }
