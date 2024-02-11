@@ -12,12 +12,12 @@ import java.io.Serializable;
 public class LoanTable implements Serializable {
     
     private String peasantFamily;
-    private Integer loanGranted;
+    private double loanGranted;
     private Integer maxTerm;
     private Integer paidTerm;
     private BankMessageType loanType;
     
-    public LoanTable(String peasantFamily, Integer loanGranted, Integer maxTerm, Integer paidTerm, BankMessageType loanType){
+    public LoanTable(String peasantFamily, double loanGranted, Integer maxTerm, Integer paidTerm, BankMessageType loanType){
         this.peasantFamily = peasantFamily;
         this.loanGranted = loanGranted;
         this.maxTerm = maxTerm;
@@ -33,7 +33,7 @@ public class LoanTable implements Serializable {
         this.loanType = loanType;
     }
     
-    public int MoneyToPay(){
+    public double MoneyToPay(){
         if (maxTerm > 0){
             return loanGranted/maxTerm;
         }
@@ -48,7 +48,7 @@ public class LoanTable implements Serializable {
         this.peasantFamily = peasantFamilyAlias;
     }
 
-    public Integer getLoanGranted() {
+    public double getLoanGranted() {
         return loanGranted;
     }
 

@@ -28,6 +28,8 @@ import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoHealthCareGoal;
+import org.wpsim.PeasantFamily.Goals.L2Obligation.LookForLoanGoal;
+import org.wpsim.PeasantFamily.Goals.L2Obligation.PayDebtsGoal;
 import org.wpsim.PeasantFamily.Guards.FromControl.ToControlMessage;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVitalsGoal;
 import org.wpsim.PeasantFamily.Goals.L1Survival.SeekPurposeGoal;
@@ -114,8 +116,8 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(SelfEvaluationGoal.buildGoal());
 
         //Level 2 Goals: Obligations
-        //goals.add(LookForLoanGoal.buildGoal());
-        //goals.add(PayDebtsGoal.buildGoal());
+        goals.add(LookForLoanGoal.buildGoal());
+        goals.add(PayDebtsGoal.buildGoal());
 
         //Level 3 Goals: Development        
         //goals.add(AttendToLivestockGoal.buildGoal());

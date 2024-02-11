@@ -47,6 +47,7 @@ public class BankAgentGuard extends GuardBESA {
         BankAgentState state = (BankAgentState) this.agent.getState();
 
         BankMessageType messageType = bankMessage.getMessageType();
+        System.out.println("$$$ Bank " + messageType + " desde " + bankMessage.getPeasantAlias());
 
         try {
             //wpsReport.info("$ uno ");
@@ -54,7 +55,7 @@ public class BankAgentGuard extends GuardBESA {
                     bankMessage.getPeasantAlias()
             );
             FromBankMessageType fromBankMessageType = null;
-            Integer amount = 0;
+            double amount = 0;
 
             switch (messageType) {
                 case ASK_FOR_FORMAL_LOAN:

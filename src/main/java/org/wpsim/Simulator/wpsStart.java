@@ -50,7 +50,7 @@ public class wpsStart {
     public static int stepTime = 20;
     public static boolean started = false;
     public final static int DAYS_TO_CHECK = 8;
-    public final static int DEFAULT_AGENTS_TO_TEST = 10;
+    public final static int DEFAULT_AGENTS_TO_TEST = 5;
     public static int CREATED_AGENTS = 0;
     public static boolean EMOTIONS = true;
     public static boolean RANDOM_EMOTIONS = true;
@@ -58,7 +58,7 @@ public class wpsStart {
     public static boolean SMALL_FARMS = true;
     public static boolean MEDIUM_FARMS = false;
     public static boolean LARGE_FARMS = false;
-    public static final String ENDDATE = "01/01/2024";
+    public static final String ENDDATE = "01/01/2026";
     public static final boolean WEBUI = true;
     public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();

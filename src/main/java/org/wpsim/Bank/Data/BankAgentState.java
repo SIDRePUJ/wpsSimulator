@@ -47,7 +47,7 @@ public class BankAgentState extends StateBESA implements Serializable {
         availableMoney = 10000000;
     }
     
-    public boolean giveLoanToPeasantFamily(BankMessageType loanType, String peasantFamily, Integer money) {
+    public boolean giveLoanToPeasantFamily(BankMessageType loanType, String peasantFamily, double money) {
 
         //@TODO: incluir prestamos informales, cobro cada semana y más interés.
         if (availableMoney > money && !loans.containsKey(peasantFamily)) {
@@ -83,7 +83,7 @@ public class BankAgentState extends StateBESA implements Serializable {
         this.loans.put(PeasantFamily, loanTable);
     }
     
-    public int currentMoneyToPay(String PeasantFamily) {
+    public double currentMoneyToPay(String PeasantFamily) {
         if (this.loans.containsKey(PeasantFamily)) {
             return this.loans.get(PeasantFamily).MoneyToPay();
         } else {
@@ -91,7 +91,7 @@ public class BankAgentState extends StateBESA implements Serializable {
         }
     }
     
-    public Integer payLoan(String PeasantFamily, Integer money) {
+    public double payLoan(String PeasantFamily, double money) {
         if (money >= loans.get(PeasantFamily).MoneyToPay()) {
             // If money is enought discount one paid term.
             loans.get(PeasantFamily).increasePaidTerm();

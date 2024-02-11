@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -30,42 +30,42 @@ import rational.mapping.Task;
 import static org.wpsim.Bank.Data.BankMessageType.PAY_LOAN_TERM;
 
 /**
- *
  * @author jairo
  */
 public class PayDebtsTask extends wpsTask {
 
-
     /**
-     *
-     */
-    public PayDebtsTask() {
-    }
-
-    /**
-     *
      * @param parameters
      */
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
-        wpsReport.info("⚙️⚙️⚙️ Paying ", believes.getPeasantProfile().getPeasantFamilyAlias());
-        try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(wpsStart.config.getBankAgentName());
 
-            BankMessage bankMessage = new BankMessage(
-                    PAY_LOAN_TERM,
-                    believes.getPeasantProfile().getPeasantFamilyAlias()
+        double amount;
+        if (believes.getPeasantProfile().getLoanAmountToPay() > believes.getPeasantProfile().getMoney()){
+            amount = believes.getPeasantProfile().getLoanAmountToPay();
+        }else{
+            amount = believes.getPeasantProfile().getMoney();
+        }
+
+        wpsReport.info("⚙️⚙️⚙️ Paying " + amount, believes.getPeasantProfile().getPeasantFamilyAlias());
+
+        try {
+
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getBankAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            BankAgentGuard.class.getName(),
+                            new BankMessage(
+                                    PAY_LOAN_TERM,
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    amount
+                            )
+                    )
             );
 
-            EventBESA ev = new EventBESA(
-                    BankAgentGuard.class.getName(),
-                    bankMessage);
-            ah.sendEvent(ev);
-            
             believes.getPeasantProfile().useMoney(
                     believes.getPeasantProfile().getLoanAmountToPay()
             );
@@ -74,7 +74,8 @@ public class PayDebtsTask extends wpsTask {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        
+        believes.addTaskToLog(believes.getInternalCurrentDate());
+
     }
 
 }

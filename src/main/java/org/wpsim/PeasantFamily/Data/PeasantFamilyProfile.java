@@ -47,7 +47,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private double money;
     private double initialMoney;
     private double totalIncome;
-    private int loanAmountToPay;
+    private double loanAmountToPay;
     private double housingQuailty;
     private double timeSpentOnMaintenance;
     private double cropHealth;
@@ -557,10 +557,10 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      * @param money
      */
-    public synchronized void increaseMoney(Integer money) {
+    public synchronized void increaseMoney(double money) {
         this.money += money;
     }
-    public synchronized void decreaseMoney(Integer money) {
+    public synchronized void decreaseMoney(double money) {
         this.money -= money;
     }
 
@@ -592,7 +592,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      * @param loanAmountToPay
      */
-    public synchronized void setLoanAmountToPay(int loanAmountToPay) {
+    public synchronized void setLoanAmountToPay(double loanAmountToPay) {
         this.loanAmountToPay = loanAmountToPay;
     }
 

@@ -35,7 +35,6 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(believes.getTimeLeftOnDay());
 
         // Robo
         if (Math.random() < 0.3) {
@@ -58,6 +57,7 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
             believes.getPeasantProfile().increaseMoney(380000);
             believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
         }
+        believes.useTime(believes.getTimeLeftOnDay());
     }
 
 }

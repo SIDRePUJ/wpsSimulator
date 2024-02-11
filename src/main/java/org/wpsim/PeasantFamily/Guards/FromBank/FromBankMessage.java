@@ -22,7 +22,7 @@ import BESA.Kernel.Agent.Event.DataBESA;
  */
 public class FromBankMessage extends DataBESA {
 
-    private Integer amount;
+    private double amount;
     private FromBankMessageType fromBankMessageType;
 
     /**
@@ -30,7 +30,7 @@ public class FromBankMessage extends DataBESA {
      * @param fromBankMessageType
      * @param amount
      */
-    public FromBankMessage(FromBankMessageType fromBankMessageType, Integer amount) {
+    public FromBankMessage(FromBankMessageType fromBankMessageType, double amount) {
         this.amount = amount;
         this.fromBankMessageType = fromBankMessageType;
     }
@@ -47,7 +47,7 @@ public class FromBankMessage extends DataBESA {
      *
      * @return
      */
-    public Integer getAmount() {
+    public double getAmount() {
         return amount;
     }
 
