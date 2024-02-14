@@ -17,7 +17,7 @@ StablePeasant:
   peasantFamilyMinimalVital: 10000
   rainfallConditions: dry
   cropSize: 1
-  seeds: 1000
+  seeds: 0
   startRiceSeason: 15/01/2022
   money: 2200000
   waterAvailable: 1000
@@ -61,7 +61,7 @@ StablePeasant:
   processingTime: 1.0
   riceSeedsByHectare: 20
   #toolsAndSupplies:
-  tools: 10
+  tools: 0
   toolsAvailability: 1.0
   toolsCost: 1.0
   supplies: 1.0

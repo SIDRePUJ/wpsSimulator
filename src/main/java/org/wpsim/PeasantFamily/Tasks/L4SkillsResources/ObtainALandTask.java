@@ -30,33 +30,33 @@ import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
 /**
- *
  * @author jairo
  */
 public class ObtainALandTask extends wpsTask {
 
     /**
-     *
      * @param parameters
      */
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         try {
-            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(wpsStart.config.getGovernmentAgentName());
-            GovernmentLandData governmentLandData = new GovernmentLandData(
-                    believes.getPeasantProfile().getPeasantFamilyAlias()
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getGovernmentAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            GovernmentAgentLandGuard.class.getName(),
+                            new GovernmentLandData(
+                                    believes.getPeasantProfile().getPeasantFamilyAlias()
+                            )
+                    )
             );
-            EventBESA ev = new EventBESA(GovernmentAgentLandGuard.class.getName(), governmentLandData);
-            ah.sendEvent(ev);
             //System.out.println("Enviando mensaje al gobierno para obtener tierra " + believes.getPeasantProfile().getPeasantFamilyAlias());
         } catch (ExceptionBESA ex) {
-            System.out.println(ex);
+            wpsReport.error(ex, "ObtainALandTask");
         }
 
         while (believes.equals("")) {
@@ -77,7 +77,7 @@ public class ObtainALandTask extends wpsTask {
         believes.getPeasantProfile().setFarmDistance(1);
 
         wpsReport.info("🥬 " + believes.getPeasantProfile().getPeasantFamilyAlias() + " ya tiene tierra " + believes.getPeasantProfile().getPeasantFamilyLandAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
-
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

@@ -88,22 +88,6 @@ public class EmotionalEvaluator {
         SecureInsecure.addTerm(new Trapezoid("Secure", 0.2, 0.4, 1.0, 1.0));
         engine.addInputVariable(SecureInsecure);
 
-        /*InputVariable RelievedOverwhelmed = new InputVariable();
-        RelievedOverwhelmed.setName("RelievedOverwhelmed");
-        RelievedOverwhelmed.setRange(-1.0, 1.0);
-        RelievedOverwhelmed.addTerm(new Trapezoid("Overwhelmed", -1.0, -1.0, -0.6, 0.2));
-        RelievedOverwhelmed.addTerm(new Triangle("Neutral", -0.2, 0.0, 0.2));
-        RelievedOverwhelmed.addTerm(new Trapezoid("Relieved", 0.2, 0.4, 1.0, 1.0));
-        engine.addInputVariable(RelievedOverwhelmed);
-
-        InputVariable FocusedDistracted = new InputVariable();
-        FocusedDistracted.setName("FocusedDistracted");
-        FocusedDistracted.setRange(-1.0, 1.0);
-        FocusedDistracted.addTerm(new Trapezoid("Distracted", -1.0, -1.0, -0.5, 0.0));
-        FocusedDistracted.addTerm(new Triangle("Neutral", -0.2, 0.0, 0.2));
-        FocusedDistracted.addTerm(new Trapezoid("Focused", 0.2, 0.4, 1.0, 1.0));
-        engine.addInputVariable(FocusedDistracted);*/
-
         OutputVariable emotionalState = new OutputVariable();
         emotionalState.setName("EmotionalState");
         emotionalState.setRange(0.0, 1.0);

@@ -40,10 +40,10 @@ public class DoHealthCareTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.DoHealthCareTask);
         believes.getPeasantProfile().increaseHealth();
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 

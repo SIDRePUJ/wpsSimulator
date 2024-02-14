@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -45,8 +45,7 @@ public class PrepareLandTask extends wpsLandTask {
         //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
 
         int factor = 1;
-        if (!believes.getPeasantFamilyHelper().isBlank())
-        {
+        if (!believes.getPeasantFamilyHelper().isBlank()) {
             factor = 2;
         }
 
@@ -54,10 +53,11 @@ public class PrepareLandTask extends wpsLandTask {
             if (currentLandInfo.getKind().equals("land")) {
                 if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
                     //System.out.println("Preparing Planting season for " + currentLandInfo.getLandName());
-                    this.increaseWorkDone(believes,currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime()*factor);
+                    this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime() * factor);
                     if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                         this.resetLand(believes, currentLandInfo.getLandName());
-                        //System.out.println("Finishing Preparing Planting season for " + currentLandInfo.getLandName());
+                        System.out.println("Finishing Preparing Planting season for " + currentLandInfo.getLandName() + " pidiendo semillas.");
+                        believes.getPeasantProfile().increaseSeedsNeeded(1);
                         currentLandInfo.setCurrentSeason(SeasonType.PLANTING);
                     }
                     return;

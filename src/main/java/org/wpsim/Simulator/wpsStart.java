@@ -47,10 +47,10 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 20;
+    public static int stepTime = 100;
     public static boolean started = false;
     public final static int DAYS_TO_CHECK = 8;
-    public final static int DEFAULT_AGENTS_TO_TEST = 5;
+    public final static int DEFAULT_AGENTS_TO_TEST = 1;
     public static int CREATED_AGENTS = 0;
     public static boolean EMOTIONS = true;
     public static boolean RANDOM_EMOTIONS = true;

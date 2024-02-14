@@ -60,7 +60,7 @@ public class LookForLoanTask extends wpsTask {
             BankMessage bankMessage = new BankMessage(
                     ASK_FOR_FORMAL_LOAN,
                     believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    1000000);
+                    2000000);
             EventBESA ev = new EventBESA(
                     BankAgentGuard.class.getName(),
                     bankMessage);

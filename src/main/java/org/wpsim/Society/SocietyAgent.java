@@ -42,9 +42,7 @@ public class SocietyAgent extends AgentBESA {
     }
 
     public static SocietyAgent createAgent(String alias, double passwd) throws ExceptionBESA{        
-        SocietyAgent societyAgent = new SocietyAgent(alias, createState(), createStruct(new StructBESA()), passwd);
-        return societyAgent;
-        
+        return new SocietyAgent(alias, createState(), createStruct(new StructBESA()), passwd);
     }
     
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
@@ -55,8 +53,7 @@ public class SocietyAgent extends AgentBESA {
     }
     
     private static SocietyAgentState createState() throws ExceptionBESA {
-        SocietyAgentState societyAgentState = new SocietyAgentState();
-        return societyAgentState;
+        return new SocietyAgentState();
     }
 
     /**

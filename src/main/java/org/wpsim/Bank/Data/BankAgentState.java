@@ -21,6 +21,7 @@ import org.wpsim.Bank.Data.LoanTable;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -31,11 +32,21 @@ public class BankAgentState extends StateBESA implements Serializable {
     private double availableMoney;
     private Map<String, LoanTable> loans = new HashMap<>();
 
+    private String loansToString() {
+        if (loans.isEmpty()) {
+            return "No active loans";
+        }
+        return loans.entrySet()
+                .stream()
+                .map(entry -> String.format("%s: %s", entry.getKey(), entry.getValue().toString()))
+                .collect(Collectors.joining(", ", "{", "}"));
+    }
+
     @Override
     public String toString() {
         return "BankAgentState{" +
                 "availableMoney=" + availableMoney +
-                ", loans=" + loans +
+                ", loans=" + loansToString() + // Usamos el método personalizado aquí
                 '}';
     }
 
@@ -46,7 +57,7 @@ public class BankAgentState extends StateBESA implements Serializable {
         super();
         availableMoney = 10000000;
     }
-    
+
     public boolean giveLoanToPeasantFamily(BankMessageType loanType, String peasantFamily, double money) {
 
         //@TODO: incluir prestamos informales, cobro cada semana y más interés.
@@ -66,23 +77,23 @@ public class BankAgentState extends StateBESA implements Serializable {
             return false;
         }
     }
-    
+
     public double getAvailableMoney() {
         return availableMoney;
     }
-    
+
     public void setAvailableMoney(double availableMoney) {
         this.availableMoney = availableMoney;
     }
-    
+
     public Map<String, LoanTable> getLoans() {
         return loans;
     }
-    
+
     public void addLoanPeasantFamily(String PeasantFamily, LoanTable loanTable) {
         this.loans.put(PeasantFamily, loanTable);
     }
-    
+
     public double currentMoneyToPay(String PeasantFamily) {
         if (this.loans.containsKey(PeasantFamily)) {
             return this.loans.get(PeasantFamily).MoneyToPay();
@@ -90,7 +101,7 @@ public class BankAgentState extends StateBESA implements Serializable {
             return 0;
         }
     }
-    
+
     public double payLoan(String PeasantFamily, double money) {
         if (money >= loans.get(PeasantFamily).MoneyToPay()) {
             // If money is enought discount one paid term.

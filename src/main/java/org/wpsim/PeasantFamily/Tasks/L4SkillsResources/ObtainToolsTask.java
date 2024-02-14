@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -45,23 +45,24 @@ public class ObtainToolsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         try {
-            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(wpsStart.config.getMarketAgentName());
-            MarketMessage marketMessage = new MarketMessage(
-                    BUY_TOOLS,
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    10);
-
-            EventBESA ev = new EventBESA(
-                    MarketAgentGuard.class.getName(),
-                    marketMessage);
-            ah.sendEvent(ev);
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getMarketAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            MarketAgentGuard.class.getName(),
+                            new MarketMessage(
+                                    BUY_TOOLS,
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    believes.getPeasantProfile().getToolsNeeded()
+                            )
+                    )
+            );
             wpsReport.debug("ObtainToolsTask.executeTask: "
-                    + believes.getPeasantProfile().getPeasantFamilyAlias()
-                    + " BUY_TOOLS",
+                            + believes.getPeasantProfile().getPeasantFamilyAlias()
+                            + " BUY_TOOLS",
                     believes.getPeasantProfile().getPeasantFamilyAlias()
             );
 
@@ -69,6 +70,7 @@ public class ObtainToolsTask extends wpsTask {
             wpsReport.error(ex, "obtainToolsTask.executeTask");
         }
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

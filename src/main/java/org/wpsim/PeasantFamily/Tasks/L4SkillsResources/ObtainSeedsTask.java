@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -48,21 +48,21 @@ public class ObtainSeedsTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        //wpsReport.info("$ Asking for a LOAN to the Bank " + believes.getProfile().getMoney());
 
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {
-
-            MarketMessage marketMessage = new MarketMessage(
-                    BUY_SEEDS,
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    10
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getMarketAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            MarketAgentGuard.class.getName(),
+                            new MarketMessage(
+                                    BUY_SEEDS,
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    believes.getPeasantProfile().getSeedsNeeded()
+                            )
+                    )
             );
-
-            EventBESA ev = new EventBESA(
-                    MarketAgentGuard.class.getName(),
-                    marketMessage);
-            AdmBESA.getInstance().getHandlerByAlias(wpsStart.config.getMarketAgentName()).sendEvent(ev);
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "ObtainSeedsTask.executeTask( )");

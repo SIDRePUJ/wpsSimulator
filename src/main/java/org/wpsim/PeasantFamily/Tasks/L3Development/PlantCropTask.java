@@ -182,7 +182,7 @@ public class PlantCropTask extends wpsLandTask {
                                 wpsReport.error("Error renovando tierra " + currentLandInfo.getLandName(), peasantAlias);
                             }
                             // TODO: Estimar el costo de Semillas
-                            profile.useSeeds(profile.getRiceSeedsByHectare());
+                            profile.useSeeds(1);
                             currentLandInfo.setCurrentSeason(SeasonType.GROWING);
                         }
                     } else {

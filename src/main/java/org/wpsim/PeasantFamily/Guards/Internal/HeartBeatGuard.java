@@ -146,7 +146,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             } catch (Exception e) {
                 System.out.println("Error Cerrendo Agente");
             }
-            wpsStart.stopSimulation();
+            //wpsStart.stopSimulation();
             return true;
         }
         return false;

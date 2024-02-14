@@ -100,6 +100,8 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private String endRiceSeason;
     private String currentCropName;
     private String rainfallConditions;
+    private int seedsNeeded;
+    private int toolsNeeded;
 
 
     /**
@@ -290,7 +292,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
         } else if (this.health <= 0) {
             this.health = 0;
         } else {
-            this.health = this.health + 20;
+            this.health = this.health + (int) (Math.random() * 21);
         }
     }
 
@@ -1427,5 +1429,31 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
 
     public void setPeasantFamilyLandAlias(String landName) {
         peasantFamilyLandAlias = landName;
+    }
+
+    public int getSeedsNeeded() {
+        return seedsNeeded;
+    }
+    public void setSeedsNeeded(int seedsNeeded) {
+        this.seedsNeeded = seedsNeeded;
+    }
+    public void increaseSeedsNeeded(int seedsNeeded) {
+        this.seedsNeeded += seedsNeeded;
+    }
+    public void decreaseSeedsNeeded(int seedsNeeded) {
+        this.seedsNeeded -= seedsNeeded;
+    }
+
+    public int getToolsNeeded() {
+        return toolsNeeded;
+    }
+    public void setToolsNeeded(int toolsNeeded) {
+        this.toolsNeeded = toolsNeeded;
+    }
+    public void increaseToolsNeeded(int toolsNeeded) {
+        this.toolsNeeded += toolsNeeded;
+    }
+    public void decreaseToolsNeeded(int toolsNeeded) {
+        this.toolsNeeded -= toolsNeeded;
     }
 }

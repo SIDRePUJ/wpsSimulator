@@ -134,4 +134,9 @@ public class ControlCurrentDate {
         DateTime date = DateHelper.getDateInJoda(getCurrentDate());
         return date.getWeekOfWeekyear();
     }
+
+    public int getCurrentMonth() {
+        DateTime date = DateHelper.getDateInJoda(getCurrentDate());
+        return date.monthOfYear().get();
+    }
 }

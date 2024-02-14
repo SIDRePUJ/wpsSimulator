@@ -47,7 +47,7 @@ public class BankAgentGuard extends GuardBESA {
         BankAgentState state = (BankAgentState) this.agent.getState();
 
         BankMessageType messageType = bankMessage.getMessageType();
-        System.out.println("$$$ Bank " + messageType + " desde " + bankMessage.getPeasantAlias() + " por " + bankMessage.getAmount() + " $$$");
+        //System.out.println("$$$ Bank " + messageType + " desde " + bankMessage.getPeasantAlias() + " por " + bankMessage.getAmount() + " $$$");
 
         try {
             //wpsReport.info("$ uno ");
@@ -118,6 +118,7 @@ public class BankAgentGuard extends GuardBESA {
             wpsReport.error("Mensaje no reconocido de funcExecGuard", this.getAgent().getAlias());
         }
 
+        //System.out.println(state);
     }
 
 }

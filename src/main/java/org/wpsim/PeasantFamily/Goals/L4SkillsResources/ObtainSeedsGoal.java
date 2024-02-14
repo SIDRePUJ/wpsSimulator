@@ -73,7 +73,8 @@ public class ObtainSeedsGoal extends wpsGoalBDI {
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
         //wpsReport.info("");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getMoney() > 20000) {
+        if (believes.getPeasantProfile().getMoney() >=
+                (believes.getPriceList().get("seeds").getCost()*believes.getPeasantProfile().getSeedsNeeded())) {
             return 1;
         } else {
             return 0;
@@ -95,7 +96,7 @@ public class ObtainSeedsGoal extends wpsGoalBDI {
         }
 
         //wpsReport.info("PlantingSeason=" + believes.getProfile().isPlantingSeason());
-        if (believes.getPeasantProfile().getSeeds() <= 10) {
+        if (believes.getPeasantProfile().getSeeds() < believes.getPeasantProfile().getSeedsNeeded()) {
             return 1;
         } else {
             return 0;

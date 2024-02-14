@@ -77,7 +77,7 @@ public class ObtainToolsGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getTools() <= 10) {
+        if (believes.getPeasantProfile().getTools() < believes.getPeasantProfile().getToolsNeeded()) {
             return 1;
         } else {
             return 0;

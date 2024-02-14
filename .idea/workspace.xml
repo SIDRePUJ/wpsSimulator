@@ -9,19 +9,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Siembra cambia las condiciones climáticas según el año">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Activados los prestamos y pagos en el banco.">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Bank/Data/BankAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Bank/Data/BankAgentState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Bank/Data/BankMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Bank/Data/BankMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Bank/Data/LoanTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Bank/Data/LoanTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Bank/Guards/BankAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Bank/Guards/BankAgentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlCurrentDate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlCurrentDate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L2Obligation/PayDebtsGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L2Obligation/PayDebtsGoal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromBank/FromBankMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromBank/FromBankMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L2Obligation/PayDebtsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L2Obligation/PayDebtsTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEvaluator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L3Development/PlantCropGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L3Development/PlantCropGoal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L4SkillsResources/ObtainSeedsGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L4SkillsResources/ObtainSeedsGoal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L4SkillsResources/ObtainToolsGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L4SkillsResources/ObtainToolsGoal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment/FromGovernmentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment/FromGovernmentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarket/FromMarketGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarket/FromMarketGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoHealthCareTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoHealthCareTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L2Obligation/LookForLoanTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L2Obligation/LookForLoanTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PrepareLandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PrepareLandTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SearchForHelpAndNecessityTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SearchForHelpAndNecessityTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainALandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainALandTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainSeedsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainSeedsTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainToolsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainToolsTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Society/SocietyAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Society/SocietyAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/benckmark-checkpoint.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/benckmark-checkpoint.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +97,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.16989066&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.27296937&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -194,8 +210,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.1-openjdk-21.0.1-3183f394aec4-920bfa72" />
-        <option value="jdk-21.0.2-openjdk-21.0.2-f644763e9732-563d888c" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-78a6f59c" />
       </set>
     </attachedChunks>
   </component>
@@ -279,7 +294,13 @@
       <workItem from="1707060124097" duration="12336000" />
       <workItem from="1707434931019" duration="19271000" />
       <workItem from="1707593010735" duration="123000" />
-      <workItem from="1707664849035" duration="3485000" />
+      <workItem from="1707664849035" duration="3647000" />
+      <workItem from="1707704020330" duration="299000" />
+      <workItem from="1707704343764" duration="11000" />
+      <workItem from="1707704365763" duration="248000" />
+      <workItem from="1707839124711" duration="93000" />
+      <workItem from="1707839225180" duration="356000" />
+      <workItem from="1707861959241" duration="12419000" />
     </task>
     <task id="LOCAL-00001" summary="Nueva versión">
       <option name="closed" value="true" />
@@ -577,7 +598,31 @@
       <option name="project" value="LOCAL" />
       <updated>1706213458388</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Activados los prestamos y pagos en el banco.">
+      <option name="closed" value="true" />
+      <created>1707670322872</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1707670322872</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Activados los prestamos y pagos en el banco.">
+      <option name="closed" value="true" />
+      <created>1707670368829</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1707670368829</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Activados los prestamos y pagos en el banco.">
+      <option name="closed" value="true" />
+      <created>1707670437254</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1707670437254</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -628,7 +673,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Asignación y visualización de tierras aleatorias." />
     <MESSAGE value="Ajustes para cluster de 4 servidores" />
     <MESSAGE value="Siembra en multiples tierras y epocas. todavía no funciona totalmente." />
     <MESSAGE value="Código funcional, depurando despues de siembra." />
@@ -653,7 +697,8 @@
     <MESSAGE value="Control de tiempo ajustado, los agentes esperan a los agentes demorados." />
     <MESSAGE value="Simulación funcionando sin saltos y de forma acelerada. versión 0.3" />
     <MESSAGE value="Siembra cambia las condiciones climáticas según el año" />
-    <option name="LAST_COMMIT_MESSAGE" value="Siembra cambia las condiciones climáticas según el año" />
+    <MESSAGE value="Activados los prestamos y pagos en el banco." />
+    <option name="LAST_COMMIT_MESSAGE" value="Activados los prestamos y pagos en el banco." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

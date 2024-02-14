@@ -74,5 +74,17 @@ public class LoanTable implements Serializable {
     public void increasePaidTerm() {
         this.paidTerm++;
     }
-    
+
+    @Override
+    public String toString() {
+        return String.format(
+                "LoanTable{peasantFamily='%s', loanGranted=%.2f, maxTerm=%d, paidTerm=%d, loanType='%s', remainingPayments=%.2f}",
+                peasantFamily,
+                loanGranted,
+                maxTerm,
+                paidTerm,
+                loanType,
+                MoneyToPay() * (maxTerm - paidTerm)
+        );
+    }
 }

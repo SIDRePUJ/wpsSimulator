@@ -63,38 +63,28 @@ public class FromMarketGuard extends GuardBESA {
                 believes.setUpdatePriceList(true);
                 break;
             case PRICE_LIST:
-                believes.setPriceList(
-                        fromMarketMessage.getPriceList()
-                );
+                believes.setPriceList(fromMarketMessage.getPriceList());
                 break;
             case SEEDS:
-                believes.getPeasantProfile().setSeeds(
-                        fromMarketMessage.getQuantity()
-                );
+                believes.getPeasantProfile().setSeeds(fromMarketMessage.getQuantity());
+                believes.getPeasantProfile().decreaseSeedsNeeded(fromMarketMessage.getQuantity());
                 discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("seeds").getCost();
                 break;
             case WATER:
-                believes.getPeasantProfile().setWaterAvailable(
-                        fromMarketMessage.getQuantity()
-                );
+                believes.getPeasantProfile().setWaterAvailable(fromMarketMessage.getQuantity());
                 discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("water").getCost();
                 break;
             case PESTICIDES:
-                believes.getPeasantProfile().setPesticidesAvailable(
-                        fromMarketMessage.getQuantity()
-                );
+                believes.getPeasantProfile().setPesticidesAvailable(fromMarketMessage.getQuantity());
                 discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("pesticides").getCost();
                 break;
             case SUPPLIES:
-                believes.getPeasantProfile().setSupplies(
-                        fromMarketMessage.getQuantity()
-                );
+                believes.getPeasantProfile().setSupplies(fromMarketMessage.getQuantity());
                 discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("supplies").getCost();
                 break;
             case TOOLS:
-                believes.getPeasantProfile().setTools(
-                        fromMarketMessage.getQuantity()
-                );
+                believes.getPeasantProfile().setTools(fromMarketMessage.getQuantity());
+                believes.getPeasantProfile().decreaseToolsNeeded(fromMarketMessage.getQuantity());
                 discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("tools").getCost();
                 break;
             case LIVESTOCK:

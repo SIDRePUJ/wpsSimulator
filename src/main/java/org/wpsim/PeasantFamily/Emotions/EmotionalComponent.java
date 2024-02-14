@@ -93,7 +93,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         HappinessSadness.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.3f);
         HappinessSadness.setEventInfluence(EmotionalEventType.STARVING.name(), 0.6f);
         HappinessSadness.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
-        HappinessSadness.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.6f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.8f);
         this.addEmotionAxis(HappinessSadness);
 
         EmotionAxis HopefulUncertainty = new EmotionAxis(

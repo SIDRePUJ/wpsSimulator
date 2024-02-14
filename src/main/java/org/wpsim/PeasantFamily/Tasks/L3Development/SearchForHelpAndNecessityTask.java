@@ -15,6 +15,7 @@
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import BESA.Emotional.EmotionalEvent;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import rational.mapping.Believes;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -40,6 +41,7 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
         if (Math.random() < 0.3) {
             believes.increaseRobberyAccount();
             believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "THIEVING", "MONEY"));
+            believes.processEmotionalEvent(new EmotionalEvent("STRANGER", "THIEVING", "MONEY"));
             if (Math.random() < 0.4) {
                 believes.getPeasantProfile().increaseMoney(65000);
             } else {
@@ -53,9 +55,13 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
             //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "THIEVING", "MONEY"));
         }else{
             // @TODO: ajustar a cada dos meses como parte de familias en acción
-            believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HELPED", "MONEY"));
-            believes.getPeasantProfile().increaseMoney(380000);
-            believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
+            if (ControlCurrentDate.getInstance().getCurrentMonth()%2 == 0) {
+                believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HELPED", "MONEY"));
+                believes.getPeasantProfile().increaseMoney(380000);
+                believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
+            }else{
+                believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "STARVING", "MONEY"));
+            }
         }
         believes.useTime(believes.getTimeLeftOnDay());
     }

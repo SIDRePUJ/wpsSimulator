@@ -141,9 +141,9 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(GetTrainingGoal.buildGoal());
         goals.add(ObtainALandGoal.buildGoal());
         //goals.add(ObtainLivestockGoal.buildGoal());
-        //goals.add(ObtainSeedsGoal.buildGoal());
+        goals.add(ObtainSeedsGoal.buildGoal());
         //goals.add(ObtainSuppliesGoal.buildGoal());
-        //goals.add(ObtainToolsGoal.buildGoal());
+        goals.add(ObtainToolsGoal.buildGoal());
         //goals.add(ObtainWaterGoal.buildGoal());
         //goals.add(ObtainPesticidesGoal.buildGoal());
 
@@ -242,6 +242,8 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         } catch (Exception ex) {
             System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " " + ex.getMessage());
         }
+
+        wpsStart.stopSimulation();
 
     }
 

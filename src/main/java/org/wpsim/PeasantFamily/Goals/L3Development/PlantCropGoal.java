@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -94,8 +94,14 @@ public class PlantCropGoal extends wpsGoalBDI {
         List<LandInfo> landInfos = believes.getAssignedLands();
         for (LandInfo currentLandInfo : landInfos) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
+                // Revisar si tiene semillas para sembrar
+                if (believes.getPeasantProfile().getSeeds() >= believes.getPeasantProfile().getSeedsNeeded()
+                        && believes.getPeasantProfile().getTools() >= believes.getPeasantProfile().getToolsNeeded()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
                 //System.out.println(currentLandInfo.getLandName() + " encontrado por plantar");
-                return 1;
             }
         }
         return 0;
