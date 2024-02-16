@@ -12,9 +12,10 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Market;
+package org.wpsim.Market.Data;
 
 import BESA.Kernel.Agent.Event.DataBESA;
+import org.wpsim.Market.Data.MarketMessageType;
 
 /**
  *
@@ -51,6 +52,10 @@ public class MarketMessage extends DataBESA {
         this.quantity = (int) quantity;
         this.marketMessageType = marketMessageType;
         this.cropName = cropName;
+    }
+    public MarketMessage(MarketMessageType marketMessageType, int quantity) {
+        this.marketMessageType = marketMessageType;
+        this.quantity = (int) quantity;
     }
 
     /**

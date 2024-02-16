@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Market;
+package org.wpsim.Market.Data;
 
 /**
  *
@@ -56,6 +56,12 @@ public enum MarketMessageType {
     /**
      * 
      */
-    SELL_CROP
+    SELL_CROP,
+    INCREASE_TOOS_PRICE,
+    INCREASE_SEEDS_PRICE,
+    INCREASE_CROP_PRICE,
+    DECREASE_TOOLS_PRICE,
+    DECREASE_SEEDS_PRICE,
+    DECREASE_CROP_PRICE
     
 }

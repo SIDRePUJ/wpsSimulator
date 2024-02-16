@@ -20,16 +20,15 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Market.MarketAgentGuard;
-import org.wpsim.Market.MarketMessage;
+import org.wpsim.Market.Guards.MarketAgentGuard;
+import org.wpsim.Market.Data.MarketMessage;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
-import static org.wpsim.Market.MarketMessageType.ASK_FOR_PRICE_LIST;
+import static org.wpsim.Market.Data.MarketMessageType.ASK_FOR_PRICE_LIST;
 
 /**
  *

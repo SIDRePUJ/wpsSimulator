@@ -2,19 +2,20 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Market;
+package org.wpsim.Market.Data;
 
 import BESA.Kernel.Agent.StateBESA;
+import org.wpsim.Control.Data.Coin;
 import org.wpsim.PeasantFamily.Data.Utils.FarmingResource;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
@@ -26,7 +27,6 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *
  * @author jairo
  */
 public class MarketAgentState extends StateBESA implements Serializable {
@@ -36,6 +36,7 @@ public class MarketAgentState extends StateBESA implements Serializable {
     private Map<String, Set<String>> productAgentMap = new HashMap<>();
     private double diversityFactor;
     private final int maxPeasantFamiliesAgents;
+
     /**
      * Constructor for MarketAgentState
      */
@@ -49,7 +50,8 @@ public class MarketAgentState extends StateBESA implements Serializable {
 
     /**
      * Actualiza el conjunto de agentes para un producto específico y ajusta el diversityFactor.
-     * @param agentName El nombre del agente que ofrece el producto.
+     *
+     * @param agentName   El nombre del agente que ofrece el producto.
      * @param productName El nombre del producto ofrecido.
      */
     public void updateAgentProductMapAndDiversityFactor(String agentName, String productName) {
@@ -69,7 +71,6 @@ public class MarketAgentState extends StateBESA implements Serializable {
                 .mapToInt(Set::size)
                 .min()
                 .orElse(0);
-
         if (uniqueAgentsOffering > 0) {
             double leastOfferedRatio = (double) leastOfferedProductAgentCount / uniqueAgentsOffering;
             diversityFactor = 1.0 - ((double) productTypeCount / maxPeasantFamiliesAgents) * leastOfferedRatio;
@@ -119,7 +120,50 @@ public class MarketAgentState extends StateBESA implements Serializable {
     public Map<String, FarmingResource> getResources() {
         return resources;
     }
+
     public void setResources(Map<String, FarmingResource> resources) {
         this.resources = resources;
+    }
+
+    public void decreaseCropPrice(int factor) {
+        String productName;
+        if (Coin.flipCoin()) {
+            productName = "rice";
+        } else {
+            productName = "roots";
+        }
+        changePrice(productName, factor * -1);
+    }
+    public void increaseCropPrice(int factor) {
+        String productName;
+        if (Coin.flipCoin()) {
+            productName = "rice";
+        } else {
+            productName = "roots";
+        }
+        changePrice(productName, factor);
+    }
+
+    public void increaseToolsPrice(int factor) {
+        changePrice("tools", factor);
+    }
+
+    public void decreaseToolsPrice(int factor) {
+        changePrice("tools", factor * -1);
+    }
+
+    public void decreaseSeedsPrice(int factor) {
+        changePrice("seeds", factor * -1);
+    }
+
+    public void increaseSeedsPrice(int factor) {
+        changePrice("seeds", factor);
+    }
+    public void changePrice(String productName, double factor){
+        factor = 1 + (factor / 100);
+        double price = resources.get(productName).getCost();
+        double newPrice = price * factor;
+        resources.get(productName).setCost((int) newPrice);
+        System.out.println("Adjusted price for " + productName + " from " + price + " to " + (int) newPrice);
     }
 }

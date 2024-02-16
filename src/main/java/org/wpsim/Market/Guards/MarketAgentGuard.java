@@ -12,20 +12,22 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.Market;
+package org.wpsim.Market.Guards;
 
-import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.Market.Data.MarketAgentState;
+import org.wpsim.Market.Data.MarketMessage;
+import org.wpsim.Market.Data.MarketMessageType;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketMessage;
 import org.wpsim.PeasantFamily.Guards.FromMarket.FromMarketMessageType;
 import org.wpsim.Viewer.Data.wpsReport;
 
-import static org.wpsim.Market.MarketMessageType.ASK_FOR_PRICE_LIST;
-import static org.wpsim.Market.MarketMessageType.SELL_CROP;
+import static org.wpsim.Market.Data.MarketMessageType.ASK_FOR_PRICE_LIST;
+import static org.wpsim.Market.Data.MarketMessageType.SELL_CROP;
 
 /**
  *

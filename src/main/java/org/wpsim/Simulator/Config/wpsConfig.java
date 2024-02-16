@@ -42,7 +42,7 @@ public final class wpsConfig {
     private String perturbation;
     private String startSimulationDate;
     private int peasantSerialID;
-
+    private Properties properties = new Properties();
     private PeasantFamilyProfile defaultPeasantFamilyProfile;
     private PeasantFamilyProfile highRiskFarmerProfile;
     private PeasantFamilyProfile thrivingFarmerProfile;
@@ -163,7 +163,7 @@ public final class wpsConfig {
 
     public Map<String, FarmingResource> loadMarketConfig() {
         Map<String, FarmingResource> priceList = new HashMap<>();
-        Properties properties = new Properties();
+
 
         try {
             // Carga las propiedades desde el archivo
@@ -333,5 +333,25 @@ public final class wpsConfig {
 
     public String getGovernmentAgentName() {
         return this.GovernmentAgentName;
+    }
+
+    public String getStringProperty(String property) {
+        return properties.getProperty(property, "");
+    }
+
+    public Double getDoubleProperty(String property) {
+        try {
+            return Double.parseDouble(properties.getProperty(property));
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
+    }
+
+    public int getIntProperty(String property) {
+        try {
+            return Integer.parseInt(properties.getProperty(property));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

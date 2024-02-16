@@ -28,6 +28,7 @@ import org.wpsim.Market.MarketAgent;
 import org.wpsim.PeasantFamily.Guards.Internal.StatusGuard;
 import org.wpsim.PeasantFamily.Guards.Internal.HeartBeatGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
+import org.wpsim.Perturbation.Guards.NaturalPhenomena;
 import org.wpsim.Perturbation.PerturbationAgent;
 import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Society.SocietyAgent;
@@ -187,7 +188,8 @@ public class wpsStart {
             bankAgent.start();
             MarketAgent marketAgent = MarketAgent.createAgent(config.getMarketAgentName(), PASSWD);
             marketAgent.start();
-            PerturbationAgent perturbationAgent = PerturbationAgent.createAgent(PASSWD);
+            // Starting Perturbation Agent
+            PerturbationAgent perturbationAgent = PerturbationAgent.createAgent(config.getPerturbationAgentName(), PASSWD);
             perturbationAgent.start();
         } catch (Exception ex) {
             wpsReport.error(ex.getMessage(), "wpsStart_noOK");
@@ -230,11 +232,30 @@ public class wpsStart {
             }
             // first heart beat to families
             for (int i = 1; i <= peasantFamiliesAgents; i++) {
-                AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias("PeasantFamily_" + i);
-                PeriodicDataBESA periodicDataBESA = new PeriodicDataBESA(stepTime, PeriodicGuardBESA.START_PERIODIC_CALL);
-                EventBESA eventPeriodicWorld = new EventBESA(HeartBeatGuard.class.getName(), periodicDataBESA);
-                ah.sendEvent(eventPeriodicWorld);
+                AdmBESA.getInstance().getHandlerByAlias(
+                        "PeasantFamily_" + i
+                ).sendEvent(
+                        new EventBESA(
+                                HeartBeatGuard.class.getName(),
+                                new PeriodicDataBESA(
+                                        stepTime,
+                                        PeriodicGuardBESA.START_PERIODIC_CALL
+                                )
+                        )
+                );
             }
+            // Start Perturbation Agent Periodic Guard
+            AdmBESA.getInstance().getHandlerByAlias(
+                    config.getPerturbationAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            NaturalPhenomena.class.getName(),
+                            new PeriodicDataBESA(
+                                    stepTime * 100L,
+                                    PeriodicGuardBESA.START_PERIODIC_CALL
+                            )
+                    )
+            );
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "wpsStart");
         }

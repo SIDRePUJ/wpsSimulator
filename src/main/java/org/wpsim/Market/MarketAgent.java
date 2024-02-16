@@ -19,6 +19,9 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
+import org.wpsim.Market.Data.MarketAgentState;
+import org.wpsim.Market.Guards.MarketAgentGuard;
+import org.wpsim.Market.Guards.MarketInfoAgentGuard;
 
 /**
  *
@@ -45,6 +48,7 @@ public class MarketAgent extends AgentBESA {
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         structBESA.addBehavior("MarketAgentGuard");
         structBESA.bindGuard("MarketAgentGuard", MarketAgentGuard.class);
+        structBESA.bindGuard("MarketAgentGuard", MarketInfoAgentGuard.class);
         return structBESA;
     }
     

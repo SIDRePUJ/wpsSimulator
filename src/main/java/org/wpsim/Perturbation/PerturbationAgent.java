@@ -20,6 +20,7 @@ import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
 import org.wpsim.Perturbation.Data.wpsPerturbationState;
+import org.wpsim.Perturbation.Guards.NaturalPhenomena;
 import org.wpsim.Perturbation.Guards.wpsPerturbationGuard;
 import org.wpsim.Simulator.wpsStart;
 
@@ -41,9 +42,9 @@ public class PerturbationAgent extends AgentBESA {
         super(alias, state, structAgent, passwd);
     }
 
-    public static PerturbationAgent createAgent(double passwd) throws ExceptionBESA {
+    public static PerturbationAgent createAgent(String AgentName, double passwd) throws ExceptionBESA {
         return new PerturbationAgent(
-                wpsStart.config.getPerturbationAgentName(),
+                AgentName,
                 createState(),
                 createStruct(
                         new StructBESA()
@@ -56,6 +57,7 @@ public class PerturbationAgent extends AgentBESA {
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         structBESA.addBehavior("PerturbationAgentGuard");
         structBESA.bindGuard("PerturbationAgentGuard", wpsPerturbationGuard.class);
+        structBESA.bindGuard("PerturbationAgentGuard", NaturalPhenomena.class);
         return structBESA;
     }
 
