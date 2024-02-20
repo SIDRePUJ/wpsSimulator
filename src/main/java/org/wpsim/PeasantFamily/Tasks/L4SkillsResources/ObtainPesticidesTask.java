@@ -45,7 +45,6 @@ public class ObtainPesticidesTask extends wpsTask {
         this.setExecuted(false);
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         //wpsReport.info("$ Asking for a LOAN to the Bank " + believes.getProfile().getMoney());
 
@@ -69,6 +68,7 @@ public class ObtainPesticidesTask extends wpsTask {
         }
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);
         //this.setTaskWaitingForExecution();
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

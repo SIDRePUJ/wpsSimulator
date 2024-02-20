@@ -12,16 +12,17 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Goals.L6Leisure;
+package org.wpsim.PeasantFamily.Goals.L3Development;
 
-import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
+import org.wpsim.PeasantFamily.Tasks.L3Development.AlternativeWorkTask;
+import org.wpsim.PeasantFamily.Tasks.L3Development.WorkForOtherTask;
 import org.wpsim.Simulator.wpsStart;
-import org.wpsim.PeasantFamily.Tasks.L6Leisure.WasteTimeAndResourcesTask;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -30,24 +31,24 @@ import rational.mapping.Plan;
  *
  * @author jairo
  */
-public class WasteTimeAndResourcesGoal extends wpsGoalBDI {
+public class AlternativeWorkGoal extends wpsGoalBDI {
 
     /**
      *
      * @return
      */
-    public static WasteTimeAndResourcesGoal buildGoal() {
-        WasteTimeAndResourcesTask wasteTimeAndResourcesTask = new WasteTimeAndResourcesTask();
-        Plan wasteTimeAndResourcesPlan = new Plan();
-        wasteTimeAndResourcesPlan.addTask(wasteTimeAndResourcesTask);
-        RationalRole wasteTimeAndResourcesRole = new RationalRole(
-                "WasteTimeAndResourcesTask",
-                wasteTimeAndResourcesPlan);
-        return new WasteTimeAndResourcesGoal(
+    public static AlternativeWorkGoal buildGoal() {
+        AlternativeWorkTask alternativeWorkTask = new AlternativeWorkTask();
+        Plan alternativeWorkPlan = new Plan();
+        alternativeWorkPlan.addTask(alternativeWorkTask);
+        RationalRole alternativeWorkRole = new RationalRole(
+                "AlternativeWorkTask",
+                alternativeWorkPlan);
+        return new AlternativeWorkGoal(
                 wpsStart.getPlanID(),
-                wasteTimeAndResourcesRole,
-                "WasteTimeAndResourcesTask",
-                GoalBDITypes.ATTENTION_CYCLE);
+                alternativeWorkRole,
+                "AlternativeWorkTask",
+                GoalBDITypes.OPORTUNITY);
     }
 
     /**
@@ -57,7 +58,7 @@ public class WasteTimeAndResourcesGoal extends wpsGoalBDI {
      * @param description
      * @param type
      */
-    public WasteTimeAndResourcesGoal(long id, RationalRole role, String description, GoalBDITypes type) {
+    public AlternativeWorkGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
     }
 
@@ -74,10 +75,28 @@ public class WasteTimeAndResourcesGoal extends wpsGoalBDI {
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
-        // @TODO: Si tengo bastante dinero, se activa proporcionalmente hacer fiesta
-        // @TODO: el rendimiento sería menor
-        // @TODO: Si tiene mucho dinero, puede gastar más.
-        return 1;
+
+        if (believes.getPeasantProfile().getMoney() <= 15000) {
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     *
+     * @param parameters
+     * @return
+     * @throws KernellAgentEventExceptionBESA
+     */
+    @Override
+    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
+        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        if (believes.haveTimeAvailable(TimeConsumedBy.AlternativeWorkTask)) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -88,7 +107,7 @@ public class WasteTimeAndResourcesGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 0.1);
+        return evaluateEmotionalContribution(stateBDI, 1.0);
     }
 
 }

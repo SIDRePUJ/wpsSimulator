@@ -43,7 +43,6 @@ public class ObtainLivestockTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
@@ -64,6 +63,7 @@ public class ObtainLivestockTask extends wpsTask {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "ObtainLivestockTask");
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

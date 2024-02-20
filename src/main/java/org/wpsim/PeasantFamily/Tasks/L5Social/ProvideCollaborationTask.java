@@ -40,7 +40,6 @@ public class ProvideCollaborationTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
 
         try {
@@ -59,5 +58,6 @@ public class ProvideCollaborationTask extends wpsTask {
         } catch (ExceptionBESA ex) {
             System.out.println(ex.getMessage());
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 }

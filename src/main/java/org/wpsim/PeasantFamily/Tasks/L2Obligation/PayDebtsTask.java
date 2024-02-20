@@ -75,7 +75,6 @@ public class PayDebtsTask extends wpsTask {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
         believes.addTaskToLog(believes.getInternalCurrentDate());
-
     }
 
 }

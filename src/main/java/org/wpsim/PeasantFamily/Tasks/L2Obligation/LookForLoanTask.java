@@ -35,12 +35,6 @@ import static org.wpsim.Bank.Data.BankMessageType.ASK_FOR_FORMAL_LOAN;
  * @author jairo
  */
 public class LookForLoanTask extends wpsTask {
-    
-    /**
-     *
-     */
-    public LookForLoanTask() {
-    }
 
     /**
      *
@@ -50,7 +44,6 @@ public class LookForLoanTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.LookForLoanTask);
         wpsReport.debug("LookForLoanTask", believes.getPeasantProfile().getPeasantFamilyAlias());
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
@@ -68,7 +61,7 @@ public class LookForLoanTask extends wpsTask {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
-        this.setTaskFinalized();
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

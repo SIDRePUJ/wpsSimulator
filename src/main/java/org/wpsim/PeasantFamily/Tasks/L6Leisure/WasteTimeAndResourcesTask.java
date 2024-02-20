@@ -35,11 +35,11 @@ public class WasteTimeAndResourcesTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
         believes.getPeasantProfile().useMoney(1000);
         believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "MONEY"));
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

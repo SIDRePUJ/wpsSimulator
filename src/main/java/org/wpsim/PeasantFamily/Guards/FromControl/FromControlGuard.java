@@ -37,6 +37,7 @@ public class FromControlGuard extends GuardBESA {
         StateBDI state = (StateBDI) this.agent.getState();
         ControlMessage controlMessage = (ControlMessage) event.getData();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        System.out.println("Mensaje desde Control " + believes.getAlias() + " " + controlMessage.isWaiting());
         if (controlMessage.isWaiting()) {
             believes.setCurrentActivity(PeasantActivityType.BLOCKED);
         }else{

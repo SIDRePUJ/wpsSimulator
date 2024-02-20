@@ -41,7 +41,6 @@ public class IrrigateCropsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
@@ -79,5 +78,6 @@ public class IrrigateCropsTask extends wpsTask {
                 }
             }
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 }

@@ -33,9 +33,9 @@ public class MaintainHouseTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.getPeasantProfile().increaseHouseCondition();
         believes.useTime(believes.getTimeLeftOnDay());
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

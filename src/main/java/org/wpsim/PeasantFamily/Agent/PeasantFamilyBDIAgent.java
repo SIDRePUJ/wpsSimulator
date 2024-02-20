@@ -135,6 +135,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         //goals.add(SellProductsGoal.buildGoal());
         goals.add(SearchForHelpAndNecessityGoal.buildGoal());
         goals.add(WorkForOtherGoal.buildGoal());
+        goals.add(AlternativeWorkGoal.buildGoal());
 
         //Level 4 Goals: Skills And Resources
         goals.add(GetPriceListGoal.buildGoal());

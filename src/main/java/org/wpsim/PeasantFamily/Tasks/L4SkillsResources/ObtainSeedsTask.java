@@ -44,7 +44,6 @@ public class ObtainSeedsTask extends wpsTask {
         this.setExecuted(false);
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
@@ -66,6 +65,7 @@ public class ObtainSeedsTask extends wpsTask {
             wpsReport.error(ex, "ObtainSeedsTask.executeTask( )");
         }
         believes.setCurrentResourceNeededType(ResourceNeededType.NONE);
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

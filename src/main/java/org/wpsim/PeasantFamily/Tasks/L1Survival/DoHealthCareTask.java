@@ -28,12 +28,6 @@ import rational.mapping.Task;
 public class DoHealthCareTask extends wpsTask {
 
     /**
-     *
-     */
-    public DoHealthCareTask() {
-    }
-
-    /**
      * @param parameters
      */
     @Override

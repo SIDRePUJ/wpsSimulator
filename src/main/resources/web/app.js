@@ -82,13 +82,16 @@ function updateAgent(jsonData) {
             buttonDateParts[0]
         );
         // Calcular la diferencia en días
-        const differenceInTime =
+        /*const differenceInTime =
             buttonDateObj.getTime() - currentDateObj.getTime();
         const differenceInDays = differenceInTime / (1000 * 3600 * 24);
         if (differenceInDays < -15) {
             unSynchronized = " 🚫";
         } else {
             unSynchronized = "";
+        }*/
+        if (state.waitStatus){
+            unSynchronized = " 🚫";
         }
     }
 
@@ -108,9 +111,7 @@ function updateAgent(jsonData) {
 
     let color;
 
-    if (state.currentActivity === "BLOCKED") {
-        agent.className = "btn btn-secondary";
-    } else if (state.health <= 0) {
+    if (state.health <= 0) {
         agent.className = "btn btn-secondary";
     } else if (state.health <= 30) {
         agent.className = "btn btn-warning";

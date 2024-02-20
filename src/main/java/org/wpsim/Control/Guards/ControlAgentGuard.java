@@ -68,9 +68,12 @@ public class ControlAgentGuard extends GuardBESA {
                 printProgress(agentCurrentDate);
             }
         }
-        if (ControlCurrentDate.getInstance().isFirstDayOfWeek(agentCurrentDate)) {
+        /*if (ControlCurrentDate.getInstance().isFirstDayOfWeek(agentCurrentDate)) {
             state.checkAgentsStatus();
-        }
+        }*/
+        //if (ControlCurrentDate.getInstance().getCurrentDay()%wpsStart.DAYS_TO_CHECK == 0) {
+        //state.checkAgentsStatus();
+        //}
     }
 
     public static void printProgress(String currentDateStr) {
@@ -86,7 +89,7 @@ public class ControlAgentGuard extends GuardBESA {
         long elapsedDays = ChronoUnit.DAYS.between(MIN_DATE, currentDate);
 
         double progressPercentage = (100.0 * elapsedDays) / totalDays;
-        System.out.println(String.format("Progreso desde %s hasta %s - la fecha (%s): %.2f%%", MIN_DATE, MAX_DATE, currentDateStr, progressPercentage));
+        System.out.printf("Progreso desde %s hasta %s - la fecha (%s): %.2f%%%n", MIN_DATE, MAX_DATE, currentDateStr, progressPercentage);
     }
 
 }

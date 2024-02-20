@@ -50,16 +50,16 @@ public class wpsStart {
     public static int peasantFamiliesAgents;
     public static int stepTime = 100;
     public static boolean started = false;
-    public final static int DAYS_TO_CHECK = 8;
+    public final static int DAYS_TO_CHECK = 15;
     public final static int DEFAULT_AGENTS_TO_TEST = 1;
     public static int CREATED_AGENTS = 0;
     public static boolean EMOTIONS = true;
-    public static boolean RANDOM_EMOTIONS = true;
+    public static boolean RANDOM_EMOTIONS = false;
     public static boolean DEFORESTATION = false;
     public static boolean SMALL_FARMS = true;
     public static boolean MEDIUM_FARMS = false;
     public static boolean LARGE_FARMS = false;
-    public static final String ENDDATE = "01/01/2026";
+    public static final String ENDDATE = "01/01/2025";
     public static final boolean WEBUI = true;
     public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
@@ -119,6 +119,10 @@ public class wpsStart {
                 }
                 case "peasants_03" -> {
                     createPeasants(201, 300);
+                    startAgents();
+                }
+                case "peasants_04" -> {
+                    createPeasants(301, 400);
                     startAgents();
                 }
                 case "local" -> {

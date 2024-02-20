@@ -92,6 +92,8 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
         if (wpsStart.RANDOM_EMOTIONS){
             this.setHaveEmotions(Coin.flipCoin());
+        }else{
+            this.setHaveEmotions(true);
         }
 
     }
@@ -577,6 +579,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("contractor", getContractor());
         dataObject.put("daysToWorkForOther", getDaysToWorkForOther());
         dataObject.put("peasantFamilyHelper", getPeasantFamilyHelper());
+        dataObject.put("waitStatus", isWaiting());
 
         if (!getAssignedLands().isEmpty()) {
             dataObject.put("assignedLands", getAssignedLands());

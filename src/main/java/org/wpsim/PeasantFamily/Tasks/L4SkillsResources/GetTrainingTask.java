@@ -35,10 +35,10 @@ public class GetTrainingTask extends wpsTask {
         this.setExecuted(false);
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         // @TODO: Cambiar a la venta real con el agente social market
         believes.getPeasantProfile().increaseTrainingLevel();
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

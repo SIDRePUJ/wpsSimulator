@@ -38,7 +38,6 @@ public class SpendFamilyTimeTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
 
         if (Coin.flipCoin()) {
             believes.useTime(TimeConsumedBy.SpendFamilyTimeTask);
@@ -46,6 +45,7 @@ public class SpendFamilyTimeTask extends wpsTask {
             believes.useTime(believes.getTimeLeftOnDay());
         }
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "TIME"));
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

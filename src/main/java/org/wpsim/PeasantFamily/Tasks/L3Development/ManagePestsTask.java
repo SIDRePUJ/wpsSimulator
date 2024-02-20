@@ -44,7 +44,7 @@ public class ManagePestsTask extends wpsTask {
         this.setExecuted(false);
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
+
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         //believes.setCurrentCropCare(CropCareType.NONE);
         
@@ -71,6 +71,7 @@ public class ManagePestsTask extends wpsTask {
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

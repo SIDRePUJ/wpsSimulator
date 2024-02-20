@@ -57,18 +57,21 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         StateBDI state = (StateBDI) PeasantFamily.getState();
         //System.out.println("HeartBeatGuard: " + this.getAgent().getAlias());
         if (!believes.isWaiting()) {
+            // Update the internal current date
+            UpdateControlDate(believes);
             // Check if the current date is more than 7 days before the internal current date
-            checkTimeJump(believes);
+            //checkTimeJump(believes);
             // Check if the agent has finished
             if (checkDead(believes)) return;
             // Check if the simulation has finished
             if (checkFinish(believes)) return;
-            // Update the internal current date
-            UpdateControlDate(believes);
             // Report the agent's beliefs to the wpsViewer
-            wpsReport.ws(believes.toJson(), believes.getAlias());
+            if (believes.isNewDay()) {
+                wpsReport.ws(believes.toJson(), believes.getAlias());
+            }
             // Wait time for the next execution
             sleepWave(state, believes);
+            //System.out.println(" Agente funcionando, latiendo " + believes.getAlias());
             // Send BDI Pulse to BDI Information Flow
             sendBDIPulse();
         }

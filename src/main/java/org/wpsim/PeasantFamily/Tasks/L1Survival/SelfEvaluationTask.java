@@ -25,13 +25,6 @@ import rational.mapping.Task;
  * @author jairo
  */
 public class SelfEvaluationTask extends wpsTask {
-    
-
-    /**
-     *
-     */
-    public SelfEvaluationTask() {
-    }
 
     /**
      *
@@ -43,7 +36,6 @@ public class SelfEvaluationTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
-        this.setTaskFinalized();
     }
 
 }

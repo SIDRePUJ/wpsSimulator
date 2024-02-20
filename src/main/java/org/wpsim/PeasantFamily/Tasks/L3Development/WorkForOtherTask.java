@@ -42,7 +42,6 @@ public class WorkForOtherTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.WorkForOtherTask);
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "WORK", "MONEY"));
         believes.decreaseDaysToWorkForOther();
@@ -72,6 +71,7 @@ public class WorkForOtherTask extends wpsTask {
             believes.getPeasantProfile().increaseMoney(250000);
 
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }
