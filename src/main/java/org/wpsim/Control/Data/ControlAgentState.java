@@ -33,6 +33,10 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class ControlAgentState extends StateBESA implements Serializable {
     private AtomicInteger activeAgentsCount = new AtomicInteger(0);
     private AtomicBoolean unblocking = new AtomicBoolean(false);
@@ -40,9 +44,12 @@ public class ControlAgentState extends StateBESA implements Serializable {
     private ConcurrentMap<String, Boolean> deadAgentMap = new ConcurrentHashMap<>();
     //private Timer timer = new Timer();
     private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
+    private ScheduledExecutorService scheduler;
 
     public ControlAgentState() {
         super();
+        this.scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.scheduleAtFixedRate(this::checkAgentsStatus, 0, 2, TimeUnit.SECONDS);
     }
 
     public ConcurrentMap<String, AgentInfo> getAliveAgentMap() {
@@ -54,6 +61,16 @@ public class ControlAgentState extends StateBESA implements Serializable {
     }
 
     public void checkAgentsStatus() {
+        System.out.println("\n------------------------------\nRevisando Lista de agentes, " + deadAgentMap.size() + " de " + wpsStart.peasantFamiliesAgents);
+        for (String agentName : getAliveAgentMap().keySet()) {
+            AgentInfo info = agentMap.get(agentName);
+            System.out.println(agentName + " " + info.toString());
+        }
+
+        if (deadAgentMap.size() == wpsStart.peasantFamiliesAgents){
+            wpsStart.stopSimulation();
+        }
+
         // Revisar si se cumple la condición para el bloqueo
         int minDay = agentMap.values()
                 .stream()
@@ -95,6 +112,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
                 }
             }
         }
+        System.out.println("\n------------------------------\n");
     }
 
     public void addAgentToMap(String agentName, int currentDay) {
@@ -110,6 +128,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
         wpsReport.debug("Agent " + agentName + " is dead", "ControlAgentState");
         this.agentMap.remove(agentName);
         this.deadAgentMap.put(agentName, true);
+
     }
 
     public void modifyAgentMap(String agentName, int currentDay) {
@@ -119,6 +138,11 @@ public class ControlAgentState extends StateBESA implements Serializable {
         agentMap.put(agentName, info);
         if (wpsStart.WEBUI) {
             WebsocketServer.getInstance().broadcastMessage("m=" + agentMap.toString());
+        }
+    }
+    public void stopScheduler() {
+        if (scheduler != null) {
+            scheduler.shutdown();
         }
     }
 

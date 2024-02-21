@@ -14,7 +14,7 @@
 StablePeasant:
   #Variables
   health: 100
-  peasantFamilyMinimalVital: 10000
+  peasantFamilyMinimalVital: 8000
   rainfallConditions: dry
   cropSize: 1
   seeds: 0

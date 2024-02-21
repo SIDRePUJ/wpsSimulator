@@ -62,7 +62,6 @@ import java.util.List;
  */
 
 /**
- *
  * @author jairo
  */
 @SuppressWarnings("unchecked")
@@ -146,6 +145,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         goals.add(ObtainToolsGoal.buildGoal());
         //goals.add(ObtainWaterGoal.buildGoal());
         //goals.add(ObtainPesticidesGoal.buildGoal());
+        goals.add(AlternativeWorkGoal.buildGoal());
 
         //Level 5 Goals: Social
         //goals.add(CommunicateGoal.buildGoal());
@@ -162,7 +162,6 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
     }
 
     /**
-     *
      * @param alias
      * @param peasantProfile
      * @throws ExceptionBESA
@@ -204,11 +203,10 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
      */
     @Override
     public synchronized void shutdownAgentBDI() {
-        wpsReport.debug("Shutdown " + this.getAlias(), this.getAlias());
+        System.out.print("Shutdown " + this.getAlias());
         // Anuncio de que el agente está muerto
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) this.getState()).getBelieves();
-        //wpsReport.debug(believes.toJson(), this.getAlias());
-
+        wpsReport.ws(believes.toJson(), believes.getAlias());
         //Eliminar la tierra del agente
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (!currentLandInfo.getKind().equals("water")) {
@@ -223,28 +221,24 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         }
         //Eliminar el agente
         try {
-            ToControlMessage toControlMessage = new ToControlMessage(
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    believes.getCurrentDay()
-            );
-            EventBESA eventBesa = new EventBESA(
-                    DeadAgentGuard.class.getName(),
-                    toControlMessage
-            );
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getControlAgentName()
-            ).sendEvent(eventBesa);
-
+            ).sendEvent(
+                    new EventBESA(
+                            DeadAgentGuard.class.getName(),
+                            new ToControlMessage(
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    believes.getCurrentDay()
+                            )
+                    )
+            );
             String agID = AdmBESA.getInstance().getHandlerByAlias(this.getAlias()).getAgId();
             AdmBESA.getInstance().killAgent(agID, wpsStart.PASSWD);
-
+            //wpsStart.stopSimulation();
             wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
         } catch (Exception ex) {
             System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " " + ex.getMessage());
         }
-
-        wpsStart.stopSimulation();
-
     }
 
 }

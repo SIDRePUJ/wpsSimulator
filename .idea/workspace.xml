@@ -10,33 +10,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Mejoras en semillas, banco y herramientas.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/Guards/MarketInfoAgentGuard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Perturbation/Guards/NaturalPhenomena.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L3Development/AlternativeWorkGoal.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/AlternativeWorkTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/wpsim_jar/BDIBESA-3.17.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/wpsim_jar/BDIBESA-3.17.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/wpsim_jar/KernelBESA-3.17.1.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/wpsim_jar/KernelBESA-3.17.1.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/wpsim_jar/LocalBESA-3.17.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/wpsim_jar/LocalBESA-3.17.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/wpsim_jar/RationalBESA-3.17.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/wpsim_jar/RationalBESA-3.17.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/wpsim_jar/RemoteBESA-3.17.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/wpsim_jar/RemoteBESA-3.17.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/Guards/MarketAgentGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/Data/MarketAgentState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/Data/MarketData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/Data/MarketMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/MarketMessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Market/Data/MarketMessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SellCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SellCropTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/GetPriceListTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/GetPriceListTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainLivestockTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainLivestockTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainPesticidesTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainPesticidesTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainSeedsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainSeedsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainSuppliesTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainSuppliesTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainToolsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainToolsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainWaterTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainWaterTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Perturbation/Data/wpsPerturbationState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Perturbation/Data/wpsPerturbationState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Perturbation/PerturbationAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Perturbation/PerturbationAgent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/Config/wpsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/ControlAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/ControlAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Data/ControlAgentState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Guards/ControlAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Control/Guards/ControlAgentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamilyBDIAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBDIAgentBelieves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/Utils/TimeConsumedBy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/Utils/TimeConsumedBy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/Base/wpsGoalBDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/Base/wpsGoalBDI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PrepareLandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PrepareLandTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/Simulator/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

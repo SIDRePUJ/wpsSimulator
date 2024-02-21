@@ -73,7 +73,7 @@ public class ControlAgent extends AgentBESA {
      */
     @Override
     public void shutdownAgent() {
-        
+        ((ControlAgentState) state).stopScheduler();
     }
     
 }

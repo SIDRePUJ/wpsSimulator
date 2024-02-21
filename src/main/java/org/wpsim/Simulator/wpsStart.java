@@ -51,7 +51,7 @@ public class wpsStart {
     public static int stepTime = 100;
     public static boolean started = false;
     public final static int DAYS_TO_CHECK = 8;
-    public final static int DEFAULT_AGENTS_TO_TEST = 1;
+    public final static int DEFAULT_AGENTS_TO_TEST = 8;
     public static int CREATED_AGENTS = 0;
     public static boolean EMOTIONS = true;
     public static boolean RANDOM_EMOTIONS = true;
@@ -265,14 +265,10 @@ public class wpsStart {
      * Stops the simulation after a specified time.
      */
     public static void stopSimulation() {
-        CREATED_AGENTS--;
-        System.out.println(CREATED_AGENTS + " to Stop");
-        if (CREATED_AGENTS == 0) {
-            System.out.println("All agents stopped");
-            getStatus();
-            wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
-            System.exit(0);
-        }
+        System.out.println("All agents stopped");
+        getStatus();
+        wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
+        System.exit(0);
     }
 
     /**

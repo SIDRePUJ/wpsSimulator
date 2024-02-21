@@ -66,7 +66,9 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             // Update the internal current date
             UpdateControlDate(believes);
             // Report the agent's beliefs to the wpsViewer
-            wpsReport.ws(believes.toJson(), believes.getAlias());
+            if (believes.isNewDay()) {
+                wpsReport.ws(believes.toJson(), believes.getAlias());
+            }
             // Wait time for the next execution
             sleepWave(state, believes);
             // Send BDI Pulse to BDI Information Flow
@@ -139,10 +141,10 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
     private boolean checkFinish(PeasantFamilyBDIAgentBelieves believes) {
         if (believes.getInternalCurrentDate().equals(wpsStart.ENDDATE)) {
             System.out.println("Cerrando Agente " + this.agent.getAlias());
-            this.agent.shutdownAgent();
             this.stopPeriodicCall();
             try {
                 Thread.sleep(1000);
+                this.agent.shutdownAgent();
             } catch (Exception e) {
                 System.out.println("Error Cerrendo Agente");
             }
@@ -156,7 +158,12 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (believes.getPeasantProfile().getHealth() <= 0) {
             //writeBenchmarkLog(believes.toCSV());
             this.stopPeriodicCall();
-            this.agent.shutdownAgent();
+            try {
+                Thread.sleep(1000);
+                this.agent.shutdownAgent();
+            } catch (Exception e) {
+                System.out.println("Error Cerrendo Agente");
+            }
             return true;
         }
         return false;
