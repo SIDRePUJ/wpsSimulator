@@ -451,20 +451,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     public void setCurrentPeasantLeisureType(PeasantLeisureType currentPeasantLeisureType) {
         this.currentPeasantLeisureType = currentPeasantLeisureType;
     }
-
-    /**
-     *
-     */
-    public void setRandomCurrentPeasantLeisureType() {
-        Random rand = new Random();
-
-        switch (rand.nextInt(1)) {
-            case 0 -> this.currentPeasantLeisureType = PeasantLeisureType.LEISURE;
-            case 1 -> this.currentPeasantLeisureType = PeasantLeisureType.WASTERESOURCE;
-            //case 2 -> this.currentPeasantLeisureType = PeasantLeisureType.WASTERESOURCE;
-        }
-    }
-
     /**
      * @return
      */
@@ -705,8 +691,6 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         // Agregar los datos
         csvData.append(getOrDefault(peasantProfile.getMoney())).append(',')
                 .append(getOrDefault(peasantProfile.getHealth())).append(',')
-                .append(getOrDefault(timeLeftOnDay)).append(',')
-                .append(getOrDefault(newDay)).append(',')
                 .append(getOrDefault(currentSeason)).append(',')
                 .append(getOrDefault(robberyAccount)).append(',')
                 .append(getOrDefault(peasantProfile.getPurpose())).append(',')

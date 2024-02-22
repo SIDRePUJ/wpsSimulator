@@ -62,7 +62,7 @@ public enum TimeConsumedBy {
     peasantOffTask(24),
     SpendFriendsTimeTask(2),
     WorkForOtherTask(8),
-    AlternativeWorkTask(8);
+    AlternativeWorkTask(6);
     
     private int time;
 

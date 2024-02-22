@@ -63,8 +63,8 @@ public class wpsViewerAgentGuard extends GuardBESA {
     }
 
     public void logHeaderData() {
-        String csvData = "HappinessSadness,HopefulUncertainty,SecureInsecure,money,health,timeLeftOnDay," +
-                "newDay,currentSeason,robberyAccount,purpose,peasantFamilyAffinity,peasantLeisureAffinity," +
+        String csvData = "HappinessSadness,HopefulUncertainty,SecureInsecure,money,health,currentSeason,"+
+                "robberyAccount,purpose,peasantFamilyAffinity,peasantLeisureAffinity," +
                 "peasantFriendsAffinity,currentPeasantLeisureType," +
                 "currentResourceNeededType,currentDay,internalCurrentDate,toPay,peasantKind,rainfallConditions," +
                 "peasantFamilyMinimalVital,peasantFamilyLandAlias,currentActivity,farm,loanAmountToPay," +

@@ -47,7 +47,7 @@ public class wpsGoalBDI extends GoalBDI {
     public double evaluateEmotionalContribution(StateBDI stateBDI, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
-        System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
+        //System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
         if (wpsStart.EMOTIONS && believes.isHaveEmotions()) {
             return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
         }else{

@@ -206,6 +206,7 @@ public class PeasantFamilyBDIAgent extends AgentBDI {
         System.out.print("Shutdown " + this.getAlias());
         // Anuncio de que el agente está muerto
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) this.getState()).getBelieves();
+        wpsReport.mental(believes.toCSV(), this.getAlias());
         wpsReport.ws(believes.toJson(), believes.getAlias());
         //Eliminar la tierra del agente
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {

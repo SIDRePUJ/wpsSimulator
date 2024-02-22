@@ -37,11 +37,11 @@ public class FromControlGuard extends GuardBESA {
         StateBDI state = (StateBDI) this.agent.getState();
         ControlMessage controlMessage = (ControlMessage) event.getData();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
-        if (controlMessage.isWaiting()) {
+        /*if (controlMessage.isWaiting()) {
             believes.setCurrentActivity(PeasantActivityType.BLOCKED);
         }else{
             believes.setCurrentActivity(PeasantActivityType.NONE);
-        }
+        }*/
         believes.setWait(controlMessage.isWaiting());
         //wpsReport.debug("desbloqueando " + believes.getPeasantProfile().getPeasantFamilyAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
     }

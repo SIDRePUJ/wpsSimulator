@@ -58,7 +58,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         //System.out.println("HeartBeatGuard: " + this.getAgent().getAlias());
         if (!believes.isWaiting()) {
             // Check if the current date is more than 7 days before the internal current date
-            checkTimeJump(believes);
+            //checkTimeJump(believes);
             // Check if the agent has finished
             if (checkDead(believes)) return;
             // Check if the simulation has finished
@@ -167,15 +167,6 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             return true;
         }
         return false;
-    }
-
-    public synchronized void writeBenchmarkLogNo(String texto) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("benckmark.csv", true))) {
-            writer.write(texto);
-            writer.newLine();
-        } catch (IOException e) {
-            System.err.println("Error al escribir en el archivo: " + e.getMessage());
-        }
     }
 
 }

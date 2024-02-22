@@ -61,11 +61,11 @@ public class ControlAgentState extends StateBESA implements Serializable {
     }
 
     public void checkAgentsStatus() {
-        System.out.println("\n------------------------------\nRevisando Lista de agentes, " + deadAgentMap.size() + " de " + wpsStart.peasantFamiliesAgents);
+        /*System.out.println("\n------------------------------\nRevisando Lista de agentes, " + deadAgentMap.size() + " de " + wpsStart.peasantFamiliesAgents);
         for (String agentName : getAliveAgentMap().keySet()) {
             AgentInfo info = agentMap.get(agentName);
             System.out.println(agentName + " " + info.toString());
-        }
+        }*/
 
         if (deadAgentMap.size() == wpsStart.peasantFamiliesAgents){
             wpsStart.stopSimulation();
@@ -112,7 +112,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
                 }
             }
         }
-        System.out.println("\n------------------------------\n");
+        //System.out.println("\n------------------------------\n");
     }
 
     public void addAgentToMap(String agentName, int currentDay) {

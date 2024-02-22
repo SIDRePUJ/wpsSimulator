@@ -176,7 +176,10 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
                     .collect(Collectors.toList());
         } else {
             availableLands = landOwnership.entrySet().stream()
-                    .filter(e -> !e.getValue().getKind().equals("road") && e.getValue().getFarmName() == null && !e.getValue().getKind().equals("forest"))
+                    .filter(e -> !e.getValue().getKind().equals("road")
+                            && e.getValue().getFarmName() == null
+                            && !e.getValue().getKind().equals("forest")
+                            && !e.getValue().getKind().equals("water"))
                     .map(Map.Entry::getKey)
                     .collect(Collectors.toList());
         }

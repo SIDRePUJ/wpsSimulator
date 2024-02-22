@@ -102,6 +102,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private String rainfallConditions;
     private int seedsNeeded;
     private int toolsNeeded;
+    private boolean criminalityAffinity;
 
 
     /**
@@ -1455,5 +1456,13 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
     public void decreaseToolsNeeded(int toolsNeeded) {
         this.toolsNeeded -= toolsNeeded;
+    }
+
+    public boolean isCriminalityAffinity() {
+        return criminalityAffinity;
+    }
+
+    public void setCriminalityAffinity(boolean ca) {
+        this.criminalityAffinity = ca;
     }
 }

@@ -37,12 +37,12 @@ public class AlternativeWorkTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.useTime(TimeConsumedBy.AlternativeWorkTask);
+        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "WORK", "MONEY"));
         // https://www.eluniversal.com.co/cartagena/poner-a-trabajar-una-mototaxi-asi-se-mueve-este-negocio-en-cartagena-CX7541242
         // http://www.scielo.org.co/scielo.php?script=sci_arttext&pid=S0120-55522013000300012
         Random random = new Random();
         believes.getPeasantProfile().increaseMoney(random.nextInt(25001) + 20000);
-        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

@@ -25,13 +25,6 @@ import rational.mapping.Task;
  * @author jairo
  */
 public class AttendReligiousEventsTask extends wpsTask {
-
-    /**
-     *
-     */
-    public AttendReligiousEventsTask() {
-    }
-
     /**
      *
      * @param parameters

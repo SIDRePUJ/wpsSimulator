@@ -157,7 +157,7 @@ public class PlantCropTask extends wpsLandTask {
                                 );
                                 //System.out.println("Se renueva el cultivo " + currentLandInfo.getLandName() + " en el año nuevo " + ControlCurrentDate.getInstance().getCurrentYear());
                                 // TODO: Estimar el costo de Semillas
-                                profile.useSeeds(profile.getRiceSeedsByHectare());
+                                profile.useSeeds(1);
                                 currentLandInfo.setCurrentSeason(SeasonType.GROWING);
                             } catch (ExceptionBESA ex) {
                                 wpsReport.error(ex, peasantAlias);

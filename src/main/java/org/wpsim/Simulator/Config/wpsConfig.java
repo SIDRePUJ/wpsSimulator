@@ -304,9 +304,6 @@ public final class wpsConfig {
     public PeasantFamilyProfile getFarmerProfile() {
 
         PeasantFamilyProfile pfProfile = this.getDefaultPeasantFamilyProfile();
-        //getThrivingFarmerProfile();
-        //getStableFarmerProfile()
-        //getHighRiskFarmerProfile()
 
         double rnd = 1 + generateRandomNumber(
                 pfProfile.getVariance() * -1,
@@ -323,6 +320,11 @@ public final class wpsConfig {
         pfProfile.setPeasantFamilyAffinity(pfProfile.getPeasantFamilyAffinity() * rnd);
         pfProfile.setPeasantFriendsAffinity(pfProfile.getPeasantFriendsAffinity() * rnd);
         pfProfile.setPeasantLeisureAffinity(pfProfile.getPeasantLeisureAffinity() * rnd);
+
+        Random rand = new Random();
+        if (rand.nextInt(101) <= getIntProperty("society.criminality")){
+            pfProfile.setCriminalityAffinity(true);
+        }
 
         return pfProfile;
     }

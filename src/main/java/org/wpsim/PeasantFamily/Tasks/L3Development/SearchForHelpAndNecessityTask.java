@@ -27,6 +27,7 @@ import org.wpsim.PeasantFamily.Data.Utils.MoneyOriginType;
  */
 public class SearchForHelpAndNecessityTask extends wpsTask {
 
+    private boolean getHelp = true;
     /**
      *
      * @param parameters
@@ -35,10 +36,9 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
 
         // Robo
-        if (Math.random() < 0.3) {
+        if (believes.getPeasantProfile().isCriminalityAffinity()) {
             believes.increaseRobberyAccount();
             believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "THIEVING", "MONEY"));
             believes.processEmotionalEvent(new EmotionalEvent("STRANGER", "THIEVING", "MONEY"));
@@ -55,15 +55,22 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
             //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "THIEVING", "MONEY"));
         }else{
             // @TODO: ajustar a cada dos meses como parte de familias en acción
-            if (ControlCurrentDate.getInstance().getCurrentMonth()%2 == 0) {
+            if (getHelp) {
                 believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HELPED", "MONEY"));
                 believes.getPeasantProfile().increaseMoney(380000);
                 believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
+                getHelp = false;
             }else{
                 believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "STARVING", "MONEY"));
             }
+            // Solo una vez al mes si es mes par
+            if (ControlCurrentDate.getInstance().getCurrentMonth()%2 == 0 &&
+                    ControlCurrentDate.getInstance().isFirstDayOfMonth(believes.getInternalCurrentDate())){
+                getHelp = true;
+            }
         }
         believes.useTime(believes.getTimeLeftOnDay());
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }
