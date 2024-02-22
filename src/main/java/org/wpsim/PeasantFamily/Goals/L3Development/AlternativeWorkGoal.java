@@ -76,7 +76,7 @@ public class AlternativeWorkGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getMoney() <= 150000) {
+        if (believes.getPeasantProfile().getMoney() <= 50000) {
             return 1;
         }
 

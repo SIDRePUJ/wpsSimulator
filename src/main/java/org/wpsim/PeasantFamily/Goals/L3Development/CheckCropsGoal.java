@@ -118,7 +118,7 @@ public class CheckCropsGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 0.9);
+        return evaluateEmotionalContribution(stateBDI, 0.8);
         //return evaluateSingleEmotionContribution(stateBDI, Semantics.Emotions.Happiness, 0.9);
     }
 
