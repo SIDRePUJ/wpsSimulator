@@ -42,7 +42,7 @@ import java.util.TimerTask;
  */
 public class HeartBeatGuard extends PeriodicGuardBESA {
 
-    int waitTime = wpsStart.stepTime;
+    int waitTime = Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
     String currentRole = "";
 
     /**
@@ -56,7 +56,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
         //System.out.println("HeartBeatGuard: " + this.getAgent().getAlias());
-        if (!believes.isWaiting() || wpsStart.FreeRun) {
+        if (!believes.isWaiting() || wpsStart.config.getBooleanProperty("control.freerun")) {
             // Check if the current date is more than 7 days before the internal current date
             //checkTimeJump(believes);
             // Check if the agent has finished
@@ -82,7 +82,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         } catch (Exception e) {
             currentRole = "Void";
         }
-        waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * wpsStart.stepTime;
+        waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
     }
 
     private void sendBDIPulse() {
@@ -119,7 +119,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
     }
 
     private static void checkTimeJump(PeasantFamilyBDIAgentBelieves believes) {
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) <= -(wpsStart.DAYS_TO_CHECK)) {
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) <= -(wpsStart.config.getIntProperty("control.daystocheck"))) {
             /*System.out.println("Jump " + believes.getAlias()
                     + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
                     believes.getInternalCurrentDate()
@@ -139,7 +139,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
     }
 
     private boolean checkFinish(PeasantFamilyBDIAgentBelieves believes) {
-        if (believes.getInternalCurrentDate().equals(wpsStart.ENDDATE)) {
+        if (believes.getInternalCurrentDate().equals(wpsStart.config.getStringProperty("control.enddate"))) {
             System.out.println("Cerrando Agente " + this.agent.getAlias());
             this.stopPeriodicCall();
             try {

@@ -19,14 +19,12 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
-import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.Control.Data.Coin;
 import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsLandTask;
+import org.wpsim.Simulator.Base.wpsLandTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Agent.KillWorldGuard;
@@ -103,7 +101,7 @@ public class PlantCropTask extends wpsLandTask {
                         // Killing the world Agent and restarting
                         try {
                             String agID = AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
-                            AdmBESA.getInstance().killAgent(agID, wpsStart.PASSWD);
+                            AdmBESA.getInstance().killAgent(agID, wpsStart.config.getDoubleProperty("control.passwd"));
                         } catch (Exception ex) {
                             wpsReport.error("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage(), peasantAlias);
                         }

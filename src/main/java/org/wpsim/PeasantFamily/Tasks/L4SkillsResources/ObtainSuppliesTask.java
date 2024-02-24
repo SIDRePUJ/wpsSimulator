@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -21,7 +21,7 @@ import org.wpsim.Market.Guards.MarketAgentGuard;
 import org.wpsim.Market.Data.MarketMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
@@ -47,15 +47,19 @@ public class ObtainSuppliesTask extends wpsTask {
 
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {
-            MarketMessage marketMessage = new MarketMessage(
-                    BUY_SUPPLIES,
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    10);
-
-            EventBESA ev = new EventBESA(
-                    MarketAgentGuard.class.getName(),
-                    marketMessage);
-            AdmBESA.getInstance().getHandlerByAlias(wpsStart.config.getMarketAgentName()).sendEvent(ev);
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getMarketAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            MarketAgentGuard.class.getName(),
+                            new MarketMessage(
+                                    BUY_SUPPLIES,
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    10,
+                                    believes.getInternalCurrentDate()
+                            )
+                    )
+            );
 
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "ObtainSuppliesTask.executeTask");

@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -18,7 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Market.Guards.MarketAgentGuard;
 import org.wpsim.Market.Data.MarketMessage;
@@ -51,19 +51,18 @@ public class GetPriceListTask extends wpsTask {
 
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(wpsStart.config.getMarketAgentName());
-
-            MarketMessage marketMessage = new MarketMessage(
-                    ASK_FOR_PRICE_LIST,
-                    believes.getPeasantProfile().getPeasantFamilyAlias()
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getMarketAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            MarketAgentGuard.class.getName(),
+                            new MarketMessage(
+                                    ASK_FOR_PRICE_LIST,
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    believes.getInternalCurrentDate()
+                            )
+                    )
             );
-
-            EventBESA ev = new EventBESA(
-                    MarketAgentGuard.class.getName(),
-                    marketMessage);
-            ah.sendEvent(ev);
-
             believes.setUpdatePriceList(false);
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());

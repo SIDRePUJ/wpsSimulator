@@ -19,7 +19,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Control.Data.ControlCurrentDate;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Guards.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;

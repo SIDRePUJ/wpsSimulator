@@ -22,7 +22,7 @@ import org.wpsim.Market.Data.MarketMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.ResourceNeededType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
@@ -54,7 +54,8 @@ public class ObtainToolsTask extends wpsTask {
                             new MarketMessage(
                                     BUY_TOOLS,
                                     believes.getPeasantProfile().getPeasantFamilyAlias(),
-                                    believes.getPeasantProfile().getToolsNeeded()
+                                    believes.getPeasantProfile().getToolsNeeded(),
+                                    believes.getInternalCurrentDate()
                             )
                     )
             );

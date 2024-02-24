@@ -1,4 +1,4 @@
-package org.wpsim.PeasantFamily.Tasks.Base;
+package org.wpsim.Simulator.Base;
 
 import BESA.Emotional.Semantics;
 import org.wpsim.Government.Data.LandInfo;

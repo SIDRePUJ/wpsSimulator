@@ -19,6 +19,7 @@ import BESA.Kernel.Agent.GuardBESA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsViewerMessage;
 import org.wpsim.Viewer.Server.WebsocketServer;
@@ -51,7 +52,7 @@ public class wpsViewerAgentGuard extends GuardBESA {
                 case "WARN" -> logger.warn(viewerMessage.getPeasantMessage());
                 case "ERROR" -> logger.error(viewerMessage.getPeasantMessage());
                 case "WS" -> {
-                    if (wpsStart.WEBUI) {
+                    if (wpsConfig.getInstance().getBooleanProperty("viewer.webui")) {
                         WebsocketServer.getInstance().broadcastMessage("j=" + viewerMessage.getPeasantMessage());
                     }
                 }

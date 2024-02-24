@@ -12,16 +12,15 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Goals.L3Development;
+package org.wpsim.PeasantFamily.Goals.L4SkillsResources;
 
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
-import org.wpsim.PeasantFamily.Tasks.L3Development.AlternativeWorkTask;
-import org.wpsim.PeasantFamily.Tasks.L3Development.WorkForOtherTask;
+import org.wpsim.Simulator.Base.wpsGoalBDI;
+import org.wpsim.PeasantFamily.Tasks.L4SkillsResources.AlternativeWorkTask;
 import org.wpsim.Simulator.wpsStart;
 import rational.RationalRole;
 import rational.mapping.Believes;
@@ -48,7 +47,7 @@ public class AlternativeWorkGoal extends wpsGoalBDI {
                 wpsStart.getPlanID(),
                 alternativeWorkRole,
                 "AlternativeWorkTask",
-                GoalBDITypes.OPORTUNITY);
+                GoalBDITypes.REQUIREMENT);
     }
 
     /**
@@ -76,7 +75,7 @@ public class AlternativeWorkGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getMoney() <= 50000) {
+        if (believes.getPeasantProfile().getMoney() <= 200000 || wpsStart.config.getBooleanProperty("pfagent.earlyalternative")) {
             return 1;
         }
 
@@ -107,7 +106,7 @@ public class AlternativeWorkGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 1.0);
+        return evaluateEmotionalContribution(stateBDI, 0.7);
     }
 
 }

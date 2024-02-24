@@ -19,7 +19,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsLandTask;
+import org.wpsim.Simulator.Base.wpsLandTask;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Guards.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;

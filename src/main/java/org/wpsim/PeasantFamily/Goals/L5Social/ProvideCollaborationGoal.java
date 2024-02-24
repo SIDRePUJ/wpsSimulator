@@ -14,7 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Goals.L5Social;
 
-import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
+import org.wpsim.Simulator.Base.wpsGoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;

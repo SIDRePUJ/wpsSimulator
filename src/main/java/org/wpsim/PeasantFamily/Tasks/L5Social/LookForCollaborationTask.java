@@ -14,16 +14,14 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L5Social;
 
-import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Society.Data.SocietyDataMessage;
 import org.wpsim.Society.Guards.SocietyAgentRequestHelpGuard;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 

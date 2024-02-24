@@ -21,7 +21,7 @@ import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.Control.Data.ControlCurrentDate;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -79,7 +79,8 @@ public class DoVitalsTask extends wpsTask {
                                 BankAgentGuard.class.getName(),
                                 new BankMessage(
                                         ASK_CURRENT_TERM,
-                                        believes.getPeasantProfile().getPeasantFamilyAlias()
+                                        believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                        believes.getInternalCurrentDate()
                                 )
                         )
                 );

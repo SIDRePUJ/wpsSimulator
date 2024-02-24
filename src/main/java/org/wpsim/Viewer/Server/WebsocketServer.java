@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Simulator.wpsStart;
 
 import static io.undertow.Handlers.path;
@@ -45,7 +46,7 @@ public class WebsocketServer implements Runnable {
      * @return the websocket server
      */
     public static synchronized WebsocketServer getInstance() {
-        if (wpsStart.WEBUI) {
+        if (wpsConfig.getInstance().getBooleanProperty("viewer.webui")) {
             if (instance == null) {
                 instance = new WebsocketServer();
             }

@@ -1,4 +1,4 @@
-package org.wpsim.PeasantFamily.Goals.Base;
+package org.wpsim.Simulator.Base;
 
 import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
@@ -6,6 +6,7 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
+import org.wpsim.Simulator.Util.wpsCSV;
 import org.wpsim.Simulator.wpsStart;
 import rational.RationalRole;
 import rational.mapping.Believes;
@@ -39,7 +40,8 @@ public class wpsGoalBDI extends GoalBDI {
 
     /**
      * Evaluates the contribution of the emotion set to the goal.
-     * @param stateBDI agent state
+     *
+     * @param stateBDI     agent state
      * @param contribution default contribution
      * @return contribution
      * @throws KernellAgentEventExceptionBESA exception
@@ -47,28 +49,33 @@ public class wpsGoalBDI extends GoalBDI {
     public double evaluateEmotionalContribution(StateBDI stateBDI, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
-        //System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
-        if (wpsStart.EMOTIONS && believes.isHaveEmotions()) {
+        if (wpsStart.config.getBooleanProperty("control.showPyramid")) {
+            System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
+            wpsCSV.log("Pyramid", "Día de simulación: " + believes.getCurrentDay());
+            wpsCSV.log("Pyramid", stateBDI.getMachineBDIParams().getPyramidGoals().toString());
+        }
+        if (wpsStart.config.getBooleanProperty("pfagent.emotions") && believes.isHaveEmotions()) {
             return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
-        }else{
+        } else {
             return contribution;
         }
     }
 
     /**
      * Evaluates the contribution of an emotion to the goal.
-     * @param stateBDI agent state
+     *
+     * @param stateBDI          agent state
      * @param emotionToEvaluate emotion
-     * @param contribution default contribution
+     * @param contribution      default contribution
      * @return contribution
      * @throws KernellAgentEventExceptionBESA exception
      */
     public double evaluateSingleEmotionContribution(StateBDI stateBDI, String emotionToEvaluate, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Single");
-        if (wpsStart.EMOTIONS && believes.isHaveEmotions()) {
+        if (wpsStart.config.getBooleanProperty("pfagent.emotions") && believes.isHaveEmotions()) {
             return (evaluator.evaluateSingleEmotion(believes.getEmotionsListCopy(), emotionToEvaluate) + contribution) / 2;
-        }else{
+        } else {
             return contribution;
         }
 

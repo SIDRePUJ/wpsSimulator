@@ -19,7 +19,7 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
-import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
+import org.wpsim.Simulator.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Tasks.L5Social.LookForCollaborationTask;
@@ -94,7 +94,7 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 1.0);
+        return evaluateEmotionalContribution(stateBDI, 0.6);
     }
 
     @Override

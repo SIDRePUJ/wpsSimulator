@@ -16,9 +16,8 @@ package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 
 /**
  *

@@ -38,7 +38,7 @@ public class ControlAgentGuard extends GuardBESA {
             DateTimeFormatter.ofPattern("dd/MM/yyyy")
     );
     private static final LocalDate MAX_DATE = LocalDate.parse(
-            wpsStart.ENDDATE,
+            wpsStart.config.getStringProperty("control.enddate"),
             DateTimeFormatter.ofPattern("dd/MM/yyyy")
     );
 
@@ -60,7 +60,7 @@ public class ControlAgentGuard extends GuardBESA {
             // Update ControlCurrentDate
             ControlCurrentDate.getInstance().setCurrentDate(agentCurrentDate);
             // Send data to WebUI
-            if (wpsStart.WEBUI) {
+            if (wpsStart.config.getBooleanProperty("viewer.webui")) {
                 WebsocketServer.getInstance().broadcastMessage("d=" + ControlCurrentDate.getInstance().getCurrentDate());
             }
             // Check if some agent is ahead of the global advance date

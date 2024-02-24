@@ -4,6 +4,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.Market.Data.MarketMessage;
 import org.wpsim.Market.Data.MarketMessageType;
 import org.wpsim.Market.Guards.MarketAgentGuard;
@@ -30,7 +31,8 @@ public class NaturalPhenomena extends PeriodicGuardBESA {
                                 MarketInfoAgentGuard.class.getName(),
                                 new MarketMessage(
                                         selectRandomIncreaseOrDecrease(),
-                                        selectRandomNumber()
+                                        selectRandomNumber(),
+                                        ControlCurrentDate.getInstance().getCurrentDate()
                                 )
                         )
                 );

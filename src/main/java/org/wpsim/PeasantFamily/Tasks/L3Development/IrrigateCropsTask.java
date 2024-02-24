@@ -18,7 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Government.Data.LandInfo;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.World.Guards.WorldGuard;
 import org.wpsim.World.Messages.WorldMessage;

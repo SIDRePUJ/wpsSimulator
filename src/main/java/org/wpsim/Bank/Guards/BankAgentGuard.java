@@ -16,15 +16,18 @@ package org.wpsim.Bank.Guards;
 
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
-import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Bank.Data.BankAgentState;
 import org.wpsim.Bank.Data.BankMessage;
 import org.wpsim.Bank.Data.BankMessageType;
+import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankMessage;
 import org.wpsim.PeasantFamily.Guards.FromBank.FromBankMessageType;
+import org.wpsim.Simulator.Config.wpsConfig;
+import org.wpsim.Simulator.Util.wpsCSV;
 import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.Simulator.Base.wpsGuardBESA;
 
 import static org.wpsim.Bank.Data.BankMessageType.ASK_FOR_FORMAL_LOAN;
 import static org.wpsim.Bank.Data.BankMessageType.ASK_FOR_INFORMAL_LOAN;
@@ -34,7 +37,12 @@ import static org.wpsim.PeasantFamily.Guards.FromBank.FromBankMessageType.*;
  *
  * @author jairo
  */
-public class BankAgentGuard extends GuardBESA {
+public class BankAgentGuard extends wpsGuardBESA {
+
+    public BankAgentGuard() {
+        super();
+        wpsCSV.log("Bank","Agent,CurrentDate,Action,Response");
+    }
 
     /**
      *
@@ -50,7 +58,6 @@ public class BankAgentGuard extends GuardBESA {
         //System.out.println("$$$ Bank " + messageType + " desde " + bankMessage.getPeasantAlias() + " por " + bankMessage.getAmount() + " $$$");
 
         try {
-            //wpsReport.info("$ uno ");
             AgHandlerBESA ah = this.agent.getAdmLocal().getHandlerByAlias(
                     bankMessage.getPeasantAlias()
             );
@@ -113,11 +120,11 @@ public class BankAgentGuard extends GuardBESA {
             ah.sendEvent(ev);
 
             //wpsReport.info(state.toString(), this.getAgent().getAlias());
+            wpsCSV.log("Bank", bankMessage.getPeasantAlias() + "," + bankMessage.getCurrentDate() + "," + messageType + "," + fromBankMessageType);
 
         } catch (ExceptionBESA | IllegalArgumentException e) {
             wpsReport.error("Mensaje no reconocido de funcExecGuard", this.getAgent().getAlias());
         }
-
         //System.out.println(state);
     }
 

@@ -17,7 +17,7 @@ package org.wpsim.PeasantFamily.Tasks.L4SkillsResources;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Market.Guards.MarketAgentGuard;
 import org.wpsim.Market.Data.MarketMessage;
@@ -57,7 +57,8 @@ public class ObtainSeedsTask extends wpsTask {
                             new MarketMessage(
                                     BUY_SEEDS,
                                     believes.getPeasantProfile().getPeasantFamilyAlias(),
-                                    believes.getPeasantProfile().getSeedsNeeded()
+                                    believes.getPeasantProfile().getSeedsNeeded(),
+                                    believes.getInternalCurrentDate()
                             )
                     )
             );

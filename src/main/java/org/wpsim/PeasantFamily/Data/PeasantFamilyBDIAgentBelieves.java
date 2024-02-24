@@ -90,7 +90,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
 
-        if (wpsStart.RANDOM_EMOTIONS){
+        if (wpsStart.config.getBooleanProperty("pfagent.randonemotions")){
             this.setHaveEmotions(Coin.flipCoin());
         }
 
@@ -718,7 +718,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
                 .append(getOrDefault(getContractor())).append(',')
                 .append(getOrDefault(getDaysToWorkForOther())).append(',')
                 .append(getOrDefault(getAlias())).append(',')
-                .append(getOrDefault(wpsStart.EMOTIONS)).append(',')
+                .append(getOrDefault(wpsStart.config.getBooleanProperty("pfagent.emotions"))).append(',')
                 .append(getOrDefault(getPeasantFamilyHelper())).append(',')
                 .append(getOrDefault(isHaveEmotions()));
 

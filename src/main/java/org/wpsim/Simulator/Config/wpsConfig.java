@@ -164,11 +164,7 @@ public final class wpsConfig {
     public Map<String, FarmingResource> loadMarketConfig() {
         Map<String, FarmingResource> priceList = new HashMap<>();
 
-
         try {
-            // Carga las propiedades desde el archivo
-            properties.load(loadFileAsStream("wpsConfig.properties"));
-
             String[] resourceNames = {
                     "water", "seeds", "pesticides",
                     "tools", "livestock", "rice", "roots"
@@ -188,7 +184,7 @@ public final class wpsConfig {
                 );
             }
             return priceList;
-        } catch (IOException e) {
+        } catch (Exception e) {
             ReportBESA.error(e.getMessage());
         }
         return null;
@@ -196,7 +192,6 @@ public final class wpsConfig {
 
     private void loadWPSConfig() {
         // @TODO: Incluir todas las config del wpsStart
-        Properties properties = new Properties();
         try {
             properties.load(loadFileAsStream("wpsConfig.properties"));
             this.startSimulationDate = properties.getProperty("control.startdate");
@@ -229,11 +224,11 @@ public final class wpsConfig {
         defaultPeasantFamilyProfile = gson.fromJson(jsonData, PeasantFamilyProfile.class);
     }
 
-    public List<String> getFuzzyRulesList(String mode){
+    public List<String> getFuzzyRulesList(String mode) {
         String rawFile = null;
         if (mode.equals("Single")) {
             rawFile = loadFile("data.fuzzyRules/EmotionalRules.txt");
-        }else{
+        } else {
             rawFile = loadFile("data.fuzzyRules/EmotionalRulesFull.txt");
         }
         assert rawFile != null;
@@ -322,7 +317,7 @@ public final class wpsConfig {
         pfProfile.setPeasantLeisureAffinity(pfProfile.getPeasantLeisureAffinity() * rnd);
 
         Random rand = new Random();
-        if (rand.nextInt(101) <= getIntProperty("society.criminality")){
+        if (rand.nextInt(101) <= getIntProperty("society.criminality")) {
             pfProfile.setCriminalityAffinity(true);
         }
 
@@ -355,5 +350,13 @@ public final class wpsConfig {
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+
+    public boolean getBooleanProperty(String property) {
+        return Boolean.parseBoolean(properties.getProperty(property, ""));
+    }
+
+    public long getLongProperty(String property) {
+        return Long.parseLong(properties.getProperty(property, "0.0"));
     }
 }

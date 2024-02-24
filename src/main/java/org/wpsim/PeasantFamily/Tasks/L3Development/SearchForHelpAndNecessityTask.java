@@ -16,7 +16,7 @@ package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import BESA.Emotional.EmotionalEvent;
 import org.wpsim.Control.Data.ControlCurrentDate;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import rational.mapping.Believes;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.MoneyOriginType;

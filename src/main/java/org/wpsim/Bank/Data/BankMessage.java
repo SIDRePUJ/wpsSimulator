@@ -25,6 +25,7 @@ public class BankMessage extends DataBESA {
     private String peasantAlias;
     private double amount;
     private BankMessageType bankMessageType;
+    private String currentDate;
 
     /**
      *
@@ -32,10 +33,11 @@ public class BankMessage extends DataBESA {
      * @param peasantAlias
      * @param amount
      */
-    public BankMessage(BankMessageType bankMessageType, String peasantAlias, double amount) {
+    public BankMessage(BankMessageType bankMessageType, String peasantAlias, double amount, String currentDate) {
         this.peasantAlias = peasantAlias;
         this.amount = amount;
         this.bankMessageType = bankMessageType;
+        this.currentDate = currentDate;
     }
 
     /**
@@ -43,9 +45,10 @@ public class BankMessage extends DataBESA {
      * @param bankMessageType
      * @param peasantAlias
      */
-    public BankMessage(BankMessageType bankMessageType, String peasantAlias) {
+    public BankMessage(BankMessageType bankMessageType, String peasantAlias, String currentDate) {
         this.peasantAlias = peasantAlias;
         this.bankMessageType = bankMessageType;
+        this.currentDate = currentDate;
     }
 
     /**
@@ -54,6 +57,14 @@ public class BankMessage extends DataBESA {
      */
     public BankMessage(Integer amount) {
         this.amount = amount;
+    }
+
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
     }
 
     /**

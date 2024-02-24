@@ -17,15 +17,13 @@ package org.wpsim.PeasantFamily.Tasks.L2Obligation;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 
 import static org.wpsim.Bank.Data.BankMessageType.PAY_LOAN_TERM;
 
@@ -61,7 +59,8 @@ public class PayDebtsTask extends wpsTask {
                             new BankMessage(
                                     PAY_LOAN_TERM,
                                     believes.getPeasantProfile().getPeasantFamilyAlias(),
-                                    amount
+                                    amount,
+                                    believes.getInternalCurrentDate()
                             )
                     )
             );

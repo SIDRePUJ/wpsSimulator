@@ -14,16 +14,14 @@
  */
 package org.wpsim.PeasantFamily.Goals.L6Leisure;
 
-import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
+import org.wpsim.Simulator.Base.wpsGoalBDI;
 import org.wpsim.PeasantFamily.Tasks.L6Leisure.FindNewsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Tasks.L6Leisure.LeisureActivitiesTask;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;

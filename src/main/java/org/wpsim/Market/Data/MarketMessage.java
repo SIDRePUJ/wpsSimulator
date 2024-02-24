@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -27,6 +27,7 @@ public class MarketMessage extends DataBESA {
     private int quantity;
     private MarketMessageType marketMessageType;
     private String cropName;
+    private String currentDate;
 
     /**
      *
@@ -34,10 +35,11 @@ public class MarketMessage extends DataBESA {
      * @param peasantAlias
      * @param quantity
      */
-    public MarketMessage(MarketMessageType marketMessageType, String peasantAlias, int quantity) {
+    public MarketMessage(MarketMessageType marketMessageType, String peasantAlias, int quantity, String currentDate) {
         this.peasantAlias = peasantAlias;
         this.quantity = quantity;
         this.marketMessageType = marketMessageType;
+        this.currentDate = currentDate;
     }
 
     /**
@@ -47,15 +49,18 @@ public class MarketMessage extends DataBESA {
      * @param quantity
      * @param cropName
      */
-    public MarketMessage(MarketMessageType marketMessageType, String peasantAlias, double quantity, String cropName) {
+    public MarketMessage(MarketMessageType marketMessageType, String peasantAlias, double quantity, String cropName, String currentDate) {
         this.peasantAlias = peasantAlias;
         this.quantity = (int) quantity;
         this.marketMessageType = marketMessageType;
         this.cropName = cropName;
+        this.currentDate = currentDate;
     }
-    public MarketMessage(MarketMessageType marketMessageType, int quantity) {
+
+    public MarketMessage(MarketMessageType marketMessageType, int quantity, String currentDate) {
         this.marketMessageType = marketMessageType;
         this.quantity = (int) quantity;
+        this.currentDate = currentDate;
     }
 
     /**
@@ -64,10 +69,11 @@ public class MarketMessage extends DataBESA {
      * @param peasantAlias
      * @param quantity
      */
-    public MarketMessage(MarketMessageType marketMessageType, String peasantAlias, double quantity) {
+    public MarketMessage(MarketMessageType marketMessageType, String peasantAlias, double quantity, String currentDate) {
         this.peasantAlias = peasantAlias;
         this.quantity = (int) quantity;
         this.marketMessageType = marketMessageType;
+        this.currentDate = currentDate;
     }
 
     /**
@@ -75,9 +81,10 @@ public class MarketMessage extends DataBESA {
      * @param marketMessageType
      * @param peasantAlias
      */
-    public MarketMessage(MarketMessageType marketMessageType, String peasantAlias) {
+    public MarketMessage(MarketMessageType marketMessageType, String peasantAlias, String currentDate) {
         this.peasantAlias = peasantAlias;
         this.marketMessageType = marketMessageType;
+        this.currentDate = currentDate;
     }
 
     /**
@@ -94,6 +101,14 @@ public class MarketMessage extends DataBESA {
 
     public void setCropName(String cropName) {
         this.cropName = cropName;
+    }
+
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
     }
 
     /**

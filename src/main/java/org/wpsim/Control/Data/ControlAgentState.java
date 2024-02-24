@@ -20,6 +20,7 @@ import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.PeasantFamily.Guards.FromControl.FromControlGuard;
+import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Server.WebsocketServer;
 import org.wpsim.Viewer.Data.wpsReport;
@@ -90,7 +91,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
                 try {
                     AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(agentName);
                     EventBESA eventBesa = null;
-                    if (currentDay - minDay > wpsStart.DAYS_TO_CHECK) {
+                    if (currentDay - minDay > wpsStart.config.getIntProperty("control.daystocheck")) {
                         // Agente adelantado
                         eventBesa = new EventBESA(FromControlGuard.class.getName(), new ControlMessage(agentName, true));
                         //System.out.println("Agent " + agentName + " bloqueo");
@@ -136,7 +137,7 @@ public class ControlAgentState extends StateBESA implements Serializable {
         info.setState(true);
         info.setCurrentDay(currentDay);
         agentMap.put(agentName, info);
-        if (wpsStart.WEBUI) {
+        if (wpsConfig.getInstance().getBooleanProperty("viewer.webui")) {
             WebsocketServer.getInstance().broadcastMessage("m=" + agentMap.toString());
         }
     }

@@ -59,7 +59,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
             JSONArray landsArray = new JSONArray(
                     Objects.requireNonNull(
                             wpsConfig.getInstance().loadFile(
-                                    "web/data/" + wpsStart.CURRENT_WORLD
+                                    "web/data/" + wpsStart.config.getStringProperty("government.world")
                             )
                     )
             );
@@ -169,7 +169,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
 
     public void createFarms() {
         List<String> availableLands = null;
-        if (wpsStart.DEFORESTATION) {
+        if (wpsStart.config.getBooleanProperty("pfagent.deforestation")) {
             availableLands = landOwnership.entrySet().stream()
                     .filter(e -> !e.getValue().getKind().equals("road") && e.getValue().getFarmName() == null)
                     .map(Map.Entry::getKey)
@@ -189,7 +189,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
         int farmId = 1;
 
         // Asignar fincas grandes
-        if (wpsStart.LARGE_FARMS) {
+        if (wpsStart.config.getBooleanProperty("pfagent.largefarms")) {
             while (true) {
                 List<String> farmLands = selectBlock(availableLands, 3, 4);
                 if (farmLands.isEmpty()) {
@@ -201,7 +201,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
         }
 
         // Asignar fincas medianas
-        if (wpsStart.MEDIUM_FARMS) {
+        if (wpsStart.config.getBooleanProperty("pfagent.mediumfarms")) {
             while (true) {
                 List<String> farmLands = selectBlock(availableLands, 2, 2);
                 if (farmLands.isEmpty()) {
@@ -213,7 +213,7 @@ public class GovernmentAgentState extends StateBESA implements Serializable {
         }
 
         // Asignar fincas pequeñas
-        if (wpsStart.SMALL_FARMS) {
+        if (wpsStart.config.getBooleanProperty("pfagent.smallfarms")) {
             while (!availableLands.isEmpty()) {
                 List<String> farmLands = selectBlock(availableLands, 1, 2);
                 if (farmLands.isEmpty()) {

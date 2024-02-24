@@ -36,7 +36,6 @@ import org.wpsim.Viewer.Data.wpsReport;
 import org.wpsim.Viewer.wpsViewerAgent;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -46,23 +45,10 @@ public class wpsStart {
 
     public static wpsConfig config;
     private static int PLAN_ID = 0;
-    final public static double PASSWD = 0.91;
     public static int peasantFamiliesAgents;
-    public static int stepTime = 30;
     public static boolean started = false;
-    public static boolean FreeRun = true;
-    public final static int DAYS_TO_CHECK = 8;
     public final static int DEFAULT_AGENTS_TO_TEST = 16;
     public static int CREATED_AGENTS = 0;
-    public static boolean EMOTIONS = true;
-    public static boolean RANDOM_EMOTIONS = true;
-    public static boolean DEFORESTATION = false;
-    public static boolean SMALL_FARMS = true;
-    public static boolean MEDIUM_FARMS = false;
-    public static boolean LARGE_FARMS = false;
-    public static final String ENDDATE = "01/01/2026";
-    public static final boolean WEBUI = true;
-    public static final String CURRENT_WORLD = "mediumworld.json";
     public static final long startTime = System.currentTimeMillis();
     private static final List<PeasantFamilyBDIAgent> peasantFamilyBDIAgents = new ArrayList<>();
 
@@ -91,13 +77,6 @@ public class wpsStart {
             // Agents to run simulation
             try {
                 peasantFamiliesAgents = Integer.parseInt(args[1]);
-                // No emotions simulation
-                if (args[2].equals("noemotions")) {
-                    EMOTIONS = false;
-                    System.out.println("Emotional simulation disabled");
-                } else {
-                    System.out.println("Emotional simulation enabled");
-                }
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 peasantFamiliesAgents = DEFAULT_AGENTS_TO_TEST;
             }
@@ -177,20 +156,20 @@ public class wpsStart {
      */
     private static void createServices() {
         try {
-            wpsViewerAgent viewerAgent = wpsViewerAgent.createAgent(config.getViewerAgentName(), PASSWD);
+            wpsViewerAgent viewerAgent = wpsViewerAgent.createAgent(config.getViewerAgentName(), config.getDoubleProperty("control.passwd"));
             viewerAgent.start();
-            ControlAgent controlAgent = ControlAgent.createAgent(config.getControlAgentName(), PASSWD);
+            ControlAgent controlAgent = ControlAgent.createAgent(config.getControlAgentName(), config.getDoubleProperty("control.passwd"));
             controlAgent.start();
-            SocietyAgent societyAgent = SocietyAgent.createAgent(config.getSocietyAgentName(), PASSWD);
+            SocietyAgent societyAgent = SocietyAgent.createAgent(config.getSocietyAgentName(), config.getDoubleProperty("control.passwd"));
             societyAgent.start();
-            GovernmentAgent governmentAgent = GovernmentAgent.createAgent(config.getGovernmentAgentName(), PASSWD);
+            GovernmentAgent governmentAgent = GovernmentAgent.createAgent(config.getGovernmentAgentName(), config.getDoubleProperty("control.passwd"));
             governmentAgent.start();
-            BankAgent bankAgent = BankAgent.createBankAgent(config.getBankAgentName(), PASSWD);
+            BankAgent bankAgent = BankAgent.createBankAgent(config.getBankAgentName(), config.getDoubleProperty("control.passwd"));
             bankAgent.start();
-            MarketAgent marketAgent = MarketAgent.createAgent(config.getMarketAgentName(), PASSWD);
+            MarketAgent marketAgent = MarketAgent.createAgent(config.getMarketAgentName(), config.getDoubleProperty("control.passwd"));
             marketAgent.start();
             // Starting Perturbation Agent
-            PerturbationAgent perturbationAgent = PerturbationAgent.createAgent(config.getPerturbationAgentName(), PASSWD);
+            PerturbationAgent perturbationAgent = PerturbationAgent.createAgent(config.getPerturbationAgentName(), config.getDoubleProperty("control.passwd"));
             perturbationAgent.start();
         } catch (Exception ex) {
             wpsReport.error(ex.getMessage(), "wpsStart_noOK");
@@ -239,7 +218,7 @@ public class wpsStart {
                         new EventBESA(
                                 HeartBeatGuard.class.getName(),
                                 new PeriodicDataBESA(
-                                        stepTime,
+                                        config.getLongProperty("control.steptime"),
                                         PeriodicGuardBESA.START_PERIODIC_CALL
                                 )
                         )
@@ -252,7 +231,7 @@ public class wpsStart {
                     new EventBESA(
                             NaturalPhenomena.class.getName(),
                             new PeriodicDataBESA(
-                                    stepTime * 100L,
+                                    config.getLongProperty("control.steptime") * 100L,
                                     PeriodicGuardBESA.START_PERIODIC_CALL
                             )
                     )

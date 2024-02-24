@@ -14,11 +14,10 @@
  */
 package org.wpsim.PeasantFamily.Goals.L4SkillsResources;
 
-import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.PeasantFamily.Goals.Base.wpsGoalBDI;
+import org.wpsim.Simulator.Base.wpsGoalBDI;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -99,17 +98,6 @@ public class ObtainToolsGoal extends wpsGoalBDI {
         } else {
             return 0;
         }
-    }
-
-    /**
-     *
-     * @param parameters Believes
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
     }
 
     /**

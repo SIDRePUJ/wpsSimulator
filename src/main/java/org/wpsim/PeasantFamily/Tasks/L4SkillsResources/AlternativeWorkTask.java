@@ -12,12 +12,12 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Tasks.L3Development;
+package org.wpsim.PeasantFamily.Tasks.L4SkillsResources;
 
 import BESA.Emotional.EmotionalEvent;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
+import org.wpsim.Simulator.Base.wpsTask;
 import rational.mapping.Believes;
 
 import java.util.Random;
@@ -42,7 +42,7 @@ public class AlternativeWorkTask extends wpsTask {
         // https://www.eluniversal.com.co/cartagena/poner-a-trabajar-una-mototaxi-asi-se-mueve-este-negocio-en-cartagena-CX7541242
         // http://www.scielo.org.co/scielo.php?script=sci_arttext&pid=S0120-55522013000300012
         Random random = new Random();
-        believes.getPeasantProfile().increaseMoney(random.nextInt(25001) + 20000);
+        believes.getPeasantProfile().increaseMoney(random.nextInt(25001) + 10000);
     }
 
 }

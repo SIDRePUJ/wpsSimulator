@@ -21,12 +21,9 @@ import BESA.Kernel.System.AdmBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Guards.FromSociety.PeasantWorkerContractFinishedGuard;
-import org.wpsim.PeasantFamily.Tasks.Base.wpsTask;
-import org.wpsim.Simulator.Config.wpsConfig;
+import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Society.Data.SocietyDataMessage;
-import org.wpsim.Society.Guards.SocietyAgentRequestHelpGuard;
 import rational.mapping.Believes;
-import rational.mapping.Task;
 
 /**
  *
