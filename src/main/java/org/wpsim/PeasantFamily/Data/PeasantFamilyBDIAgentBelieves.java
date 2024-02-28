@@ -756,5 +756,14 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     public boolean isUpdatePriceList() {
         return updatePriceList;
     }
+
+    public void changeHappinessBase(float value) {
+        List<EmotionAxis> emotions = this.emotionalState.getEmotions();
+        for (EmotionAxis emotion : emotions) {
+            if (emotion.toString().equals("Happiness/Sadness")){
+                emotion.increaseBaseValue(value);
+            }
+        }
+    }
 }
 

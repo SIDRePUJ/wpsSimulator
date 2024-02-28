@@ -87,7 +87,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         EmotionAxis HappinessSadness = new EmotionAxis(
                 Semantics.Emotions.Happiness,
                 Semantics.Emotions.Sadness,
-                0.0f, 0.0f, 0.1f
+                0.0f, 0.0f, 0.4f
         );
         HappinessSadness.setEventInfluence(EmotionalEventType.LEISURE.name(), 0.7f);
         HappinessSadness.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.3f);
@@ -99,7 +99,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         EmotionAxis HopefulUncertainty = new EmotionAxis(
                 Semantics.Emotions.Hopeful,
                 Semantics.Emotions.Uncertainty,
-                0.0f, 0.0f, 0.1f
+                0.0f, 0.0f, 0.5f
         );
         HopefulUncertainty.setEventInfluence(EmotionalEventType.PLANTING.name(), 1.0f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.SELLING.name(), 0.8f);
@@ -115,7 +115,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         EmotionAxis SecureInsecure = new EmotionAxis(
                 Semantics.Emotions.Secure,
                 Semantics.Emotions.Insecure,
-                0.0f, 0.0f, 0.1f
+                0.0f, 0.0f, 0.2f
         );
         SecureInsecure.setEventInfluence(EmotionalEventType.HOUSEHOLDING.name(), 0.5f);
         SecureInsecure.setEventInfluence(EmotionalEventType.THIEVING.name(), 1.0f);
