@@ -37,4 +37,4 @@ logs/
 
 ### Mac OS ###
 .DS_Store
-*.jar
+out/*
