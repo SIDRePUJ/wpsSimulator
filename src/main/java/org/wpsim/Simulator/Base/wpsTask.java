@@ -31,7 +31,7 @@ public class wpsTask extends Task {
 
     @Override
     public void cancelTask(Believes believes) {
-        //System.out.println("cancelTask " + this.getClass().getSimpleName());
+        System.out.println("cancelTask " + this.getClass().getSimpleName());
     }
 
     protected void setExecuted(boolean isExecuted) {

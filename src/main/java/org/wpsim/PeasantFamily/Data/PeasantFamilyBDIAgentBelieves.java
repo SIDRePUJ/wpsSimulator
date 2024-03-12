@@ -16,9 +16,9 @@ package org.wpsim.PeasantFamily.Data;
 
 import BESA.Emotional.EmotionAxis;
 import org.json.JSONObject;
-import org.wpsim.Control.Data.Coin;
-import org.wpsim.Control.Data.ControlCurrentDate;
-import org.wpsim.Control.Data.DateHelper;
+import org.wpsim.SimulationControl.Data.Coin;
+import org.wpsim.SimulationControl.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Data.DateHelper;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.*;
 import org.wpsim.PeasantFamily.Emotions.EmotionalComponent;
@@ -62,6 +62,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     private String Contractor;
     private boolean haveEmotions;
     private boolean askedForContractor;
+    private boolean askedForCollaboration;
     private boolean wait;
     private boolean updatePriceList;
 
@@ -92,6 +93,8 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
 
         if (wpsStart.config.getBooleanProperty("pfagent.randonemotions")){
             this.setHaveEmotions(Coin.flipCoin());
+        }else{
+            this.setHaveEmotions(wpsStart.config.getBooleanProperty("pfagent.emotions"));
         }
 
     }
@@ -564,6 +567,7 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
         dataObject.put("daysToWorkForOther", getDaysToWorkForOther());
         dataObject.put("peasantFamilyHelper", getPeasantFamilyHelper());
         dataObject.put("waitStatus", isWaiting());
+        dataObject.put("haveEmotions", isHaveEmotions());
 
         if (!getAssignedLands().isEmpty()) {
             dataObject.put("assignedLands", getAssignedLands());
@@ -755,6 +759,14 @@ public class PeasantFamilyBDIAgentBelieves extends EmotionalComponent implements
     }
     public boolean isUpdatePriceList() {
         return updatePriceList;
+    }
+
+    public boolean isAskedForCollaboration() {
+        return askedForCollaboration;
+    }
+
+    public void setAskedForCollaboration(boolean collaboration) {
+        this.askedForCollaboration = collaboration;
     }
 
     public void changeHappinessBase(float value) {

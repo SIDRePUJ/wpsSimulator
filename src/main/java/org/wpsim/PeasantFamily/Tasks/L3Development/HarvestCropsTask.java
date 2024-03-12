@@ -45,8 +45,7 @@ public class HarvestCropsTask extends wpsLandTask {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         updateConfig(believes, 56);
-        believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.HarvestCropsTask);
 
         int factor = 1;
         if (!believes.getPeasantFamilyHelper().isBlank())
@@ -80,6 +79,7 @@ public class HarvestCropsTask extends wpsLandTask {
                 return;
             }
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

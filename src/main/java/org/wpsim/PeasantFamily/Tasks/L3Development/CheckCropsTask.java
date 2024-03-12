@@ -18,7 +18,7 @@ import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.Control.Data.Coin;
+import org.wpsim.SimulationControl.Data.Coin;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.Simulator.Base.wpsTask;

@@ -17,7 +17,6 @@ package org.wpsim.PeasantFamily.Guards.FromSociety;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.Control.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Society.Data.SocietyDataMessage;
 

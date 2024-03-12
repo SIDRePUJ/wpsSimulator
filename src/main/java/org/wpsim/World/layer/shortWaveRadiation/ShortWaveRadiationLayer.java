@@ -3,7 +3,7 @@ package org.wpsim.World.layer.shortWaveRadiation;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.wpsim.Control.Data.DateHelper;
+import org.wpsim.SimulationControl.Data.DateHelper;
 import org.wpsim.World.Helper.ExtraterrestrialRadiation;
 import org.wpsim.World.Helper.Hemisphere;
 import org.wpsim.World.Helper.WorldConfiguration;

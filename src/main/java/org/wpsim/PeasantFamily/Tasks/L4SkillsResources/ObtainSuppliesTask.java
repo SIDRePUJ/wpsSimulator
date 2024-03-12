@@ -17,8 +17,8 @@ package org.wpsim.PeasantFamily.Tasks.L4SkillsResources;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.Market.Guards.MarketAgentGuard;
-import org.wpsim.Market.Data.MarketMessage;
+import org.wpsim.MarketPlace.Guards.MarketAgentGuard;
+import org.wpsim.MarketPlace.Data.MarketMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.Simulator.Base.wpsTask;
@@ -26,7 +26,7 @@ import org.wpsim.Simulator.wpsStart;
 import org.wpsim.Viewer.Data.wpsReport;
 import rational.mapping.Believes;
 
-import static org.wpsim.Market.Data.MarketMessageType.BUY_SUPPLIES;
+import static org.wpsim.MarketPlace.Data.MarketMessageType.BUY_SUPPLIES;
 
 /**
  *

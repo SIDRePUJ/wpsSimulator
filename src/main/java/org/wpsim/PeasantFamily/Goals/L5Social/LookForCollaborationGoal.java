@@ -72,7 +72,7 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
 
-        if (this.isAlreadyExecutedToday(believes)) {
+        if (this.isAlreadyExecutedToday(believes) || believes.isAskedForCollaboration()) {
             return 0;
         }
 

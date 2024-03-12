@@ -27,12 +27,6 @@ import rational.mapping.Believes;
 public class DoHealthCareTask extends wpsTask {
 
     /**
-     *
-     */
-    public DoHealthCareTask() {
-    }
-
-    /**
      * @param parameters
      */
     @Override
@@ -44,7 +38,6 @@ public class DoHealthCareTask extends wpsTask {
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
-
 
     /**
      * @param parameters

@@ -56,9 +56,11 @@ function addPeasantFamily(name) {
 // Returns: None.
 function updateAgent(jsonData) {
     let unSynchronized = "";
+    let haveEmotions = "";
     //console.log("Updating agent:", jsonData);
     let agent = document.getElementById(jsonData.name);
     let state = JSON.parse(jsonData.state);
+    //console.log(state);
     let lands = {};
     lands[state.peasantFamilyLandAlias] = state.assignedLands;
     /*for (let farm in lands) {
@@ -90,13 +92,18 @@ function updateAgent(jsonData) {
         } else {
             unSynchronized = "";
         }
+        if (state.haveEmotions){
+            haveEmotions = " 😂";
+        }else{
+            haveEmotions = " 😐";
+        }
     }
 
     agent.innerHTML = `${jsonData.name}`;
     if (state.robberyAccount > 0) {
         agent.innerHTML += "🦹";
     }
-    agent.innerHTML += `<br> ${state.health} 💊<br>
+    agent.innerHTML += `<br> ${state.health} 💊${haveEmotions}<br>
                 $${state.money.toLocaleString("es-CO")} 💰<br>
                 ${state.internalCurrentDate} 📅${unSynchronized}<br>`;
 

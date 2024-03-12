@@ -19,6 +19,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.Bank.Guards.BankAgentGuard;
 import org.wpsim.Bank.Data.BankMessage;
+import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.Simulator.Base.wpsTask;
 import org.wpsim.Simulator.wpsStart;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
@@ -39,6 +40,7 @@ public class PayDebtsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        believes.useTime(TimeConsumedBy.PeasantPayDebtsTaks);
 
         double amount;
         if (believes.getPeasantProfile().getLoanAmountToPay() > believes.getPeasantProfile().getMoney()){
@@ -46,11 +48,9 @@ public class PayDebtsTask extends wpsTask {
         }else{
             amount = believes.getPeasantProfile().getMoney();
         }
-
         wpsReport.info("⚙️⚙️⚙️ Paying " + amount, believes.getPeasantProfile().getPeasantFamilyAlias());
 
         try {
-
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getBankAgentName()
             ).sendEvent(
@@ -64,17 +64,13 @@ public class PayDebtsTask extends wpsTask {
                             )
                     )
             );
-
             believes.getPeasantProfile().useMoney(
                     believes.getPeasantProfile().getLoanAmountToPay()
             );
             believes.getPeasantProfile().setLoanAmountToPay(0);
-
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
         believes.addTaskToLog(believes.getInternalCurrentDate());
-
     }
-
 }

@@ -15,7 +15,7 @@
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
 import BESA.Emotional.EmotionalEvent;
-import org.wpsim.Control.Data.Coin;
+import org.wpsim.SimulationControl.Data.Coin;
 import org.wpsim.Simulator.Base.wpsTask;
 import rational.mapping.Believes;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;

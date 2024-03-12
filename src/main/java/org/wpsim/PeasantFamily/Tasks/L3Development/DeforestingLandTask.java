@@ -38,7 +38,6 @@ public class DeforestingLandTask extends wpsLandTask {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         updateConfig(believes, 120); // Paso 1: Configurar el tiempo de deforestación
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.DeforestingLandTask);
 
         int factor = 1;
@@ -63,6 +62,7 @@ public class DeforestingLandTask extends wpsLandTask {
                 return; // Paso 5: Retornar a la iteración
             }
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

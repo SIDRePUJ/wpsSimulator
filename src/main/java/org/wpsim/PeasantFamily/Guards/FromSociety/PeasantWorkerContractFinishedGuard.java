@@ -42,5 +42,6 @@ public class PeasantWorkerContractFinishedGuard extends GuardBESA {
         believes.setDaysToWorkForOther(0);
         believes.setAskedForContractor(false);
         believes.getPeasantProfile().decreaseMoney(250000);
+        believes.setAskedForCollaboration(false);
     }
 }

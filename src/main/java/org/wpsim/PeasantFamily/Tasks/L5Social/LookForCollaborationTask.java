@@ -39,8 +39,9 @@ public class LookForCollaborationTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.LookForCollaborationTask);
+        believes.addTaskToLog(believes.getInternalCurrentDate());
+        believes.setAskedForCollaboration(true);
 
         try {
             AdmBESA.getInstance().getHandlerByAlias(

@@ -14,7 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
-import org.wpsim.Control.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Data.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Simulator.Base.wpsTask;
 import rational.mapping.Believes;
@@ -24,13 +24,6 @@ import rational.mapping.Believes;
  * @author jairo
  */
 public class SelfEvaluationTask extends wpsTask {
-    
-
-    /**
-     *
-     */
-    public SelfEvaluationTask() {
-    }
 
     /**
      *
@@ -42,7 +35,6 @@ public class SelfEvaluationTask extends wpsTask {
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
-        this.setTaskFinalized();
     }
 
 }
