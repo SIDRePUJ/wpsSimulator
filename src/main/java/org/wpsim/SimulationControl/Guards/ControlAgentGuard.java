@@ -17,7 +17,7 @@ package org.wpsim.SimulationControl.Guards;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.SimulationControl.Data.ControlAgentState;
-import org.wpsim.SimulationControl.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
 import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Simulator.wpsStart;

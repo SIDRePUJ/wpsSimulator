@@ -14,7 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
-import org.wpsim.SimulationControl.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
 import org.wpsim.Simulator.Base.wpsTask;
 import rational.mapping.Believes;

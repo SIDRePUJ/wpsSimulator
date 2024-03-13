@@ -4,7 +4,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.SimulationControl.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.MarketPlace.Data.MarketMessage;
 import org.wpsim.MarketPlace.Data.MarketMessageType;
 import org.wpsim.MarketPlace.Guards.MarketInfoAgentGuard;

@@ -19,7 +19,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.SimulationControl.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.Government.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;

@@ -20,7 +20,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Log.ReportBESA;
-import org.wpsim.SimulationControl.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.SimulationControl.Guards.ControlAgentGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
 import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
@@ -49,10 +49,10 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamilyBDIAgent PeasantFamily = (PeasantFamilyBDIAgent) this.getAgent();
         PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
+        checkTimeJump(believes);
         //System.out.println("HeartBeatGuard: " + this.getAgent().getAlias());
         if (!believes.isWaiting() || wpsStart.config.getBooleanProperty("control.freerun")) {
             // Check if the current date is more than 7 days before the internal current date
-            //checkTimeJump(believes);
             // Check if the agent has finished
             if (checkDead(believes)) return;
             // Check if the simulation has finished
@@ -66,7 +66,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             // Wait time for the next execution
             sleepWave(state, believes);
             // Send BDI Pulse to BDI Information Flow
-            sendBDIPulse();
+            sendBDIPulse(this.agent.getAlias());
         }
     }
 
@@ -79,11 +79,11 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
     }
 
-    private void sendBDIPulse() {
+    private static void sendBDIPulse(String alias) {
         //System.out.println("Send BDI Pulse: " + this.agent.getAlias());
         try {
             AdmBESA.getInstance().getHandlerByAlias(
-                    this.agent.getAlias()
+                    alias
             ).sendEvent(
                     new EventBESA(
                             InformationFlowGuard.class.getName(),
@@ -113,22 +113,20 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
     }
 
     private static void checkTimeJump(PeasantFamilyBDIAgentBelieves believes) {
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) <= -(wpsStart.config.getIntProperty("control.daystocheck"))) {
-            /*System.out.println("Jump " + believes.getAlias()
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) <= -(wpsStart.config.getIntProperty("control.daystocheck")*2)) {
+            System.out.println("Micro Jump " + believes.getAlias()
                     + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
                     believes.getInternalCurrentDate()
             ));
             believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
-            believes.setCurrentActivity(PeasantActivityType.BLOCKED);
+            believes.setWait(false);
             believes.makeNewDayWOD();
-             */
             /*System.out.println(believes.getAlias() + " en espera " + believes.getAlias()
                     + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
                     believes.getInternalCurrentDate()
             ));*/
-            //believes.setWait(true);
-        } else {
-            believes.setCurrentActivity(PeasantActivityType.NONE);
+            sendBDIPulse(believes.getAlias());
+            UpdateControlDate(believes);
         }
     }
 

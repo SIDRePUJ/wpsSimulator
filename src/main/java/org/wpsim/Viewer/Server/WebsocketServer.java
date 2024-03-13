@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.wpsim.SimulationControl.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.Simulator.Config.wpsConfig;
 import org.wpsim.Simulator.wpsStart;
 

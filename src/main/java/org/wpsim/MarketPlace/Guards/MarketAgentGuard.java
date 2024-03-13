@@ -16,7 +16,7 @@ package org.wpsim.MarketPlace.Guards;
 
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.SimulationControl.Data.ControlCurrentDate;
+import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.MarketPlace.Data.MarketAgentState;
 import org.wpsim.MarketPlace.Data.MarketMessage;
 import org.wpsim.MarketPlace.Data.MarketMessageType;
