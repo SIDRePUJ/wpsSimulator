@@ -2,14 +2,9 @@ package org.wpsim.PeasantFamily.Emotions;
 
 import BESA.Emotional.EmotionAxis;
 import com.fuzzylite.Engine;
-import com.fuzzylite.FuzzyLite;
-import com.fuzzylite.Op;
 import com.fuzzylite.activation.General;
-import com.fuzzylite.activation.Highest;
 import com.fuzzylite.defuzzifier.*;
 import com.fuzzylite.norm.s.*;
-import com.fuzzylite.norm.t.AlgebraicProduct;
-import com.fuzzylite.norm.t.BoundedDifference;
 import com.fuzzylite.norm.t.Minimum;
 import com.fuzzylite.rule.Rule;
 import com.fuzzylite.rule.RuleBlock;
@@ -17,9 +12,8 @@ import com.fuzzylite.variable.InputVariable;
 import com.fuzzylite.variable.OutputVariable;
 import com.fuzzylite.term.Trapezoid;
 import com.fuzzylite.term.Triangle;
-import org.wpsim.Simulator.wpsStart;
+import org.wpsim.WellProdSim.wpsStart;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

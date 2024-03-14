@@ -17,9 +17,9 @@ package org.wpsim.PeasantFamily.Goals.L6Leisure;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.Simulator.Base.wpsGoalBDI;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.WellProdSim.Base.wpsGoalBDI;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L6Leisure.LeisureActivitiesTask;
 import rational.RationalRole;
@@ -69,7 +69,7 @@ public class LeisureActivitiesGoal extends wpsGoalBDI {
      */
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
@@ -86,7 +86,7 @@ public class LeisureActivitiesGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.LeisureActivitiesTask)) {
             //wpsReport.trace("SI " + believes.toSmallJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
             return 1;

@@ -18,9 +18,9 @@ import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.SimulationControl.Data.DateHelper;
-import org.wpsim.Simulator.Base.wpsGoalBDI;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.WellProdSim.Base.wpsGoalBDI;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L3Development.AttendReligiousEventsTask;
 import rational.RationalRole;
@@ -70,7 +70,7 @@ public class AttendReligiousEventsGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         if (believes.haveTimeAvailable(TimeConsumedBy.AttendReligiousEventsTask)) {
             return 1;
         } else {
@@ -86,7 +86,7 @@ public class AttendReligiousEventsGoal extends wpsGoalBDI {
      */
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;

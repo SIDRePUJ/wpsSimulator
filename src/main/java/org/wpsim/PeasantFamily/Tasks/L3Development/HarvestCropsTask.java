@@ -17,18 +17,18 @@ package org.wpsim.PeasantFamily.Tasks.L3Development;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.CivicAuthority.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
-import org.wpsim.Simulator.Base.wpsLandTask;
-import org.wpsim.Viewer.Data.wpsReport;
-import org.wpsim.World.Guards.WorldGuard;
-import org.wpsim.World.Messages.WorldMessage;
+import org.wpsim.WellProdSim.Base.wpsLandTask;
+import org.wpsim.ViewerLens.Util.wpsReport;
+import org.wpsim.AgroEcosystem.Guards.AgroEcosystemGuard;
+import org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessage;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
-import static org.wpsim.World.Messages.WorldMessageType.CROP_HARVEST;
+import static org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessageType.CROP_HARVEST;
 
 /**
  *
@@ -43,7 +43,7 @@ public class HarvestCropsTask extends wpsLandTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         updateConfig(believes, 56);
         believes.useTime(TimeConsumedBy.HarvestCropsTask);
 
@@ -60,14 +60,14 @@ public class HarvestCropsTask extends wpsLandTask {
                     this.resetLand(believes, currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
                     try {
-                        WorldMessage worldMessage = new WorldMessage(
+                        AgroEcosystemMessage agroEcosystemMessage = new AgroEcosystemMessage(
                                 CROP_HARVEST,
                                 currentLandInfo.getLandName(),
                                 believes.getInternalCurrentDate(),
                                 believes.getPeasantProfile().getPeasantFamilyAlias());
                         EventBESA ev = new EventBESA(
-                                WorldGuard.class.getName(),
-                                worldMessage);
+                                AgroEcosystemGuard.class.getName(),
+                                agroEcosystemMessage);
                         AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
                         // Reset Land
                         currentLandInfo.setCurrentSeason(SeasonType.NONE);

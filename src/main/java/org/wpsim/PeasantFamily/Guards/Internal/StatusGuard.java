@@ -17,8 +17,8 @@ package org.wpsim.PeasantFamily.Guards.Internal;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
+import org.wpsim.ViewerLens.Util.wpsReport;
 
 /**
  *
@@ -33,7 +33,7 @@ public class StatusGuard extends GuardBESA {
     @Override
     public void funcExecGuard(EventBESA event) {
         StateBDI state = (StateBDI) this.agent.getState();
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
         wpsReport.info(believes.toJson(), this.getAgent().getAlias());
         //wpsReport.info("Llegó desbloqueo " + event.getData(), this.getAgent().getAlias());
     }

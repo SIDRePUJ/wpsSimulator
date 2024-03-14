@@ -17,17 +17,17 @@ package org.wpsim.PeasantFamily.Tasks.L4SkillsResources;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.MarketPlace.Guards.MarketAgentGuard;
-import org.wpsim.MarketPlace.Data.MarketMessage;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.MarketPlace.Guards.MarketPlaceGuard;
+import org.wpsim.MarketPlace.Data.MarketPlaceMessage;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.ResourceNeededType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.Simulator.Base.wpsTask;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.WellProdSim.Base.wpsTask;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.ViewerLens.Util.wpsReport;
 import rational.mapping.Believes;
 
-import static org.wpsim.MarketPlace.Data.MarketMessageType.BUY_WATER;
+import static org.wpsim.MarketPlace.Data.MarketPlaceMessageType.BUY_WATER;
 
 /**
  *
@@ -42,7 +42,7 @@ public class ObtainWaterTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         wpsReport.info("🚰🚰🚰 Comprando Agua", believes.getPeasantProfile().getPeasantFamilyAlias());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
@@ -51,8 +51,8 @@ public class ObtainWaterTask extends wpsTask {
                     wpsStart.config.getMarketAgentName()
             ).sendEvent(
                     new EventBESA(
-                            MarketAgentGuard.class.getName(),
-                            new MarketMessage(
+                            MarketPlaceGuard.class.getName(),
+                            new MarketPlaceMessage(
                                     BUY_WATER,
                                     believes.getPeasantProfile().getPeasantFamilyAlias(),
                                     100,

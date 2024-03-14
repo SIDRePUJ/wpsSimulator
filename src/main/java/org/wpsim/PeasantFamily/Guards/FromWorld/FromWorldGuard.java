@@ -17,14 +17,12 @@ package org.wpsim.PeasantFamily.Guards.FromWorld;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import BESA.Kernel.System.AdmBESA;
 import org.json.JSONObject;
-import org.wpsim.Government.Data.LandInfo;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.CivicAuthority.Data.LandInfo;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.ViewerLens.Util.wpsReport;
 
 /**
  *
@@ -46,7 +44,7 @@ public class FromWorldGuard extends GuardBESA {
         long initTime = System.currentTimeMillis();
         wpsReport.info("Llegó a FromWorldGuard: " + initTime + " " + landName, this.getAgent().getAlias());
 
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
         LandInfo landInfo = believes.getLandInfo(landName);
         landInfo.setProcessing(false);
         FromWorldMessageType messageType = peasantCommMessage.getMessageType();

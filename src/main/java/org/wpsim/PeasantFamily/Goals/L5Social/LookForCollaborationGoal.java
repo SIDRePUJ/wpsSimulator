@@ -17,11 +17,11 @@ package org.wpsim.PeasantFamily.Goals.L5Social;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.CivicAuthority.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
-import org.wpsim.Simulator.Base.wpsGoalBDI;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.WellProdSim.Base.wpsGoalBDI;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Tasks.L5Social.LookForCollaborationTask;
 import rational.RationalRole;
 import rational.mapping.Believes;
@@ -70,7 +70,7 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
      */
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
         if (this.isAlreadyExecutedToday(believes) || believes.isAskedForCollaboration()) {
             return 0;
@@ -99,7 +99,7 @@ public class LookForCollaborationGoal extends wpsGoalBDI {
 
     @Override
     public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         // Para dos semanas de ayuda @TODO: AJUSTAR
         if (believes.getPeasantProfile().getMoney() > (50000*believes.getAssignedLands().size()*10)) {
             return 1;

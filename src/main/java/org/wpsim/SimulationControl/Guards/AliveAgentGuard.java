@@ -22,8 +22,8 @@ import org.wpsim.SimulationControl.Data.ControlAgentState;
 import org.wpsim.SimulationControl.Data.ControlMessage;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromControlGuard;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.ViewerLens.Util.wpsReport;
 
 /**
  *

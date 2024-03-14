@@ -20,34 +20,34 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
-import org.wpsim.Government.Data.LandInfo;
+import org.wpsim.CivicAuthority.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.Simulator.Base.wpsLandTask;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Data.wpsReport;
-import org.wpsim.World.Agent.KillWorldGuard;
-import org.wpsim.World.Agent.WorldAgent;
-import org.wpsim.World.Guards.WorldGuard;
-import org.wpsim.World.Agent.WorldState;
-import org.wpsim.World.Helper.Hemisphere;
-import org.wpsim.World.Helper.Soil;
-import org.wpsim.World.Helper.WorldConfiguration;
-import org.wpsim.World.Messages.WorldMessage;
-import org.wpsim.World.Messages.WorldMessageType;
-import org.wpsim.World.layer.crop.CropLayer;
-import org.wpsim.World.layer.crop.cell.rice.RiceCell;
-import org.wpsim.World.layer.crop.cell.roots.RootsCell;
-import org.wpsim.World.layer.disease.DiseaseCell;
-import org.wpsim.World.layer.disease.DiseaseLayer;
-import org.wpsim.World.layer.evapotranspiration.EvapotranspirationLayer;
-import org.wpsim.World.layer.rainfall.RainfallLayer;
-import org.wpsim.World.layer.shortWaveRadiation.ShortWaveRadiationLayer;
-import org.wpsim.World.layer.temperature.TemperatureLayer;
+import org.wpsim.WellProdSim.Base.wpsLandTask;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.ViewerLens.Util.wpsReport;
+import org.wpsim.AgroEcosystem.Agent.CloseAgroEcosystemGuard;
+import org.wpsim.AgroEcosystem.Agent.AgroEcosystem;
+import org.wpsim.AgroEcosystem.Guards.AgroEcosystemGuard;
+import org.wpsim.AgroEcosystem.Agent.AgroEcosystemState;
+import org.wpsim.AgroEcosystem.Helper.Hemisphere;
+import org.wpsim.AgroEcosystem.Helper.Soil;
+import org.wpsim.AgroEcosystem.Helper.WorldConfiguration;
+import org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessage;
+import org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessageType;
+import org.wpsim.AgroEcosystem.layer.crop.CropLayer;
+import org.wpsim.AgroEcosystem.layer.crop.cell.rice.RiceCell;
+import org.wpsim.AgroEcosystem.layer.crop.cell.roots.RootsCell;
+import org.wpsim.AgroEcosystem.layer.disease.DiseaseCell;
+import org.wpsim.AgroEcosystem.layer.disease.DiseaseLayer;
+import org.wpsim.AgroEcosystem.layer.evapotranspiration.EvapotranspirationLayer;
+import org.wpsim.AgroEcosystem.layer.rainfall.RainfallLayer;
+import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationLayer;
+import org.wpsim.AgroEcosystem.layer.temperature.TemperatureLayer;
 import rational.mapping.Believes;
 
-import static org.wpsim.World.Messages.WorldMessageType.CROP_INIT;
+import static org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessageType.CROP_INIT;
 
 /**
  * @author jairo
@@ -60,7 +60,7 @@ public class PlantCropTask extends wpsLandTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         updateConfig(believes, 32);
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
@@ -108,7 +108,7 @@ public class PlantCropTask extends wpsLandTask {
                     }
                     wpsReport.info("Cultivando en " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName, peasantAlias);
                     try {
-                        WorldAgent landAgent = buildWorld(
+                        AgroEcosystem landAgent = buildWorld(
                                 getRainfallFile(initialRainfallConditions),
                                 peasantAlias,
                                 currentLandInfo.getLandName(),
@@ -136,8 +136,8 @@ public class PlantCropTask extends wpsLandTask {
                                 currentLandInfo.getLandName()
                         ).sendEvent(
                                 new EventBESA(
-                                        WorldGuard.class.getName(),
-                                        new WorldMessage(
+                                        AgroEcosystemGuard.class.getName(),
+                                        new AgroEcosystemMessage(
                                                 CROP_INIT,
                                                 currentLandInfo.getLandName(),
                                                 believes.getInternalCurrentDate(),
@@ -167,7 +167,7 @@ public class PlantCropTask extends wpsLandTask {
         }
     }
 
-    private static WorldState buildWorldState(
+    private static AgroEcosystemState buildWorldState(
             String rainfallFile,
             String agentAlias,
             int cropSize,
@@ -227,7 +227,7 @@ public class PlantCropTask extends wpsLandTask {
         cropLayer.bindLayer("rainfall", rainfallLayer);
         cropLayer.bindLayer("temperature", temperatureLayer);
         cropLayer.bindLayer("evapotranspiration", evapotranspirationLayer);
-        return new WorldState(
+        return new AgroEcosystemState(
                 temperatureLayer,
                 radiationLayer,
                 cropLayer,
@@ -236,15 +236,15 @@ public class PlantCropTask extends wpsLandTask {
                 rainfallLayer);
     }
 
-    private static void initialWorldStateInitialization(WorldAgent worldAgent, String agentAlias, String currentDate) {
+    private static void initialWorldStateInitialization(AgroEcosystem agroEcosystem, String agentAlias, String currentDate) {
         try {
             AdmBESA.getInstance().getHandlerByAid(
-                    worldAgent.getAid()
+                    agroEcosystem.getAid()
             ).sendEvent(
                     new EventBESA(
-                            WorldGuard.class.getName(),
-                            new WorldMessage(
-                                    WorldMessageType.CROP_INIT,
+                            AgroEcosystemGuard.class.getName(),
+                            new AgroEcosystemMessage(
+                                    AgroEcosystemMessageType.CROP_INIT,
                                     null,
                                     currentDate,
                                     agentAlias
@@ -256,19 +256,19 @@ public class PlantCropTask extends wpsLandTask {
         }
     }
 
-    private static WorldAgent buildWorld(
+    private static AgroEcosystem buildWorld(
             String rainfallFile,
             String agentAlias,
             String aliasWorldAgent,
             int cropSize,
             String cropName) {
         //wpsReport.warn(agentAlias + " " + aliasWorldAgent, "ObtainALandTask");
-        WorldState worldState = buildWorldState(rainfallFile, agentAlias, cropSize, cropName);
+        AgroEcosystemState agroEcosystemState = buildWorldState(rainfallFile, agentAlias, cropSize, cropName);
         StructBESA structBESA = new StructBESA();
-        structBESA.bindGuard(WorldGuard.class);
-        structBESA.bindGuard(KillWorldGuard.class);
+        structBESA.bindGuard(AgroEcosystemGuard.class);
+        structBESA.bindGuard(CloseAgroEcosystemGuard.class);
         try {
-            return new WorldAgent(aliasWorldAgent, worldState, structBESA);
+            return new AgroEcosystem(aliasWorldAgent, agroEcosystemState, structBESA);
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, "ObtainALandTask");
         }

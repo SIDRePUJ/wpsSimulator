@@ -17,8 +17,8 @@ package org.wpsim.PeasantFamily.Guards.FromMarketPlace;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
+import org.wpsim.ViewerLens.Util.wpsReport;
 
 /**
  *
@@ -34,7 +34,7 @@ public class FromMarketGuard extends GuardBESA {
     public void funcExecGuard(EventBESA event) {
         FromMarketMessage fromMarketMessage = (FromMarketMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
 
         FromMarketMessageType fromMarketMessageType = fromMarketMessage.getMessageType();
         wpsReport.debug(fromMarketMessageType, believes.getPeasantProfile().getPeasantFamilyAlias());

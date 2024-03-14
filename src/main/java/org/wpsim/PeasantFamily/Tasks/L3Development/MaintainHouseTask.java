@@ -14,9 +14,9 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
-import org.wpsim.Simulator.Base.wpsTask;
+import org.wpsim.WellProdSim.Base.wpsTask;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 
 /**
  *
@@ -31,7 +31,7 @@ public class MaintainHouseTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.getPeasantProfile().increaseHouseCondition();
         believes.useTime(believes.getTimeLeftOnDay());

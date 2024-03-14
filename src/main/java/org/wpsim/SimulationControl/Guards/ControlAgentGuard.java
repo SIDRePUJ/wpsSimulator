@@ -19,9 +19,9 @@ import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.SimulationControl.Data.ControlAgentState;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
-import org.wpsim.Simulator.Config.wpsConfig;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Server.WebsocketServer;
+import org.wpsim.WellProdSim.Config.wpsConfig;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.ViewerLens.Server.WebsocketServer;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

@@ -14,10 +14,10 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
-import org.wpsim.Government.Data.LandInfo;
-import org.wpsim.Simulator.Base.wpsLandTask;
+import org.wpsim.CivicAuthority.Data.LandInfo;
+import org.wpsim.WellProdSim.Base.wpsLandTask;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
@@ -34,7 +34,7 @@ public class PrepareLandTask extends wpsLandTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         updateConfig(believes, 56); // 56 horas para preparar una hectarea de cultivo
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());

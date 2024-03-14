@@ -18,7 +18,7 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.SimulationControl.Data.ControlMessage;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 
 /**
  *
@@ -34,7 +34,7 @@ public class FromControlGuard extends GuardBESA {
     public void funcExecGuard(EventBESA event) {
         StateBDI state = (StateBDI) this.agent.getState();
         ControlMessage controlMessage = (ControlMessage) event.getData();
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
         /*if (controlMessage.isWaiting()) {
             believes.setCurrentActivity(PeasantActivityType.BLOCKED);
         }else{

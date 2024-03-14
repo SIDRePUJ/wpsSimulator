@@ -11,7 +11,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
         <configuration>
-          <mainClass>org.wpsim.Simulator.wpsStart</mainClass>
+          <mainClass>org.wpsim.WellProdSim.wpsStart</mainClass>
           <arguments>
             <argument>local</argument>
           </arguments>
@@ -29,7 +29,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>org.wpsim.Simulator.wpsStart</mainClass>
+                  <mainClass>org.wpsim.WellProdSim.wpsStart</mainClass>
                 </transformer>
               </transformers>
             </configuration>

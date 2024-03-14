@@ -19,15 +19,15 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
-import org.wpsim.Simulator.Base.wpsTask;
-import org.wpsim.Viewer.Data.wpsReport;
-import org.wpsim.World.Guards.WorldGuard;
-import org.wpsim.World.Messages.WorldMessage;
+import org.wpsim.WellProdSim.Base.wpsTask;
+import org.wpsim.ViewerLens.Util.wpsReport;
+import org.wpsim.AgroEcosystem.Guards.AgroEcosystemGuard;
+import org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessage;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
-import static org.wpsim.World.Messages.WorldMessageType.CROP_PESTICIDE;
+import static org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessageType.CROP_PESTICIDE;
 
 /**
  *
@@ -43,7 +43,7 @@ public class ManagePestsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         //wpsReport.info("⚙️⚙️⚙️");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         //believes.setCurrentCropCare(CropCareType.NONE);
@@ -54,15 +54,15 @@ public class ManagePestsTask extends wpsTask {
                     believes.getPeasantProfile().getPeasantFamilyLandAlias()
             );
 
-            WorldMessage worldMessage;
-            worldMessage = new WorldMessage(
+            AgroEcosystemMessage agroEcosystemMessage;
+            agroEcosystemMessage = new AgroEcosystemMessage(
                     CROP_PESTICIDE,
                     "rice", // @TODO: CAMBIAR NOMBRE AL REAL
                     believes.getInternalCurrentDate(),
                     believes.getPeasantProfile().getPeasantFamilyAlias());
             EventBESA ev = new EventBESA(
-                    WorldGuard.class.getName(),
-                    worldMessage);
+                    AgroEcosystemGuard.class.getName(),
+                    agroEcosystemMessage);
             ah.sendEvent(ev);
             ControlCurrentDate.getInstance().setCurrentDate(
                     believes.getInternalCurrentDate());

@@ -20,10 +20,10 @@ import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromControlGuard;
-import org.wpsim.Simulator.Config.wpsConfig;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Server.WebsocketServer;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.WellProdSim.Config.wpsConfig;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.ViewerLens.Server.WebsocketServer;
+import org.wpsim.ViewerLens.Util.wpsReport;
 
 import java.io.Serializable;
 import java.util.*;

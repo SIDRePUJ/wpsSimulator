@@ -17,16 +17,16 @@ package org.wpsim.PeasantFamily.Tasks.L2Obligation;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.Bank.Guards.BankAgentGuard;
-import org.wpsim.Bank.Data.BankMessage;
+import org.wpsim.BankOffice.Guards.BankOfficeGuard;
+import org.wpsim.BankOffice.Data.BankOfficeMessage;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.Simulator.Base.wpsTask;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.WellProdSim.Base.wpsTask;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
+import org.wpsim.ViewerLens.Util.wpsReport;
 import rational.mapping.Believes;
 
-import static org.wpsim.Bank.Data.BankMessageType.PAY_LOAN_TERM;
+import static org.wpsim.BankOffice.Data.BankOfficeMessageType.PAY_LOAN_TERM;
 
 /**
  * @author jairo
@@ -39,7 +39,7 @@ public class PayDebtsTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.useTime(TimeConsumedBy.PeasantPayDebtsTaks);
 
         double amount;
@@ -55,8 +55,8 @@ public class PayDebtsTask extends wpsTask {
                     wpsStart.config.getBankAgentName()
             ).sendEvent(
                     new EventBESA(
-                            BankAgentGuard.class.getName(),
-                            new BankMessage(
+                            BankOfficeGuard.class.getName(),
+                            new BankOfficeMessage(
                                     PAY_LOAN_TERM,
                                     believes.getPeasantProfile().getPeasantFamilyAlias(),
                                     amount,

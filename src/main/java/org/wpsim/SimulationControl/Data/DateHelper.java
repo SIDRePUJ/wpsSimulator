@@ -5,7 +5,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.wpsim.World.Helper.WorldConfiguration;
+import org.wpsim.AgroEcosystem.Helper.WorldConfiguration;
 
 /**
  *

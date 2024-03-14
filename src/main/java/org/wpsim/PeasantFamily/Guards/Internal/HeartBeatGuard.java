@@ -22,13 +22,12 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Log.ReportBESA;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.SimulationControl.Guards.ControlAgentGuard;
-import org.wpsim.PeasantFamily.Agent.PeasantFamilyBDIAgent;
-import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Agent.PeasantFamily;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.ViewerLens.Util.wpsReport;
 import rational.guards.InformationFlowGuard;
 
 /**
@@ -46,8 +45,8 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
      */
     @Override
     public synchronized void funcPeriodicExecGuard(EventBESA event) {
-        PeasantFamilyBDIAgent PeasantFamily = (PeasantFamilyBDIAgent) this.getAgent();
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
+        PeasantFamily PeasantFamily = (org.wpsim.PeasantFamily.Agent.PeasantFamily) this.getAgent();
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
         checkTimeJump(believes);
         //System.out.println("HeartBeatGuard: " + this.getAgent().getAlias());
@@ -70,7 +69,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         }
     }
 
-    private void sleepWave(StateBDI state, PeasantFamilyBDIAgentBelieves believes) {
+    private void sleepWave(StateBDI state, PeasantFamilyBelieves believes) {
         try {
             currentRole = state.getMainRole().getRoleName();
         } catch (Exception e) {
@@ -95,7 +94,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         }
     }
 
-    private static void UpdateControlDate(PeasantFamilyBDIAgentBelieves believes) {
+    private static void UpdateControlDate(PeasantFamilyBelieves believes) {
         try {
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getControlAgentName()
@@ -112,7 +111,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         }
     }
 
-    private static void checkTimeJump(PeasantFamilyBDIAgentBelieves believes) {
+    private static void checkTimeJump(PeasantFamilyBelieves believes) {
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) <= -(wpsStart.config.getIntProperty("control.daystocheck")*2)) {
             System.out.println("Micro Jump " + believes.getAlias()
                     + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
@@ -130,7 +129,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         }
     }
 
-    private boolean checkFinish(PeasantFamilyBDIAgentBelieves believes) {
+    private boolean checkFinish(PeasantFamilyBelieves believes) {
         if (believes.getInternalCurrentDate().equals(wpsStart.config.getStringProperty("control.enddate"))) {
             System.out.println("Cerrando Agente " + this.agent.getAlias());
             this.stopPeriodicCall();
@@ -146,7 +145,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         return false;
     }
 
-    private boolean checkDead(PeasantFamilyBDIAgentBelieves believes) {
+    private boolean checkDead(PeasantFamilyBelieves believes) {
         if (believes.getPeasantProfile().getHealth() <= 0) {
             //writeBenchmarkLog(believes.toCSV());
             this.stopPeriodicCall();

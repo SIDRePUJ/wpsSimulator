@@ -17,9 +17,9 @@ package org.wpsim.PeasantFamily.Guards.FromBank;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.MoneyOriginType;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.ViewerLens.Util.wpsReport;
 
 /**
  *
@@ -35,7 +35,7 @@ public class FromBankGuard extends GuardBESA {
     public void funcExecGuard(EventBESA event) {
         FromBankMessage fromBankMessage = (FromBankMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
 
         FromBankMessageType fromBankMessageType = fromBankMessage.getMessageType();
 

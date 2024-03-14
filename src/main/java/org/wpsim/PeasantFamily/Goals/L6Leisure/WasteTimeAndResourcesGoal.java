@@ -17,9 +17,9 @@ package org.wpsim.PeasantFamily.Goals.L6Leisure;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import org.wpsim.Simulator.Base.wpsGoalBDI;
-import org.wpsim.Simulator.wpsStart;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
+import org.wpsim.WellProdSim.Base.wpsGoalBDI;
+import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.PeasantFamily.Tasks.L6Leisure.WasteTimeAndResourcesTask;
 import rational.RationalRole;
 import rational.mapping.Believes;
@@ -68,7 +68,7 @@ public class WasteTimeAndResourcesGoal extends wpsGoalBDI {
      */
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;

@@ -17,9 +17,9 @@ package org.wpsim.PeasantFamily.Goals.L1Survival;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
-import org.wpsim.Simulator.Base.wpsGoalBDI;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.WellProdSim.Base.wpsGoalBDI;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Tasks.L1Survival.SeekPurposeTask;
 import rational.RationalRole;
 import rational.mapping.Believes;
@@ -79,7 +79,7 @@ public class SeekPurposeGoal extends wpsGoalBDI {
      */
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         if (believes.getPeasantProfile().getPurpose().isBlank()) {
             return 1;
         } else {
@@ -118,7 +118,7 @@ public class SeekPurposeGoal extends wpsGoalBDI {
     @Override
     public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
         //wpsReport.info("");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         return !believes.getPeasantProfile().getPurpose().isBlank();
     }
 

@@ -15,9 +15,9 @@
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
 import BESA.Emotional.EmotionalEvent;
-import org.wpsim.Simulator.Base.wpsTask;
+import org.wpsim.WellProdSim.Base.wpsTask;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.PeasantLeisureType;
 
 /**
@@ -33,7 +33,7 @@ public class WasteTimeAndResourcesTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
         believes.getPeasantProfile().useMoney(1000);

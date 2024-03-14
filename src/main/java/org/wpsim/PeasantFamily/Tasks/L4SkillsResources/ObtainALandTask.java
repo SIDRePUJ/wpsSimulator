@@ -17,13 +17,13 @@ package org.wpsim.PeasantFamily.Tasks.L4SkillsResources;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.Government.Guards.GovernmentAgentLandGuard;
-import org.wpsim.Government.Data.GovernmentLandData;
-import org.wpsim.Simulator.Base.wpsTask;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.CivicAuthority.Guards.CivicAuthorityLandGuard;
+import org.wpsim.CivicAuthority.Data.CivicAuthorityLandData;
+import org.wpsim.WellProdSim.Base.wpsTask;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.ViewerLens.Util.wpsReport;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
@@ -38,7 +38,7 @@ public class ObtainALandTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         try {
@@ -46,8 +46,8 @@ public class ObtainALandTask extends wpsTask {
                     wpsStart.config.getGovernmentAgentName()
             ).sendEvent(
                     new EventBESA(
-                            GovernmentAgentLandGuard.class.getName(),
-                            new GovernmentLandData(
+                            CivicAuthorityLandGuard.class.getName(),
+                            new CivicAuthorityLandData(
                                     believes.getPeasantProfile().getPeasantFamilyAlias()
                             )
                     )

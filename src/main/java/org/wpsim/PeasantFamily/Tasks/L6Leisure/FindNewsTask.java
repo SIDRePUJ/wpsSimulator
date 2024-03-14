@@ -14,9 +14,9 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L6Leisure;
 
-import org.wpsim.Simulator.Base.wpsTask;
+import org.wpsim.WellProdSim.Base.wpsTask;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
 /**
@@ -33,7 +33,7 @@ public class FindNewsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
        // wpsReport.info("⚙️⚙️⚙️");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.getPeasantProfile().useLeisureOptions();
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));

@@ -18,11 +18,11 @@ import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Guards.FromSociety.PeasantWorkerContractFinishedGuard;
-import org.wpsim.Simulator.Base.wpsTask;
-import org.wpsim.Society.Data.SocietyDataMessage;
+import org.wpsim.WellProdSim.Base.wpsTask;
+import org.wpsim.CommunityDynamics.Data.CommunityDynamicsDataMessage;
 import rational.mapping.Believes;
 
 /**
@@ -38,7 +38,7 @@ public class WorkForOtherTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.WorkForOtherTask);
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "WORK", "MONEY"));
@@ -51,7 +51,7 @@ public class WorkForOtherTask extends wpsTask {
                         believes.getContractor()
                 ).sendEvent(
                         new EventBESA(PeasantWorkerContractFinishedGuard.class.getName(),
-                                new SocietyDataMessage(
+                                new CommunityDynamicsDataMessage(
                                         believes.getPeasantProfile().getPeasantFamilyAlias(),
                                         believes.getPeasantProfile().getPeasantFamilyAlias(),
                                         5

@@ -14,9 +14,9 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.Simulator.Base.wpsTask;
+import org.wpsim.WellProdSim.Base.wpsTask;
 import rational.mapping.Believes;
 
 /**
@@ -32,7 +32,7 @@ public class SeekPurposeTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         believes.getPeasantProfile().setPurpose("farmer");
         believes.addTaskToLog(believes.getInternalCurrentDate());

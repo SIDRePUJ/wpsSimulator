@@ -16,9 +16,9 @@ package org.wpsim.PeasantFamily.Tasks.L3Development;
 
 import BESA.Emotional.EmotionalEvent;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
-import org.wpsim.Simulator.Base.wpsTask;
+import org.wpsim.WellProdSim.Base.wpsTask;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.MoneyOriginType;
 
 /**
@@ -35,7 +35,7 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
         // Robo
         if (believes.getPeasantProfile().isCriminalityAffinity()) {

@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Main-Class: org.wpsim.Simulator.wpsStart
+Main-Class: org.wpsim.WellProdSim.wpsStart
 Class-Path: logback-classic-1.2.0.jar wildfly-common-1.5.4.Final.jar und
  ertow-websockets-jsr-2.3.4.Final.jar LocalBESA-3.17.jar apfloat-1.10.1.
  jar undertow-core-2.3.6.Final.jar KernelBESA-3.17.1.jar eBDIBESA-3.17.j

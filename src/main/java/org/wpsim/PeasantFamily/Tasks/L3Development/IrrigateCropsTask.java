@@ -17,17 +17,17 @@ package org.wpsim.PeasantFamily.Tasks.L3Development;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.Government.Data.LandInfo;
-import org.wpsim.Simulator.Base.wpsTask;
-import org.wpsim.Viewer.Data.wpsReport;
-import org.wpsim.World.Guards.WorldGuard;
-import org.wpsim.World.Messages.WorldMessage;
+import org.wpsim.CivicAuthority.Data.LandInfo;
+import org.wpsim.WellProdSim.Base.wpsTask;
+import org.wpsim.ViewerLens.Util.wpsReport;
+import org.wpsim.AgroEcosystem.Guards.AgroEcosystemGuard;
+import org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessage;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 
-import static org.wpsim.World.Messages.WorldMessageType.CROP_IRRIGATION;
+import static org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessageType.CROP_IRRIGATION;
 
 /**
  * @author jairo
@@ -40,7 +40,7 @@ public class IrrigateCropsTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
@@ -64,7 +64,7 @@ public class IrrigateCropsTask extends wpsTask {
                 try {
                     AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(
                             new EventBESA(
-                                    WorldGuard.class.getName(), new WorldMessage(
+                                    AgroEcosystemGuard.class.getName(), new AgroEcosystemMessage(
                                     CROP_IRRIGATION,
                                     currentLandInfo.getLandName(),
                                     believes.getInternalCurrentDate(),

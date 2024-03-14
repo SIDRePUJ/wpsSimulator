@@ -14,11 +14,11 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
-import org.wpsim.Government.Data.LandInfo;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.CivicAuthority.Data.LandInfo;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.Simulator.Base.wpsLandTask;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.WellProdSim.Base.wpsLandTask;
+import org.wpsim.ViewerLens.Util.wpsReport;
 import rational.mapping.Believes;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class DeforestingLandTask extends wpsLandTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         updateConfig(believes, 120); // Paso 1: Configurar el tiempo de deforestación
         believes.useTime(TimeConsumedBy.DeforestingLandTask);
 

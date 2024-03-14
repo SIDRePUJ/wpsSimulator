@@ -18,17 +18,17 @@ import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.Bank.Guards.BankAgentGuard;
-import org.wpsim.Bank.Data.BankMessage;
+import org.wpsim.BankOffice.Guards.BankOfficeGuard;
+import org.wpsim.BankOffice.Data.BankOfficeMessage;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
-import org.wpsim.Simulator.Base.wpsTask;
-import org.wpsim.Simulator.wpsStart;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.WellProdSim.Base.wpsTask;
+import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
-import org.wpsim.Viewer.Data.wpsReport;
+import org.wpsim.ViewerLens.Util.wpsReport;
 import rational.mapping.Believes;
 
-import static org.wpsim.Bank.Data.BankMessageType.ASK_CURRENT_TERM;
+import static org.wpsim.BankOffice.Data.BankOfficeMessageType.ASK_CURRENT_TERM;
 
 /**
  *
@@ -47,7 +47,7 @@ public class DoVitalsTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.setNewDay(false);
         believes.useTime(TimeConsumedBy.DoVitalsTask);
         // Emotional events
@@ -68,7 +68,7 @@ public class DoVitalsTask extends wpsTask {
      *
      * @param believes
      */
-    private void checkBankDebt(PeasantFamilyBDIAgentBelieves believes) {
+    private void checkBankDebt(PeasantFamilyBelieves believes) {
         if (ControlCurrentDate.getInstance().isFirstDayOfMonth(believes.getInternalCurrentDate())
                 && believes.getCurrentDay() > 6) {
             try {
@@ -76,8 +76,8 @@ public class DoVitalsTask extends wpsTask {
                         wpsStart.config.getBankAgentName()
                 ).sendEvent(
                         new EventBESA(
-                                BankAgentGuard.class.getName(),
-                                new BankMessage(
+                                BankOfficeGuard.class.getName(),
+                                new BankOfficeMessage(
                                         ASK_CURRENT_TERM,
                                         believes.getPeasantProfile().getPeasantFamilyAlias(),
                                         believes.getInternalCurrentDate()

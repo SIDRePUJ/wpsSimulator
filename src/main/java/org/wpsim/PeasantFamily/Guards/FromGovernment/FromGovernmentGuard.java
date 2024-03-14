@@ -17,10 +17,8 @@ package org.wpsim.PeasantFamily.Guards.FromGovernment;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
-import rational.mapping.Believes;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,7 +35,7 @@ public class FromGovernmentGuard extends GuardBESA {
     public void funcExecGuard(EventBESA event) {
         FromGovernmentMessage fromGovernmentMessage = (FromGovernmentMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) state.getBelieves();
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
 
         String landName = fromGovernmentMessage.getLandName();
         Map<String, String> assignedLands = fromGovernmentMessage.getAssignedLands();

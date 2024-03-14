@@ -14,9 +14,9 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
-import org.wpsim.Simulator.Base.wpsTask;
+import org.wpsim.WellProdSim.Base.wpsTask;
 import rational.mapping.Believes;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBDIAgentBelieves;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 
 /**
  *
@@ -32,7 +32,7 @@ public class AttendToLivestockTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         //wpsReport.info("⚙️⚙️⚙️");
-        PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         /*believes.getPeasantProfile().increaseHealth();
         believes.getPeasantProfile().increaseLeisureOptions();
