@@ -101,20 +101,24 @@ public class BankOfficeState extends StateBESA implements Serializable {
     }
 
     public double payLoan(String PeasantFamily, double money) {
-        if (money >= loans.get(PeasantFamily).MoneyToPay()) {
-            // If money is enought discount one paid term.
-            loans.get(PeasantFamily).increasePaidTerm();
-            // If the term is end... remove from the loans table
-            if (loans.get(PeasantFamily).getPaidTerm() == 12) {
-                loans.remove(PeasantFamily);
+        try {
+            if (money >= loans.get(PeasantFamily).MoneyToPay()) {
+                // If money is enought discount one paid term.
+                loans.get(PeasantFamily).increasePaidTerm();
+                // If the term is end... remove from the loans table
+                if (loans.get(PeasantFamily).getPaidTerm() == 12) {
+                    loans.remove(PeasantFamily);
+                }
+                // return money to paid
+                return (loans.get(PeasantFamily).MoneyToPay()
+                        * (loans.get(PeasantFamily).getMaxTerm()
+                        - loans.get(PeasantFamily).getPaidTerm()));
+            } else {
+                // else... return -1 error
+                return -1;
             }
-            // return money to paid
-            return (loans.get(PeasantFamily).MoneyToPay()
-                    * (loans.get(PeasantFamily).getMaxTerm()
-                    - loans.get(PeasantFamily).getPaidTerm()));
-        } else {
-            // else... return -1 error
-            return -1;
+        } catch (Exception e){
+            return 0;
         }
     }
 }

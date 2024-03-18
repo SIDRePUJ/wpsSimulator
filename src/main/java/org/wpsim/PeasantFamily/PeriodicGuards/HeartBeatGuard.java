@@ -21,7 +21,7 @@ import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Log.ReportBESA;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
-import org.wpsim.SimulationControl.Guards.ControlAgentGuard;
+import org.wpsim.SimulationControl.Guards.SimulationControlGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamily;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -48,14 +48,12 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamily PeasantFamily = (org.wpsim.PeasantFamily.Agent.PeasantFamily) this.getAgent();
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
-        checkTimeJump(believes);
+        // Check if the agent has finished
+        if (checkDead(believes)) return;
+        // Check if the simulation has finished
+        if (checkFinish(believes)) return;
         //System.out.println("HeartBeatGuard: " + this.getAgent().getAlias());
         if (!believes.isWaiting() || wpsStart.config.getBooleanProperty("control.freerun")) {
-            // Check if the current date is more than 7 days before the internal current date
-            // Check if the agent has finished
-            if (checkDead(believes)) return;
-            // Check if the simulation has finished
-            if (checkFinish(believes)) return;
             // Update the internal current date
             UpdateControlDate(believes);
             // Report the agent's beliefs to the wpsViewer
@@ -66,6 +64,12 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             sleepWave(state, believes);
             // Send BDI Pulse to BDI Information Flow
             sendBDIPulse(this.agent.getAlias());
+            System.out.println(this.agent.getAlias() + " CON pulso "+ believes.isWaiting());
+        }else{
+            // Check if the current date is more than 8 days before the internal current date
+            //checkTimeJump(believes);
+            System.out.println(this.agent.getAlias() + " SIN pulso "+ believes.isWaiting());
+            //System.out.println(this.agent.getAlias() + " bloqueado status " + believes.isWaiting());
         }
     }
 
@@ -76,6 +80,11 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             currentRole = "Void";
         }
         waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
+        try {
+            Thread.sleep(waitTime/4);
+        } catch (InterruptedException e) {
+            System.out.println("error sleepWave");
+        }
     }
 
     private static void sendBDIPulse(String alias) {
@@ -99,7 +108,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getControlAgentName()
             ).sendEvent(new EventBESA(
-                    ControlAgentGuard.class.getName(),
+                    SimulationControlGuard.class.getName(),
                     new ToControlMessage(
                             believes.getAlias(),
                             believes.getInternalCurrentDate(),
@@ -112,21 +121,17 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
     }
 
     private static void checkTimeJump(PeasantFamilyBelieves believes) {
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) <= -(wpsStart.config.getIntProperty("control.daystocheck")*2)) {
-            System.out.println("Micro Jump " + believes.getAlias()
-                    + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
-                    believes.getInternalCurrentDate()
-            ));
-            believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
-            believes.setWait(false);
-            believes.makeNewDayWOD();
-            /*System.out.println(believes.getAlias() + " en espera " + believes.getAlias()
-                    + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
-                    believes.getInternalCurrentDate()
-            ));*/
-            sendBDIPulse(believes.getAlias());
-            UpdateControlDate(believes);
-        }
+        System.out.println("Micro Jump " + believes.getAlias()
+                + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
+                believes.getInternalCurrentDate()
+        ));
+
+        believes.makeNewDay();
+        //believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
+        //believes.setWait(false);
+
+        UpdateControlDate(believes);
+        sendBDIPulse(believes.getAlias());
     }
 
     private boolean checkFinish(PeasantFamilyBelieves believes) {

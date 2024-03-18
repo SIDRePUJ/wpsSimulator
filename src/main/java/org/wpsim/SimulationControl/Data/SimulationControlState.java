@@ -18,8 +18,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.System.AdmBESA;
-import BESA.Kernel.System.Directory.AgHandlerBESA;
-import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromControlGuard;
+import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromSimulationControlGuard;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.ViewerLens.Server.WebsocketServer;
@@ -35,7 +34,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ControlAgentState extends StateBESA implements Serializable {
+public class SimulationControlState extends StateBESA implements Serializable {
     private AtomicInteger activeAgentsCount = new AtomicInteger(0);
     private AtomicBoolean unblocking = new AtomicBoolean(false);
     private ConcurrentMap<String, AgentInfo> agentMap = new ConcurrentHashMap<>();
@@ -44,10 +43,10 @@ public class ControlAgentState extends StateBESA implements Serializable {
     private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
     private ScheduledExecutorService scheduler;
 
-    public ControlAgentState() {
+    public SimulationControlState() {
         super();
         this.scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::checkAgentsStatus, 0, 2, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(this::checkAgentsStatus, 0, 100, TimeUnit.MILLISECONDS);
     }
 
     public ConcurrentMap<String, AgentInfo> getAliveAgentMap() {
@@ -59,58 +58,63 @@ public class ControlAgentState extends StateBESA implements Serializable {
     }
 
     public synchronized void checkAgentsStatus() {
-        /*System.out.println("\n------------------------------\nRevisando Lista de agentes, " + deadAgentMap.size() + " de " + wpsStart.peasantFamiliesAgents);
-        for (String agentName : getAliveAgentMap().keySet()) {
-            AgentInfo info = agentMap.get(agentName);
-            System.out.println(agentName + " " + info.toString());
-        }*/
 
+        //printAgentsStatusTable();
+        // Antes de comenzar, verificar si todos los agentes están muertos y detener la simulación si es necesario.
         if (deadAgentMap.size() == wpsStart.peasantFamiliesAgents){
             wpsStart.stopSimulation();
+            return;
         }
 
-        // Revisar si se cumple la condición para el bloqueo
-        int minDay = agentMap.values()
-                .stream()
-                .mapToInt(AgentInfo::getCurrentDay)
-                .min()
-                .orElse(Integer.MAX_VALUE);
-        int maxDay = agentMap.values()
-                .stream()
-                .mapToInt(AgentInfo::getCurrentDay)
-                .max()
-                .orElse(Integer.MIN_VALUE);
+        // Determinar el día mínimo y máximo entre todos los agentes vivos para entender el rango de tiempo actual.
+        int minDay = agentMap.values().stream().mapToInt(AgentInfo::getCurrentDay).min().orElse(Integer.MAX_VALUE);
+        int maxDay = agentMap.values().stream().mapToInt(AgentInfo::getCurrentDay).max().orElse(Integer.MIN_VALUE);
 
-        for (String agentName : getAliveAgentMap().keySet()) {
+        // Iterar sobre todos los agentes vivos para revisar su estado y posiblemente ajustarlos.
+        for (String agentName : agentMap.keySet()) {
             AgentInfo info = agentMap.get(agentName);
             if (info != null) {
                 int currentDay = info.getCurrentDay();
                 try {
-                    AgHandlerBESA agHandler = AdmBESA.getInstance().getHandlerByAlias(agentName);
                     EventBESA eventBesa = null;
-                    if (currentDay - minDay > wpsStart.config.getIntProperty("control.daystocheck")) {
-                        // Agente adelantado
-                        eventBesa = new EventBESA(FromControlGuard.class.getName(), new ControlMessage(agentName, true));
-                        //System.out.println("Agent " + agentName + " bloqueo");
-                        // Acciones adicionales para agentes adelantados
-                    } else { // if (currentDay >= maxDay) {
-                        // Agente resagado que ha alcanzado el día máximo
-                        eventBesa = new EventBESA(FromControlGuard.class.getName(), new ControlMessage(agentName, false));
-                        //System.out.println("Agent " + agentName + " desbloqueo");
-                        // Acciones adicionales para agentes que se han puesto al día
-                    } //else {
-                        // Agente en tiempo o atrasado pero aún no ha alcanzado el día máximo
-                        // Posiblemente no se necesite enviar un evento en este caso
-                        //eventBesa = new EventBESA(FromControlGuard.class.getName(), new ControlMessage(agentName, false));
-                        //System.out.println("Agent " + agentName + " desbloqueo 2");
-                    //}
-                    agHandler.sendEvent(eventBesa);
+                    // La lógica de notificación se ajusta para considerar la necesidad de pausar o reactivar agentes.
+                    // Si el agente está significativamente adelantado, puede ser necesario pausarlo.
+                    // Si el agente está al día o ligeramente adelantado/retrasado, se procede normalmente.
+                    boolean needsPause = currentDay - minDay > wpsStart.config.getIntProperty("control.daystocheck");
+                    boolean needsActivation = currentDay - minDay <= wpsStart.config.getIntProperty("control.daystocheck");
+
+                    // Actualiza la lógica de envío de eventos para incluir la reactivación de agentes.
+                    if (needsPause) {
+                        // Pausa a los agentes que están demasiado adelantados.
+                        eventBesa = new EventBESA(FromSimulationControlGuard.class.getName(), new ControlMessage(agentName, true));
+                    } else if (needsActivation) {
+                        // Reactiva o mantiene activos a los agentes que están sincronizados.
+                        eventBesa = new EventBESA(FromSimulationControlGuard.class.getName(), new ControlMessage(agentName, false));
+                    }
+
+                    if(eventBesa != null) {
+                        AdmBESA.getInstance().getHandlerByAlias(agentName).sendEvent(eventBesa);
+                    }
+
                 } catch (ExceptionBESA ex) {
                     wpsReport.debug(ex, "ControlAgentState");
                 }
             }
         }
-        //System.out.println("\n------------------------------\n");
+    }
+
+    public synchronized void printAgentsStatusTable() {
+        System.out.println("+--------------------------------------+");
+        System.out.println("| Agent Name         | Status | Day    |");
+        System.out.println("+--------------------------------------+");
+
+        agentMap.forEach((agentName, agentInfo) -> {
+            String status = agentInfo.getState() ? "Active" : "Paused";
+            String day = String.valueOf(agentInfo.getCurrentDay());
+            System.out.printf("| %-18s | %-6s | %-6s |\n", agentName, status, day);
+        });
+
+        System.out.println("+--------------------------------------+");
     }
 
     public void addAgentToMap(String agentName, int currentDay) {

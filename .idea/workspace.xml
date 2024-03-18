@@ -9,32 +9,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Cambio de nombres a los agentes y demás componentes">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Ajustado el cambio de precios del mercado, ahora parece que funciona completamente y ajusta según la oferta y demanda, rondando al precio inicial.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/BankOffice/Guards/BankOfficeGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/BankOffice/Guards/BankOfficeGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Guards/CivicAuthorityLandGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Guards/CivicAuthorityLandGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Guards/CivicAuthorityReleaseLandGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Guards/CivicAuthorityReleaseLandGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Agent/MarketPlace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Agent/MarketPlace.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Data/MarketPlaceAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Data/MarketPlaceState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Guards/MarketPlaceGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Guards/MarketPlaceGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Guards/MarketPlaceInfoAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Guards/MarketPlaceInfoAgentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/BankOffice/Data/BankOfficeState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/BankOffice/Data/BankOfficeState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/Utils/FarmingResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/Utils/FarmingResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalObjectType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalObjectType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromBank/FromBankGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromBankOffice/FromBankOfficeGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromBank/FromBankMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromBankOffice/FromBankOfficeMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromBank/FromBankMessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromBankOffice/FromBankOfficeMessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment/FromGovernmentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCivicAuthority/FromCivicAuthorityGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromGovernment/FromGovernmentMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCivicAuthority/FromCivicAuthorityMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarketPlace/FromMarketGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarketPlace/FromMarketPlaceGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarketPlace/FromMarketMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarketPlace/FromMarketPlaceMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarketPlace/FromMarketMessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromMarketPlace/FromMarketPlaceMessageType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Internal/StatusGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/Status/StatusGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/HarvestCropsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/HarvestCropsTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SellCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SellCropTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromSimulationControl/FromControlGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromSimulationControl/FromSimulationControlGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Agent/SimulationControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Agent/SimulationControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Data/ControlAgentState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Data/SimulationControlState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/AliveAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/AliveAgentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/ControlAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/SimulationControlGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadAgentGuard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
@@ -321,15 +307,9 @@
       <workItem from="1710433981924" duration="1472000" />
       <workItem from="1710436779054" duration="2591000" />
       <workItem from="1710599866750" duration="1676000" />
-      <workItem from="1710692646648" duration="10226000" />
-    </task>
-    <task id="LOCAL-00005" summary="Base del componente Emocional">
-      <option name="closed" value="true" />
-      <created>1692761735666</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1692761735666</updated>
+      <workItem from="1710692646648" duration="19433000" />
+      <workItem from="1710778579721" duration="541000" />
+      <workItem from="1710779375093" duration="15464000" />
     </task>
     <task id="LOCAL-00006" summary="Componente emocional configurado&#10;Incluidas gráficas en la UI">
       <option name="closed" value="true" />
@@ -715,7 +695,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710439118819</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Ajustado el cambio de precios del mercado, ahora parece que funciona completamente y ajusta según la oferta y demanda, rondando al precio inicial.">
+      <option name="closed" value="true" />
+      <created>1710729640907</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1710729640907</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -766,7 +754,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Ya se trabaja para otros, falta revisar el mecanismo de reiniciar el trabajo o brindarlo." />
     <MESSAGE value="Trabajo para otros funcional. piden subsidios." />
     <MESSAGE value="Reglas Fuzzy funcionando para HappinessSadness y HopefulUncertainty" />
     <MESSAGE value="Reglas Fuzzy funcionando para HappinessSadness y HopefulUncertainty. Listo para jugar con la contribución." />
@@ -791,7 +778,8 @@
     <MESSAGE value="Ajustes a nombres y optimización de velocidad" />
     <MESSAGE value="Ajustes al mecanismo de rescate del corazón de la familia campesina y sincronización." />
     <MESSAGE value="Cambio de nombres a los agentes y demás componentes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cambio de nombres a los agentes y demás componentes" />
+    <MESSAGE value="Ajustado el cambio de precios del mercado, ahora parece que funciona completamente y ajusta según la oferta y demanda, rondando al precio inicial." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajustado el cambio de precios del mercado, ahora parece que funciona completamente y ajusta según la oferta y demanda, rondando al precio inicial." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -42,7 +42,7 @@ import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFriendsTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.LeisureActivitiesGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.WasteTimeAndResourcesGoal;
 import org.wpsim.PeasantFamily.Guards.FromBankOffice.FromBankOfficeGuard;
-import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromControlGuard;
+import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromSimulationControlGuard;
 import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarketPlace.FromMarketPlaceGuard;
 import org.wpsim.PeasantFamily.Guards.FromSociety.PeasantWorkerContractFinishedGuard;
@@ -83,7 +83,7 @@ public class PeasantFamily extends AgentBDI {
         structBESA.bindGuard("SocietyBehavior", PeasantWorkerContractFinishedGuard.class);
 
         structBESA.addBehavior("FromControlBehavior");
-        structBESA.bindGuard("FromControlBehavior", FromControlGuard.class);
+        structBESA.bindGuard("FromControlBehavior", FromSimulationControlGuard.class);
 
         structBESA.addBehavior("FromBankBehavior");
         structBESA.bindGuard("FromBankBehavior", FromBankOfficeGuard.class);

@@ -16,7 +16,7 @@ package org.wpsim.SimulationControl.Guards;
 
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.SimulationControl.Data.ControlAgentState;
+import org.wpsim.SimulationControl.Data.SimulationControlState;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
 import org.wpsim.WellProdSim.Config.wpsConfig;
@@ -30,7 +30,7 @@ import java.time.temporal.ChronoUnit;
 /**
  * @author jairo
  */
-public class ControlAgentGuard extends GuardBESA {
+public class SimulationControlGuard extends GuardBESA {
 
     private static final LocalDate MIN_DATE = LocalDate.parse(
             wpsConfig.getInstance().getStartSimulationDate(),
@@ -49,7 +49,7 @@ public class ControlAgentGuard extends GuardBESA {
         ToControlMessage toControlMessage = (ToControlMessage) event.getData();
         String agentCurrentDate = toControlMessage.getCurrentDate();
         int currentDay = toControlMessage.getCurrentDay();
-        ControlAgentState state = (ControlAgentState) this.getAgent().getState();
+        SimulationControlState state = (SimulationControlState) this.getAgent().getState();
 
         //wpsReport.debug("ControlAgentGuard: " + agentAlias + " acd " + agentCurrentDate + " gcd " + ControlCurrentDate.getInstance().getCurrentDate(), "ControlAgentGuard");
         state.modifyAgentMap(toControlMessage.getPeasantFamilyAlias(), currentDay);

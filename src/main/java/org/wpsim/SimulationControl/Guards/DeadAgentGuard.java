@@ -16,7 +16,7 @@ package org.wpsim.SimulationControl.Guards;
 
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.SimulationControl.Data.ControlAgentState;
+import org.wpsim.SimulationControl.Data.SimulationControlState;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
 
 /**
@@ -36,7 +36,7 @@ public class DeadAgentGuard extends GuardBESA {
     public void funcExecGuard(EventBESA event) {
         toControlMessage = (ToControlMessage) event.getData();
         agentAlias = toControlMessage.getPeasantFamilyAlias();
-        ControlAgentState state = (ControlAgentState) this.getAgent().getState();
+        SimulationControlState state = (SimulationControlState) this.getAgent().getState();
 
         state.removeAgentFromMap(agentAlias);
         //wpsReport.debug(state.printDeadAgentMap(), "ControlAgentGuard");

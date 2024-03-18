@@ -19,9 +19,9 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
-import org.wpsim.SimulationControl.Data.ControlAgentState;
+import org.wpsim.SimulationControl.Data.SimulationControlState;
 import org.wpsim.SimulationControl.Guards.AliveAgentGuard;
-import org.wpsim.SimulationControl.Guards.ControlAgentGuard;
+import org.wpsim.SimulationControl.Guards.SimulationControlGuard;
 import org.wpsim.SimulationControl.Guards.DeadAgentGuard;
 
 /**
@@ -48,7 +48,7 @@ public class SimulationControl extends AgentBESA {
     
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         structBESA.addBehavior("ControlAgentGuard");
-        structBESA.bindGuard("ControlAgentGuard", ControlAgentGuard.class);
+        structBESA.bindGuard("ControlAgentGuard", SimulationControlGuard.class);
         structBESA.addBehavior("AliveAgentGuard");
         structBESA.bindGuard("AliveAgentGuard", AliveAgentGuard.class);
         structBESA.addBehavior("DeadAgentGuard");
@@ -56,8 +56,8 @@ public class SimulationControl extends AgentBESA {
         return structBESA;
     }
     
-    private static ControlAgentState createState() throws ExceptionBESA {
-        return new ControlAgentState();
+    private static SimulationControlState createState() throws ExceptionBESA {
+        return new SimulationControlState();
     }
 
     /**
@@ -73,7 +73,7 @@ public class SimulationControl extends AgentBESA {
      */
     @Override
     public void shutdownAgent() {
-        ((ControlAgentState) state).stopScheduler();
+        ((SimulationControlState) state).stopScheduler();
     }
     
 }

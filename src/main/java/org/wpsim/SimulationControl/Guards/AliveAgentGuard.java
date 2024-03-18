@@ -18,10 +18,10 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.System.AdmBESA;
-import org.wpsim.SimulationControl.Data.ControlAgentState;
+import org.wpsim.SimulationControl.Data.SimulationControlState;
 import org.wpsim.SimulationControl.Data.ControlMessage;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
-import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromControlGuard;
+import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromSimulationControlGuard;
 import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.ViewerLens.Util.wpsReport;
 
@@ -37,7 +37,7 @@ public class AliveAgentGuard extends GuardBESA {
     @Override
     public void funcExecGuard(EventBESA event) {
         ToControlMessage toControlMessage = (ToControlMessage) event.getData();
-        ControlAgentState state = (ControlAgentState) this.getAgent().getState();
+        SimulationControlState state = (SimulationControlState) this.getAgent().getState();
 
         //wpsReport.debug(agentAlias + " Alive - " + toControlMessage.getDays(), "ControlAgentGuard");
         //System.out.println(agentAlias + " Alive - " + toControlMessage.getDays() +  " ControlAgentGuard");
@@ -49,7 +49,7 @@ public class AliveAgentGuard extends GuardBESA {
                     toControlMessage.getPeasantFamilyAlias()
             ).sendEvent(
                     new EventBESA(
-                            FromControlGuard.class.getName(),
+                            FromSimulationControlGuard.class.getName(),
                             new ControlMessage(
                                     toControlMessage.getPeasantFamilyAlias(),
                                     false

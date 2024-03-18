@@ -755,7 +755,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     }
 
     public String getCurrentCropName() {
-        System.out.println("rice " + priceList.get("rice").getCost() + " - roots " + priceList.get("roots").getCost());
+        //System.out.println("rice " + priceList.get("rice").getCost() + " - roots " + priceList.get("roots").getCost());
         if (priceList.get("rice").getCost() > priceList.get("roots").getCost()){
             return "rice";
         }else {

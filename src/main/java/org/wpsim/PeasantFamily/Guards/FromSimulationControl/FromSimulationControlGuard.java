@@ -19,12 +19,13 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.SimulationControl.Data.ControlMessage;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
+import org.wpsim.ViewerLens.Util.wpsReport;
 
 /**
  *
  * @author jairo
  */
-public class FromControlGuard extends GuardBESA {
+public class FromSimulationControlGuard extends GuardBESA {
 
     /**
      *
@@ -32,15 +33,10 @@ public class FromControlGuard extends GuardBESA {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        StateBDI state = (StateBDI) this.agent.getState();
         ControlMessage controlMessage = (ControlMessage) event.getData();
+        StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
-        /*if (controlMessage.isWaiting()) {
-            believes.setCurrentActivity(PeasantActivityType.BLOCKED);
-        }else{
-            believes.setCurrentActivity(PeasantActivityType.NONE);
-        }*/
         believes.setWait(controlMessage.isWaiting());
-        //wpsReport.debug("desbloqueando " + believes.getPeasantProfile().getPeasantFamilyAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
+        wpsReport.debug("desbloqueando " + believes.getAlias() + " -- " + controlMessage.isWaiting(), believes.getPeasantProfile().getPeasantFamilyAlias());
     }
 }
