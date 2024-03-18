@@ -20,8 +20,8 @@ import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.CivicAuthority.Data.CivicAuthorityState;
 import org.wpsim.CivicAuthority.Data.CivicAuthorityLandData;
-import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
-import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentMessage;
+import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityGuard;
+import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityMessage;
 
 import java.util.Map;
 
@@ -50,8 +50,8 @@ public class CivicAuthorityLandGuard extends GuardBESA  {
                     data.getFamilyName()
             ).sendEvent(
                     new EventBESA(
-                            FromGovernmentGuard.class.getName(),
-                            new FromGovernmentMessage(
+                            FromCivicAuthorityGuard.class.getName(),
+                            new FromCivicAuthorityMessage(
                                     assignedFarmName,
                                     assignedLands
                             )

@@ -24,7 +24,7 @@ import org.wpsim.ViewerLens.Util.wpsReport;
  *
  * @author jairo
  */
-public class FromMarketGuard extends GuardBESA {
+public class FromMarketPlaceGuard extends GuardBESA {
 
     /**
      *
@@ -32,17 +32,17 @@ public class FromMarketGuard extends GuardBESA {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        FromMarketMessage fromMarketMessage = (FromMarketMessage) event.getData();
+        FromMarketPlaceMessage fromMarketPlaceMessage = (FromMarketPlaceMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
 
-        FromMarketMessageType fromMarketMessageType = fromMarketMessage.getMessageType();
-        wpsReport.debug(fromMarketMessageType, believes.getPeasantProfile().getPeasantFamilyAlias());
+        FromMarketPlaceMessageType fromMarketPlaceMessageType = fromMarketPlaceMessage.getMessageType();
+        wpsReport.debug(fromMarketPlaceMessageType, believes.getPeasantProfile().getPeasantFamilyAlias());
         int discount = 0;
 
         //wpsReport.warn(fromMarketMessage.getMessageType());
 
-        switch (fromMarketMessageType) {
+        switch (fromMarketPlaceMessageType) {
             case SOLD_CROP:
                 // Incrementa el dinero
                 /*System.out.println(
@@ -62,35 +62,35 @@ public class FromMarketGuard extends GuardBESA {
                 believes.setUpdatePriceList(true);
                 break;
             case PRICE_LIST:
-                believes.setPriceList(fromMarketMessage.getPriceList());
+                believes.setPriceList(fromMarketPlaceMessage.getPriceList());
                 break;
             case SEEDS:
-                believes.getPeasantProfile().setSeeds(fromMarketMessage.getQuantity());
-                believes.getPeasantProfile().decreaseSeedsNeeded(fromMarketMessage.getQuantity());
-                discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("seeds").getCost();
+                believes.getPeasantProfile().setSeeds(fromMarketPlaceMessage.getQuantity());
+                believes.getPeasantProfile().decreaseSeedsNeeded(fromMarketPlaceMessage.getQuantity());
+                discount = fromMarketPlaceMessage.getQuantity() * believes.getPriceList().get("seeds").getCost();
                 break;
             case WATER:
-                believes.getPeasantProfile().setWaterAvailable(fromMarketMessage.getQuantity());
-                discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("water").getCost();
+                believes.getPeasantProfile().setWaterAvailable(fromMarketPlaceMessage.getQuantity());
+                discount = fromMarketPlaceMessage.getQuantity() * believes.getPriceList().get("water").getCost();
                 break;
             case PESTICIDES:
-                believes.getPeasantProfile().setPesticidesAvailable(fromMarketMessage.getQuantity());
-                discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("pesticides").getCost();
+                believes.getPeasantProfile().setPesticidesAvailable(fromMarketPlaceMessage.getQuantity());
+                discount = fromMarketPlaceMessage.getQuantity() * believes.getPriceList().get("pesticides").getCost();
                 break;
             case SUPPLIES:
-                believes.getPeasantProfile().setSupplies(fromMarketMessage.getQuantity());
-                discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("supplies").getCost();
+                believes.getPeasantProfile().setSupplies(fromMarketPlaceMessage.getQuantity());
+                discount = fromMarketPlaceMessage.getQuantity() * believes.getPriceList().get("supplies").getCost();
                 break;
             case TOOLS:
-                believes.getPeasantProfile().setTools(fromMarketMessage.getQuantity());
-                believes.getPeasantProfile().decreaseToolsNeeded(fromMarketMessage.getQuantity());
-                discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("tools").getCost();
+                believes.getPeasantProfile().setTools(fromMarketPlaceMessage.getQuantity());
+                believes.getPeasantProfile().decreaseToolsNeeded(fromMarketPlaceMessage.getQuantity());
+                discount = fromMarketPlaceMessage.getQuantity() * believes.getPriceList().get("tools").getCost();
                 break;
             case LIVESTOCK:
                 believes.getPeasantProfile().setLivestockNumber(
-                        fromMarketMessage.getQuantity()
+                        fromMarketPlaceMessage.getQuantity()
                 );
-                discount = fromMarketMessage.getQuantity() * believes.getPriceList().get("livestock").getCost();
+                discount = fromMarketPlaceMessage.getQuantity() * believes.getPriceList().get("livestock").getCost();
                 break;
         }
 

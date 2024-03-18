@@ -24,52 +24,52 @@ import java.util.Map;
  *
  * @author jairo
  */
-public class FromMarketMessage extends DataBESA {
+public class FromMarketPlaceMessage extends DataBESA {
 
     private int quantity;
-    private FromMarketMessageType fromMarketMessageType;
+    private FromMarketPlaceMessageType fromMarketPlaceMessageType;
     private int value;
     private String cropName;
     private Map<String, FarmingResource> priceList = new HashMap<>();
 
     /**
      *
-     * @param fromMarketMessageType
+     * @param fromMarketPlaceMessageType
      * @param quantity
      */
-    public FromMarketMessage(FromMarketMessageType fromMarketMessageType, Integer quantity) {
+    public FromMarketPlaceMessage(FromMarketPlaceMessageType fromMarketPlaceMessageType, Integer quantity) {
         this.quantity = quantity;
-        this.fromMarketMessageType = fromMarketMessageType;
+        this.fromMarketPlaceMessageType = fromMarketPlaceMessageType;
     }
 
     /**
      *
-     * @param fromMarketMessageType
+     * @param fromMarketPlaceMessageType
      * @param priceList
      */
-    public FromMarketMessage(FromMarketMessageType fromMarketMessageType, Map<String, FarmingResource> priceList) {
+    public FromMarketPlaceMessage(FromMarketPlaceMessageType fromMarketPlaceMessageType, Map<String, FarmingResource> priceList) {
         this.priceList = priceList;
-        this.fromMarketMessageType = fromMarketMessageType;
+        this.fromMarketPlaceMessageType = fromMarketPlaceMessageType;
     }
 
     /**
      *
-     * @param fromMarketMessageType
+     * @param fromMarketPlaceMessageType
      * @param quantity
      * @param value
      */
-    public FromMarketMessage(FromMarketMessageType fromMarketMessageType, String cropName, int quantity, int value) {
+    public FromMarketPlaceMessage(FromMarketPlaceMessageType fromMarketPlaceMessageType, String cropName, int quantity, int value) {
         this.value = value;
         this.quantity = quantity;
         this.cropName = cropName;
-        this.fromMarketMessageType = fromMarketMessageType;
+        this.fromMarketPlaceMessageType = fromMarketPlaceMessageType;
     }
 
     /**
      *
      * @param quantity
      */
-    public FromMarketMessage(Integer quantity) {
+    public FromMarketPlaceMessage(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -133,15 +133,15 @@ public class FromMarketMessage extends DataBESA {
      *
      * @return
      */
-    public FromMarketMessageType getMessageType() {
-        return fromMarketMessageType;
+    public FromMarketPlaceMessageType getMessageType() {
+        return fromMarketPlaceMessageType;
     }
 
     /**
      *
-     * @param fromMarketMessageType
+     * @param fromMarketPlaceMessageType
      */
-    public void setMessageType(FromMarketMessageType fromMarketMessageType) {
-        this.fromMarketMessageType = fromMarketMessageType;
+    public void setMessageType(FromMarketPlaceMessageType fromMarketPlaceMessageType) {
+        this.fromMarketPlaceMessageType = fromMarketPlaceMessageType;
     }
 }

@@ -21,26 +21,23 @@ import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.ViewerLens.Util.wpsReport;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author jairo
  */
-public class MarketPlaceAgentState extends StateBESA implements Serializable {
+public class MarketPlaceState extends StateBESA implements Serializable {
 
     Map<String, FarmingResource> resources = new HashMap<>();
     private Map<String, Integer> basePrices = new HashMap<>();
-    private Map<String, Set<String>> productAgentMap = new HashMap<>();
+    private Map<String, List<Long>> productAgentMap = new HashMap<>();
     private double diversityFactor;
     private final int maxPeasantFamiliesAgents;
 
     /**
      * Constructor for MarketAgentState
      */
-    public MarketPlaceAgentState() {
+    public MarketPlaceState() {
         super();
         this.resources = wpsStart.config.loadMarketConfig();
         this.diversityFactor = 0.5;
@@ -55,7 +52,7 @@ public class MarketPlaceAgentState extends StateBESA implements Serializable {
      * @param productName El nombre del producto ofrecido.
      */
     public void updateAgentProductMapAndDiversityFactor(String agentName, String productName) {
-        productAgentMap.computeIfAbsent(productName, k -> new HashSet<>()).add(agentName);
+        productAgentMap.computeIfAbsent(productName, k -> new ArrayList<>()).add(System.currentTimeMillis());
         adjustDiversityFactor();
     }
 
@@ -63,36 +60,68 @@ public class MarketPlaceAgentState extends StateBESA implements Serializable {
      * Ajusta el diversityFactor basado en la distribución actual de productos.
      */
     private void adjustDiversityFactor() {
-        int productTypeCount = productAgentMap.size();
-        int uniqueAgentsOffering = productAgentMap.values().stream()
-                .mapToInt(Set::size)
+        final long freshnessThreshold = 200; // 200 milisegundos para definir la "frescura" de una oferta
+        long currentTime = System.currentTimeMillis();
+
+        // Cuenta las ofertas "frescas" basadas en el umbral de frescura
+        int freshOffersCount = productAgentMap.values().stream()
+                .flatMap(List::stream)
+                .mapToInt(timestamp -> (currentTime - timestamp < freshnessThreshold) ? 1 : 0)
                 .sum();
-        int leastOfferedProductAgentCount = productAgentMap.values().stream()
-                .mapToInt(Set::size)
-                .min()
-                .orElse(0);
-        if (uniqueAgentsOffering > 0) {
-            double leastOfferedRatio = (double) leastOfferedProductAgentCount / uniqueAgentsOffering;
-            diversityFactor = 1.0 - ((double) productTypeCount / maxPeasantFamiliesAgents) * leastOfferedRatio;
-        }
+
+        // Cuenta el total de ofertas, frescas o no
+        int totalOffers = productAgentMap.values().stream()
+                .mapToInt(List::size)
+                .sum();
+
+        // Ajusta el diversityFactor basado en la proporción de ofertas frescas sobre el total de ofertas
+        diversityFactor = totalOffers > 0 ? (double) freshOffersCount / totalOffers : 0;
     }
+
 
     /**
      * Lógica para ajustar precios basados en la rareza de cada producto.
      */
     public void adjustPrices() {
-        for (Map.Entry<String, Set<String>> entry : productAgentMap.entrySet()) {
+        final long freshnessThreshold = 50; // 200 milisegundos para la frescura
+        long currentTime = System.currentTimeMillis();
+
+        // Redefine el umbral de frescura y los factores de ajuste para ser menos agresivos
+        for (Map.Entry<String, List<Long>> entry : productAgentMap.entrySet()) {
             String productName = entry.getKey();
-            Set<String> agents = entry.getValue();
-            double price = resources.get(productName).getCost();
+            List<Long> offerTimestamps = entry.getValue();
+
+            // Cuenta las ofertas frescas
+            long freshOffersCount = offerTimestamps.stream()
+                    .filter(timestamp -> currentTime - timestamp < freshnessThreshold)
+                    .count();
+
             double basePrice = basePrices.getOrDefault(productName, 0);
-            double newPrice = price * Math.pow(diversityFactor, agents.size());
-            newPrice = Math.max(newPrice, basePrice / 2.0);
+
+            // Inicialmente, establece el nuevo precio al precio base para enfatizar el anclaje al precio inicial
+            double newPrice = basePrice;
+
+            // Aplica ajustes moderados basados en la escasez o abundancia relativa
+            if (freshOffersCount > 1) {
+                // Si hay abundancia, reduce ligeramente el precio
+                newPrice *= 0.95; // Reduce solo un 5%
+            } else if (freshOffersCount == 0) {
+                // Si hay escasez, incrementa ligeramente el precio
+                newPrice *= 1.05; // Incrementa solo un 5%
+            }
+
+            // Implementa un factor de estabilidad más fuerte para mantener los precios cerca del precio inicial
+            final double stabilityFactor = 0.8;
+            double currentPrice = resources.get(productName).getCost();
+            newPrice = (currentPrice * (1 - stabilityFactor)) + (newPrice * stabilityFactor);
+
             resources.get(productName).setCost((int) newPrice);
-            //System.out.println("Adjusted price for " + productName + " from " + price + " to " + newPrice);
+            resources.get(productName).setBehavior(Double.compare(currentPrice, newPrice));
         }
-        wpsReport.info("Adjusted prices based on rarity " + this.toString(), "wpsMarket");
+        wpsReport.info("Adjusted prices around the initial price with moderated fluctuations.", "wpsMarket");
     }
+
+
 
     @Override
     public String toString() {
@@ -161,9 +190,10 @@ public class MarketPlaceAgentState extends StateBESA implements Serializable {
     }
     public void changePrice(String productName, double factor){
         factor = 1 + (factor / 100);
-        double price = resources.get(productName).getCost();
-        double newPrice = price * factor;
+        double basePrice = resources.get(productName).getCost();
+        double newPrice = basePrice * factor;
         resources.get(productName).setCost((int) newPrice);
+        resources.get(productName).setBehavior(Double.compare(basePrice, newPrice));
         //System.out.println("Adjusted price for " + productName + " from " + price + " to " + (int) newPrice);
     }
 }

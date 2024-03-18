@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Guards.FromBank;
+package org.wpsim.PeasantFamily.Guards.FromBankOffice;
 
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
@@ -25,7 +25,7 @@ import org.wpsim.ViewerLens.Util.wpsReport;
  *
  * @author jairo
  */
-public class FromBankGuard extends GuardBESA {
+public class FromBankOfficeGuard extends GuardBESA {
 
     /**
      *
@@ -33,37 +33,37 @@ public class FromBankGuard extends GuardBESA {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        FromBankMessage fromBankMessage = (FromBankMessage) event.getData();
+        FromBankOfficeMessage fromBankOfficeMessage = (FromBankOfficeMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
 
-        FromBankMessageType fromBankMessageType = fromBankMessage.getMessageType();
+        FromBankOfficeMessageType fromBankOfficeMessageType = fromBankOfficeMessage.getMessageType();
 
         try {
 
-            switch (fromBankMessageType) {
+            switch (fromBankOfficeMessageType) {
                 case APPROBED_LOAN:
                     wpsReport.info(
                             believes.getPeasantProfile().getPeasantFamilyAlias()
                                     + " incrementó el dinero con prestamo en: "
-                                    + fromBankMessage.getAmount(),
+                                    + fromBankOfficeMessage.getAmount(),
                             this.getAgent().getAlias()
                     );
                     believes.getPeasantProfile().increaseMoney(
-                            fromBankMessage.getAmount()
+                            fromBankOfficeMessage.getAmount()
                     );
-                    believes.setToPay(fromBankMessage.getAmount());
+                    believes.setToPay(fromBankOfficeMessage.getAmount());
                     believes.setHaveLoan(true);
                     believes.setLoanDenied(true);
                     believes.setCurrentMoneyOrigin(MoneyOriginType.LOAN);
                     break;
                 case APPROBED_SOCIAL:
                     wpsReport.info(
-                            believes.getPeasantProfile().getPeasantFamilyAlias() + " incrementó el dinero en de social para: " + fromBankMessage.getAmount(),
+                            believes.getPeasantProfile().getPeasantFamilyAlias() + " incrementó el dinero en de social para: " + fromBankOfficeMessage.getAmount(),
                             this.getAgent().getAlias()
                     );
                     believes.getPeasantProfile().increaseMoney(
-                            fromBankMessage.getAmount()
+                            fromBankOfficeMessage.getAmount()
                     );
                     believes.setCurrentMoneyOrigin(MoneyOriginType.BENEFICENCIA);
                     break;
@@ -82,11 +82,11 @@ public class FromBankGuard extends GuardBESA {
                     believes.setCurrentMoneyOrigin(MoneyOriginType.INFORMAL_DENIED);
                     break;
                 case TERM_TO_PAY:
-                    wpsReport.info("Llegó la cuota a pagar por " + fromBankMessage.getAmount(), this.getAgent().getAlias());
+                    wpsReport.info("Llegó la cuota a pagar por " + fromBankOfficeMessage.getAmount(), this.getAgent().getAlias());
                     believes.getPeasantProfile().setLoanAmountToPay(
-                            fromBankMessage.getAmount()
+                            fromBankOfficeMessage.getAmount()
                     );
-                    if (fromBankMessage.getAmount()==0){
+                    if (fromBankOfficeMessage.getAmount()==0){
                         believes.setHaveLoan(false);
                         believes.setLoanDenied(false);
                     }

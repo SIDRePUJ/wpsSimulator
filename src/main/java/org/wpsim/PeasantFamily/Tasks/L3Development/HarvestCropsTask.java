@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -48,29 +48,30 @@ public class HarvestCropsTask extends wpsLandTask {
         believes.useTime(TimeConsumedBy.HarvestCropsTask);
 
         int factor = 1;
-        if (!believes.getPeasantFamilyHelper().isBlank())
-        {
+        if (!believes.getPeasantFamilyHelper().isBlank()) {
             factor = 2;
         }
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
-                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime()*factor);
+                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime() * factor);
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                     this.resetLand(believes, currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
                     try {
-                        AgroEcosystemMessage agroEcosystemMessage = new AgroEcosystemMessage(
-                                CROP_HARVEST,
-                                currentLandInfo.getLandName(),
-                                believes.getInternalCurrentDate(),
-                                believes.getPeasantProfile().getPeasantFamilyAlias());
-                        EventBESA ev = new EventBESA(
-                                AgroEcosystemGuard.class.getName(),
-                                agroEcosystemMessage);
-                        AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(ev);
-                        // Reset Land
-                        currentLandInfo.setCurrentSeason(SeasonType.NONE);
+                        AdmBESA.getInstance().getHandlerByAlias(
+                                currentLandInfo.getLandName()
+                        ).sendEvent(
+                                new EventBESA(
+                                        AgroEcosystemGuard.class.getName(),
+                                        new AgroEcosystemMessage(
+                                                CROP_HARVEST,
+                                                currentLandInfo.getLandName(),
+                                                believes.getInternalCurrentDate(),
+                                                believes.getPeasantProfile().getPeasantFamilyAlias())
+                                )
+                        );
+                        currentLandInfo.setCurrentSeason(SeasonType.SELL_CROP);
                         currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
                     } catch (ExceptionBESA ex) {
                         wpsReport.error(ex.getMessage(), believes.getPeasantProfile().getPeasantFamilyAlias());

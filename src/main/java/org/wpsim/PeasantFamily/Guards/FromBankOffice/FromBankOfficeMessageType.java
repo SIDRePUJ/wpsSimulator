@@ -12,50 +12,38 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Guards.FromMarketPlace;
+package org.wpsim.PeasantFamily.Guards.FromBankOffice;
 
 /**
  *
  */
-public enum FromMarketMessageType {
-
+public enum FromBankOfficeMessageType {
     /**
-     * 
+     *
      */
-    PRICE_LIST,
+    APPROBED_LOAN,
     /**
-     * 
+     *
      */
-    SEEDS,
-    
+    APPROBED_INFORMAL_LOAN,
     /**
-     * 
+     *
      */
-    WATER,
-    
+    DENIED_FORMAL_LOAN,
     /**
-     * 
+     *
      */
-    PESTICIDES,
-    
+    DENIED_INFORMAL_LOAN,
     /**
-     * 
+     *
      */
-    SUPPLIES,
-    
+    TERM_TO_PAY,
     /**
-     * 
+     *
      */
-    TOOLS,
-    
+    TERM_PAYED,
     /**
-     * 
+     *
      */
-    LIVESTOCK,
-    
-    /**
-     * 
-     */
-    SOLD_CROP
-    
+    APPROBED_SOCIAL
 }

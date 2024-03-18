@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Guards.FromGovernment;
+package org.wpsim.PeasantFamily.Guards.FromCivicAuthority;
 
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author jairo
  */
-public class FromGovernmentGuard extends GuardBESA {
+public class FromCivicAuthorityGuard extends GuardBESA {
 
     /**
      *
@@ -33,12 +33,12 @@ public class FromGovernmentGuard extends GuardBESA {
      */
     @Override
     public void funcExecGuard(EventBESA event) {
-        FromGovernmentMessage fromGovernmentMessage = (FromGovernmentMessage) event.getData();
+        FromCivicAuthorityMessage fromCivicAuthorityMessage = (FromCivicAuthorityMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
 
-        String landName = fromGovernmentMessage.getLandName();
-        Map<String, String> assignedLands = fromGovernmentMessage.getAssignedLands();
+        String landName = fromCivicAuthorityMessage.getLandName();
+        Map<String, String> assignedLands = fromCivicAuthorityMessage.getAssignedLands();
 
         //System.out.println("REC: peasant family: " + believes.getAlias() + " Assigned land: " + landName + " Assigned lands: " + assignedLands);
 
@@ -51,7 +51,7 @@ public class FromGovernmentGuard extends GuardBESA {
         } else {
             believes.getPeasantProfile().setPeasantFamilyLandAlias(landName);
             believes.setAssignedLands(assignedLands);
-            believes.getPeasantProfile().increaseToolsNeeded(fromGovernmentMessage.getAssignedLands().size());
+            believes.getPeasantProfile().increaseToolsNeeded(fromCivicAuthorityMessage.getAssignedLands().size());
         }
     }
 

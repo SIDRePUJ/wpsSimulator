@@ -15,6 +15,7 @@
 package org.wpsim.PeasantFamily.Data;
 
 import BESA.Emotional.EmotionAxis;
+import BESA.Emotional.EmotionalEvent;
 import org.json.JSONObject;
 import org.wpsim.SimulationControl.Data.Coin;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
@@ -518,6 +519,13 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
      */
     public void setPriceList(Map<String, FarmingResource> priceList) {
         this.priceList = priceList;
+        for (Map.Entry<String, FarmingResource> price : priceList.entrySet()) {
+            if (price.getValue().getBehavior() > 0) {
+                processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "MONEY"));
+            } else if (price.getValue().getBehavior() < 0) {
+                processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTINGFAILED", "MONEY"));
+            }
+        }
     }
 
     /**
@@ -747,6 +755,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     }
 
     public String getCurrentCropName() {
+        System.out.println("rice " + priceList.get("rice").getCost() + " - roots " + priceList.get("roots").getCost());
         if (priceList.get("rice").getCost() > priceList.get("roots").getCost()){
             return "rice";
         }else {

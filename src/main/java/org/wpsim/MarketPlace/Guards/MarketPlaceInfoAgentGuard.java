@@ -17,7 +17,7 @@ package org.wpsim.MarketPlace.Guards;
 
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
-import org.wpsim.MarketPlace.Data.MarketPlaceAgentState;
+import org.wpsim.MarketPlace.Data.MarketPlaceState;
 import org.wpsim.MarketPlace.Data.MarketPlaceMessage;
 
 /**
@@ -32,7 +32,7 @@ public class MarketPlaceInfoAgentGuard extends GuardBESA {
     @Override
     public void funcExecGuard(EventBESA event) {
         MarketPlaceMessage marketPlaceMessage = (MarketPlaceMessage) event.getData();
-        MarketPlaceAgentState state = (MarketPlaceAgentState) this.agent.getState();
+        MarketPlaceState state = (MarketPlaceState) this.agent.getState();
 
         switch (marketPlaceMessage.getMessageType()){
             case DECREASE_CROP_PRICE -> {

@@ -12,44 +12,30 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Guards.FromGovernment;
+package org.wpsim.PeasantFamily.Guards.Status;
 
-import BESA.Kernel.Agent.Event.DataBESA;
-
-import java.util.List;
-import java.util.Map;
+import BESA.BDI.AgentStructuralModel.StateBDI;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.Agent.GuardBESA;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
+import org.wpsim.ViewerLens.Util.wpsReport;
 
 /**
  *
  * @author jairo
  */
-public class FromGovernmentMessage extends DataBESA {
-
-    Map<String, String> assignedLands;
-    private String landName;
+public class StatusGuard extends GuardBESA {
 
     /**
-     * Constructor.
-     * @param landName
+     *
+     * @param event Event rising the Guard
      */
-    public FromGovernmentMessage(String landName, Map<String, String> assignedLands) {
-        this.setLandName(landName);
-        this.setAssignedLands(assignedLands);
-    }
-
-    public Map<String, String> getAssignedLands() {
-        return assignedLands;
-    }
-
-    public void setAssignedLands(Map<String, String> assignedLands) {
-        this.assignedLands = assignedLands;
-    }
-
-    public String getLandName() {
-        return landName;
-    }
-    public void setLandName(String landName) {
-        this.landName = landName;
+    @Override
+    public void funcExecGuard(EventBESA event) {
+        StateBDI state = (StateBDI) this.agent.getState();
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
+        wpsReport.info(believes.toJson(), this.getAgent().getAlias());
+        //wpsReport.info("Llegó desbloqueo " + event.getData(), this.getAgent().getAlias());
     }
 
 }

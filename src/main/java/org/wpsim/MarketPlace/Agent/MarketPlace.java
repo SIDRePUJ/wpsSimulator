@@ -19,7 +19,7 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
-import org.wpsim.MarketPlace.Data.MarketPlaceAgentState;
+import org.wpsim.MarketPlace.Data.MarketPlaceState;
 import org.wpsim.MarketPlace.Guards.MarketPlaceGuard;
 import org.wpsim.MarketPlace.Guards.MarketPlaceInfoAgentGuard;
 
@@ -52,8 +52,8 @@ public class MarketPlace extends AgentBESA {
         return structBESA;
     }
     
-    private static MarketPlaceAgentState createState() throws ExceptionBESA {
-        return new MarketPlaceAgentState();
+    private static MarketPlaceState createState() throws ExceptionBESA {
+        return new MarketPlaceState();
     }
     
     /**

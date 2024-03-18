@@ -64,7 +64,6 @@ public class PlantCropTask extends wpsLandTask {
         updateConfig(believes, 32);
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
-        // Set world perturbation
         setPerturbation(wpsStart.config.getPerturbation());
         PeasantFamilyProfile profile = believes.getPeasantProfile();
         String initialRainfallConditions = WorldConfiguration.getPropsInstance().getProperty(

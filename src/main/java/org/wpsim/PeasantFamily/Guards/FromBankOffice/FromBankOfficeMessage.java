@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Guards.FromBank;
+package org.wpsim.PeasantFamily.Guards.FromBankOffice;
 
 import BESA.Kernel.Agent.Event.DataBESA;
 
@@ -20,26 +20,26 @@ import BESA.Kernel.Agent.Event.DataBESA;
  *
  * @author jairo
  */
-public class FromBankMessage extends DataBESA {
+public class FromBankOfficeMessage extends DataBESA {
 
     private double amount;
-    private FromBankMessageType fromBankMessageType;
+    private FromBankOfficeMessageType fromBankOfficeMessageType;
 
     /**
      *
-     * @param fromBankMessageType
+     * @param fromBankOfficeMessageType
      * @param amount
      */
-    public FromBankMessage(FromBankMessageType fromBankMessageType, double amount) {
+    public FromBankOfficeMessage(FromBankOfficeMessageType fromBankOfficeMessageType, double amount) {
         this.amount = amount;
-        this.fromBankMessageType = fromBankMessageType;
+        this.fromBankOfficeMessageType = fromBankOfficeMessageType;
     }
 
     /**
      *
      * @param amount
      */
-    public FromBankMessage(Integer amount) {
+    public FromBankOfficeMessage(Integer amount) {
         this.amount = amount;
     }
 
@@ -63,15 +63,15 @@ public class FromBankMessage extends DataBESA {
      *
      * @return
      */
-    public FromBankMessageType getMessageType() {
-        return fromBankMessageType;
+    public FromBankOfficeMessageType getMessageType() {
+        return fromBankOfficeMessageType;
     }
 
     /**
      *
-     * @param fromBankMessageType
+     * @param fromBankOfficeMessageType
      */
-    public void setMessageType(FromBankMessageType fromBankMessageType) {
-        this.fromBankMessageType = fromBankMessageType;
+    public void setMessageType(FromBankOfficeMessageType fromBankOfficeMessageType) {
+        this.fromBankOfficeMessageType = fromBankOfficeMessageType;
     }
 }

@@ -41,16 +41,16 @@ import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFamilyTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.SpendFriendsTimeGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.LeisureActivitiesGoal;
 import org.wpsim.PeasantFamily.Goals.L6Leisure.WasteTimeAndResourcesGoal;
-import org.wpsim.PeasantFamily.Guards.FromBank.FromBankGuard;
+import org.wpsim.PeasantFamily.Guards.FromBankOffice.FromBankOfficeGuard;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromControlGuard;
-import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
-import org.wpsim.PeasantFamily.Guards.FromMarketPlace.FromMarketGuard;
+import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityGuard;
+import org.wpsim.PeasantFamily.Guards.FromMarketPlace.FromMarketPlaceGuard;
 import org.wpsim.PeasantFamily.Guards.FromSociety.PeasantWorkerContractFinishedGuard;
 import org.wpsim.PeasantFamily.Guards.FromSociety.SocietyWorkerContractGuard;
 import org.wpsim.PeasantFamily.Guards.FromSociety.SocietyWorkerContractorGuard;
 import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
-import org.wpsim.PeasantFamily.Guards.Internal.HeartBeatGuard;
-import org.wpsim.PeasantFamily.Guards.Internal.StatusGuard;
+import org.wpsim.PeasantFamily.PeriodicGuards.HeartBeatGuard;
+import org.wpsim.PeasantFamily.Guards.Status.StatusGuard;
 import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.ViewerLens.Util.wpsReport;
 
@@ -86,13 +86,13 @@ public class PeasantFamily extends AgentBDI {
         structBESA.bindGuard("FromControlBehavior", FromControlGuard.class);
 
         structBESA.addBehavior("FromBankBehavior");
-        structBESA.bindGuard("FromBankBehavior", FromBankGuard.class);
+        structBESA.bindGuard("FromBankBehavior", FromBankOfficeGuard.class);
 
         structBESA.addBehavior("FromMarketBehavior");
-        structBESA.bindGuard("FromMarketBehavior", FromMarketGuard.class);
+        structBESA.bindGuard("FromMarketBehavior", FromMarketPlaceGuard.class);
 
         structBESA.addBehavior("FromGovernmentBehavior");
-        structBESA.bindGuard("FromGovernmentBehavior", FromGovernmentGuard.class);
+        structBESA.bindGuard("FromGovernmentBehavior", FromCivicAuthorityGuard.class);
 
         structBESA.addBehavior("StatusBehavior");
         structBESA.bindGuard("StatusBehavior", StatusGuard.class);

@@ -21,8 +21,8 @@ import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.CivicAuthority.Data.CivicAuthorityState;
 import org.wpsim.CivicAuthority.Data.CivicAuthorityLandData;
-import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentGuard;
-import org.wpsim.PeasantFamily.Guards.FromGovernment.FromGovernmentMessage;
+import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityGuard;
+import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityMessage;
 
 import java.util.Map;
 
@@ -48,8 +48,8 @@ public class CivicAuthorityReleaseLandGuard extends GuardBESA  {
         try {
             //System.out.println("peaasant family: " + data.getFamilyName() + " Assigned farm: " + assignedFarmName + " Assigned lands: " + assignedLands);
             AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(data.getFamilyName());
-            FromGovernmentMessage fromGovernmentMessage = new FromGovernmentMessage(assignedFarmName, assignedLands);
-            EventBESA ev = new EventBESA(FromGovernmentGuard.class.getName(), fromGovernmentMessage);
+            FromCivicAuthorityMessage fromCivicAuthorityMessage = new FromCivicAuthorityMessage(assignedFarmName, assignedLands);
+            EventBESA ev = new EventBESA(FromCivicAuthorityGuard.class.getName(), fromCivicAuthorityMessage);
             ah.sendEvent(ev);
         } catch (ExceptionBESA ex) {
             System.out.println(ex);

@@ -14,9 +14,11 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
+import org.wpsim.CivicAuthority.Data.LandInfo;
 import org.wpsim.WellProdSim.Base.wpsTask;
 import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.MarketPlace.Guards.MarketPlaceGuard;
@@ -42,27 +44,35 @@ public class SellCropTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
-        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "SELLING", "FOOD"));
+        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "SELLING", "FOOD"));
 
-        try {
-            AdmBESA.getInstance().getHandlerByAlias(
-                    wpsStart.config.getMarketAgentName()
-            ).sendEvent(
-                    new EventBESA(
-                            MarketPlaceGuard.class.getName(),
-                            new MarketPlaceMessage(
-                                    SELL_CROP,
-                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                                    believes.getPeasantProfile().getHarvestedWeight(),
-                                    "rice" // @TODO: CAMBIAR NOMBRE AL REAL
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.SELL_CROP)) {
+                try {
+                    AdmBESA.getInstance().getHandlerByAlias(
+                            wpsStart.config.getMarketAgentName()
+                    ).sendEvent(
+                            new EventBESA(
+                                    MarketPlaceGuard.class.getName(),
+                                    new MarketPlaceMessage(
+                                            SELL_CROP,
+                                            believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                            believes.getPeasantProfile().getHarvestedWeight(),
+                                            currentLandInfo.getCropName(),
+                                            believes.getInternalCurrentDate()
+                                    )
                             )
-                    )
-            );
-            believes.getPeasantProfile().setHarvestedWeight(0);
-        } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+                    );
+                    //System.out.println("Vendiendo " + currentLandInfo.getCropName());
+                    currentLandInfo.setCurrentSeason(SeasonType.NONE);
+                    believes.getPeasantProfile().setHarvestedWeight(0);
+                    believes.setUpdatePriceList(true);
+                } catch (ExceptionBESA ex) {
+                    wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+                }
+            }
         }
-        believes.setCurrentSeason("", SeasonType.NONE);
+
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
