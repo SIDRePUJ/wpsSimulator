@@ -1,10 +1,10 @@
-package org.wpsim.PeasantFamily.Guards.FromWorld;
+package org.wpsim.PeasantFamily.Guards.FromAgroEcosystem;
 
 /**
  *
  * @author jairo
  */
-public enum FromWorldMessageType {
+public enum FromAgroEcosystemMessageType {
 
     /**
      *

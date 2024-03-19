@@ -114,7 +114,7 @@ public class AttendReligiousEventsGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 1.0);
+        return evaluateEmotionalContribution(stateBDI, 0.98);
     }
 
 }

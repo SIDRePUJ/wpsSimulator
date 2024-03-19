@@ -12,7 +12,7 @@
  * management and emotional reasoning BDI.                                  *
  * ==========================================================================
  */
-package org.wpsim.PeasantFamily.Guards.FromWorld;
+package org.wpsim.PeasantFamily.Guards.FromAgroEcosystem;
 
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.EventBESA;
@@ -28,7 +28,7 @@ import org.wpsim.ViewerLens.Util.wpsReport;
  *
  * @author jairo
  */
-public class FromWorldGuard extends GuardBESA {
+public class FromAgroEcosystemGuard extends GuardBESA {
 
     /**
      *
@@ -37,7 +37,7 @@ public class FromWorldGuard extends GuardBESA {
     @Override
     public void funcExecGuard(EventBESA event) {
 
-        FromWorldMessage peasantCommMessage = (FromWorldMessage) event.getData();
+        FromAgroEcosystemMessage peasantCommMessage = (FromAgroEcosystemMessage) event.getData();
         StateBDI state = (StateBDI) this.agent.getState();
         String landName = peasantCommMessage.getLandName();
 
@@ -47,7 +47,7 @@ public class FromWorldGuard extends GuardBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
         LandInfo landInfo = believes.getLandInfo(landName);
         landInfo.setProcessing(false);
-        FromWorldMessageType messageType = peasantCommMessage.getMessageType();
+        FromAgroEcosystemMessageType messageType = peasantCommMessage.getMessageType();
 
         try {
 

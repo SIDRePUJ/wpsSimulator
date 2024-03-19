@@ -87,15 +87,12 @@ public class SimulationControlState extends StateBESA implements Serializable {
                     if (needsPause) {
                         // Pausa a los agentes que están demasiado adelantados.
                         eventBesa = new EventBESA(FromSimulationControlGuard.class.getName(), new ControlMessage(agentName, true));
-                    } else if (needsActivation) {
+                        AdmBESA.getInstance().getHandlerByAlias(agentName).sendEvent(eventBesa);
+                    }/* else  {
                         // Reactiva o mantiene activos a los agentes que están sincronizados.
                         eventBesa = new EventBESA(FromSimulationControlGuard.class.getName(), new ControlMessage(agentName, false));
                     }
-
-                    if(eventBesa != null) {
-                        AdmBESA.getInstance().getHandlerByAlias(agentName).sendEvent(eventBesa);
-                    }
-
+                    */
                 } catch (ExceptionBESA ex) {
                     wpsReport.debug(ex, "ControlAgentState");
                 }

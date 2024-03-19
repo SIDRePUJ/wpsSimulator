@@ -16,8 +16,14 @@ package org.wpsim.PeasantFamily.Data;
 
 import BESA.Emotional.EmotionAxis;
 import BESA.Emotional.EmotionalEvent;
+import BESA.ExceptionBESA;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.System.AdmBESA;
+import BESA.Log.ReportBESA;
 import org.json.JSONObject;
+import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
 import org.wpsim.SimulationControl.Data.Coin;
+import org.wpsim.SimulationControl.Guards.SimulationControlGuard;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.SimulationControl.Data.DateHelper;
 import org.wpsim.CivicAuthority.Data.LandInfo;
@@ -375,6 +381,27 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.timeLeftOnDay = 24;
         this.newDay = true;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
+
+        // Update the internal current date
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsStart.config.getControlAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            SimulationControlGuard.class.getName(),
+                            new ToControlMessage(
+                                    getAlias(),
+                                    getInternalCurrentDate(),
+                                    getCurrentDay()
+                            )
+                    )
+            );
+        } catch (ExceptionBESA ex) {
+            ReportBESA.error(ex);
+        }
+        // Report the agent's beliefs to the wpsViewer
+        wpsReport.ws(this.toJson(), this.getAlias());
+        // Report the agent's beliefs to the wpsViewer
         wpsReport.mental(this.toCSV(), this.getAlias());
     }
 

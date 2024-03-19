@@ -22,6 +22,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import org.wpsim.PeasantFamily.Goals.L1Survival.DoVoidGoal;
 import org.wpsim.SimulationControl.Guards.AliveAgentGuard;
 import org.wpsim.SimulationControl.Guards.DeadAgentGuard;
 import org.wpsim.CivicAuthority.Data.LandInfo;
@@ -45,10 +46,10 @@ import org.wpsim.PeasantFamily.Guards.FromBankOffice.FromBankOfficeGuard;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.FromSimulationControlGuard;
 import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityGuard;
 import org.wpsim.PeasantFamily.Guards.FromMarketPlace.FromMarketPlaceGuard;
-import org.wpsim.PeasantFamily.Guards.FromSociety.PeasantWorkerContractFinishedGuard;
-import org.wpsim.PeasantFamily.Guards.FromSociety.SocietyWorkerContractGuard;
-import org.wpsim.PeasantFamily.Guards.FromSociety.SocietyWorkerContractorGuard;
-import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
+import org.wpsim.PeasantFamily.Guards.FromCommunityDynamics.PeasantWorkerContractFinishedGuard;
+import org.wpsim.PeasantFamily.Guards.FromCommunityDynamics.SocietyWorkerContractGuard;
+import org.wpsim.PeasantFamily.Guards.FromCommunityDynamics.SocietyWorkerContractorGuard;
+import org.wpsim.PeasantFamily.Guards.FromAgroEcosystem.FromAgroEcosystemGuard;
 import org.wpsim.PeasantFamily.PeriodicGuards.HeartBeatGuard;
 import org.wpsim.PeasantFamily.Guards.Status.StatusGuard;
 import org.wpsim.WellProdSim.wpsStart;
@@ -75,7 +76,7 @@ public class PeasantFamily extends AgentBDI {
         structBESA.bindGuard("HeartBeatBehavior", HeartBeatGuard.class);
 
         structBESA.addBehavior("FromWorldBehavior");
-        structBESA.bindGuard("FromWorldBehavior", FromWorldGuard.class);
+        structBESA.bindGuard("FromWorldBehavior", FromAgroEcosystemGuard.class);
 
         structBESA.addBehavior("SocietyBehavior");
         structBESA.bindGuard("SocietyBehavior", SocietyWorkerContractGuard.class);
@@ -112,6 +113,7 @@ public class PeasantFamily extends AgentBDI {
         goals.add(DoVitalsGoal.buildGoal());
         goals.add(SeekPurposeGoal.buildGoal());
         goals.add(DoHealthCareGoal.buildGoal());
+        goals.add(DoVoidGoal.buildGoal());
         //goals.add(SelfEvaluationGoal.buildGoal());
 
         //Level 2 Goals: Obligations
@@ -203,7 +205,7 @@ public class PeasantFamily extends AgentBDI {
      */
     @Override
     public synchronized void shutdownAgentBDI() {
-        System.out.print("Shutdown " + this.getAlias());
+        System.out.println("Shutdown " + this.getAlias());
         // Anuncio de que el agente está muerto
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) this.getState()).getBelieves();
         wpsReport.mental(believes.toCSV(), this.getAlias());

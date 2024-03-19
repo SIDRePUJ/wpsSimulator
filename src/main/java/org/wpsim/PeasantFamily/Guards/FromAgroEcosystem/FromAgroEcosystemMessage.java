@@ -1,4 +1,4 @@
-package org.wpsim.PeasantFamily.Guards.FromWorld;
+package org.wpsim.PeasantFamily.Guards.FromAgroEcosystem;
 
 import BESA.Kernel.Agent.Event.DataBESA;
 
@@ -6,10 +6,10 @@ import BESA.Kernel.Agent.Event.DataBESA;
  *
  * @author jairo
  */
-public class FromWorldMessage extends DataBESA {
+public class FromAgroEcosystemMessage extends DataBESA {
     private String peasantAlias;
     private String payload;
-    private FromWorldMessageType peasantMessageType;
+    private FromAgroEcosystemMessageType peasantMessageType;
     private String date;
     private String simpleMessage;
     private String landName;
@@ -20,7 +20,7 @@ public class FromWorldMessage extends DataBESA {
      * @param peasantAlias
      * @param payload
      */
-    public FromWorldMessage(FromWorldMessageType peasantMessageType, String peasantAlias, String payload, String landName) {
+    public FromAgroEcosystemMessage(FromAgroEcosystemMessageType peasantMessageType, String peasantAlias, String payload, String landName) {
         setPeasantAlias(peasantAlias);
         setPayload(payload);
         this.peasantMessageType = peasantMessageType;
@@ -31,7 +31,7 @@ public class FromWorldMessage extends DataBESA {
      *
      * @param simpleMessage
      */
-    public FromWorldMessage(String simpleMessage) {
+    public FromAgroEcosystemMessage(String simpleMessage) {
         this.simpleMessage = simpleMessage;
     }
 
@@ -103,7 +103,7 @@ public class FromWorldMessage extends DataBESA {
      *
      * @return
      */
-    public FromWorldMessageType getMessageType() {
+    public FromAgroEcosystemMessageType getMessageType() {
         return peasantMessageType;
     }
 
@@ -111,7 +111,7 @@ public class FromWorldMessage extends DataBESA {
      *
      * @param peasantMessageType
      */
-    public void setMessageType(FromWorldMessageType peasantMessageType) {
+    public void setMessageType(FromAgroEcosystemMessageType peasantMessageType) {
         this.peasantMessageType = peasantMessageType;
     }
 }

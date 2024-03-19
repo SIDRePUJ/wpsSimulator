@@ -52,24 +52,17 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (checkDead(believes)) return;
         // Check if the simulation has finished
         if (checkFinish(believes)) return;
-        //System.out.println("HeartBeatGuard: " + this.getAgent().getAlias());
-        if (!believes.isWaiting() || wpsStart.config.getBooleanProperty("control.freerun")) {
-            // Update the internal current date
-            UpdateControlDate(believes);
-            // Report the agent's beliefs to the wpsViewer
-            if (believes.isNewDay()) {
-                wpsReport.ws(believes.toJson(), believes.getAlias());
-            }
-            // Wait time for the next execution
-            sleepWave(state, believes);
-            // Send BDI Pulse to BDI Information Flow
-            sendBDIPulse(this.agent.getAlias());
-            System.out.println(this.agent.getAlias() + " CON pulso "+ believes.isWaiting());
-        }else{
-            // Check if the current date is more than 8 days before the internal current date
-            //checkTimeJump(believes);
-            System.out.println(this.agent.getAlias() + " SIN pulso "+ believes.isWaiting());
-            //System.out.println(this.agent.getAlias() + " bloqueado status " + believes.isWaiting());
+        // Wait time for the next execution
+        sleepWave(state, believes);
+        // Send BDI Pulse to BDI Information Flow
+        sendBDIPulse(this.agent.getAlias());
+        checkJump(believes);
+    }
+
+    private void checkJump(PeasantFamilyBelieves believes) {
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) > 30){
+            System.out.println("fecha actual " + believes.getInternalCurrentDate() + " - días " + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
+            this.agent.shutdownAgent();
         }
     }
 
@@ -80,15 +73,17 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             currentRole = "Void";
         }
         waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
+        if (waitTime == 0) {
+            waitTime = Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
+        }
         try {
-            Thread.sleep(waitTime/4);
+            Thread.sleep(waitTime / 4);
         } catch (InterruptedException e) {
             System.out.println("error sleepWave");
         }
     }
 
     private static void sendBDIPulse(String alias) {
-        //System.out.println("Send BDI Pulse: " + this.agent.getAlias());
         try {
             AdmBESA.getInstance().getHandlerByAlias(
                     alias
@@ -103,37 +98,6 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         }
     }
 
-    private static void UpdateControlDate(PeasantFamilyBelieves believes) {
-        try {
-            AdmBESA.getInstance().getHandlerByAlias(
-                    wpsStart.config.getControlAgentName()
-            ).sendEvent(new EventBESA(
-                    SimulationControlGuard.class.getName(),
-                    new ToControlMessage(
-                            believes.getAlias(),
-                            believes.getInternalCurrentDate(),
-                            believes.getCurrentDay()
-                    )
-            ));
-        } catch (ExceptionBESA ex) {
-            ReportBESA.error(ex);
-        }
-    }
-
-    private static void checkTimeJump(PeasantFamilyBelieves believes) {
-        System.out.println("Micro Jump " + believes.getAlias()
-                + " - " + ControlCurrentDate.getInstance().getDaysBetweenDates(
-                believes.getInternalCurrentDate()
-        ));
-
-        believes.makeNewDay();
-        //believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
-        //believes.setWait(false);
-
-        UpdateControlDate(believes);
-        sendBDIPulse(believes.getAlias());
-    }
-
     private boolean checkFinish(PeasantFamilyBelieves believes) {
         if (believes.getInternalCurrentDate().equals(wpsStart.config.getStringProperty("control.enddate"))) {
             System.out.println("Cerrando Agente " + this.agent.getAlias());
@@ -142,7 +106,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
                 Thread.sleep(1000);
                 this.agent.shutdownAgent();
             } catch (Exception e) {
-                System.out.println("Error Cerrendo Agente");
+                System.out.println("Error Cerrando Agente");
             }
             //wpsStart.stopSimulation();
             return true;

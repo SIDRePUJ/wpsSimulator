@@ -7,9 +7,9 @@ import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Util.PeriodicDataBESA;
 import org.json.JSONObject;
-import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldGuard;
-import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldMessage;
-import org.wpsim.PeasantFamily.Guards.FromWorld.FromWorldMessageType;
+import org.wpsim.PeasantFamily.Guards.FromAgroEcosystem.FromAgroEcosystemGuard;
+import org.wpsim.PeasantFamily.Guards.FromAgroEcosystem.FromAgroEcosystemMessage;
+import org.wpsim.PeasantFamily.Guards.FromAgroEcosystem.FromAgroEcosystemMessageType;
 import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.AgroEcosystem.Agent.AgroEcosystemState;
 import org.wpsim.AgroEcosystem.Helper.WorldConfiguration;
@@ -35,7 +35,7 @@ public class AgroEcosystemGuard extends GuardBESA {
     public synchronized void funcExecGuard(EventBESA eventBESA) {
         AgroEcosystemMessage agroEcosystemMessage = (AgroEcosystemMessage) eventBESA.getData();
         AgroEcosystemState agroEcosystemState = (AgroEcosystemState) this.agent.getState();
-        FromWorldMessage peasantMessage;
+        FromAgroEcosystemMessage peasantMessage;
         CropCellState cropCellState;
         CropCell cropCellInfo;
         DiseaseCellState diseaseCellState;
@@ -57,8 +57,8 @@ public class AgroEcosystemGuard extends GuardBESA {
             switch (agroEcosystemMessage.getWorldMessageType()) {
                 case CROP_INIT:
                     agroEcosystemState.lazyUpdateCropsForDate(agroEcosystemMessage.getDate());
-                    peasantMessage = new FromWorldMessage(
-                            FromWorldMessageType.CROP_INIT,
+                    peasantMessage = new FromAgroEcosystemMessage(
+                            FromAgroEcosystemMessageType.CROP_INIT,
                             agroEcosystemMessage.getPeasantAgentAlias(),
                             "CROP_INIT",
                             this.getAgent().getAlias()
@@ -78,8 +78,8 @@ public class AgroEcosystemGuard extends GuardBESA {
                     cropDataJson = new JSONObject(cropCellState);
                     cropDataJson.put("disease", diseaseCellState.isInfected());
                     cropDataJson.put("cropHarvestReady", cropCellInfo.isHarvestReady());
-                    peasantMessage = new FromWorldMessage(
-                            FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
+                    peasantMessage = new FromAgroEcosystemMessage(
+                            FromAgroEcosystemMessageType.CROP_INFORMATION_NOTIFICATION,
                             agroEcosystemMessage.getPeasantAgentAlias(),
                             cropDataJson.toString(),
                             this.getAgent().getAlias()
@@ -91,14 +91,14 @@ public class AgroEcosystemGuard extends GuardBESA {
                     agroEcosystemState.getCropLayer().getAllCrops().forEach(cropCell -> {
                         if (((CropCellState) cropCell.getCellState()).isWaterStress()) {
                             this.notifyPeasantCropProblem(
-                                    FromWorldMessageType.NOTIFY_CROP_WATER_STRESS,
+                                    FromAgroEcosystemMessageType.NOTIFY_CROP_WATER_STRESS,
                                     cropCell.getAgentPeasantId(),
                                     agroEcosystemMessage.getDate()
                             );
                         }
                         if (((DiseaseCellState) cropCell.getDiseaseCell().getCellState()).isInfected()) {
                             this.notifyPeasantCropProblem(
-                                    FromWorldMessageType.NOTIFY_CROP_DISEASE,
+                                    FromAgroEcosystemMessageType.NOTIFY_CROP_DISEASE,
                                     cropCell.getAgentPeasantId(),
                                     agroEcosystemMessage.getDate()
                             );
@@ -119,8 +119,8 @@ public class AgroEcosystemGuard extends GuardBESA {
                             String.valueOf(irrigateValue),
                             agroEcosystemMessage.getDate()
                     );
-                    peasantMessage = new FromWorldMessage(
-                            FromWorldMessageType.CROP_INFORMATION_NOTIFICATION,
+                    peasantMessage = new FromAgroEcosystemMessage(
+                            FromAgroEcosystemMessageType.CROP_INFORMATION_NOTIFICATION,
                             agroEcosystemMessage.getPeasantAgentAlias(),
                             "CROP_IRRIGATION",
                             this.getAgent().getAlias());
@@ -137,8 +137,8 @@ public class AgroEcosystemGuard extends GuardBESA {
                             diseaseCellId,
                             defaultCropInsecticideCoverage,
                             agroEcosystemMessage.getDate());
-                    peasantMessage = new FromWorldMessage(
-                            FromWorldMessageType.CROP_PESTICIDE,
+                    peasantMessage = new FromAgroEcosystemMessage(
+                            FromAgroEcosystemMessageType.CROP_PESTICIDE,
                             agroEcosystemMessage.getPeasantAgentAlias(),
                             defaultCropInsecticideCoverage + " " + diseaseCellId,
                             this.getAgent().getAlias());
@@ -153,8 +153,8 @@ public class AgroEcosystemGuard extends GuardBESA {
                     cropDataJson = new JSONObject(cropCellState);
                     cropDataJson.put("disease", diseaseCellState.isInfected());
                     cropDataJson.put("cropHarvestReady", cropCellInfo.isHarvestReady());
-                    peasantMessage = new FromWorldMessage(
-                            FromWorldMessageType.CROP_HARVEST,
+                    peasantMessage = new FromAgroEcosystemMessage(
+                            FromAgroEcosystemMessageType.CROP_HARVEST,
                             agroEcosystemMessage.getPeasantAgentAlias(),
                             cropDataJson.toString(),
                             this.getAgent().getAlias());
@@ -178,10 +178,10 @@ public class AgroEcosystemGuard extends GuardBESA {
      * @param peasantAgentAlias
      * @param peasantMessage
      */
-    public synchronized void replyToPeasantAgent(String peasantAgentAlias, FromWorldMessage peasantMessage) {
+    public synchronized void replyToPeasantAgent(String peasantAgentAlias, FromAgroEcosystemMessage peasantMessage) {
         try {
             EventBESA event = new EventBESA(
-                    FromWorldGuard.class.getName(),
+                    FromAgroEcosystemGuard.class.getName(),
                     peasantMessage);
             this.agent.getAdmLocal().getHandlerByAlias(
                     peasantAgentAlias
@@ -199,18 +199,18 @@ public class AgroEcosystemGuard extends GuardBESA {
      * @param agentAlias
      * @param date
      */
-    public synchronized void notifyPeasantCropProblem(FromWorldMessageType messageType, String agentAlias, String date) {
+    public synchronized void notifyPeasantCropProblem(FromAgroEcosystemMessageType messageType, String agentAlias, String date) {
         try {
             //wpsReport.debug("AgentID: " + agentAlias);
             AgHandlerBESA ah = this.agent.getAdmLocal().getHandlerByAlias(agentAlias);
-            FromWorldMessage peasantMessage = new FromWorldMessage(
+            FromAgroEcosystemMessage peasantMessage = new FromAgroEcosystemMessage(
                     messageType,
                     agentAlias,
                     null,
                     this.getAgent().getAlias());
             peasantMessage.setDate(date);
             EventBESA event = new EventBESA(
-                    FromWorldGuard.class.getName(),
+                    FromAgroEcosystemGuard.class.getName(),
                     peasantMessage);
             //wpsReport.debug("Sent: " + peasantMessage.getSimpleMessage());
             ah.sendEvent(event);
@@ -227,14 +227,14 @@ public class AgroEcosystemGuard extends GuardBESA {
         try {
             //wpsReport.debug("AgentID: " + agentAlias);
             AgHandlerBESA ah = this.agent.getAdmLocal().getHandlerByAlias(agentAlias);
-            FromWorldMessage peasantMessage = new FromWorldMessage(
-                    FromWorldMessageType.NOTIFY_CROP_READY_HARVEST,
+            FromAgroEcosystemMessage peasantMessage = new FromAgroEcosystemMessage(
+                    FromAgroEcosystemMessageType.NOTIFY_CROP_READY_HARVEST,
                     agentAlias,
                     null,
                     this.getAgent().getAlias());
             peasantMessage.setDate(date);
             EventBESA event = new EventBESA(
-                    FromWorldGuard.class.getName(),
+                    FromAgroEcosystemGuard.class.getName(),
                     peasantMessage);
             //wpsReport.debug("Sent: " + peasantMessage.getSimpleMessage());
             ah.sendEvent(event);
@@ -252,7 +252,7 @@ public class AgroEcosystemGuard extends GuardBESA {
             AgHandlerBESA ah = this.agent.getAdmLocal().getHandlerByAid(this.agent.getAid());
             PeriodicDataBESA periodicDataBESA = new PeriodicDataBESA(PeriodicGuardBESA.STOP_CALL);
             EventBESA eventPeriodic = new EventBESA(
-                    FromWorldGuard.class.getName(),
+                    FromAgroEcosystemGuard.class.getName(),
                     periodicDataBESA);
             ah.sendEvent(eventPeriodic);
         } catch (ExceptionBESA e) {

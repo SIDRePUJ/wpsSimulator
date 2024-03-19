@@ -17,19 +17,20 @@ package org.wpsim.PeasantFamily.Goals.L1Survival;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
+import org.wpsim.PeasantFamily.Tasks.L1Survival.DoVoidTask;
 import org.wpsim.WellProdSim.Base.wpsGoalBDI;
 import org.wpsim.WellProdSim.wpsStart;
-import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
-import org.wpsim.PeasantFamily.Tasks.L1Survival.DoVitalsTask;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
+import rational.tasks.VoidTask;
 
 /**
  *
  * @author jairo
  */
-public class DoVitalsGoal extends wpsGoalBDI {
+public class DoVoidGoal extends wpsGoalBDI {
 
     /**
      *
@@ -38,7 +39,7 @@ public class DoVitalsGoal extends wpsGoalBDI {
      * @param description
      * @param type
      */
-    public DoVitalsGoal(long id, RationalRole role, String description, GoalBDITypes type) {
+    public DoVoidGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
     }
 
@@ -46,29 +47,18 @@ public class DoVitalsGoal extends wpsGoalBDI {
      *
      * @return
      */
-    public static DoVitalsGoal buildGoal() {
-        DoVitalsTask doVitalsTask = new DoVitalsTask();
-        Plan doVitalsPlan = new Plan();
-        doVitalsPlan.addTask(doVitalsTask);
-        RationalRole doVitalsRole = new RationalRole(
-                "DoVitalsTask",
-                doVitalsPlan);
-        return new DoVitalsGoal(
+    public static DoVoidGoal buildGoal() {
+        DoVoidTask doVoidTask = new DoVoidTask();
+        Plan doVoidTaskPlan = new Plan();
+        doVoidTaskPlan.addTask(doVoidTask);
+        RationalRole doVoidTaskRole = new RationalRole(
+                "doVoidTask",
+                doVoidTaskPlan);
+        return new DoVoidGoal(
                 wpsStart.getPlanID(),
-                doVitalsRole,
-                "DoVitalsTask",
+                doVoidTaskRole,
+                "doVoidTask",
                 GoalBDITypes.SURVIVAL);
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
     }
 
     /**
@@ -81,37 +71,15 @@ public class DoVitalsGoal extends wpsGoalBDI {
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
-        if (this.isAlreadyExecutedToday(believes)) {
-            return 0;
-        }
-
-        if (believes.isNewDay()) {
+        if (believes.isWaiting()) {
             return 1;
         } else {
             return 0;
         }
     }
 
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
-    }
-
-    /**
-     *
-     * @param stateBDI
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        //System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
-        return 0.99;
+        return 1;
     }
 }
