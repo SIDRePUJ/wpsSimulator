@@ -46,7 +46,7 @@ public class SimulationControlState extends StateBESA implements Serializable {
     public SimulationControlState() {
         super();
         this.scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::checkAgentsStatus, 0, 100, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(this::checkAgentsStatus, 0, 500, TimeUnit.MILLISECONDS);
     }
 
     public ConcurrentMap<String, AgentInfo> getAliveAgentMap() {
@@ -68,7 +68,6 @@ public class SimulationControlState extends StateBESA implements Serializable {
 
         // Determinar el día mínimo y máximo entre todos los agentes vivos para entender el rango de tiempo actual.
         int minDay = agentMap.values().stream().mapToInt(AgentInfo::getCurrentDay).min().orElse(Integer.MAX_VALUE);
-        int maxDay = agentMap.values().stream().mapToInt(AgentInfo::getCurrentDay).max().orElse(Integer.MIN_VALUE);
 
         // Iterar sobre todos los agentes vivos para revisar su estado y posiblemente ajustarlos.
         for (String agentName : agentMap.keySet()) {
@@ -87,12 +86,12 @@ public class SimulationControlState extends StateBESA implements Serializable {
                     if (needsPause) {
                         // Pausa a los agentes que están demasiado adelantados.
                         eventBesa = new EventBESA(FromSimulationControlGuard.class.getName(), new ControlMessage(agentName, true));
-                        AdmBESA.getInstance().getHandlerByAlias(agentName).sendEvent(eventBesa);
-                    }/* else  {
+                    } else  {
                         // Reactiva o mantiene activos a los agentes que están sincronizados.
                         eventBesa = new EventBESA(FromSimulationControlGuard.class.getName(), new ControlMessage(agentName, false));
                     }
-                    */
+
+                    AdmBESA.getInstance().getHandlerByAlias(agentName).sendEvent(eventBesa);
                 } catch (ExceptionBESA ex) {
                     wpsReport.debug(ex, "ControlAgentState");
                 }

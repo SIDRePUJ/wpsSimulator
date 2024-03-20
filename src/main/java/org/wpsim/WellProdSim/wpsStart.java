@@ -47,7 +47,7 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     public static int peasantFamiliesAgents;
     public static boolean started = false;
-    public final static int DEFAULT_AGENTS_TO_TEST = 64;
+    public final static int DEFAULT_AGENTS_TO_TEST = 8;
     public static int CREATED_AGENTS = 0;
     public static final long startTime = System.currentTimeMillis();
     private static final List<PeasantFamily> PEASANT_FAMILIES = new ArrayList<>();

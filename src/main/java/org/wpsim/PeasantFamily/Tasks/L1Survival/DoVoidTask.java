@@ -41,12 +41,8 @@ public class DoVoidTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        believes.setWait(false);
         believes.addTaskToLog(believes.getInternalCurrentDate());
+        this.setExecuted(true);
     }
+
 }

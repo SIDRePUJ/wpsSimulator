@@ -53,17 +53,18 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         // Check if the simulation has finished
         if (checkFinish(believes)) return;
         // Wait time for the next execution
-        sleepWave(state, believes);
+        //sleepWave(state, believes);
+
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -14){
+            System.out.println(believes.getAlias() + " fecha actual " + believes.getInternalCurrentDate() + " - días " + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
+            //believes.setWait(true);
+            //believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
+        }
+        // else{
+            //believes.setWait(false);
+        //}
         // Send BDI Pulse to BDI Information Flow
         sendBDIPulse(this.agent.getAlias());
-        checkJump(believes);
-    }
-
-    private void checkJump(PeasantFamilyBelieves believes) {
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) > 30){
-            System.out.println("fecha actual " + believes.getInternalCurrentDate() + " - días " + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
-            this.agent.shutdownAgent();
-        }
     }
 
     private void sleepWave(StateBDI state, PeasantFamilyBelieves believes) {

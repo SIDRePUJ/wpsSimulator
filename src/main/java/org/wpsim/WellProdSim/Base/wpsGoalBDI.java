@@ -6,6 +6,7 @@ import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
+import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.WellProdSim.Util.wpsCSV;
 import org.wpsim.WellProdSim.wpsStart;
 import rational.RationalRole;
@@ -84,9 +85,9 @@ public class wpsGoalBDI extends GoalBDI {
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
-        /*if (believes.getAlias().equals("PeasantFamily_1")) {
-            System.out.println(believes.isWaiting() + " " + believes.getInternalCurrentDate() + "\n" + stateBDI.getMachineBDIParams().getPyramidGoals());
-        }*/
+        if (believes.getAlias().equals("PeasantFamily_1")) {
+            wpsReport.info(believes.isWaiting() + " " + believes.getInternalCurrentDate() + "\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getAlias());
+        }
         return believes.getPeasantProfile().getHealth() > 0;
     }
 
