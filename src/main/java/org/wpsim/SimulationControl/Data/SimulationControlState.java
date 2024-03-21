@@ -46,7 +46,7 @@ public class SimulationControlState extends StateBESA implements Serializable {
     public SimulationControlState() {
         super();
         this.scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::checkAgentsStatus, 0, 500, TimeUnit.MILLISECONDS);
+        //scheduler.scheduleAtFixedRate(this::checkAgentsStatus, 0, 250, TimeUnit.MILLISECONDS);
     }
 
     public ConcurrentMap<String, AgentInfo> getAliveAgentMap() {
@@ -79,8 +79,8 @@ public class SimulationControlState extends StateBESA implements Serializable {
                     // La lógica de notificación se ajusta para considerar la necesidad de pausar o reactivar agentes.
                     // Si el agente está significativamente adelantado, puede ser necesario pausarlo.
                     // Si el agente está al día o ligeramente adelantado/retrasado, se procede normalmente.
-                    boolean needsPause = currentDay - minDay > wpsStart.config.getIntProperty("control.daystocheck");
-                    boolean needsActivation = currentDay - minDay <= wpsStart.config.getIntProperty("control.daystocheck");
+                    boolean needsPause = currentDay - minDay >= wpsStart.config.getIntProperty("control.daystocheck");
+                    System.out.println(agentName + " Days " + needsPause + " " + (currentDay - minDay) + " = " + currentDay + " - " + minDay + " >= " + wpsStart.config.getIntProperty("control.daystocheck"));
 
                     // Actualiza la lógica de envío de eventos para incluir la reactivación de agentes.
                     if (needsPause) {

@@ -15,6 +15,7 @@ public enum EmotionalEventType {
     STARVING("STARVING", EmotionalConfig.Events.Undesirable),
     THIEVING("THIEVING", EmotionalConfig.Events.Undesirable),
     HELPED("HELPED", EmotionalConfig.Events.Undesirable),
+    CROPDISEASES("CROP_DISEASES", EmotionalConfig.Events.Undesirable),
     CHECKCROPS("CHECKCROPS", EmotionalConfig.Events.SomewhatDesirable),
     LEISURE("LEISURE", EmotionalConfig.Events.SomewhatDesirable);
 

@@ -20,9 +20,11 @@ public class wpsLandTask extends wpsTask {
 
     protected void increaseWorkDone(PeasantFamilyBelieves believes, String landName, int workDone) {
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
-        double factor = evaluator.emotionalFactor(believes.getEmotionsListCopy(), Semantics.Emotions.Happiness);
-        //System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " - Work done: " + workDone + " Factor: " + factor + " NewWorkDone: " + (workDone * factor));
-        workDone = (int) (workDone * factor);
+        double factor = 1;
+        if (believes.isHaveEmotions()) {
+            factor = evaluator.emotionalFactor(believes.getEmotionsListCopy(), Semantics.Emotions.Happiness);
+        }
+        workDone = (int) Math.round(workDone * factor);
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getLandName().equals(landName)) {
                 currentLandInfo.increaseElapsedWorkTime(workDone);

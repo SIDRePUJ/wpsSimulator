@@ -92,6 +92,8 @@ public abstract class EmotionalComponent extends EmotionalModel {
         HappinessSadness.setEventInfluence(EmotionalEventType.LEISURE.name(), 0.7f);
         HappinessSadness.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.3f);
         HappinessSadness.setEventInfluence(EmotionalEventType.STARVING.name(), 0.6f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.CROPDISEASES.name(), 0.2f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.5f);
         HappinessSadness.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
         HappinessSadness.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.8f);
         this.addEmotionAxis(HappinessSadness);
@@ -109,6 +111,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         HopefulUncertainty.setEventInfluence(EmotionalEventType.THIEVING.name(), 1.0f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.WORK.name(), 0.4f);
+        HopefulUncertainty.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.5f);
         this.addEmotionAxis(HopefulUncertainty);
 
         //@TODO: falta eventos de perturbación, rumores, noticias etc llega a un evento de comunicación
@@ -121,6 +124,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         SecureInsecure.setEventInfluence(EmotionalEventType.THIEVING.name(), 1.0f);
         SecureInsecure.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.4f);
         SecureInsecure.setEventInfluence(EmotionalEventType.PLANTING.name(), 0.2f);
+        SecureInsecure.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.5f);
         this.addEmotionAxis(SecureInsecure);
 
     }

@@ -15,6 +15,7 @@
 package org.wpsim.PeasantFamily.Guards.FromAgroEcosystem;
 
 import BESA.BDI.AgentStructuralModel.StateBDI;
+import BESA.Emotional.EmotionalEvent;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.json.JSONObject;
@@ -55,9 +56,12 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                 case NOTIFY_CROP_DISEASE:
                     believes.getPeasantProfile().setCropHealth(0.5);
                     wpsReport.info("🍙🍙🍙: NOTIFY_CROP_DISEASE", this.getAgent().getAlias());
+                    believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CROPDISEASES", "CROPS"));
+                    believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CROPDISEASES", "FOOD"));
                     break;
                 case CROP_PESTICIDE:
                     believes.setCurrentCropCareType(landName, CropCareType.PESTICIDE);
+                    believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CROPDISEASES", "CROPS"));
                     wpsReport.info("🍙🍙🍙: CROP_PESTICIDE", this.getAgent().getAlias());
                     break;
                 case NOTIFY_CROP_WATER_STRESS:
@@ -67,11 +71,11 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                 case CROP_INFORMATION_NOTIFICATION:
                     break;
                 case NOTIFY_CROP_READY_HARVEST:
+                    believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
                     believes.setCurrentSeason(landName, SeasonType.HARVEST);
                     break;
-                case REQUEST_CROP_INFORMATION:
-                    break;
-                case CROP_INIT:
+                case REQUEST_CROP_INFORMATION, CROP_INIT:
+                    believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
                     break;
                 case CROP_HARVEST:
                     wpsReport.info("🍙🍙🍙: CROP_HARVEST OK", this.getAgent().getAlias());
@@ -95,6 +99,7 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                                     ) * 0.3 // Solo es aprovechable el 50% de la biomasa + 20% consumo interno
                             )
                     );
+                    believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
                     //System.out.println("🍙🍙🍙: CROP_HARVEST OK");
                     break;
                 default:

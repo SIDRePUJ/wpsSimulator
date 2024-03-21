@@ -9,14 +9,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Tarea vacía para recuperar los agentes zombies">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="ajuste en los temporizadores para simulación a 10 años.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromSimulationControl/FromSimulationControlGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromSimulationControl/FromSimulationControlGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/Utils/TimeConsumedBy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/Utils/TimeConsumedBy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEvaluator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEvaluator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEventType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Emotions/EmotionalEventType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L3Development/PrepareLandGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L3Development/PrepareLandGoal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromAgroEcosystem/FromAgroEcosystemGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromAgroEcosystem/FromAgroEcosystemGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVitalsTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L2Obligation/PayDebtsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L2Obligation/PayDebtsTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/HarvestCropsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/HarvestCropsTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Data/SimulationControlState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Data/SimulationControlState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsGoalBDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsGoalBDI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/SimulationControlGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/SimulationControlGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsLandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsLandTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -311,15 +318,7 @@
       <workItem from="1710810132576" duration="720000" />
       <workItem from="1710810859091" duration="2387000" />
       <workItem from="1710813510390" duration="14250000" />
-      <workItem from="1710902665665" duration="7699000" />
-    </task>
-    <task id="LOCAL-00008" summary="Particiones del mapa actualizadas">
-      <option name="closed" value="true" />
-      <created>1693855740642</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1693855740642</updated>
+      <workItem from="1710902665665" duration="24416000" />
     </task>
     <task id="LOCAL-00009" summary="Asignación y visualización de tierras aleatorias.">
       <option name="closed" value="true" />
@@ -705,7 +704,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710819495244</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="ajuste en los temporizadores para simulación a 10 años.">
+      <option name="closed" value="true" />
+      <created>1710943246188</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1710943246189</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -756,7 +763,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Reglas Fuzzy funcionando para HappinessSadness y HopefulUncertainty. Listo para jugar con la contribución." />
     <MESSAGE value="Adicionada la evaluación de Emociones General a las Metas." />
     <MESSAGE value="Evaluación de emociones general en todas las metas e inclusión de emociones en las tareas." />
     <MESSAGE value="Nuevo modo benckmark single." />
@@ -781,7 +787,8 @@
     <MESSAGE value="Ajustado el cambio de precios del mercado, ahora parece que funciona completamente y ajusta según la oferta y demanda, rondando al precio inicial." />
     <MESSAGE value="Ajustada la simulación con 8 agentes para las pruebas" />
     <MESSAGE value="Tarea vacía para recuperar los agentes zombies" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tarea vacía para recuperar los agentes zombies" />
+    <MESSAGE value="ajuste en los temporizadores para simulación a 10 años." />
+    <option name="LAST_COMMIT_MESSAGE" value="ajuste en los temporizadores para simulación a 10 años." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

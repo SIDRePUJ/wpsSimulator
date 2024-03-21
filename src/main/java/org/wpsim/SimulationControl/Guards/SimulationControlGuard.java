@@ -67,6 +67,7 @@ public class SimulationControlGuard extends GuardBESA {
                 printProgress(agentCurrentDate);
             }
         }
+        state.checkAgentsStatus();
         /*if (ControlCurrentDate.getInstance().isFirstDayOfWeek(agentCurrentDate)) {
             state.checkAgentsStatus();
         }*/

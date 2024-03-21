@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L3Development;
 
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
@@ -59,6 +60,7 @@ public class HarvestCropsTask extends wpsLandTask {
                     this.resetLand(believes, currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
                     try {
+                        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
                         AdmBESA.getInstance().getHandlerByAlias(
                                 currentLandInfo.getLandName()
                         ).sendEvent(

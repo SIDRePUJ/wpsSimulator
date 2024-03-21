@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Tasks.L2Obligation;
 
+import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
@@ -40,7 +41,7 @@ public class PayDebtsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.useTime(TimeConsumedBy.PeasantPayDebtsTaks);
+        believes.useTime(TimeConsumedBy.PeasantPayDebtsTask);
 
         double amount;
         if (believes.getPeasantProfile().getLoanAmountToPay() > believes.getPeasantProfile().getMoney()){
@@ -67,6 +68,7 @@ public class PayDebtsTask extends wpsTask {
             believes.getPeasantProfile().useMoney(
                     believes.getPeasantProfile().getLoanAmountToPay()
             );
+            believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HOUSEHOLDING", "MONEY"));
             believes.getPeasantProfile().setLoanAmountToPay(0);
         } catch (ExceptionBESA ex) {
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());

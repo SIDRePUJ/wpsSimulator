@@ -39,10 +39,14 @@ public class DoVoidTask extends wpsTask {
      */
     @Override
     public void executeTask(Believes parameters) {
-        this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
+        this.setExecuted(false);
+        wpsReport.trace("Adelantado, esperando...", believes.getAlias());
         this.setExecuted(true);
     }
 
+    @Override
+    public boolean checkFinish(Believes parameters) {
+        return this.isExecuted;
+    }
 }
