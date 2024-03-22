@@ -55,8 +55,10 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         // Wait time for the next execution
         //sleepWave(state, believes);
 
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -14){
-            System.out.println(believes.getAlias() + " fecha actual " + believes.getInternalCurrentDate() + " - días " + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -45){
+            believes.getPeasantProfile().setHealth(0);
+            this.agent.shutdownAgent();
+            //System.out.println(believes.getAlias() + " fecha actual " + believes.getInternalCurrentDate() + " - días " + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
             //believes.setWait(true);
             //believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
         }

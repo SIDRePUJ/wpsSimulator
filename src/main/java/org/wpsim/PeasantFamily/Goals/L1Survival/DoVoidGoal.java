@@ -14,6 +14,7 @@
  */
 package org.wpsim.PeasantFamily.Goals.L1Survival;
 
+import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.GoalBDITypes;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.Kernel.Agent.Event.KernellAgentEventExceptionBESA;
@@ -30,7 +31,7 @@ import rational.tasks.VoidTask;
  *
  * @author jairo
  */
-public class DoVoidGoal extends wpsGoalBDI {
+public class DoVoidGoal extends GoalBDI {
 
     /**
      *
@@ -52,12 +53,12 @@ public class DoVoidGoal extends wpsGoalBDI {
         Plan doVoidTaskPlan = new Plan();
         doVoidTaskPlan.addTask(doVoidTask);
         RationalRole doVoidTaskRole = new RationalRole(
-                "doVoidTask",
+                "DoVoidTask",
                 doVoidTaskPlan);
         return new DoVoidGoal(
                 wpsStart.getPlanID(),
                 doVoidTaskRole,
-                "doVoidTask",
+                "DoVoidTask",
                 GoalBDITypes.SURVIVAL);
     }
 
@@ -79,7 +80,28 @@ public class DoVoidGoal extends wpsGoalBDI {
     }
 
     @Override
+    public double evaluateViability(Believes believes) throws KernellAgentEventExceptionBESA {
+        return 1;
+    }
+
+    @Override
+    public double evaluatePlausibility(Believes believes) throws KernellAgentEventExceptionBESA {
+        return 1;
+    }
+
+    @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         return 1;
+    }
+
+    @Override
+    public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
+        return true;
+    }
+
+    @Override
+    public boolean goalSucceeded(Believes parameters) throws KernellAgentEventExceptionBESA {
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
+        return !believes.isWaiting();
     }
 }

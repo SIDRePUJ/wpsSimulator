@@ -88,6 +88,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.timeLeftOnDay = 24;
         this.haveLoan = false;
         this.newDay = true;
+        this.wait = false;
         this.priceList.clear();
         this.loanDenied = false;
         this.ptwDate = "";

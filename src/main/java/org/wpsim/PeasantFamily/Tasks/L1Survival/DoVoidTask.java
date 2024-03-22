@@ -27,26 +27,44 @@ import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.WellProdSim.Base.wpsTask;
 import org.wpsim.WellProdSim.wpsStart;
 import rational.mapping.Believes;
+import rational.mapping.Task;
 
 import static org.wpsim.BankOffice.Data.BankOfficeMessageType.ASK_CURRENT_TERM;
 
 /**
  *
  */
-public class DoVoidTask extends wpsTask {
+public class DoVoidTask extends Task {
+
+    @Override
+    public boolean checkFinish(Believes parameters) {
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
+        return !believes.isWaiting();
+    }
+
     /**
      * @param parameters
      */
     @Override
     public void executeTask(Believes parameters) {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        this.setExecuted(false);
-        wpsReport.trace("Adelantado, esperando...", believes.getAlias());
-        this.setExecuted(true);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        wpsReport.info("Adelantado, esperando...", believes.getAlias());
+        believes.setWait(false);
     }
 
     @Override
-    public boolean checkFinish(Believes parameters) {
-        return this.isExecuted;
+    public void interruptTask(Believes believes) {
+
     }
+
+    @Override
+    public void cancelTask(Believes believes) {
+
+    }
+
 }

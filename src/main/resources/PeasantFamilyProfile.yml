@@ -14,12 +14,12 @@
 StablePeasant:
   #Variables
   health: 100
-  peasantFamilyMinimalVital: 8000
+  peasantFamilyMinimalVital: 9000
   rainfallConditions: dry
   cropSize: 1
   seeds: 0
   startRiceSeason: 15/01/2022
-  money: 6200000
+  money: 3000000
   waterAvailable: 1000
   variance: 0.4
   peasantFamilyAffinity: 0.7

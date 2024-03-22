@@ -110,10 +110,10 @@ public class PeasantFamily extends AgentBDI {
         List<GoalBDI> goals = new ArrayList<>();
 
         //Level 1 Goals: Survival        
+        goals.add(DoVoidGoal.buildGoal());
         goals.add(DoVitalsGoal.buildGoal());
         goals.add(SeekPurposeGoal.buildGoal());
         goals.add(DoHealthCareGoal.buildGoal());
-        goals.add(DoVoidGoal.buildGoal());
         //goals.add(SelfEvaluationGoal.buildGoal());
 
         //Level 2 Goals: Obligations

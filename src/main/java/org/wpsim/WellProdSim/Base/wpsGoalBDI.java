@@ -86,6 +86,7 @@ public class wpsGoalBDI extends GoalBDI {
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
         if (believes.getAlias().equals("PeasantFamily_1")) {
+            wpsReport.info(stateBDI.getMachineBDIParams().getMainGoal(), believes.getAlias());
             wpsReport.info(believes.isWaiting() + " " + believes.getInternalCurrentDate() + "\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getAlias());
         }
         return believes.getPeasantProfile().getHealth() > 0;
