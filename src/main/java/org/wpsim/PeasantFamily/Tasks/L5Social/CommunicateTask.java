@@ -37,7 +37,7 @@ public class CommunicateTask extends wpsTask {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.getPeasantProfile().useLeisureOptions();
         believes.getPeasantProfile().increaseFamilyTimeAvailability();
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.CommunicateTask.getTime());
         //wpsReport.info("new healt" + believes.getProfile().getHealth());
     }
 

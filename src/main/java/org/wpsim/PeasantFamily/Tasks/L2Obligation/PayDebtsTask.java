@@ -41,7 +41,7 @@ public class PayDebtsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.useTime(TimeConsumedBy.PeasantPayDebtsTask);
+        believes.useTime(TimeConsumedBy.PeasantPayDebtsTask.getTime());
 
         double amount;
         if (believes.getPeasantProfile().getLoanAmountToPay() >= believes.getPeasantProfile().getMoney()){

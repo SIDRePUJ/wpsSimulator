@@ -95,7 +95,8 @@ public class ObtainSeedsGoal extends wpsGoalBDI {
         }
 
         //wpsReport.info("PlantingSeason=" + believes.getProfile().isPlantingSeason());
-        if (believes.getPeasantProfile().getSeeds() < believes.getPeasantProfile().getSeedsNeeded()) {
+        if (believes.getPeasantProfile().getSeeds() < believes.getPeasantProfile().getSeedsNeeded()
+                && !believes.getPriceList().isEmpty()) {
             return 1;
         } else {
             return 0;

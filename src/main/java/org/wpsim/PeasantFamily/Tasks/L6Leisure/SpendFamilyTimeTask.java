@@ -38,7 +38,7 @@ public class SpendFamilyTimeTask extends wpsTask {
         believes.addTaskToLog(believes.getInternalCurrentDate());
 
         if (Coin.flipCoin()) {
-            believes.useTime(TimeConsumedBy.SpendFamilyTimeTask);
+            believes.useTime(TimeConsumedBy.SpendFamilyTimeTask.getTime());
         } else {
             believes.useTime(believes.getTimeLeftOnDay());
         }

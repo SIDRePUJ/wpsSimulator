@@ -36,7 +36,7 @@ public class FindNewsTask extends wpsTask {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.getPeasantProfile().useLeisureOptions();
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.FindNewsTask.getTime());
     }
 
 }

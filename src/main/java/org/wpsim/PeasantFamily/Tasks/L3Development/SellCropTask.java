@@ -43,7 +43,7 @@ public class SellCropTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.HarvestCropsTask.getTime());
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "SELLING", "FOOD"));
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {

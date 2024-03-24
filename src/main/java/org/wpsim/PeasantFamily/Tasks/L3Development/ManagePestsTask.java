@@ -45,7 +45,7 @@ public class ManagePestsTask extends wpsTask {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.ManagePestsTask.getTime());
         //believes.setCurrentCropCare(CropCareType.NONE);
         
         try {

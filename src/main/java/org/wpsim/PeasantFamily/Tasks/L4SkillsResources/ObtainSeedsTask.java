@@ -45,7 +45,7 @@ public class ObtainSeedsTask extends wpsTask {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.ObtainSeedsTask.getTime());
 
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {

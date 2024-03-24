@@ -41,7 +41,7 @@ public class IrrigateCropsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.IrrigateCropsTask.getTime());
 
         double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
 

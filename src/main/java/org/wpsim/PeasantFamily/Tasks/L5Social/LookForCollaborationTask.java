@@ -39,7 +39,7 @@ public class LookForCollaborationTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.useTime(TimeConsumedBy.LookForCollaborationTask);
+        believes.useTime(TimeConsumedBy.LookForCollaborationTask.getTime());
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.setAskedForCollaboration(true);
 

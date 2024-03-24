@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -76,7 +76,9 @@ public class ObtainToolsGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getTools() < believes.getPeasantProfile().getToolsNeeded() && believes.getPeasantProfile().getMoney() > 20000) {
+        if (believes.getPeasantProfile().getTools() < believes.getPeasantProfile().getToolsNeeded()
+                && believes.getPeasantProfile().getMoney() > 20000
+                && !believes.getPriceList().isEmpty()) {
             return 1;
         } else {
             return 0;

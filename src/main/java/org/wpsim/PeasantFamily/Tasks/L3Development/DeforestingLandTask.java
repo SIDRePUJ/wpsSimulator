@@ -37,8 +37,8 @@ public class DeforestingLandTask extends wpsLandTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        updateConfig(believes, 120); // Paso 1: Configurar el tiempo de deforestación
-        believes.useTime(TimeConsumedBy.DeforestingLandTask);
+        updateConfig(believes, 7200); // Paso 1: Configurar el tiempo de deforestación
+        believes.useTime(TimeConsumedBy.DeforestingLandTask.getTime());
 
         int factor = 1;
         if (!believes.getPeasantFamilyHelper().isBlank())

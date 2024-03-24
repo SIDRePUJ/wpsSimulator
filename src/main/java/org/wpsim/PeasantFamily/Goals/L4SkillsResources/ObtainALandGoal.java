@@ -123,7 +123,7 @@ public class ObtainALandGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 1.0);
+        return 1;
     }
 
 }

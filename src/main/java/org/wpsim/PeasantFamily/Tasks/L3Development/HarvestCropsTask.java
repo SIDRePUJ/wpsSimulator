@@ -45,7 +45,7 @@ public class HarvestCropsTask extends wpsLandTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        updateConfig(believes, 56);
+        updateConfig(believes, 3360);
 
         int factor = 1;
         if (!believes.getPeasantFamilyHelper().isBlank()) {
@@ -55,7 +55,7 @@ public class HarvestCropsTask extends wpsLandTask {
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
                 this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.HarvestCropsTask.getTime() * factor);
-                believes.useTime(TimeConsumedBy.HarvestCropsTask);
+                believes.useTime(TimeConsumedBy.HarvestCropsTask.getTime());
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                     this.resetLand(believes, currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());

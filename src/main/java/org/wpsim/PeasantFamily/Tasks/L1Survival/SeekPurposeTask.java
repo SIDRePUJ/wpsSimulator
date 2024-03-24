@@ -33,7 +33,7 @@ public class SeekPurposeTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.SeekPurposeTask.getTime());
         believes.getPeasantProfile().setPurpose("farmer");
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }

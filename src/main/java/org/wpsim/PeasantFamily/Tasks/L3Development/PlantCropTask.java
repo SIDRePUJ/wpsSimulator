@@ -61,7 +61,7 @@ public class PlantCropTask extends wpsLandTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        updateConfig(believes, 32);
+        updateConfig(believes, 1920);
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
 
         int factor = 1;
@@ -169,7 +169,7 @@ public class PlantCropTask extends wpsLandTask {
                         wpsReport.error(ex, peasantAlias);
                     }
                     profile.useSeeds(1);
-                    believes.useTime(TimeConsumedBy.PlantCropTask);
+                    believes.useTime(TimeConsumedBy.PlantCropTask.getTime());
                     currentLandInfo.setCurrentSeason(SeasonType.GROWING);
                 }// Exit at first iteration with PLANTING
                 believes.addTaskToLog(believes.getInternalCurrentDate());

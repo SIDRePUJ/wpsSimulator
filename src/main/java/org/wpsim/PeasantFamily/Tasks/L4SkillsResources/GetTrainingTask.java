@@ -37,7 +37,7 @@ public class GetTrainingTask extends wpsTask {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         // @TODO: Cambiar a la venta real con el agente social market
         believes.getPeasantProfile().increaseTrainingLevel();
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.GetTrainingTask.getTime());
     }
 
 }

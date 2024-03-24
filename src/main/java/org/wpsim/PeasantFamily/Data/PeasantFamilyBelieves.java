@@ -87,7 +87,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.taskLog.clear();
 
         this.currentDay = 1;
-        this.timeLeftOnDay = 24;
+        this.timeLeftOnDay = 1440;
         this.haveLoan = false;
         this.newDay = true;
         this.wait = false;
@@ -101,9 +101,9 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
 
-        if (wpsStart.config.getBooleanProperty("pfagent.randonemotions")){
+        if (wpsStart.config.getBooleanProperty("pfagent.randonemotions")) {
             this.setHaveEmotions(Coin.flipCoin());
-        }else{
+        } else {
             this.setHaveEmotions(wpsStart.config.getBooleanProperty("pfagent.emotions"));
         }
 
@@ -363,23 +363,16 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
      *
      * @param time
      */
-    public void useTime(TimeConsumedBy time) {
-        decreaseTime(time.getTime());
-    }
-
-    /**
-     * Time unit defined by hours spent on activities.
-     *
-     * @param time
-     */
     public void useTime(double time) {
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
         double factor = 1;
         if (isHaveEmotions()) {
             factor = evaluator.emotionalFactor(getEmotionsListCopy(), Semantics.Emotions.Happiness);
-            time = ((factor - 1) * time) + time;
+            time = (int) Math.ceil(time - ((factor - 1) * time));
+            //System.out.println(this.getAlias() + " tiene " + this.timeLeftOnDay + " descuenta con emociones " + time);
             decreaseTime(time);
-        }else{
+        } else {
+            //System.out.println(this.getAlias() + " tiene " + this.timeLeftOnDay + " descuenta " + time);
             decreaseTime(time);
         }
     }
@@ -389,7 +382,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
      */
     public void makeNewDay() {
         this.currentDay++;
-        this.timeLeftOnDay = 24;
+        this.timeLeftOnDay = 1440;
         this.newDay = true;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
 
@@ -417,25 +410,17 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     }
 
     /**
-     * Make variable reset Every Day without change date
-     */
-    public void makeNewDayWOD() {
-        this.currentDay++;
-        this.timeLeftOnDay = 24;
-        this.newDay = true;
-        wpsReport.mental(this.toCSV(), this.getAlias());
-    }
-
-    /**
      * Time unit defined by hours spent on activities.
      *
      * @param time
      */
     public synchronized void decreaseTime(double time) {
-        //wpsReport.debug("decreaseTime: " + time, getPeasantProfile().getPeasantFamilyAlias());
-        timeLeftOnDay = timeLeftOnDay - time;
-        if (timeLeftOnDay <= 0) {
+        //System.out.println("decreaseTime: " + time + " " + getPeasantProfile().getPeasantFamilyAlias());
+        timeLeftOnDay = (int) (timeLeftOnDay - time);
+        if (timeLeftOnDay <= 30) {
             this.makeNewDay();
+        }else if (timeLeftOnDay < 120){
+            timeLeftOnDay = 120;
         }
     }
 
@@ -493,6 +478,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     public void setCurrentPeasantLeisureType(PeasantLeisureType currentPeasantLeisureType) {
         this.currentPeasantLeisureType = currentPeasantLeisureType;
     }
+
     /**
      * @return
      */
@@ -775,12 +761,13 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         //csvData.append('\n');
         return csvData.toString();
     }
+
     private String getOrDefault(Object value) {
         if (value == null) {
             return "NONE";
-        }else if (value == "")  {
+        } else if (value == "") {
             return "NONE";
-        }else {
+        } else {
             return value.toString();
         }
     }
@@ -788,15 +775,16 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     public void setWait(boolean waitStatus) {
         this.wait = waitStatus;
     }
+
     public boolean isWaiting() {
         return this.wait;
     }
 
     public String getCurrentCropName() {
         //System.out.println("rice " + priceList.get("rice").getCost() + " - roots " + priceList.get("roots").getCost());
-        if (priceList.get("rice").getCost() > priceList.get("roots").getCost()){
+        if (priceList.get("rice").getCost() > priceList.get("roots").getCost()) {
             return "rice";
-        }else {
+        } else {
             return "roots";
         }
     }
@@ -804,6 +792,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     public void setUpdatePriceList(boolean updatePriceList) {
         this.updatePriceList = updatePriceList;
     }
+
     public boolean isUpdatePriceList() {
         return updatePriceList;
     }
@@ -819,7 +808,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     public void changeHappinessBase(float value) {
         List<EmotionAxis> emotions = this.emotionalState.getEmotions();
         for (EmotionAxis emotion : emotions) {
-            if (emotion.toString().equals("Happiness/Sadness")){
+            if (emotion.toString().equals("Happiness/Sadness")) {
                 emotion.increaseBaseValue(value);
             }
         }

@@ -49,19 +49,13 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamily PeasantFamily = (org.wpsim.PeasantFamily.Agent.PeasantFamily) this.getAgent();
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
-        // Check if the agent has finished
-        if (checkDead(believes)) return;
-        // Check if the simulation has finished
-        if (checkFinish(believes)) return;
-        // Wait time for the next execution
-        //sleepWave(state, believes);
 
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -45){
             System.out.println(
                     "=========" + believes.getAlias() + "=========\n" +
                     "======================================================\n" +
                     "Main Goal " + state.getMachineBDIParams().getMainGoal() + "\n" +
-                    state.getMachineBDIParams().getPyramidGoals() + "\n" +
+                    //state.getMachineBDIParams().getPyramidGoals() + "\n" +
                     "Intention " + state.getMachineBDIParams().getIntention() + "\n" +
                     "getTasksInExecution " + state.getMachineBDIParams().getIntention().getRole().getRolePlan().getTasksInExecution() + "\n" +
                     "getTasks " + state.getMachineBDIParams().getIntention().getRole().getRolePlan().getTasks().toString() + "\n" +
@@ -69,15 +63,11 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
             );
             believes.getPeasantProfile().setHealth(0);
             believes.setCurrentActivity(PeasantActivityType.BLOCKED);
-            //sendBDIPulse(this.agent.getAlias());
-            //this.agent.shutdownAgent();
-            //System.out.println(believes.getAlias() + " fecha actual " + believes.getInternalCurrentDate() + " - días " + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
-            //believes.setWait(true);
-            //believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());
         }
-        // else{
-            //believes.setWait(false);
-        //}
+        // Check if the agent has finished
+        if (checkDead(believes)) return;
+        // Check if the simulation has finished
+        if (checkFinish(believes)) return;
         // Send BDI Pulse to BDI Information Flow
         sendBDIPulse(this.agent.getAlias());
     }

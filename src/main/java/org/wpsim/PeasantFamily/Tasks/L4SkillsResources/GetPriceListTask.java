@@ -45,7 +45,7 @@ public class GetPriceListTask extends wpsTask {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.GetPriceListTask.getTime());
         believes.setCurrentActivity(PeasantActivityType.NONE);
 
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.

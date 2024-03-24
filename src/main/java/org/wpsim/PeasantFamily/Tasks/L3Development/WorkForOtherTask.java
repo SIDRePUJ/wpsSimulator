@@ -40,7 +40,7 @@ public class WorkForOtherTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.WorkForOtherTask);
+        believes.useTime(TimeConsumedBy.WorkForOtherTask.getTime());
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "WORK", "MONEY"));
         believes.decreaseDaysToWorkForOther();
         //System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " sigo trabajando, faltan " + believes.getDaysToWorkForOther() + " dias, para " + believes.getContractor());

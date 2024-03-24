@@ -40,7 +40,7 @@ public class DoHealthCareTask extends wpsTask {
         if (believes.isHaveEmotions()) {
             factor = evaluator.emotionalFactor(believes.getEmotionsListCopy(), Semantics.Emotions.Happiness);
         }
-        believes.useTime(TimeConsumedBy.DoHealthCareTask);
+        believes.useTime(TimeConsumedBy.DoHealthCareTask.getTime());
         believes.getPeasantProfile().increaseHealth(factor);
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
         believes.addTaskToLog(believes.getInternalCurrentDate());

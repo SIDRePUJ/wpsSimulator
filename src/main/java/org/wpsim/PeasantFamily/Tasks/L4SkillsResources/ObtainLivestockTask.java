@@ -43,7 +43,7 @@ public class ObtainLivestockTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
+        believes.useTime(TimeConsumedBy.ObtainLivestockTask.getTime());
 
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {

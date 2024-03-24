@@ -36,7 +36,7 @@ public class AlternativeWorkTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.useTime(TimeConsumedBy.AlternativeWorkTask);
+        believes.useTime(TimeConsumedBy.AlternativeWorkTask.getTime());
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "WORK", "MONEY"));
         // https://www.eluniversal.com.co/cartagena/poner-a-trabajar-una-mototaxi-asi-se-mueve-este-negocio-en-cartagena-CX7541242

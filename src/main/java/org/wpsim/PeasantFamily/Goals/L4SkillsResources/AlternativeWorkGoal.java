@@ -108,7 +108,7 @@ public class AlternativeWorkGoal extends wpsGoalBDI {
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
         double partialContribution;
-        if (believes.getPeasantProfile().getMoney() < 50000) {
+        if (believes.getPeasantProfile().getMoney() < 20000) {
             partialContribution = 0.9;
         }else{
             partialContribution = 0.7;

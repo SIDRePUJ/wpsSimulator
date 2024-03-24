@@ -43,7 +43,7 @@ public class DoVitalsTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.setNewDay(false);
-        believes.useTime(TimeConsumedBy.DoVitalsTask);
+        believes.useTime(TimeConsumedBy.DoVitalsTask.getTime());
         if (believes.getPeasantProfile().getMoney()<=500000){
             believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "STARVING", "FOOD"));
         }else {
