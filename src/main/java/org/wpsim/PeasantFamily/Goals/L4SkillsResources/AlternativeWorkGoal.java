@@ -106,7 +106,14 @@ public class AlternativeWorkGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 0.7);
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
+        double partialContribution;
+        if (believes.getPeasantProfile().getMoney() < 50000) {
+            partialContribution = 0.9;
+        }else{
+            partialContribution = 0.7;
+        }
+        return evaluateEmotionalContribution(stateBDI, partialContribution);
     }
 
 }

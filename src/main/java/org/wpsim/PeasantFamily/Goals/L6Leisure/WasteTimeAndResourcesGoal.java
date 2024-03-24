@@ -73,10 +73,13 @@ public class WasteTimeAndResourcesGoal extends wpsGoalBDI {
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
+        if (believes.getPeasantProfile().getMoney() > 0){
+            return 1;
+        }
         // @TODO: Si tengo bastante dinero, se activa proporcionalmente hacer fiesta
         // @TODO: el rendimiento sería menor
         // @TODO: Si tiene mucho dinero, puede gastar más.
-        return 1;
+        return 0;
     }
 
     /**

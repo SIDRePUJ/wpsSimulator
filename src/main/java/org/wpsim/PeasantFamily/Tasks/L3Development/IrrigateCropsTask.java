@@ -41,7 +41,6 @@ public class IrrigateCropsTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
 
         double waterUsed = believes.getPeasantProfile().getCropSizeHA() * 30;
@@ -72,12 +71,14 @@ public class IrrigateCropsTask extends wpsTask {
                             )
                             )
                     );
+                    believes.addTaskToLog(believes.getInternalCurrentDate());
                     wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivo " + currentLandInfo.getLandName() + " con " + waterUsed, believes.getPeasantProfile().getPeasantFamilyAlias());
-                    return;
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                 }
+                return;
             }
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 }

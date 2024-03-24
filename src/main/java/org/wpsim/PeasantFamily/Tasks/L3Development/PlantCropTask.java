@@ -62,8 +62,13 @@ public class PlantCropTask extends wpsLandTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         updateConfig(believes, 32);
-        believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
+
+        int factor = 1;
+        if (!believes.getPeasantFamilyHelper().isBlank()) {
+            factor = 2;
+        }
+
         setPerturbation(wpsStart.config.getPerturbation());
         PeasantFamilyProfile profile = believes.getPeasantProfile();
         String initialRainfallConditions = WorldConfiguration.getPropsInstance().getProperty(
@@ -71,21 +76,20 @@ public class PlantCropTask extends wpsLandTask {
         String peasantAlias = profile.getPeasantFamilyAlias();
         int cropSize = profile.getCropSize();
         String currentCropName = believes.getCurrentCropName();
-        //System.out.println("Plantando " + currentCropName);
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
-                // @TODO: Plantear cambio de cultivos dinámico
                 if (currentLandInfo.getCropName().isEmpty()) {
                     currentLandInfo.setCropName(currentCropName);
                 }
                 wpsReport.info("Plantando for " + currentLandInfo.getLandName(), peasantAlias);
-                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PlantCropTask.getTime());
+                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PlantCropTask.getTime() * factor);
                 //System.out.println("yearChanged: " + yearChanged);
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                     this.resetLand(believes, currentLandInfo.getLandName());
+                    //System.out.println("Finalización de plantado for " + currentLandInfo.getLandName() + " " + peasantAlias);
                     wpsReport.info("Finalización de plantado for " + currentLandInfo.getLandName(), peasantAlias);
                     //System.out.println("plantando " + currentLandInfo.getLandName());
-                    if (!currentLandInfo.getCropName().equals(currentCropName)){
+                    if (!currentLandInfo.getCropName().equals(currentCropName)) {
                         currentLandInfo.setCropName(currentCropName);
                     }
                     // Check if are Running to kill
@@ -97,40 +101,57 @@ public class PlantCropTask extends wpsLandTask {
                         wpsReport.info("Se debe crear el agente mundo " + currentLandInfo.getLandName(), peasantAlias);
                     }
                     if (isRunning) {
-                        // Killing the world Agent and restarting
                         try {
                             String agID = AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
                             AdmBESA.getInstance().killAgent(agID, wpsStart.config.getDoubleProperty("control.passwd"));
                         } catch (Exception ex) {
-                            wpsReport.error("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage(), peasantAlias);
+                            System.out.println("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage() + " " + peasantAlias);
+                        }
+                        try {
+                            Thread.sleep(500);
+                        } catch (Exception ex) {
+                            System.out.println("Error Temp "+ ex.getMessage() + " " + peasantAlias);
                         }
                     }
                     wpsReport.info("Cultivando en " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName, peasantAlias);
-                    try {
-                        AgroEcosystem landAgent = buildWorld(
-                                getRainfallFile(initialRainfallConditions),
-                                peasantAlias,
-                                currentLandInfo.getLandName(),
-                                cropSize,
-                                currentLandInfo.getCropName()
-                        );
-                        assert landAgent != null;
-                        initialWorldStateInitialization(
-                                landAgent,
-                                peasantAlias,
-                                believes.getInternalCurrentDate()
-                        );
-                        landAgent.start();
-                        // CHECK WORLD
-                        boolean confirmation = false;
-                        while (!confirmation) {
+
+                    AgroEcosystem landAgent = buildWorld(
+                            getRainfallFile(initialRainfallConditions),
+                            peasantAlias,
+                            currentLandInfo.getLandName(),
+                            cropSize,
+                            currentLandInfo.getCropName()
+                    );
+                    assert landAgent != null;
+                    initialWorldStateInitialization(
+                            landAgent,
+                            peasantAlias,
+                            believes.getInternalCurrentDate()
+                    );
+                    landAgent.start();
+                    // CHECK WORLD
+                    boolean confirmation = false;
+                    while (!confirmation) {
+                        try {
+                            AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
+                            confirmation = true;
+                        } catch (ExceptionBESA e) {
+                            System.out.println(e + "--- " + peasantAlias);
+                        } catch (Exception e) {
+                            System.out.println(e + " " + peasantAlias);
+                        }
+
+                        if (!confirmation) {
                             try {
-                                AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
-                                confirmation = true;
-                            } catch (ExceptionBESA e) {
-                                wpsReport.error(e, peasantAlias);
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                                System.out.println(e + " " + peasantAlias);
+                                break;
                             }
                         }
+                    }
+                    try {
                         AdmBESA.getInstance().getHandlerByAlias(
                                 currentLandInfo.getLandName()
                         ).sendEvent(
@@ -144,14 +165,17 @@ public class PlantCropTask extends wpsLandTask {
                                         )
                                 )
                         );
-                        profile.useSeeds(1);
-                        currentLandInfo.setCurrentSeason(SeasonType.GROWING);
                     } catch (ExceptionBESA ex) {
                         wpsReport.error(ex, peasantAlias);
                     }
+                    profile.useSeeds(1);
+                    believes.useTime(TimeConsumedBy.PlantCropTask);
+                    currentLandInfo.setCurrentSeason(SeasonType.GROWING);
                 }// Exit at first iteration with PLANTING
+                believes.addTaskToLog(believes.getInternalCurrentDate());
                 return;
             }
+            believes.addTaskToLog(believes.getInternalCurrentDate());
         }
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
@@ -284,5 +308,17 @@ public class PlantCropTask extends wpsLandTask {
             default -> rainfallFile = worldConfiguration.getProperty("data.rainfall");
         }
         return rainfallFile;
+    }
+
+    @Override
+    public void interruptTask(Believes parameters) {
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
+        System.out.println("interruptTask " + believes.getAlias());
+    }
+
+    @Override
+    public void cancelTask(Believes parameters) {
+        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
+        System.out.println("cancelTask " + believes.getAlias());
     }
 }

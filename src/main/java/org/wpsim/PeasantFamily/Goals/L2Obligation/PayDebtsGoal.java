@@ -75,7 +75,8 @@ public class PayDebtsGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getLoanAmountToPay() > 0 ) {
+        if (believes.getPeasantProfile().getLoanAmountToPay() > 0  &&
+                believes.getPeasantProfile().getMoney() >= believes.getPeasantProfile().getLoanAmountToPay()) {
             return 1;
         } else {
             return 0;

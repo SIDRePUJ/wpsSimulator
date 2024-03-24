@@ -35,7 +35,6 @@ public class CommunicateTask extends wpsTask {
         //wpsReport.info("⚙️⚙️⚙️");
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        believes.getPeasantProfile().increaseHealth();
         believes.getPeasantProfile().useLeisureOptions();
         believes.getPeasantProfile().increaseFamilyTimeAvailability();
         believes.useTime(TimeConsumedBy.valueOf(this.getClass().getSimpleName()));

@@ -20,6 +20,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Log.ReportBESA;
+import org.wpsim.PeasantFamily.Data.Utils.PeasantActivityType;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.SimulationControl.Guards.SimulationControlGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamily;
@@ -56,8 +57,20 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         //sleepWave(state, believes);
 
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -45){
+            System.out.println(
+                    "=========" + believes.getAlias() + "=========\n" +
+                    "======================================================\n" +
+                    "Main Goal " + state.getMachineBDIParams().getMainGoal() + "\n" +
+                    state.getMachineBDIParams().getPyramidGoals() + "\n" +
+                    "Intention " + state.getMachineBDIParams().getIntention() + "\n" +
+                    "getTasksInExecution " + state.getMachineBDIParams().getIntention().getRole().getRolePlan().getTasksInExecution() + "\n" +
+                    "getTasks " + state.getMachineBDIParams().getIntention().getRole().getRolePlan().getTasks().toString() + "\n" +
+                    "======================================================"
+            );
             believes.getPeasantProfile().setHealth(0);
-            this.agent.shutdownAgent();
+            believes.setCurrentActivity(PeasantActivityType.BLOCKED);
+            //sendBDIPulse(this.agent.getAlias());
+            //this.agent.shutdownAgent();
             //System.out.println(believes.getAlias() + " fecha actual " + believes.getInternalCurrentDate() + " - días " + ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()));
             //believes.setWait(true);
             //believes.setInternalCurrentDate(ControlCurrentDate.getInstance().getCurrentDate());

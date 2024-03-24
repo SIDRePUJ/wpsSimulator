@@ -63,7 +63,6 @@ public class SellCropTask extends wpsTask {
                                     )
                             )
                     );
-                    //System.out.println("Vendiendo " + currentLandInfo.getCropName());
                     currentLandInfo.setCurrentSeason(SeasonType.NONE);
                     believes.getPeasantProfile().setHarvestedWeight(0);
                     believes.setUpdatePriceList(true);
@@ -72,7 +71,6 @@ public class SellCropTask extends wpsTask {
                 }
             }
         }
-
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 

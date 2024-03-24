@@ -50,8 +50,8 @@ public class CheckCropsTask extends wpsTask {
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CHECKCROPS", "FOOD"));
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
-                try {
-                    if (Coin.flipCoin()) {
+                if (Coin.flipCoin()) {
+                    try {
                         AdmBESA.getInstance().getHandlerByAlias(
                                 currentLandInfo.getLandName()
                         ).sendEvent(
@@ -65,9 +65,13 @@ public class CheckCropsTask extends wpsTask {
                                         )
                                 )
                         );
-                        wpsReport.warn("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
-                        //System.out.println(believes.getAlias() + " enviado CROP_INFORMATION a " + currentLandInfo.getLandName());
-                    } else {
+                    } catch (ExceptionBESA ex) {
+                        wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+                    }
+                    wpsReport.warn("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                    //System.out.println(believes.getAlias() + " enviado CROP_INFORMATION a " + currentLandInfo.getLandName());
+                } else {
+                    try {
                         AdmBESA.getInstance().getHandlerByAlias(
                                 currentLandInfo.getLandName()
                         ).sendEvent(
@@ -81,12 +85,13 @@ public class CheckCropsTask extends wpsTask {
                                         )
                                 )
                         );
-                        //System.out.println(believes.getAlias() + " enviado CROP_OBSERVE a " + currentLandInfo.getLandName());
-                        wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                    } catch (ExceptionBESA ex) {
+                        wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                     }
-                } catch (ExceptionBESA ex) {
-                    wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+                    //System.out.println(believes.getAlias() + " enviado CROP_OBSERVE a " + currentLandInfo.getLandName());
+                    wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
                 }
+                believes.addTaskToLog(believes.getInternalCurrentDate());
             }
         }
         believes.addTaskToLog(believes.getInternalCurrentDate());

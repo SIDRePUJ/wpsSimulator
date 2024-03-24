@@ -15,8 +15,10 @@
 package org.wpsim.PeasantFamily.Tasks.L1Survival;
 
 import BESA.Emotional.EmotionalEvent;
+import BESA.Emotional.Semantics;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
 import org.wpsim.WellProdSim.Base.wpsTask;
 import rational.mapping.Believes;
 
@@ -32,9 +34,14 @@ public class DoHealthCareTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
+        double factor = 1;
+        EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
+        if (believes.isHaveEmotions()) {
+            factor = evaluator.emotionalFactor(believes.getEmotionsListCopy(), Semantics.Emotions.Happiness);
+        }
         believes.useTime(TimeConsumedBy.DoHealthCareTask);
-        believes.getPeasantProfile().increaseHealth();
+        believes.getPeasantProfile().increaseHealth(factor);
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }

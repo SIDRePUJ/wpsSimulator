@@ -5,6 +5,7 @@ import BESA.Emotional.EmotionalConfig;
 public enum EmotionalEventType {
     PLANTING("PLANTING", EmotionalConfig.Events.Desirable),
     PLANTINGFAILED("PLANTINGFAILED", EmotionalConfig.Events.Undesirable),
+    UNPAYINGDEBTS("UNPAYINGDEBTS", EmotionalConfig.Events.Undesirable),
     HOUSEHOLDING("HOUSEHOLDING", EmotionalConfig.Events.Desirable),
     IRRIGATING("IRRIGATING", EmotionalConfig.Events.SomewhatDesirable),
     HARVESTING("HARVESTING", EmotionalConfig.Events.Desirable),

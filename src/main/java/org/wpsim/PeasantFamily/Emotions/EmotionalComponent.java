@@ -94,6 +94,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         HappinessSadness.setEventInfluence(EmotionalEventType.STARVING.name(), 0.6f);
         HappinessSadness.setEventInfluence(EmotionalEventType.CROPDISEASES.name(), 0.2f);
         HappinessSadness.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.5f);
+        HappinessSadness.setEventInfluence(EmotionalEventType.UNPAYINGDEBTS.name(), 0.5f);
         HappinessSadness.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
         HappinessSadness.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.8f);
         this.addEmotionAxis(HappinessSadness);
@@ -109,6 +110,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         HopefulUncertainty.setEventInfluence(EmotionalEventType.CHECKCROPS.name(), 0.2f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.PLANTINGFAILED.name(), 0.3f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.THIEVING.name(), 1.0f);
+        HopefulUncertainty.setEventInfluence(EmotionalEventType.UNPAYINGDEBTS.name(), 0.5f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.WORK.name(), 0.4f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.5f);

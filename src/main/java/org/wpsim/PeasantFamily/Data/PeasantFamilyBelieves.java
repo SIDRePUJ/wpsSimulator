@@ -16,11 +16,13 @@ package org.wpsim.PeasantFamily.Data;
 
 import BESA.Emotional.EmotionAxis;
 import BESA.Emotional.EmotionalEvent;
+import BESA.Emotional.Semantics;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Log.ReportBESA;
 import org.json.JSONObject;
+import org.wpsim.PeasantFamily.Emotions.EmotionalEvaluator;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
 import org.wpsim.SimulationControl.Data.Coin;
 import org.wpsim.SimulationControl.Guards.SimulationControlGuard;
@@ -371,7 +373,15 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
      * @param time
      */
     public void useTime(double time) {
-        decreaseTime(time);
+        EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
+        double factor = 1;
+        if (isHaveEmotions()) {
+            factor = evaluator.emotionalFactor(getEmotionsListCopy(), Semantics.Emotions.Happiness);
+            time = ((factor - 1) * time) + time;
+            decreaseTime(time);
+        }else{
+            decreaseTime(time);
+        }
     }
 
     /**

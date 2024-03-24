@@ -36,7 +36,6 @@ public class PrepareLandTask extends wpsLandTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         updateConfig(believes, 56); // 56 horas para preparar una hectarea de cultivo
-        believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());
 
         //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
@@ -51,16 +50,19 @@ public class PrepareLandTask extends wpsLandTask {
                 if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
                     //System.out.println("Preparing Planting season for " + currentLandInfo.getLandName());
                     this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime() * factor);
+                    believes.useTime(TimeConsumedBy.PrepareLandTask);
                     if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                         this.resetLand(believes, currentLandInfo.getLandName());
                         //System.out.println("Finishing Preparing Planting season for " + currentLandInfo.getLandName() + " pidiendo semillas.");
                         believes.getPeasantProfile().increaseSeedsNeeded(1);
                         currentLandInfo.setCurrentSeason(SeasonType.PLANTING);
                     }
+                    believes.addTaskToLog(believes.getInternalCurrentDate());
                     return;
                 }
             }
         }
+        believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 
 }

@@ -74,8 +74,11 @@ public class LeisureActivitiesGoal extends wpsGoalBDI {
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
+        if (believes.getPeasantProfile().getMoney() > 0) {
+            return 1;
+        }
 
-        return 1;
+        return 0;
     }
 
     /**

@@ -24,6 +24,10 @@ public abstract class GenericWorldLayer implements WorldLayer {
         this.dependantLayers.put(layerName, layer);
     }
 
+    public void removeLayer(String layerName) {
+        this.dependantLayers.remove(layerName);
+    }
+
     @Override
     public WorldLayer getLayer(String layerName) {
         return this.dependantLayers.get(layerName);

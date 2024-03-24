@@ -36,12 +36,6 @@ import static org.wpsim.BankOffice.Data.BankOfficeMessageType.ASK_CURRENT_TERM;
 public class DoVitalsTask extends wpsTask {
 
     /**
-     *
-     */
-    public DoVitalsTask() {
-    }
-
-    /**
      * @param parameters
      */
     @Override
@@ -50,11 +44,7 @@ public class DoVitalsTask extends wpsTask {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.setNewDay(false);
         believes.useTime(TimeConsumedBy.DoVitalsTask);
-        // Emotional events
-        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "FOOD"));
-        //believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HOUSEHOLDING", "TIME"));
-        // Check Money
-        if (believes.getPeasantProfile().getMoney()<=100000){
+        if (believes.getPeasantProfile().getMoney()<=500000){
             believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "STARVING", "FOOD"));
         }else {
             believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "DOVITALS", "TIME"));

@@ -44,10 +44,12 @@ public class PayDebtsTask extends wpsTask {
         believes.useTime(TimeConsumedBy.PeasantPayDebtsTask);
 
         double amount;
-        if (believes.getPeasantProfile().getLoanAmountToPay() > believes.getPeasantProfile().getMoney()){
+        if (believes.getPeasantProfile().getLoanAmountToPay() >= believes.getPeasantProfile().getMoney()){
             amount = believes.getPeasantProfile().getLoanAmountToPay();
         }else{
-            amount = believes.getPeasantProfile().getMoney();
+            believes.addTaskToLog(believes.getInternalCurrentDate());
+            wpsReport.info("⚙️⚙️⚙️ NOT Paying " + believes.getPeasantProfile().getLoanAmountToPay(), believes.getPeasantProfile().getPeasantFamilyAlias());
+            return;
         }
         wpsReport.info("⚙️⚙️⚙️ Paying " + amount, believes.getPeasantProfile().getPeasantFamilyAlias());
 

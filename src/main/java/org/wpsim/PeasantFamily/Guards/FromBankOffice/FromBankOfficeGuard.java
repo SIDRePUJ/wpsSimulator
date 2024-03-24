@@ -15,6 +15,7 @@
 package org.wpsim.PeasantFamily.Guards.FromBankOffice;
 
 import BESA.BDI.AgentStructuralModel.StateBDI;
+import BESA.Emotional.EmotionalEvent;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
@@ -83,6 +84,9 @@ public class FromBankOfficeGuard extends GuardBESA {
                     break;
                 case TERM_TO_PAY:
                     wpsReport.info("Llegó la cuota a pagar por " + fromBankOfficeMessage.getAmount(), this.getAgent().getAlias());
+                    if (believes.getPeasantProfile().getLoanAmountToPay() > 0) {
+                        believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "UNPAYINGDEBTS", "MONEY"));
+                    }
                     believes.getPeasantProfile().setLoanAmountToPay(
                             fromBankOfficeMessage.getAmount()
                     );
@@ -95,6 +99,7 @@ public class FromBankOfficeGuard extends GuardBESA {
                     believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
                     believes.discountToPay(believes.getPeasantProfile().getLoanAmountToPay());
                     believes.getPeasantProfile().setLoanAmountToPay(0);
+                    believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HOUSEHOLDING", "MONEY"));
                     break;
             }
         } catch (IllegalArgumentException e) {

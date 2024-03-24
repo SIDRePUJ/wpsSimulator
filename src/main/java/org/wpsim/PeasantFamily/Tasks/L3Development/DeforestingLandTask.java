@@ -59,6 +59,7 @@ public class DeforestingLandTask extends wpsLandTask {
                             believes.getPeasantProfile().getPeasantFamilyAlias()
                     );
                 }
+                believes.addTaskToLog(believes.getInternalCurrentDate());
                 return; // Paso 5: Retornar a la iteración
             }
         }

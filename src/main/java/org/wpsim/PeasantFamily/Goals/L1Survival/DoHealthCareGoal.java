@@ -88,13 +88,19 @@ public class DoHealthCareGoal extends wpsGoalBDI {
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
+        int timeToHeal;
 
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
 
-        //wpsReport.info("getHealth=" + believes.getProfile().getHealth());
-        if (believes.getPeasantProfile().getHealth() < 40) {
+        if (believes.getPeasantProfile().getMoney() > 2000000){
+            timeToHeal = 60;
+        }else{
+            timeToHeal = 30;
+        }
+
+        if (believes.getPeasantProfile().getHealth() < timeToHeal) {
             return 1;
         } else {
             return 0;

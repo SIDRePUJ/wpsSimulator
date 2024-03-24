@@ -46,7 +46,6 @@ public class HarvestCropsTask extends wpsLandTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         updateConfig(believes, 56);
-        believes.useTime(TimeConsumedBy.HarvestCropsTask);
 
         int factor = 1;
         if (!believes.getPeasantFamilyHelper().isBlank()) {
@@ -55,7 +54,8 @@ public class HarvestCropsTask extends wpsLandTask {
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
-                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime() * factor);
+                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.HarvestCropsTask.getTime() * factor);
+                believes.useTime(TimeConsumedBy.HarvestCropsTask);
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                     this.resetLand(believes, currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
@@ -73,11 +73,12 @@ public class HarvestCropsTask extends wpsLandTask {
                                                 believes.getPeasantProfile().getPeasantFamilyAlias())
                                 )
                         );
-                        currentLandInfo.setCurrentSeason(SeasonType.SELL_CROP);
-                        currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
                     } catch (ExceptionBESA ex) {
                         wpsReport.error(ex.getMessage(), believes.getPeasantProfile().getPeasantFamilyAlias());
                     }
+                    currentLandInfo.setCurrentSeason(SeasonType.SELL_CROP);
+                    believes.addTaskToLog(believes.getInternalCurrentDate());
+                    currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
                 }
                 return;
             }

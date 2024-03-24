@@ -224,8 +224,12 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     /**
      *
      */
-    public void discountDailyMoney() {
-        this.money = this.money - this.peasantFamilyMinimalVital;
+    public synchronized void discountDailyMoney() {
+        if (this.money - this.peasantFamilyMinimalVital > 0){
+            this.money = this.money - this.peasantFamilyMinimalVital;
+        }else {
+            this.money = 0;
+        }
         if (this.money <= 0) {
             this.decreaseHealth();
         }
@@ -286,14 +290,14 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     /**
      *
      */
-    public synchronized void increaseHealth() {
+    public synchronized void increaseHealth(double factor) {
         if (this.health >= 100) {
             // @TODO: Incrementar felicidad
             this.health = 100;
         } else if (this.health <= 0) {
             this.health = 0;
         } else {
-            this.health = this.health + (int) (Math.random() * 21);
+            this.health = this.health + (int) ((Math.random() * 21) * factor);
         }
     }
 
@@ -596,7 +600,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      * @param loanAmountToPay
      */
     public synchronized void setLoanAmountToPay(double loanAmountToPay) {
-        this.loanAmountToPay = loanAmountToPay;
+        this.loanAmountToPay += loanAmountToPay;
     }
 
     /**
@@ -1400,7 +1404,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      */
     public void decreaseHealth() {
-        this.health -= 10;
+        this.health -= 5;
     }
 
     @Override
