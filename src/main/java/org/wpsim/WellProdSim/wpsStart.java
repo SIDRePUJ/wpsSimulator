@@ -47,7 +47,6 @@ public class wpsStart {
     private static int PLAN_ID = 0;
     public static int peasantFamiliesAgents;
     public static boolean started = false;
-    public final static int DEFAULT_AGENTS_TO_TEST = 20;
     public static int CREATED_AGENTS = 0;
     public static final long startTime = System.currentTimeMillis();
     private static final List<PeasantFamily> PEASANT_FAMILIES = new ArrayList<>();
@@ -78,7 +77,7 @@ public class wpsStart {
             try {
                 peasantFamiliesAgents = Integer.parseInt(args[1]);
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                peasantFamiliesAgents = DEFAULT_AGENTS_TO_TEST;
+                peasantFamiliesAgents = wpsStart.config.getIntProperty("pfagent.agenttotest");
             }
             // Cluster mode
             admLocal = AdmBESA.getInstance("server_" + args[0] + ".xml");

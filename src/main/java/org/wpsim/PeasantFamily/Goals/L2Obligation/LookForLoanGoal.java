@@ -76,9 +76,9 @@ public class LookForLoanGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getMoney() <= 70000
+        if (believes.getPeasantProfile().getMoney() <= wpsStart.config.getIntProperty("pfagent.lookforloan")
                 && believes.getPeasantProfile().getLoanAmountToPay() == 0
-                        && believes.getToPay()==0 ){
+                        && !believes.isHaveLoan()){
             return 1;
         } else {
             return 0;

@@ -26,7 +26,7 @@ public enum TimeConsumedBy {
     SelfEvaluationTask(120),
     SearchForHelpAndNecessityTask(360),
     SeekPurposeTask(720),
-    GetPriceListTask(120),
+    GetPriceListTask(60),
     DeforestingLandTask(360),
     DoHealthCareTask(720),
     DoVitalsTask(720),
@@ -59,7 +59,7 @@ public enum TimeConsumedBy {
     LeisureActivitiesTask(120),
     FindNewsTask(120),
     WasteTimeAndResourcesTask(120),
-    PeasantPayDebtsTask(120),
+    PeasantPayDebtsTask(60),
     SpendFriendsTimeTask(120),
     WorkForOtherTask(720),
     AlternativeWorkTask(360);

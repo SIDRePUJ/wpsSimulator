@@ -75,7 +75,7 @@ public class AlternativeWorkGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getMoney() <= 200000 || wpsStart.config.getBooleanProperty("pfagent.earlyalternative")) {
+        if (believes.getPeasantProfile().getMoney() <= wpsStart.config.getIntProperty("pfagent.alternativethreshold") || wpsStart.config.getBooleanProperty("pfagent.earlyalternative")) {
             return 1;
         }
 
@@ -108,10 +108,10 @@ public class AlternativeWorkGoal extends wpsGoalBDI {
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
         double partialContribution;
-        if (believes.getPeasantProfile().getMoney() < 20000) {
+        if (believes.getPeasantProfile().getMoney() < wpsStart.config.getIntProperty("pfagent.alternativethreshold")) {
             partialContribution = 0.9;
         }else{
-            partialContribution = 0.7;
+            partialContribution = 0.6;
         }
         return evaluateEmotionalContribution(stateBDI, partialContribution);
     }

@@ -600,7 +600,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      * @param loanAmountToPay
      */
     public synchronized void setLoanAmountToPay(double loanAmountToPay) {
-        this.loanAmountToPay += loanAmountToPay;
+        this.loanAmountToPay = loanAmountToPay;
     }
 
     /**
@@ -1377,7 +1377,8 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      * @param discount
      */
     public synchronized void useMoney(int discount) {
-        this.money -= discount;
+        int money = (int) (this.money - discount);
+        this.money = Math.max(money, 0);
     }
 
     public synchronized void useMoney(double discount) {

@@ -43,16 +43,6 @@ public class PayDebtsTask extends wpsTask {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.useTime(TimeConsumedBy.PeasantPayDebtsTask.getTime());
 
-        double amount;
-        if (believes.getPeasantProfile().getLoanAmountToPay() >= believes.getPeasantProfile().getMoney()){
-            amount = believes.getPeasantProfile().getLoanAmountToPay();
-        }else{
-            believes.addTaskToLog(believes.getInternalCurrentDate());
-            wpsReport.info("⚙️⚙️⚙️ NOT Paying " + believes.getPeasantProfile().getLoanAmountToPay(), believes.getPeasantProfile().getPeasantFamilyAlias());
-            return;
-        }
-        wpsReport.info("⚙️⚙️⚙️ Paying " + amount, believes.getPeasantProfile().getPeasantFamilyAlias());
-
         try {
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getBankAgentName()
@@ -62,19 +52,21 @@ public class PayDebtsTask extends wpsTask {
                             new BankOfficeMessage(
                                     PAY_LOAN_TERM,
                                     believes.getPeasantProfile().getPeasantFamilyAlias(),
-                                    amount,
+                                    Math.ceil(believes.getPeasantProfile().getLoanAmountToPay()),
                                     believes.getInternalCurrentDate()
                             )
                     )
             );
             believes.getPeasantProfile().useMoney(
-                    believes.getPeasantProfile().getLoanAmountToPay()
+                    Math.ceil(believes.getPeasantProfile().getLoanAmountToPay())
             );
             believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HOUSEHOLDING", "MONEY"));
             believes.getPeasantProfile().setLoanAmountToPay(0);
         } catch (ExceptionBESA ex) {
+            System.out.println("Error pagando???");
             wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
+        //wpsReport.info("⚙️⚙️⚙️ Paying " + amount, believes.getPeasantProfile().getPeasantFamilyAlias());
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 }

@@ -62,7 +62,7 @@ public class DoVitalsTask extends wpsTask {
      */
     private void checkBankDebt(PeasantFamilyBelieves believes) {
         if (ControlCurrentDate.getInstance().isFirstDayOfMonth(believes.getInternalCurrentDate())
-                && believes.getCurrentDay() > 6) {
+                && believes.getCurrentDay() > 6 && believes.isHaveLoan()) {
             try {
                 AdmBESA.getInstance().getHandlerByAlias(
                         wpsStart.config.getBankAgentName()
@@ -71,7 +71,7 @@ public class DoVitalsTask extends wpsTask {
                                 BankOfficeGuard.class.getName(),
                                 new BankOfficeMessage(
                                         ASK_CURRENT_TERM,
-                                        believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                        believes.getAlias(),
                                         believes.getInternalCurrentDate()
                                 )
                         )
@@ -79,6 +79,10 @@ public class DoVitalsTask extends wpsTask {
             } catch (ExceptionBESA ex) {
                 wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
             }
+        }
+        if (believes.getPeasantProfile().getLoanAmountToPay() > believes.getPeasantProfile().getMoney()){
+            //System.out.println("No se puede pagar la cuota " + believes.getAlias() + " la cuota es de " + believes.getPeasantProfile().getLoanAmountToPay() + " y tiene " + believes.getPeasantProfile().getMoney());
+            believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "UNPAYINGDEBTS", "MONEY"));
         }
     }
 }

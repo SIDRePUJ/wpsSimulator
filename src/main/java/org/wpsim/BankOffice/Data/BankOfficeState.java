@@ -94,7 +94,7 @@ public class BankOfficeState extends StateBESA implements Serializable {
 
     public double currentMoneyToPay(String PeasantFamily) {
         if (this.loans.containsKey(PeasantFamily)) {
-            return this.loans.get(PeasantFamily).MoneyToPay();
+            return Math.ceil(this.loans.get(PeasantFamily).MoneyToPay());
         } else {
             return 0;
         }

@@ -19,7 +19,7 @@ StablePeasant:
   cropSize: 1
   seeds: 0
   startRiceSeason: 15/01/2022
-  money: 3000000
+  money: 300000
   waterAvailable: 1000
   variance: 0.4
   peasantFamilyAffinity: 0.7

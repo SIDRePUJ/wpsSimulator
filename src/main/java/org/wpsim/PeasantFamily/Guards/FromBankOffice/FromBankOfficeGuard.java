@@ -97,7 +97,7 @@ public class FromBankOfficeGuard extends GuardBESA {
                     break;
                 case TERM_PAYED:
                     believes.setCurrentMoneyOrigin(MoneyOriginType.NONE);
-                    believes.discountToPay(believes.getPeasantProfile().getLoanAmountToPay());
+                    believes.discountToPay(Math.ceil(believes.getPeasantProfile().getLoanAmountToPay()));
                     believes.getPeasantProfile().setLoanAmountToPay(0);
                     believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HOUSEHOLDING", "MONEY"));
                     break;
