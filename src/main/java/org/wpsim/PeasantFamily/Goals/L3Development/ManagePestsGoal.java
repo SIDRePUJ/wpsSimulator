@@ -99,28 +99,12 @@ public class ManagePestsGoal extends wpsGoalBDI {
         }
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.PESTICIDE)) {
+            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.PESTICIDE) &&
+                    believes.haveTimeAvailable(TimeConsumedBy.ManagePestsTask)) {
                 return 1;
             }
         }
         return 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.ManagePestsTask)) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     /**

@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -70,23 +70,6 @@ public class HarvestCropsGoal extends wpsGoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        if (believes.getPeasantProfile().getTools() > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
@@ -95,28 +78,13 @@ public class HarvestCropsGoal extends wpsGoalBDI {
         }
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST) &&
+                    believes.getPeasantProfile().getTools() > 0 &&
+                    believes.haveTimeAvailable(TimeConsumedBy.HarvestCropsTask)) {
                 return 1;
             }
         }
         return 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        //wpsReport.info("");
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.HarvestCropsTask)) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     /**

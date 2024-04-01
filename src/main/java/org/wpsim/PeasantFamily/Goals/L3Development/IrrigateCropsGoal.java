@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -70,17 +70,6 @@ public class IrrigateCropsGoal extends wpsGoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
@@ -89,7 +78,8 @@ public class IrrigateCropsGoal extends wpsGoalBDI {
         }
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION)) {
+            if (currentLandInfo.getCurrentCropCareType().equals(CropCareType.IRRIGATION) &&
+                    believes.haveTimeAvailable(TimeConsumedBy.IrrigateCropsTask)) {
                 int waterUsed = (int) ((believes.getPeasantProfile().getCropSizeHA()) * 30);
                 for (LandInfo currentLandInfoWater : believes.getAssignedLands()) {
                     if (currentLandInfoWater.getKind().equals("water") ||
@@ -100,22 +90,6 @@ public class IrrigateCropsGoal extends wpsGoalBDI {
             }
         }
         return 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.IrrigateCropsTask)) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     /**

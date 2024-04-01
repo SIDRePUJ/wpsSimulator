@@ -24,7 +24,7 @@ StablePeasant:
   variance: 0.4
   peasantFamilyAffinity: 0.7
   peasantLeisureAffinity: 0.4
-  peasantFriendsAffinity: 0.5
+  peasantFriendsAffinity: 0.6
   #Peasant
   peasantKind: StablePeasant
   purpose: ""  

@@ -18,6 +18,7 @@ import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
+import BESA.Log.ReportBESA;
 import org.wpsim.CivicAuthority.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
 import org.wpsim.WellProdSim.Base.wpsLandTask;
@@ -32,13 +33,11 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import static org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessageType.CROP_HARVEST;
 
 /**
- *
  * @author jairo
  */
 public class HarvestCropsTask extends wpsLandTask {
 
     /**
-     *
      * @param parameters
      */
     @Override
@@ -47,17 +46,28 @@ public class HarvestCropsTask extends wpsLandTask {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         updateConfig(believes, 3360);
 
-        int factor = 1;
-        if (!believes.getPeasantFamilyHelper().isBlank()) {
-            factor = 2;
-        }
+        int factor;
+        int harvestReady = 0;
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
-                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.HarvestCropsTask.getTime() * factor);
-                believes.useTime(TimeConsumedBy.HarvestCropsTask.getTime());
-                if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
-                    this.resetLand(believes, currentLandInfo.getLandName());
+                harvestReady++;
+            }
+        }
+
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            ReportBESA.info("Iniciando o continuando harvest para " + currentLandInfo.getLandName());
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
+                if (believes.getPeasantFamilyHelper().isBlank()) {
+                    factor = (TimeConsumedBy.HarvestCropsTask.getTime() / harvestReady);
+                } else {
+                    factor = (TimeConsumedBy.HarvestCropsTask.getTime() / harvestReady) * 2;
+                }
+                increaseWorkDone(believes, currentLandInfo.getLandName(), factor);
+                ReportBESA.info("Avanzando en harvest " + currentLandInfo.getLandName());
+                if (isWorkDone(believes, currentLandInfo.getLandName())) {
+                    resetLand(believes, currentLandInfo.getLandName());
+                    ReportBESA.info("Recogiendo cultivo en " + currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
                     try {
                         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
@@ -73,16 +83,17 @@ public class HarvestCropsTask extends wpsLandTask {
                                                 believes.getPeasantProfile().getPeasantFamilyAlias())
                                 )
                         );
-                    } catch (ExceptionBESA ex) {
-                        wpsReport.error(ex.getMessage(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                        currentLandInfo.setCurrentSeason(SeasonType.SELL_CROP);
+                        currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
+                    } catch (Exception ex) {
+                        ReportBESA.info(ex.getMessage() + " " + believes.getAlias());
                     }
-                    currentLandInfo.setCurrentSeason(SeasonType.SELL_CROP);
-                    believes.addTaskToLog(believes.getInternalCurrentDate());
-                    currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
+                } else {
+                    ReportBESA.info("Trabajo de harvest no terminado en " + currentLandInfo.getLandName());
                 }
-                return;
             }
         }
+        believes.useTime(TimeConsumedBy.HarvestCropsTask.getTime());
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 

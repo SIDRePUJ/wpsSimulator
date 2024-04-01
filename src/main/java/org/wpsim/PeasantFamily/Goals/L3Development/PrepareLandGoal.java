@@ -76,33 +76,18 @@ public class PrepareLandGoal extends wpsGoalBDI {
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
-        // && believes.isEnergized()
+
         if (believes.isPlantingSeason()) {
             for (LandInfo currentLandInfo : believes.getAssignedLands()) {
                 if (currentLandInfo.getKind().equals("land")) {
-                    if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
+                    if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE) &&
+                            believes.haveTimeAvailable(TimeConsumedBy.PrepareLandTask)) {
                         return 1;
                     }
                 }
             }
         }
         return 0;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.PrepareLandTask)) {
-            return 1;
-        } else {
-            return 0;
-        }
     }
 
     /**

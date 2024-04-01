@@ -5,6 +5,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import BESA.Log.ReportBESA;
 import BESA.Util.PeriodicDataBESA;
 import org.json.JSONObject;
 import org.wpsim.PeasantFamily.Guards.FromAgroEcosystem.FromAgroEcosystemGuard;
@@ -49,8 +50,7 @@ public class AgroEcosystemGuard extends GuardBESA {
         }
 
         try {
-            if (agroEcosystemMessage.getWorldMessageType() == AgroEcosystemMessageType.CROP_OBSERVE ||
-                    agroEcosystemMessage.getWorldMessageType() == AgroEcosystemMessageType.CROP_INFORMATION) {
+            if (agroEcosystemMessage.getWorldMessageType() == AgroEcosystemMessageType.CROP_INFORMATION) {
                 isExecutingCropObserveOrInformation = true;
             }
 
@@ -70,24 +70,7 @@ public class AgroEcosystemGuard extends GuardBESA {
                     );
                     break;
                 case CROP_INFORMATION:
-                    agroEcosystemState.lazyUpdateCropsForDate(agroEcosystemMessage.getDate());
-                    //System.out.println("Received CROP_INFORMATION for " + worldMessage.getCropId());
-                    cropCellState = agroEcosystemState.getCropLayer().getCropStateById(agroEcosystemMessage.getCropId());
-                    cropCellInfo = agroEcosystemState.getCropLayer().getCropCellById(agroEcosystemMessage.getCropId());
-                    diseaseCellState = (DiseaseCellState) cropCellInfo.getDiseaseCell().getCellState();
-                    cropDataJson = new JSONObject(cropCellState);
-                    cropDataJson.put("disease", diseaseCellState.isInfected());
-                    cropDataJson.put("cropHarvestReady", cropCellInfo.isHarvestReady());
-                    peasantMessage = new FromAgroEcosystemMessage(
-                            FromAgroEcosystemMessageType.CROP_INFORMATION_NOTIFICATION,
-                            agroEcosystemMessage.getPeasantAgentAlias(),
-                            cropDataJson.toString(),
-                            this.getAgent().getAlias()
-                    );
-                    peasantMessage.setDate(agroEcosystemMessage.getDate());
-                    this.replyToPeasantAgent(agroEcosystemMessage.getPeasantAgentAlias(), peasantMessage);
-                    break;
-                case CROP_OBSERVE:
+                    long timeCost = System.currentTimeMillis();
                     agroEcosystemState.getCropLayer().getAllCrops().forEach(cropCell -> {
                         if (((CropCellState) cropCell.getCellState()).isWaterStress()) {
                             this.notifyPeasantCropProblem(
@@ -109,6 +92,22 @@ public class AgroEcosystemGuard extends GuardBESA {
                                     agroEcosystemMessage.getDate());
                         }
                     });
+                    agroEcosystemState.lazyUpdateCropsForDate(agroEcosystemMessage.getDate());
+                    cropCellState = agroEcosystemState.getCropLayer().getCropStateById(agroEcosystemMessage.getCropId());
+                    cropCellInfo = agroEcosystemState.getCropLayer().getCropCellById(agroEcosystemMessage.getCropId());
+                    diseaseCellState = (DiseaseCellState) cropCellInfo.getDiseaseCell().getCellState();
+                    cropDataJson = new JSONObject(cropCellState);
+                    cropDataJson.put("disease", diseaseCellState.isInfected());
+                    cropDataJson.put("cropHarvestReady", cropCellInfo.isHarvestReady());
+                    peasantMessage = new FromAgroEcosystemMessage(
+                            FromAgroEcosystemMessageType.CROP_INFORMATION_NOTIFICATION,
+                            agroEcosystemMessage.getPeasantAgentAlias(),
+                            cropDataJson.toString(),
+                            this.getAgent().getAlias()
+                    );
+                    peasantMessage.setDate(agroEcosystemMessage.getDate());
+                    this.replyToPeasantAgent(agroEcosystemMessage.getPeasantAgentAlias(), peasantMessage);
+                    ReportBESA.info(agroEcosystemMessage.getCropId() + " takes " +  (System.currentTimeMillis()-timeCost));
                     break;
                 case CROP_IRRIGATION:
                     String cropIdToIrrigate = agroEcosystemMessage.getCropId();
@@ -167,8 +166,7 @@ public class AgroEcosystemGuard extends GuardBESA {
 
         } finally {
             // Restablecer el estado para permitir futuras ejecuciones
-            if (agroEcosystemMessage.getWorldMessageType() == AgroEcosystemMessageType.CROP_OBSERVE ||
-                    agroEcosystemMessage.getWorldMessageType() == AgroEcosystemMessageType.CROP_INFORMATION) {
+            if (agroEcosystemMessage.getWorldMessageType() == AgroEcosystemMessageType.CROP_INFORMATION) {
                 isExecutingCropObserveOrInformation = false;
             }
         }

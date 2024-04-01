@@ -128,11 +128,18 @@ public class LandInfo implements Cloneable{
     }
 
     public void increaseElapsedWorkTime(int workDone) {
-        this.elapsedWorkTime += (int) workDone;
+        this.elapsedWorkTime += workDone;
     }
 
     public boolean elapsedWorkTimeIsDone() {
-        return elapsedWorkTime >= totalRequiredTime;
+
+        if (elapsedWorkTime >= totalRequiredTime){
+            //System.out.println("OK elapsedWorkTime >= totalRequiredTime "+ elapsedWorkTime + " " + totalRequiredTime );
+            return true;
+        }else{
+            //System.out.println("NOOK elapsedWorkTime >= totalRequiredTime "+ elapsedWorkTime + " " + totalRequiredTime );
+            return false;
+        }
     }
 
     public void resetElapsedWorkTime() {

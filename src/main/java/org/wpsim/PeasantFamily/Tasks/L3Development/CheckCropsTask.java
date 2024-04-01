@@ -18,9 +18,11 @@ import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
+import BESA.Log.ReportBESA;
 import org.wpsim.SimulationControl.Data.Coin;
 import org.wpsim.CivicAuthority.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
+import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.WellProdSim.Base.wpsTask;
 import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.AgroEcosystem.Guards.AgroEcosystemGuard;
@@ -50,7 +52,8 @@ public class CheckCropsTask extends wpsTask {
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CHECKCROPS", "FOOD"));
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
-                if (Coin.flipCoin()) {
+                // @TODO: REVISAR LA LOGICA REAL
+                if (!believes.isTaskExecutedOnDateWithLand(believes.getInternalCurrentDate(), "CheckCropsTask", currentLandInfo.getLandName())) {
                     try {
                         AdmBESA.getInstance().getHandlerByAlias(
                                 currentLandInfo.getLandName()
@@ -65,33 +68,13 @@ public class CheckCropsTask extends wpsTask {
                                         )
                                 )
                         );
-                    } catch (ExceptionBESA ex) {
+                        ReportBESA.info("Checkcrop " + currentLandInfo.getLandName());
+                    } catch (Exception ex) {
                         wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                     }
-                    wpsReport.warn("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
-                    //System.out.println(believes.getAlias() + " enviado CROP_INFORMATION a " + currentLandInfo.getLandName());
-                } else {
-                    try {
-                        AdmBESA.getInstance().getHandlerByAlias(
-                                currentLandInfo.getLandName()
-                        ).sendEvent(
-                                new EventBESA(
-                                        AgroEcosystemGuard.class.getName(),
-                                        new AgroEcosystemMessage(
-                                                CROP_OBSERVE,
-                                                currentLandInfo.getCropName(),
-                                                believes.getInternalCurrentDate(),
-                                                currentLandInfo.getLandName()
-                                        )
-                                )
-                        );
-                    } catch (ExceptionBESA ex) {
-                        wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
-                    }
-                    //System.out.println(believes.getAlias() + " enviado CROP_OBSERVE a " + currentLandInfo.getLandName());
-                    wpsReport.warn("enviado CROP_OBSERVE a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                    believes.addTaskToLog(believes.getInternalCurrentDate(), currentLandInfo.getLandName());
                 }
-                believes.addTaskToLog(believes.getInternalCurrentDate());
+                wpsReport.warn("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
             }
         }
         believes.addTaskToLog(believes.getInternalCurrentDate());

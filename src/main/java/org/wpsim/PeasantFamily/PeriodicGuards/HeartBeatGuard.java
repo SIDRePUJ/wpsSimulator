@@ -51,7 +51,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         StateBDI state = (StateBDI) PeasantFamily.getState();
 
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -45){
-            System.out.println(
+            ReportBESA.info(
                     "=========" + believes.getAlias() + "=========\n" +
                     "======================================================\n" +
                     "Main Goal " + state.getMachineBDIParams().getMainGoal() + "\n" +
@@ -70,6 +70,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (checkFinish(believes)) return;
         // Send BDI Pulse to BDI Information Flow
         sendBDIPulse(this.agent.getAlias());
+        wpsReport.info("Tiempo restante " + believes.getTimeLeftOnDay() + " Ya ejecutadas: " + believes.getTasksBySpecificDate(believes.getInternalCurrentDate()), believes.getAlias());
     }
 
     private void sleepWave(StateBDI state, PeasantFamilyBelieves believes) {
@@ -85,7 +86,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         try {
             Thread.sleep(waitTime / 4);
         } catch (InterruptedException e) {
-            System.out.println("error sleepWave");
+            ReportBESA.info("error sleepWave");
         }
     }
 

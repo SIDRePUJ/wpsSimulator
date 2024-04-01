@@ -72,41 +72,13 @@ public class CheckCropsGoal extends wpsGoalBDI {
         if (this.isAlreadyExecutedToday(believes)) {
             return 0;
         }
-        //System.out.println("Energized " + believes.getEmotionCurrentValue("Energized"));
-
-        //if (believes.isEnergized()) {
             for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-                if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING)) {
+                if (currentLandInfo.getCurrentSeason().equals(SeasonType.GROWING) &&
+                        believes.haveTimeAvailable(TimeConsumedBy.CheckCropsTask)) {
                     return 1;
                 }
             }
-        //}
         return 0;
-    }
-
-    /**
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.CheckCropsTask)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
     }
 
     /**

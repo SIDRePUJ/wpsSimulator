@@ -275,8 +275,14 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         String[] parts = fullClassName.split("\\.");
         String taskName = parts[parts.length - 1];
         taskLog.computeIfAbsent(date, k -> ConcurrentHashMap.newKeySet()).add(taskName);
-        //TaskLog taskLog = new TaskLog(date, taskName);
-        //this.taskLog.put(time, taskLog);
+    }
+    public void addTaskToLog(String date, String landName) {
+        StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
+        String fullClassName = stackTraceElements[2].getClassName();
+        String[] parts = fullClassName.split("\\.");
+        String taskName = parts[parts.length - 1];
+        taskLog.computeIfAbsent(date, k -> ConcurrentHashMap.newKeySet()).add(taskName);
+        taskLog.computeIfAbsent(date, k -> ConcurrentHashMap.newKeySet()).add(taskName+landName);
     }
 
     /**
@@ -290,6 +296,11 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         Set<String> tasks = taskLog.getOrDefault(date, new HashSet<>());
         //System.out.println(tasks + " " + taskName + " on " + date + " r " + tasks.contains(taskName));
         return tasks.contains(taskName);
+    }
+    public boolean isTaskExecutedOnDateWithLand(String date, String taskName, String landName) {
+        Set<String> tasks = taskLog.getOrDefault(date, new HashSet<>());
+        ReportBESA.info(tasks + " " + (taskName+landName) + " on " + date + " r " + tasks.contains(taskName+landName));
+        return tasks.contains(taskName+landName);
     }
 
     public boolean isHaveLoan() {
@@ -369,7 +380,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         if (isHaveEmotions()) {
             factor = evaluator.emotionalFactor(getEmotionsListCopy(), Semantics.Emotions.Happiness);
             time = (int) Math.ceil(time - ((factor - 1) * time));
-            //System.out.println(this.getAlias() + " tiene " + this.timeLeftOnDay + " descuenta con emociones " + time);
+            ReportBESA.info(this.getAlias() + " tiene " + this.timeLeftOnDay + " descuenta con emociones " + time);
             decreaseTime(time);
         } else {
             //System.out.println(this.getAlias() + " tiene " + this.timeLeftOnDay + " descuenta " + time);
@@ -386,6 +397,14 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.newDay = true;
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
 
+        notifyInternalCurrentDay();
+        // Report the agent's beliefs to the wpsViewer
+        wpsReport.ws(this.toJson(), this.getAlias());
+        // Report the agent's beliefs to the wpsViewer
+        wpsReport.mental(this.toCSV(), this.getAlias());
+    }
+
+    private void notifyInternalCurrentDay() {
         // Update the internal current date
         try {
             AdmBESA.getInstance().getHandlerByAlias(
@@ -403,10 +422,6 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         } catch (ExceptionBESA ex) {
             ReportBESA.error(ex);
         }
-        // Report the agent's beliefs to the wpsViewer
-        wpsReport.ws(this.toJson(), this.getAlias());
-        // Report the agent's beliefs to the wpsViewer
-        wpsReport.mental(this.toCSV(), this.getAlias());
     }
 
     /**
@@ -415,13 +430,14 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
      * @param time
      */
     public synchronized void decreaseTime(double time) {
-        //System.out.println("decreaseTime: " + time + " " + getPeasantProfile().getPeasantFamilyAlias());
+
         timeLeftOnDay = (int) (timeLeftOnDay - time);
         if (timeLeftOnDay <= 30) {
             this.makeNewDay();
         }else if (timeLeftOnDay < 120){
             timeLeftOnDay = 120;
         }
+        ReportBESA.info("decreaseTime: " + time + ", Queda " + timeLeftOnDay + " para " + getPeasantProfile().getPeasantFamilyAlias());
     }
 
     /**
@@ -642,6 +658,22 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         });
 
         return finalData;
+    }
+
+    public Map<String, Set<String>> getTasksBySpecificDate(String specificDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate dateToFind = LocalDate.parse(specificDate, formatter);
+
+        Map<String, Set<String>> tasksForSpecificDate = new LinkedHashMap<>();
+
+        taskLog.forEach((dateString, tasks) -> {
+            LocalDate date = LocalDate.parse(dateString, formatter);
+            if(date.equals(dateToFind)) {
+                tasksForSpecificDate.put(date.format(formatter), tasks);
+            }
+        });
+
+        return tasksForSpecificDate;
     }
 
     public double getToPay() {

@@ -19,6 +19,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
+import BESA.Log.ReportBESA;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.CivicAuthority.Data.LandInfo;
 import org.wpsim.PeasantFamily.Data.*;
@@ -64,9 +65,12 @@ public class PlantCropTask extends wpsLandTask {
         updateConfig(believes, 1920);
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "PLANTING", "FOOD"));
 
-        int factor = 1;
-        if (!believes.getPeasantFamilyHelper().isBlank()) {
-            factor = 2;
+        int factor;
+        int harvestReady = 0;
+        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
+                harvestReady++;
+            }
         }
 
         setPerturbation(wpsStart.config.getPerturbation());
@@ -82,10 +86,17 @@ public class PlantCropTask extends wpsLandTask {
                     currentLandInfo.setCropName(currentCropName);
                 }
                 wpsReport.info("Plantando for " + currentLandInfo.getLandName(), peasantAlias);
-                this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PlantCropTask.getTime() * factor);
-                //System.out.println("yearChanged: " + yearChanged);
+                if (believes.getPeasantFamilyHelper().isBlank()) {
+                    factor = (TimeConsumedBy.PlantCropTask.getTime()/harvestReady);
+                }else{
+                    factor = (TimeConsumedBy.PlantCropTask.getTime()/harvestReady) * 2;
+                }
+                this.increaseWorkDone(believes, currentLandInfo.getLandName(), factor);
+
+                ReportBESA.info("Avanzando en plantación de " + currentLandInfo.getLandName());
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
                     this.resetLand(believes, currentLandInfo.getLandName());
+                    ReportBESA.info("Termina plantación en " + currentLandInfo.getLandName());
                     //System.out.println("Finalización de plantado for " + currentLandInfo.getLandName() + " " + peasantAlias);
                     wpsReport.info("Finalización de plantado for " + currentLandInfo.getLandName(), peasantAlias);
                     //System.out.println("plantando " + currentLandInfo.getLandName());
@@ -105,12 +116,12 @@ public class PlantCropTask extends wpsLandTask {
                             String agID = AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
                             AdmBESA.getInstance().killAgent(agID, wpsStart.config.getDoubleProperty("control.passwd"));
                         } catch (Exception ex) {
-                            System.out.println("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage() + " " + peasantAlias);
+                            ReportBESA.info("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage() + " " + peasantAlias);
                         }
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(50);
                         } catch (Exception ex) {
-                            System.out.println("Error Temp "+ ex.getMessage() + " " + peasantAlias);
+                            ReportBESA.info("Error Temp "+ ex.getMessage() + " " + peasantAlias);
                         }
                     }
                     wpsReport.info("Cultivando en " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName, peasantAlias);
@@ -136,17 +147,17 @@ public class PlantCropTask extends wpsLandTask {
                             AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
                             confirmation = true;
                         } catch (ExceptionBESA e) {
-                            System.out.println(e + "--- " + peasantAlias);
+                            ReportBESA.info(e + "--- " + peasantAlias);
                         } catch (Exception e) {
-                            System.out.println(e + " " + peasantAlias);
+                            ReportBESA.info(e + " " + peasantAlias);
                         }
 
                         if (!confirmation) {
                             try {
-                                Thread.sleep(500);
+                                Thread.sleep(50);
                             } catch (InterruptedException e) {
                                 Thread.currentThread().interrupt();
-                                System.out.println(e + " " + peasantAlias);
+                                ReportBESA.info(e + " " + peasantAlias);
                                 break;
                             }
                         }
@@ -169,14 +180,12 @@ public class PlantCropTask extends wpsLandTask {
                         wpsReport.error(ex, peasantAlias);
                     }
                     profile.useSeeds(1);
-                    believes.useTime(TimeConsumedBy.PlantCropTask.getTime());
                     currentLandInfo.setCurrentSeason(SeasonType.GROWING);
+                    ReportBESA.info("Terminando plantación en " + currentLandInfo.getLandName());
                 }// Exit at first iteration with PLANTING
-                believes.addTaskToLog(believes.getInternalCurrentDate());
-                return;
             }
-            believes.addTaskToLog(believes.getInternalCurrentDate());
         }
+        believes.useTime(TimeConsumedBy.PlantCropTask.getTime());
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 

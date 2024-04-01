@@ -39,7 +39,7 @@ public class BankOfficeGuard extends wpsGuardBESA {
     public BankOfficeGuard() {
         super();
         wpsCSV.log("Bank", "Agent,CurrentDate,Action,Response");
-        wpsCSV.log("Loans", "Agent,CurrentDate,LoanGranted,amount,messageType,paidTerm");
+        wpsCSV.log("Loans", "Agent,CurrentDate,amount,messageType,paidTerm");
 
     }
 
@@ -111,7 +111,6 @@ public class BankOfficeGuard extends wpsGuardBESA {
             wpsCSV.log("Loans",
                     bankOfficeMessage.getPeasantAlias() + "," +
                             bankOfficeMessage.getCurrentDate() + "," +
-                            state.getLoans().get(bankOfficeMessage.getPeasantAlias()).getLoanGranted() + "," +
                             amount + "," +
                             messageType + "," +
                             state.getLoans().get(bankOfficeMessage.getPeasantAlias()).getPaidTerm()

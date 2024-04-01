@@ -51,9 +51,14 @@ public class wpsGoalBDI extends GoalBDI {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
         if (wpsStart.config.getBooleanProperty("control.showPyramid")) {
-            System.out.println(stateBDI.getMachineBDIParams().getPyramidGoals());
             wpsCSV.log("Pyramid", "Día de simulación: " + believes.getCurrentDay());
             wpsCSV.log("Pyramid", stateBDI.getMachineBDIParams().getPyramidGoals().toString());
+            wpsReport.info("\nDía de simulación: " + believes.getCurrentDay() + "\n " +
+                    "getMainGoal " + stateBDI.getMachineBDIParams().getMainGoal() + "\n " +
+                    "getIntention " + stateBDI.getMachineBDIParams().getIntention() + "\n " +
+                    "getPotencialGoals " + stateBDI.getMachineBDIParams().getPotencialGoals().toString() + "\n " +
+                    stateBDI.getMachineBDIParams().getPyramidGoals().toString(), believes.getAlias()
+            );
         }
         if (wpsStart.config.getBooleanProperty("pfagent.emotions") && believes.isHaveEmotions()) {
             return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
@@ -84,12 +89,7 @@ public class wpsGoalBDI extends GoalBDI {
 
     @Override
     public boolean predictResultUnlegality(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
-        if (believes.getAlias().equals("PeasantFamily_1")) {
-            wpsReport.info(stateBDI.getMachineBDIParams().getMainGoal(), believes.getAlias());
-            wpsReport.info(believes.isWaiting() + " " + believes.getInternalCurrentDate() + "\n" + stateBDI.getMachineBDIParams().getPyramidGoals(), believes.getAlias());
-        }
-        return believes.getPeasantProfile().getHealth() > 0;
+        return true;
     }
 
     @Override
@@ -105,7 +105,6 @@ public class wpsGoalBDI extends GoalBDI {
      * @return true if the goal was already executed today
      */
     public boolean isAlreadyExecutedToday(PeasantFamilyBelieves believes) {
-        //System.out.println("Checking Finish for " + this.getClass().getSimpleName() + " on " + believes.getInternalCurrentDate() + " con " + believes.isTaskExecutedOnDate(believes.getInternalCurrentDate(), this.getClass().getSimpleName()));
         return believes.isTaskExecutedOnDate(
                 believes.getInternalCurrentDate(),
                 this.getClass().getSimpleName().replace(

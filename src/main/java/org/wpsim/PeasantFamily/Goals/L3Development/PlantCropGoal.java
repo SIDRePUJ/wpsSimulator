@@ -31,13 +31,11 @@ import rational.mapping.Plan;
 import java.util.List;
 
 /**
- *
  * @author jairo
  */
 public class PlantCropGoal extends wpsGoalBDI {
 
     /**
-     *
      * @return PlantCropGoal
      */
     public static PlantCropGoal buildGoal() {
@@ -55,7 +53,6 @@ public class PlantCropGoal extends wpsGoalBDI {
     }
 
     /**
-     *
      * @param id
      * @param role
      * @param description
@@ -66,18 +63,6 @@ public class PlantCropGoal extends wpsGoalBDI {
     }
 
     /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
-    }
-
-    /**
-     *
      * @param parameters
      * @return
      * @throws KernellAgentEventExceptionBESA
@@ -92,38 +77,20 @@ public class PlantCropGoal extends wpsGoalBDI {
 
         List<LandInfo> landInfos = believes.getAssignedLands();
         for (LandInfo currentLandInfo : landInfos) {
-            if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
-                // Revisar si tiene semillas para sembrar
+            if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING) &&
+                    believes.haveTimeAvailable(TimeConsumedBy.PlantCropTask)) {
                 if (believes.getPeasantProfile().getSeeds() >= believes.getPeasantProfile().getSeedsNeeded()
                         && believes.getPeasantProfile().getTools() >= believes.getPeasantProfile().getToolsNeeded()) {
                     return 1;
                 } else {
                     return 0;
                 }
-                //System.out.println(currentLandInfo.getLandName() + " encontrado por plantar");
             }
         }
         return 0;
     }
 
     /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.PlantCropTask)) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     *
      * @param stateBDI
      * @return
      * @throws KernellAgentEventExceptionBESA

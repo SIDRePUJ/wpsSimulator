@@ -101,6 +101,7 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                     );
                     believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
                     //System.out.println("🍙🍙🍙: CROP_HARVEST OK");
+                    wpsReport.mental(believes.toCSV(), believes.getAlias());
                     break;
                 default:
                     // Código a ejecutar si messageType no coincide con ninguno de los casos anteriores
@@ -109,9 +110,6 @@ public class FromAgroEcosystemGuard extends GuardBESA {
         } catch (Exception e) {
             wpsReport.warn("error?" + e, this.getAgent().getAlias());
         }
-
         wpsReport.info("Mensaje procesado: " + (System.currentTimeMillis() - initTime) + " " + landName, this.getAgent().getAlias());
-
     }
-
 }

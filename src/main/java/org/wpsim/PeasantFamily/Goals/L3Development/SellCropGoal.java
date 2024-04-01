@@ -59,25 +59,6 @@ public class SellCropGoal extends wpsGoalBDI {
      */
     public SellCropGoal(long id, RationalRole role, String description, GoalBDITypes type) {
         super(id, role, description, type);
-        //wpsReport.info("");
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
-        /*PeasantFamilyBDIAgentBelieves believes = (PeasantFamilyBDIAgentBelieves) parameters;
-        if (believes.getPeasantProfile().getTools() > 0) {
-            //wpsReport.debug("Viable ------");
-            return 1;
-        } else {
-            return 0;
-        }*/
     }
 
     /**
@@ -94,24 +75,8 @@ public class SellCropGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.getPeasantProfile().getHarvestedWeight() > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
-        if (believes.haveTimeAvailable(TimeConsumedBy.SellCropTask)) {
-            //wpsReport.debug("Plausible ------");
+        if (believes.getPeasantProfile().getHarvestedWeight() > 0 &&
+                believes.haveTimeAvailable(TimeConsumedBy.SellCropTask)) {
             return 1;
         } else {
             return 0;
