@@ -20,6 +20,7 @@ import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
 import org.wpsim.PeasantFamily.Data.Utils.FarmingResource;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
+import org.wpsim.WellProdSim.wpsStart;
 
 import java.io.*;
 import java.util.*;
@@ -301,8 +302,8 @@ public final class wpsConfig {
         PeasantFamilyProfile pfProfile = this.getDefaultPeasantFamilyProfile();
 
         double rnd = 1 + generateRandomNumber(
-                pfProfile.getVariance() * -1,
-                pfProfile.getVariance()
+                getDoubleProperty("pfagent.variance") * -1,
+                getDoubleProperty("pfagent.variance")
         );
 
         pfProfile.setHealth((int) (pfProfile.getHealth() * rnd));
@@ -315,6 +316,7 @@ public final class wpsConfig {
         pfProfile.setPeasantFamilyAffinity(pfProfile.getPeasantFamilyAffinity() * rnd);
         pfProfile.setPeasantFriendsAffinity(pfProfile.getPeasantFriendsAffinity() * rnd);
         pfProfile.setPeasantLeisureAffinity(pfProfile.getPeasantLeisureAffinity() * rnd);
+        pfProfile.setMinimumVital(wpsStart.config.getIntProperty("pfagent.minimalVital") * rnd);
 
         Random rand = new Random();
         if (rand.nextInt(101) <= getIntProperty("society.criminality")) {

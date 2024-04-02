@@ -18,6 +18,7 @@ import BESA.Emotional.EmotionalEvent;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
+import BESA.Log.ReportBESA;
 import org.wpsim.CivicAuthority.Data.LandInfo;
 import org.wpsim.WellProdSim.Base.wpsTask;
 import org.wpsim.WellProdSim.wpsStart;
@@ -63,11 +64,16 @@ public class SellCropTask extends wpsTask {
                                     )
                             )
                     );
+                    // Elimina el Agente Tierra usado.
+                    AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
+                    String agID = AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
+                    AdmBESA.getInstance().killAgent(agID, wpsStart.config.getDoubleProperty("control.passwd"));
+
                     currentLandInfo.setCurrentSeason(SeasonType.NONE);
                     believes.getPeasantProfile().setHarvestedWeight(0);
                     believes.setUpdatePriceList(true);
-                } catch (ExceptionBESA ex) {
-                    wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+                } catch (Exception ex) {
+                    ReportBESA.error(ex);
                 }
             }
         }

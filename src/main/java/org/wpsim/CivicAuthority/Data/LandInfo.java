@@ -5,11 +5,12 @@ import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 
 import java.util.Objects;
 
-public class LandInfo implements Cloneable{
+public class LandInfo implements Cloneable {
     private String farmName;
     private String kind;
     private String landName;
     private boolean isUsed;
+    private int version;
     private String cropName;
     private SeasonType currentSeason;
     private CropCareType currentCropCareType;
@@ -17,9 +18,11 @@ public class LandInfo implements Cloneable{
     private int elapsedWorkTime;    // Elapsed work time (in hours or days)
     private boolean isProcessing;
     private String yearPlanted;
+
     public LandInfo(String landName, String kind, String farmName, String yearPlanted) {
         setupLandInfo(landName, kind, farmName, yearPlanted);
     }
+
     public LandInfo(String landName, String kind) {
         setupLandInfo(landName, kind, null, null);
     }
@@ -42,6 +45,7 @@ public class LandInfo implements Cloneable{
         this.setProcessing(false);
         this.setYearPlanted(yearPlanted);
         this.setCropName("");
+        this.setVersion(1);
     }
 
     public boolean isProcessing() {
@@ -76,7 +80,16 @@ public class LandInfo implements Cloneable{
                 ", kind='" + kind + '\'' +
                 ", landName='" + landName + '\'' +
                 ", isUsed=" + isUsed +
+                ", version=" + version +
                 '}';
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public String getFarmName() {
@@ -133,10 +146,10 @@ public class LandInfo implements Cloneable{
 
     public boolean elapsedWorkTimeIsDone() {
 
-        if (elapsedWorkTime >= totalRequiredTime){
+        if (elapsedWorkTime >= totalRequiredTime) {
             //System.out.println("OK elapsedWorkTime >= totalRequiredTime "+ elapsedWorkTime + " " + totalRequiredTime );
             return true;
-        }else{
+        } else {
             //System.out.println("NOOK elapsedWorkTime >= totalRequiredTime "+ elapsedWorkTime + " " + totalRequiredTime );
             return false;
         }
@@ -165,5 +178,13 @@ public class LandInfo implements Cloneable{
 
     public void setYearPlanted(String yearPlanted) {
         this.yearPlanted = yearPlanted;
+    }
+
+    public void increaseVersion() {
+        version++;
+    }
+
+    public void updateLandName() {
+        this.landName = landName + "_" + version;
     }
 }

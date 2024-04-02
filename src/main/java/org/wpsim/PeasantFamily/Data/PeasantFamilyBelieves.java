@@ -437,7 +437,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         }else if (timeLeftOnDay < 120){
             timeLeftOnDay = 120;
         }
-        ReportBESA.info("decreaseTime: " + time + ", Queda " + timeLeftOnDay + " para " + getPeasantProfile().getPeasantFamilyAlias());
+        //ReportBESA.info("decreaseTime: " + time + ", Queda " + timeLeftOnDay + " para " + getPeasantProfile().getPeasantFamilyAlias());
     }
 
     /**
@@ -599,8 +599,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         dataObject.put("internalCurrentDate", internalCurrentDate);
         dataObject.put("toPay", toPay);
         dataObject.put("peasantKind", peasantProfile.getPeasantKind());
-        dataObject.put("rainfallConditions", peasantProfile.getRainfallConditions());
-        dataObject.put("peasantFamilyMinimalVital", peasantProfile.getPeasantFamilyMinimalVital());
+        dataObject.put("peasantFamilyMinimalVital", wpsStart.config.getIntProperty("pfagent.minimalVital"));
         dataObject.put("peasantFamilyLandAlias", peasantProfile.getPeasantFamilyLandAlias());
         dataObject.put("currentActivity", currentPeasantActivityType);
         dataObject.put("farm", peasantProfile.getFarmName());
@@ -771,8 +770,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
                 .append(getOrDefault(internalCurrentDate)).append(',')
                 .append(getOrDefault(toPay)).append(',')
                 .append(getOrDefault(peasantProfile.getPeasantKind())).append(',')
-                .append(getOrDefault(peasantProfile.getRainfallConditions())).append(',')
-                .append(getOrDefault(peasantProfile.getPeasantFamilyMinimalVital())).append(',')
+                .append(getOrDefault(wpsStart.config.getIntProperty("pfagent.minimalVital"))).append(',')
                 .append(getOrDefault(peasantProfile.getPeasantFamilyLandAlias())).append(',')
                 .append(getOrDefault(currentPeasantActivityType)).append(',')
                 .append(getOrDefault(peasantProfile.getFarmName())).append(',')

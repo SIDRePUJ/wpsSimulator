@@ -35,14 +35,6 @@ public class wpsLandTask extends wpsTask {
         }
     }
 
-    protected void resetLand(PeasantFamilyBelieves believes, String landName) {
-        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (currentLandInfo.getLandName().equals(landName)) {
-                currentLandInfo.resetElapsedWorkTime();
-            }
-        }
-    }
-
     protected boolean isWorkDone(PeasantFamilyBelieves believes, String landName) {
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getLandName().equals(landName)) {

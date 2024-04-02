@@ -14,6 +14,8 @@
  */
 package org.wpsim.PeasantFamily.Data;
 
+import org.wpsim.WellProdSim.wpsStart;
+
 import java.io.Serializable;
 
 /**
@@ -25,10 +27,8 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private String purpose;
     private String peasantKind;
     private String peasantFamilyAlias;
-    private double peasantFamilyMinimalVital;
     private int health;
     private int initialHealth;
-    private double variance;
     private double peasantLeisureAffinity;
     private double peasantFriendsAffinity;
     private double peasantFamilyAffinity;
@@ -96,35 +96,16 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private int harvestedWeight;
 
     private double totalHarvestedWeight;
-    private String startRiceSeason;
-    private String endRiceSeason;
-    private String currentCropName;
-    private String rainfallConditions;
     private int seedsNeeded;
     private int toolsNeeded;
     private boolean criminalityAffinity;
+    private double minimumVital;
 
 
     /**
      *
      */
     public PeasantFamilyProfile() {
-    }
-
-    public double getVariance() {
-        return variance;
-    }
-
-    public void setVariance(double variance) {
-        this.variance = variance;
-    }
-
-    public String getRainfallConditions() {
-        return rainfallConditions;
-    }
-
-    public void setRainfallConditions(String rainfallConditions) {
-        this.rainfallConditions = rainfallConditions;
     }
 
     public String getPeasantKind() {
@@ -188,23 +169,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public synchronized void setPesticidesAvailable(Integer pesticidesAvailable) {
         this.pesticidesAvailable += pesticidesAvailable;
     }
-
-    /**
-     *
-     * @return
-     */
-    public double getPeasantFamilyMinimalVital() {
-        return peasantFamilyMinimalVital;
-    }
-
-    /**
-     *
-     * @param peasantFamilyMinimalVital
-     */
-    public void setPeasantFamilyMinimalVital(double peasantFamilyMinimalVital) {
-        this.peasantFamilyMinimalVital = peasantFamilyMinimalVital;
-    }
-
     /**
      *
      * @return
@@ -225,14 +189,18 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      */
     public synchronized void discountDailyMoney() {
-        if (this.money - this.peasantFamilyMinimalVital > 0){
-            this.money = this.money - this.peasantFamilyMinimalVital;
+        if (this.money - getMinimumVital() > 0){
+            this.money = this.money - wpsStart.config.getIntProperty("pfagent.minimalVital");
         }else {
             this.money = 0;
         }
         if (this.money <= 0) {
             this.decreaseHealth();
         }
+    }
+
+    private double getMinimumVital() {
+        return minimumVital;
     }
 
     /**
@@ -1469,5 +1437,9 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
 
     public void setCriminalityAffinity(boolean ca) {
         this.criminalityAffinity = ca;
+    }
+
+    public void setMinimumVital(double minimumVital) {
+        this.minimumVital = minimumVital;
     }
 }

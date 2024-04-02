@@ -66,7 +66,6 @@ public class HarvestCropsTask extends wpsLandTask {
                 increaseWorkDone(believes, currentLandInfo.getLandName(), factor);
                 ReportBESA.info("Avanzando en harvest " + currentLandInfo.getLandName());
                 if (isWorkDone(believes, currentLandInfo.getLandName())) {
-                    resetLand(believes, currentLandInfo.getLandName());
                     ReportBESA.info("Recogiendo cultivo en " + currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
                     try {
@@ -85,6 +84,7 @@ public class HarvestCropsTask extends wpsLandTask {
                         );
                         currentLandInfo.setCurrentSeason(SeasonType.SELL_CROP);
                         currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
+                        currentLandInfo.resetElapsedWorkTime();
                     } catch (Exception ex) {
                         ReportBESA.info(ex.getMessage() + " " + believes.getAlias());
                     }

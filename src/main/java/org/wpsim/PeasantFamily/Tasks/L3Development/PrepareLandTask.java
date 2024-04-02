@@ -52,10 +52,9 @@ public class PrepareLandTask extends wpsLandTask {
                     this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime() * factor);
                     believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());
                     if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
-                        this.resetLand(believes, currentLandInfo.getLandName());
-                        //System.out.println("Finishing Preparing Planting season for " + currentLandInfo.getLandName() + " pidiendo semillas.");
                         believes.getPeasantProfile().increaseSeedsNeeded(1);
                         currentLandInfo.setCurrentSeason(SeasonType.PLANTING);
+                        currentLandInfo.resetElapsedWorkTime();
                     }
                     believes.addTaskToLog(believes.getInternalCurrentDate());
                     return;

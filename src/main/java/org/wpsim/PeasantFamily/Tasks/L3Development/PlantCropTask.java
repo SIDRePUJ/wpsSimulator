@@ -48,6 +48,8 @@ import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationLayer;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureLayer;
 import rational.mapping.Believes;
 
+import java.util.concurrent.*;
+
 import static org.wpsim.AgroEcosystem.Messages.AgroEcosystemMessageType.CROP_INIT;
 
 /**
@@ -87,80 +89,40 @@ public class PlantCropTask extends wpsLandTask {
                 }
                 wpsReport.info("Plantando for " + currentLandInfo.getLandName(), peasantAlias);
                 if (believes.getPeasantFamilyHelper().isBlank()) {
-                    factor = (TimeConsumedBy.PlantCropTask.getTime()/harvestReady);
-                }else{
-                    factor = (TimeConsumedBy.PlantCropTask.getTime()/harvestReady) * 2;
+                    factor = (TimeConsumedBy.PlantCropTask.getTime() / harvestReady);
+                } else {
+                    factor = (TimeConsumedBy.PlantCropTask.getTime() / harvestReady) * 2;
                 }
                 this.increaseWorkDone(believes, currentLandInfo.getLandName(), factor);
 
-                ReportBESA.info("Avanzando en plantación de " + currentLandInfo.getLandName());
+                ReportBESA.info(peasantAlias + " avanzando en plantación de " + currentLandInfo.getLandName());
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
-                    this.resetLand(believes, currentLandInfo.getLandName());
-                    ReportBESA.info("Termina plantación en " + currentLandInfo.getLandName());
-                    //System.out.println("Finalización de plantado for " + currentLandInfo.getLandName() + " " + peasantAlias);
-                    wpsReport.info("Finalización de plantado for " + currentLandInfo.getLandName(), peasantAlias);
-                    //System.out.println("plantando " + currentLandInfo.getLandName());
+
+                    // Reset Land
+                    currentLandInfo.resetElapsedWorkTime();
+                    currentLandInfo.increaseVersion();
+                    currentLandInfo.updateLandName();
+
+                    // Continúa con la plantación
+                    ReportBESA.info(peasantAlias + " apto para terminar la plantación en " + currentLandInfo.getLandName());
                     if (!currentLandInfo.getCropName().equals(currentCropName)) {
                         currentLandInfo.setCropName(currentCropName);
                     }
-                    // Check if are Running to kill
-                    boolean isRunning = false;
+
+                    ReportBESA.info(peasantAlias + " cultivando en " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName);
+
+                    CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
+                        return createNewWorld(currentLandInfo, initialRainfallConditions, peasantAlias, cropSize, believes);
+                    }, Executors.newCachedThreadPool());
+
                     try {
-                        AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
-                        isRunning = true;
-                    } catch (ExceptionBESA ex) {
-                        wpsReport.info("Se debe crear el agente mundo " + currentLandInfo.getLandName(), peasantAlias);
-                    }
-                    if (isRunning) {
-                        try {
-                            String agID = AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
-                            AdmBESA.getInstance().killAgent(agID, wpsStart.config.getDoubleProperty("control.passwd"));
-                        } catch (Exception ex) {
-                            ReportBESA.info("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage() + " " + peasantAlias);
-                        }
-                        try {
-                            Thread.sleep(50);
-                        } catch (Exception ex) {
-                            ReportBESA.info("Error Temp "+ ex.getMessage() + " " + peasantAlias);
-                        }
-                    }
-                    wpsReport.info("Cultivando en " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName, peasantAlias);
-
-                    AgroEcosystem landAgent = buildWorld(
-                            getRainfallFile(initialRainfallConditions),
-                            peasantAlias,
-                            currentLandInfo.getLandName(),
-                            cropSize,
-                            currentLandInfo.getCropName()
-                    );
-                    assert landAgent != null;
-                    initialWorldStateInitialization(
-                            landAgent,
-                            peasantAlias,
-                            believes.getInternalCurrentDate()
-                    );
-                    landAgent.start();
-                    // CHECK WORLD
-                    boolean confirmation = false;
-                    while (!confirmation) {
-                        try {
-                            AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
-                            confirmation = true;
-                        } catch (ExceptionBESA e) {
-                            ReportBESA.info(e + "--- " + peasantAlias);
-                        } catch (Exception e) {
-                            ReportBESA.info(e + " " + peasantAlias);
-                        }
-
-                        if (!confirmation) {
-                            try {
-                                Thread.sleep(50);
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt();
-                                ReportBESA.info(e + " " + peasantAlias);
-                                break;
-                            }
-                        }
+                        boolean result = future.get(2, TimeUnit.SECONDS);
+                    } catch (TimeoutException e) {
+                        future.cancel(true);
+                        return;
+                    } catch (InterruptedException | ExecutionException e) {
+                        ReportBESA.info(peasantAlias + " no alcanzó a crear la tierrita nueva " + currentLandInfo.getLandName());
+                        return;
                     }
                     try {
                         AdmBESA.getInstance().getHandlerByAlias(
@@ -176,17 +138,45 @@ public class PlantCropTask extends wpsLandTask {
                                         )
                                 )
                         );
-                    } catch (ExceptionBESA ex) {
-                        wpsReport.error(ex, peasantAlias);
+                        profile.useSeeds(1);
+                        currentLandInfo.setCurrentSeason(SeasonType.GROWING);
+                        ReportBESA.info(peasantAlias + " terminando plantación en " + currentLandInfo.getLandName());
+                    } catch (Exception ex) {
+                        ReportBESA.error("Agente no Encontrado" + peasantAlias);
+                        break;
                     }
-                    profile.useSeeds(1);
-                    currentLandInfo.setCurrentSeason(SeasonType.GROWING);
-                    ReportBESA.info("Terminando plantación en " + currentLandInfo.getLandName());
-                }// Exit at first iteration with PLANTING
+                }
             }
         }
         believes.useTime(TimeConsumedBy.PlantCropTask.getTime());
         believes.addTaskToLog(believes.getInternalCurrentDate());
+    }
+
+    private static String checkLand(LandInfo currentLandInfo, String peasantAlias) {
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
+            return AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
+        } catch (Exception ex) {
+            ReportBESA.info(peasantAlias + " debe crear el agente mundo " + currentLandInfo.getLandName());
+        }
+        return "";
+    }
+
+    private static boolean createNewWorld(LandInfo currentLandInfo, String initialRainfallConditions, String peasantAlias, int cropSize, PeasantFamilyBelieves believes) {
+        AgroEcosystem landAgent = buildWorld(
+                getRainfallFile(initialRainfallConditions),
+                peasantAlias,
+                currentLandInfo.getLandName(),
+                cropSize,
+                currentLandInfo.getCropName()
+        );
+        initialWorldStateInitialization(
+                landAgent,
+                peasantAlias,
+                believes.getInternalCurrentDate()
+        );
+        landAgent.start();
+        return !checkLand(currentLandInfo, peasantAlias).isBlank();
     }
 
     private static void setPerturbation(String arg) {

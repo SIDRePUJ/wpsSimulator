@@ -66,7 +66,7 @@ public class ViewerLensGuard extends GuardBESA {
         String csvData = "HappinessSadness,HopefulUncertainty,SecureInsecure,money,health,currentSeason,"+
                 "robberyAccount,purpose,peasantFamilyAffinity,peasantLeisureAffinity," +
                 "peasantFriendsAffinity,currentPeasantLeisureType," +
-                "currentResourceNeededType,currentDay,internalCurrentDate,toPay,peasantKind,rainfallConditions," +
+                "currentResourceNeededType,currentDay,internalCurrentDate,toPay,peasantKind," +
                 "peasantFamilyMinimalVital,peasantFamilyLandAlias,currentActivity,farm,loanAmountToPay," +
                 "tools,seeds,waterAvailable,pesticidesAvailable,HarvestedWeight,totalHarvestedWeight,contractor,daysToWorkForOther," +
                 "Agent,Emotion,peasantFamilyHelper,haveEmotions";
