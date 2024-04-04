@@ -211,7 +211,7 @@ public class PeasantFamily extends AgentBDI {
         wpsReport.mental(believes.toCSV(), this.getAlias());
         wpsReport.ws(believes.toJson(), believes.getAlias());
         //Eliminar la tierra del agente
-        for (LandInfo currentLandInfo : believes.getAssignedLands()) {
+        /*for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (!currentLandInfo.getKind().equals("water")) {
                 try {
                     //System.out.println("Eliminando la tierra " + currentLandInfo.getLandName());
@@ -221,7 +221,7 @@ public class PeasantFamily extends AgentBDI {
                     wpsReport.error("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage(), this.getAlias());
                 }
             }
-        }
+        }*/
         //Eliminar el agente
         try {
             AdmBESA.getInstance().getHandlerByAlias(
@@ -237,10 +237,8 @@ public class PeasantFamily extends AgentBDI {
             );
             String agID = AdmBESA.getInstance().getHandlerByAlias(this.getAlias()).getAgId();
             AdmBESA.getInstance().killAgent(agID, wpsStart.config.getDoubleProperty("control.passwd"));
-            //wpsStart.stopSimulation();
-            wpsReport.ws(believes.toJson(), believes.getPeasantProfile().getPeasantFamilyAlias());
         } catch (Exception ex) {
-            System.out.println(believes.getPeasantProfile().getPeasantFamilyAlias() + " " + ex.getMessage());
+            wpsReport.error(ex.getMessage(), believes.getAlias());
         }
     }
 

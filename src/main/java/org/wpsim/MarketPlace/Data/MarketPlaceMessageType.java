@@ -57,7 +57,7 @@ public enum MarketPlaceMessageType {
      * 
      */
     SELL_CROP,
-    INCREASE_TOOS_PRICE,
+    INCREASE_TOOLS_PRICE,
     INCREASE_SEEDS_PRICE,
     INCREASE_CROP_PRICE,
     DECREASE_TOOLS_PRICE,

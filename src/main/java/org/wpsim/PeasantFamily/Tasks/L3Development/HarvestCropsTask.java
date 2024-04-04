@@ -56,7 +56,7 @@ public class HarvestCropsTask extends wpsLandTask {
         }
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            ReportBESA.info("Iniciando o continuando harvest para " + currentLandInfo.getLandName());
+            //ReportBESA.info("Iniciando o continuando harvest para " + currentLandInfo.getLandName());
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.HARVEST)) {
                 if (believes.getPeasantFamilyHelper().isBlank()) {
                     factor = (TimeConsumedBy.HarvestCropsTask.getTime() / harvestReady);
@@ -64,9 +64,9 @@ public class HarvestCropsTask extends wpsLandTask {
                     factor = (TimeConsumedBy.HarvestCropsTask.getTime() / harvestReady) * 2;
                 }
                 increaseWorkDone(believes, currentLandInfo.getLandName(), factor);
-                ReportBESA.info("Avanzando en harvest " + currentLandInfo.getLandName());
+                //ReportBESA.info("Avanzando en harvest " + currentLandInfo.getLandName());
                 if (isWorkDone(believes, currentLandInfo.getLandName())) {
-                    ReportBESA.info("Recogiendo cultivo en " + currentLandInfo.getLandName());
+                    //ReportBESA.info("Recogiendo cultivo en " + currentLandInfo.getLandName());
                     wpsReport.debug("enviando mensaje de corte", believes.getPeasantProfile().getPeasantFamilyAlias());
                     try {
                         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
@@ -89,7 +89,7 @@ public class HarvestCropsTask extends wpsLandTask {
                         ReportBESA.info(ex.getMessage() + " " + believes.getAlias());
                     }
                 } else {
-                    ReportBESA.info("Trabajo de harvest no terminado en " + currentLandInfo.getLandName());
+                    //ReportBESA.info("Trabajo de harvest no terminado en " + currentLandInfo.getLandName());
                 }
             }
         }

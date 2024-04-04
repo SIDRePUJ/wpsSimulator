@@ -30,7 +30,7 @@ public class wpsLandTask extends wpsTask {
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getLandName().equals(landName)) {
                 currentLandInfo.increaseElapsedWorkTime(newWorkDone);
-                ReportBESA.info(currentLandInfo.getLandName() + ", sumando " + newWorkDone + " al trabajo realizado, con un factor de " + factor + ", originalmente era " + workDone);
+                //ReportBESA.info(currentLandInfo.getLandName() + ", sumando " + newWorkDone + " al trabajo realizado, con un factor de " + factor + ", originalmente era " + workDone);
             }
         }
     }
@@ -38,7 +38,7 @@ public class wpsLandTask extends wpsTask {
     protected boolean isWorkDone(PeasantFamilyBelieves believes, String landName) {
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getLandName().equals(landName)) {
-                ReportBESA.info("currentLandInfo.getLandName() " + currentLandInfo.getLandName());
+                //ReportBESA.info("currentLandInfo.getLandName() " + currentLandInfo.getLandName());
                 return currentLandInfo.elapsedWorkTimeIsDone();
             }
         }

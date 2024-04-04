@@ -9,24 +9,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Simulador funcional. Ejecutando pruebas para ajustes.">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Ahora el terreno se destruye al vender el cultivo y da espacio a que los agentes se refresquen, parece funcionar mejor este enfoque.">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.100.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/LandInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/LandInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/AgroEcosystem/Guards/AgroEcosystemGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/AgroEcosystem/Guards/AgroEcosystemGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Data/MarketPlaceMessageType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Data/MarketPlaceMessageType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Guards/MarketPlaceInfoAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/MarketPlace/Guards/MarketPlaceInfoAgentGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromSimulationControl/FromSimulationControlGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromSimulationControl/FromSimulationControlGuard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/DeforestingLandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/DeforestingLandTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/CheckCropsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/CheckCropsTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/HarvestCropsTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/HarvestCropsTask.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PrepareLandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PrepareLandTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SellCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/SellCropTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/ViewerLens/Guards/ViewerLensGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/ViewerLens/Guards/ViewerLensGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsGoalBDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsGoalBDI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainALandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L4SkillsResources/ObtainALandTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PerturbationGenerator/Guards/PerturbationGeneratorGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PerturbationGenerator/Guards/PerturbationGeneratorGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PerturbationGenerator/PeriodicGuards/NaturalPhenomena.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PerturbationGenerator/PeriodicGuards/NaturalPhenomena.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsLandTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsLandTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Config/wpsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -200,8 +198,8 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Maven.Simulator" />
       <item itemvalue="Maven.Compile" />
+      <item itemvalue="Maven.Simulator" />
     </list>
   </component>
   <component name="SharedIndexes">
@@ -333,15 +331,9 @@
       <workItem from="1711820331950" duration="24120000" />
       <workItem from="1711994083397" duration="3732000" />
       <workItem from="1712021179272" duration="1060000" />
-      <workItem from="1712071676410" duration="10959000" />
-    </task>
-    <task id="LOCAL-00016" summary="Primera versión de campesinos ayudantes. hay problemas con la irrigación.">
-      <option name="closed" value="true" />
-      <created>1699329225421</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1699329225421</updated>
+      <workItem from="1712071676410" duration="18776000" />
+      <workItem from="1712193353073" duration="1835000" />
+      <workItem from="1712197264626" duration="3000" />
     </task>
     <task id="LOCAL-00017" summary="Irrigación sigue dando problemas.">
       <option name="closed" value="true" />
@@ -727,7 +719,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711942829425</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Ahora el terreno se destruye al vender el cultivo y da espacio a que los agentes se refresquen, parece funcionar mejor este enfoque.">
+      <option name="closed" value="true" />
+      <created>1712091583315</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1712091583316</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -778,7 +778,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="log externo usando logger." />
     <MESSAGE value="Control de tiempo ajustado, los agentes esperan a los agentes demorados." />
     <MESSAGE value="Simulación funcionando sin saltos y de forma acelerada. versión 0.3" />
     <MESSAGE value="Siembra cambia las condiciones climáticas según el año" />
@@ -803,7 +802,8 @@
     <MESSAGE value="Se cambió la escala del tiempo a minutos." />
     <MESSAGE value="Prestamos y pagos vuelven a funcionar." />
     <MESSAGE value="Simulador funcional. Ejecutando pruebas para ajustes." />
-    <option name="LAST_COMMIT_MESSAGE" value="Simulador funcional. Ejecutando pruebas para ajustes." />
+    <MESSAGE value="Ahora el terreno se destruye al vender el cultivo y da espacio a que los agentes se refresquen, parece funcionar mejor este enfoque." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ahora el terreno se destruye al vender el cultivo y da espacio a que los agentes se refresquen, parece funcionar mejor este enfoque." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

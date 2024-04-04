@@ -48,7 +48,7 @@ public class ObtainALandTask extends wpsTask {
                     new EventBESA(
                             CivicAuthorityLandGuard.class.getName(),
                             new CivicAuthorityLandData(
-                                    believes.getPeasantProfile().getPeasantFamilyAlias()
+                                    believes.getAlias()
                             )
                     )
             );

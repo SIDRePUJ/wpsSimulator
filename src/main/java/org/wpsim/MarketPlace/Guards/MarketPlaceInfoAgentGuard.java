@@ -41,7 +41,7 @@ public class MarketPlaceInfoAgentGuard extends GuardBESA {
             case INCREASE_CROP_PRICE -> {
                 state.increaseCropPrice(marketPlaceMessage.getQuantity());
             }
-            case INCREASE_TOOS_PRICE -> {
+            case INCREASE_TOOLS_PRICE -> {
                 state.increaseToolsPrice(marketPlaceMessage.getQuantity());
             }
             case DECREASE_TOOLS_PRICE -> {

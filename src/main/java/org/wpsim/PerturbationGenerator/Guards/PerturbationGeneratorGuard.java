@@ -17,12 +17,17 @@ package org.wpsim.PerturbationGenerator.Guards;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.ViewerLens.Util.wpsReport;
+import org.wpsim.WellProdSim.Util.wpsCSV;
 
 /**
  *
  * @author jairo
  */
 public class PerturbationGeneratorGuard extends GuardBESA  {
+    public PerturbationGeneratorGuard() {
+        super();
+        wpsCSV.log("PerturbationGeneratorGuard", "Agent,CurrentDate,Action,Response");
+    }
 
     /**
      *

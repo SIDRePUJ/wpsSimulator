@@ -107,7 +107,7 @@ public class AgroEcosystemGuard extends GuardBESA {
                     );
                     peasantMessage.setDate(agroEcosystemMessage.getDate());
                     this.replyToPeasantAgent(agroEcosystemMessage.getPeasantAgentAlias(), peasantMessage);
-                    ReportBESA.info(agroEcosystemMessage.getCropId() + " takes " +  (System.currentTimeMillis()-timeCost));
+                    //ReportBESA.info(agroEcosystemMessage.getCropId() + " takes " +  (System.currentTimeMillis()-timeCost));
                     break;
                 case CROP_IRRIGATION:
                     String cropIdToIrrigate = agroEcosystemMessage.getCropId();

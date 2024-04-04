@@ -95,7 +95,7 @@ public class PlantCropTask extends wpsLandTask {
                 }
                 this.increaseWorkDone(believes, currentLandInfo.getLandName(), factor);
 
-                ReportBESA.info(peasantAlias + " avanzando en plantación de " + currentLandInfo.getLandName());
+                //ReportBESA.info(peasantAlias + " avanzando en plantación de " + currentLandInfo.getLandName());
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) {
 
                     // Reset Land
@@ -104,12 +104,12 @@ public class PlantCropTask extends wpsLandTask {
                     currentLandInfo.updateLandName();
 
                     // Continúa con la plantación
-                    ReportBESA.info(peasantAlias + " apto para terminar la plantación en " + currentLandInfo.getLandName());
+                    //ReportBESA.info(peasantAlias + " apto para terminar la plantación en " + currentLandInfo.getLandName());
                     if (!currentLandInfo.getCropName().equals(currentCropName)) {
                         currentLandInfo.setCropName(currentCropName);
                     }
 
-                    ReportBESA.info(peasantAlias + " cultivando en " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName);
+                    //ReportBESA.info(peasantAlias + " cultivando en " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName);
 
                     CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
                         return createNewWorld(currentLandInfo, initialRainfallConditions, peasantAlias, cropSize, believes);
@@ -121,7 +121,7 @@ public class PlantCropTask extends wpsLandTask {
                         future.cancel(true);
                         return;
                     } catch (InterruptedException | ExecutionException e) {
-                        ReportBESA.info(peasantAlias + " no alcanzó a crear la tierrita nueva " + currentLandInfo.getLandName());
+                        //ReportBESA.info(peasantAlias + " no alcanzó a crear la tierrita nueva " + currentLandInfo.getLandName());
                         return;
                     }
                     try {
@@ -140,9 +140,9 @@ public class PlantCropTask extends wpsLandTask {
                         );
                         profile.useSeeds(1);
                         currentLandInfo.setCurrentSeason(SeasonType.GROWING);
-                        ReportBESA.info(peasantAlias + " terminando plantación en " + currentLandInfo.getLandName());
+                        //ReportBESA.info(peasantAlias + " terminando plantación en " + currentLandInfo.getLandName());
                     } catch (Exception ex) {
-                        ReportBESA.error("Agente no Encontrado" + peasantAlias);
+                        //ReportBESA.error("Agente no Encontrado" + peasantAlias);
                         break;
                     }
                 }

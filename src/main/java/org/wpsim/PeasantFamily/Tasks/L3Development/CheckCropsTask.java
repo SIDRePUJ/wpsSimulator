@@ -68,7 +68,7 @@ public class CheckCropsTask extends wpsTask {
                                         )
                                 )
                         );
-                        ReportBESA.info("Checkcrop " + currentLandInfo.getLandName());
+                        //ReportBESA.info("Checkcrop " + currentLandInfo.getLandName());
                     } catch (Exception ex) {
                         wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                     }

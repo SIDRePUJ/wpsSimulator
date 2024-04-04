@@ -299,7 +299,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     }
     public boolean isTaskExecutedOnDateWithLand(String date, String taskName, String landName) {
         Set<String> tasks = taskLog.getOrDefault(date, new HashSet<>());
-        ReportBESA.info(tasks + " " + (taskName+landName) + " on " + date + " r " + tasks.contains(taskName+landName));
+        //ReportBESA.info(tasks + " " + (taskName+landName) + " on " + date + " r " + tasks.contains(taskName+landName));
         return tasks.contains(taskName+landName);
     }
 
@@ -380,7 +380,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         if (isHaveEmotions()) {
             factor = evaluator.emotionalFactor(getEmotionsListCopy(), Semantics.Emotions.Happiness);
             time = (int) Math.ceil(time - ((factor - 1) * time));
-            ReportBESA.info(this.getAlias() + " tiene " + this.timeLeftOnDay + " descuenta con emociones " + time);
+            //ReportBESA.info(this.getAlias() + " tiene " + this.timeLeftOnDay + " descuenta con emociones " + time);
             decreaseTime(time);
         } else {
             //System.out.println(this.getAlias() + " tiene " + this.timeLeftOnDay + " descuenta " + time);

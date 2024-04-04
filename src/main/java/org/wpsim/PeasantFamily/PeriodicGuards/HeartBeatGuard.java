@@ -50,15 +50,15 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) PeasantFamily.getState()).getBelieves();
         StateBDI state = (StateBDI) PeasantFamily.getState();
 
-        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -45){
+        if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -90){
             ReportBESA.info(
                     "=========" + believes.getAlias() + "========= " + believes.getTimeLeftOnDay() +
                     "Intention " + state.getMachineBDIParams().getIntention() +
                     "getTasks " + state.getMachineBDIParams().getIntention().getRole().getRolePlan().getTasks().toString() +
                     "======================================================"
             );
-            believes.getPeasantProfile().setHealth(0);
             believes.setCurrentActivity(PeasantActivityType.BLOCKED);
+            believes.getPeasantProfile().setHealth(0);
         }
         // Check if the agent has finished
         if (checkDead(believes)) return;
@@ -119,7 +119,6 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
 
     private boolean checkDead(PeasantFamilyBelieves believes) {
         if (believes.getPeasantProfile().getHealth() <= 0) {
-            //writeBenchmarkLog(believes.toCSV());
             this.stopPeriodicCall();
             try {
                 Thread.sleep(1000);
