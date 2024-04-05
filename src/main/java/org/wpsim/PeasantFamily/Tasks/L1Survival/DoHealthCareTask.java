@@ -35,7 +35,7 @@ public class DoHealthCareTask extends wpsTask {
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
         double factor = 1;
-        EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
+        EmotionalEvaluator evaluator = new EmotionalEvaluator("EmotionalRulesFull");
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         if (believes.isHaveEmotions()) {
             factor = evaluator.emotionalFactor(believes.getEmotionsListCopy(), Semantics.Emotions.Happiness);

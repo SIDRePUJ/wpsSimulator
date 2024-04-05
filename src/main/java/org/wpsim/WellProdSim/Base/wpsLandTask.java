@@ -20,7 +20,7 @@ public class wpsLandTask extends wpsTask {
     }
 
     protected void increaseWorkDone(PeasantFamilyBelieves believes, String landName, int workDone) {
-        EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
+        EmotionalEvaluator evaluator = new EmotionalEvaluator("EmotionalRulesFull");
         double factor = 1;
         int newWorkDone = 0;
         if (believes.isHaveEmotions()) {

@@ -19,7 +19,6 @@ import org.wpsim.WellProdSim.wpsStart;
 import java.io.Serializable;
 
 /**
- *
  * @author jairo
  */
 public class PeasantFamilyProfile implements Serializable, Cloneable {
@@ -85,7 +84,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private double peasantRestAffinity;
     private double leisureOptions;
     private boolean sellDone;
-
+    private double socialAffinity;
     // Resources
     private int waterAvailable;
     private int pesticidesAvailable;
@@ -100,14 +99,18 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     private int toolsNeeded;
     private boolean criminalityAffinity;
     private double minimumVital;
-
-
     /**
      *
      */
     public PeasantFamilyProfile() {
     }
+    public double getSocialAffinity() {
+        return socialAffinity;
+    }
 
+    public void setSocialAffinity(double socialAffinity) {
+        this.socialAffinity = socialAffinity;
+    }
     public String getPeasantKind() {
         return peasantKind;
     }
@@ -123,6 +126,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public void setInitialHealth(int initialHealth) {
         this.initialHealth = initialHealth;
     }
+
     public double getInitialMoney() {
         return initialMoney;
     }
@@ -130,8 +134,8 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public void setInitialMoney(double initialMoney) {
         this.initialMoney = initialMoney;
     }
+
     /**
-     *
      * @return
      */
     public int getRiceSeedsByHectare() {
@@ -139,7 +143,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param riceSeedsByHectare
      */
     public void setRiceSeedsByHectare(int riceSeedsByHectare) {
@@ -147,7 +150,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public int getPesticidesAvailable() {
@@ -155,7 +157,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param pesticidesAvailable
      */
     public void setPesticidesAvailable(int pesticidesAvailable) {
@@ -163,14 +164,13 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param pesticidesAvailable
      */
     public synchronized void setPesticidesAvailable(Integer pesticidesAvailable) {
         this.pesticidesAvailable += pesticidesAvailable;
     }
+
     /**
-     *
      * @return
      */
     public boolean isSellDone() {
@@ -178,7 +178,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param sellDone
      */
     public void setSellDone(boolean sellDone) {
@@ -189,9 +188,9 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      *
      */
     public synchronized void discountDailyMoney() {
-        if (this.money - getMinimumVital() > 0){
+        if (this.money - getMinimumVital() > 0) {
             this.money = this.money - wpsStart.config.getIntProperty("pfagent.minimalVital");
-        }else {
+        } else {
             this.money = 0;
         }
         if (this.money <= 0) {
@@ -204,7 +203,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public String getPurpose() {
@@ -212,7 +210,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param purpose
      */
     public void setPurpose(String purpose) {
@@ -220,7 +217,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public String getPeasantFamilyAlias() {
@@ -228,7 +224,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param peasantFamilyAlias
      */
     public void setPeasantFamilyAlias(String peasantFamilyAlias) {
@@ -236,7 +231,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public int getHealth() {
@@ -244,7 +238,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param health
      */
     public void setHealth(int health) {
@@ -270,7 +263,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getPeasantLeisureAffinity() {
@@ -278,7 +270,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param peasantLeisureAffinity
      */
     public synchronized void setPeasantLeisureAffinity(double peasantLeisureAffinity) {
@@ -286,7 +277,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getPeasantFriendsAffinity() {
@@ -294,7 +284,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param peasantFriendsAffinity
      */
     public synchronized void setPeasantFriendsAffinity(double peasantFriendsAffinity) {
@@ -302,7 +291,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public boolean isAWorker() {
@@ -310,7 +298,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param worker
      */
     public synchronized void setWorker(boolean worker) {
@@ -318,7 +305,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getPeasantQualityFactor() {
@@ -326,7 +312,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param peasantQualityFactor
      */
     public synchronized void setPeasantQualityFactor(double peasantQualityFactor) {
@@ -334,7 +319,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public int getTools() {
@@ -342,7 +326,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param tools
      */
     public synchronized void setTools(int tools) {
@@ -350,7 +333,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public int getSupplies() {
@@ -358,7 +340,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param supplies
      */
     public synchronized void setSupplies(int supplies) {
@@ -366,7 +347,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getLiveStockAffinity() {
@@ -374,7 +354,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param liveStockAffinity
      */
     public synchronized void setLiveStockAffinity(double liveStockAffinity) {
@@ -382,7 +361,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public boolean getFarmName() {
@@ -397,7 +375,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public int getCropSize() {
@@ -405,7 +382,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param cropSize
      */
     public synchronized void setCropSize(int cropSize) {
@@ -417,7 +393,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getHousing() {
@@ -425,7 +400,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param housing
      */
     public void setHousing(double housing) {
@@ -433,7 +407,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getServicesPresence() {
@@ -441,7 +414,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param servicesPresence
      */
     public synchronized void setServicesPresence(double servicesPresence) {
@@ -449,7 +421,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getHousingSize() {
@@ -457,7 +428,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param housingSize
      */
     public synchronized void setHousingSize(double housingSize) {
@@ -465,7 +435,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getHousingCondition() {
@@ -473,7 +442,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param housingCondition
      */
     public synchronized void setHousingCondition(double housingCondition) {
@@ -481,7 +449,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getHousingLocation() {
@@ -489,7 +456,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param housingLocation
      */
     public synchronized void setHousingLocation(double housingLocation) {
@@ -497,7 +463,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getFarmDistance() {
@@ -505,7 +470,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param farmDistance
      */
     public synchronized void setFarmDistance(double farmDistance) {
@@ -513,7 +477,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getMoney() {
@@ -521,7 +484,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param money
      */
     public synchronized void setMoney(Integer money) {
@@ -529,18 +491,17 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param money
      */
     public synchronized void increaseMoney(double money) {
         this.money += money;
     }
+
     public synchronized void decreaseMoney(double money) {
         this.money -= money;
     }
 
     /**
-     *
      * @return
      */
     public double getTotalIncome() {
@@ -548,7 +509,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param totalIncome
      */
     public synchronized void setTotalIncome(double totalIncome) {
@@ -556,7 +516,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getLoanAmountToPay() {
@@ -564,7 +523,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param loanAmountToPay
      */
     public synchronized void setLoanAmountToPay(double loanAmountToPay) {
@@ -572,7 +530,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public int getHarvestedWeight() {
@@ -580,7 +537,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param harvestedWeight
      */
     public synchronized void setHarvestedWeight(int harvestedWeight) {
@@ -588,7 +544,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getHousingQuailty() {
@@ -596,7 +551,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param housingQuailty
      */
     public synchronized void setHousingQuailty(double housingQuailty) {
@@ -604,7 +558,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getTimeSpentOnMaintenance() {
@@ -612,7 +565,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param timeSpentOnMaintenance
      */
     public synchronized void setTimeSpentOnMaintenance(double timeSpentOnMaintenance) {
@@ -620,7 +572,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public int getSeeds() {
@@ -628,7 +579,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param seeds
      */
     public synchronized void setSeeds(int seeds) {
@@ -636,7 +586,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getCropHealth() {
@@ -644,7 +593,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param cropHealth
      */
     public synchronized void setCropHealth(double cropHealth) {
@@ -652,7 +600,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getFarmReady() {
@@ -660,7 +607,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param farmReady
      */
     public synchronized void setFarmReady(double farmReady) {
@@ -668,7 +614,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getHarvestedWeightExpected() {
@@ -676,7 +621,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param harvestedWeightExpected
      */
     public synchronized void setHarvestedWeightExpected(double harvestedWeightExpected) {
@@ -684,7 +628,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized boolean isProcessedCrop() {
@@ -692,7 +635,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param processedCrop
      */
     public synchronized void setProcessedCrop(boolean processedCrop) {
@@ -700,7 +642,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getCropEficiency() {
@@ -708,7 +649,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param cropEficiency
      */
     public synchronized void setCropEficiency(double cropEficiency) {
@@ -716,7 +656,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getProcessedWeight() {
@@ -724,7 +663,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param processedWeight
      */
     public synchronized void setProcessedWeight(double processedWeight) {
@@ -732,7 +670,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public double getProcessingTime() {
@@ -740,7 +677,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param processingTime
      */
     public synchronized void setProcessingTime(double processingTime) {
@@ -748,7 +684,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getTrainingLevel() {
@@ -756,7 +691,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param trainingLevel
      */
     public synchronized void setTrainingLevel(double trainingLevel) {
@@ -764,7 +698,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getTrainingAvailability() {
@@ -772,7 +705,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param trainingAvailability
      */
     public synchronized void setTrainingAvailability(double trainingAvailability) {
@@ -780,7 +712,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getTrainingRelevance() {
@@ -788,7 +719,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param trainingRelevance
      */
     public synchronized void setTrainingRelevance(double trainingRelevance) {
@@ -796,7 +726,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getTrainingCost() {
@@ -804,7 +733,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param trainingCost
      */
     public synchronized void setTrainingCost(double trainingCost) {
@@ -812,7 +740,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getIrrigation() {
@@ -820,7 +747,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param irrigation
      */
     public synchronized void setIrrigation(double irrigation) {
@@ -828,7 +754,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getWaterAvailable() {
@@ -836,7 +761,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param waterAvailable
      */
     public synchronized void setWaterAvailable(double waterAvailable) {
@@ -844,7 +768,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getIrrigationTime() {
@@ -852,7 +775,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param irrigationTime
      */
     public synchronized void setIrrigationTime(double irrigationTime) {
@@ -860,7 +782,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getPestControl() {
@@ -868,7 +789,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param pestControl
      */
     public synchronized void setPestControl(double pestControl) {
@@ -876,7 +796,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getDiseasedCrop() {
@@ -884,7 +803,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param diseasedCrop
      */
     public synchronized void setDiseasedCrop(double diseasedCrop) {
@@ -892,7 +810,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getWeedControl() {
@@ -900,7 +817,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param weedControl
      */
     public synchronized void setWeedControl(double weedControl) {
@@ -908,7 +824,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getInfestedCrop() {
@@ -916,7 +831,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param infestedCrop
      */
     public synchronized void setInfestedCrop(double infestedCrop) {
@@ -924,7 +838,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getSuppliesAvailability() {
@@ -932,7 +845,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param suppliesAvailability
      */
     public synchronized void setSuppliesAvailability(double suppliesAvailability) {
@@ -940,7 +852,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getToolsAvailability() {
@@ -948,7 +859,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param toolsAvailability
      */
     public synchronized void setToolsAvailability(double toolsAvailability) {
@@ -956,7 +866,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized boolean isAssociated() {
@@ -964,7 +873,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param associated
      */
     public synchronized void setAssociated(boolean associated) {
@@ -972,7 +880,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized int getNeighbors() {
@@ -980,7 +887,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param neighbors
      */
     public synchronized void setNeighbors(int neighbors) {
@@ -988,7 +894,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getCollaborationValue() {
@@ -996,7 +901,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param collaborationValue
      */
     public synchronized void setCollaborationValue(double collaborationValue) {
@@ -1004,7 +908,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getHealthProgramsAvailability() {
@@ -1012,7 +915,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param healthProgramsAvailability
      */
     public synchronized void setHealthProgramsAvailability(double healthProgramsAvailability) {
@@ -1020,7 +922,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized boolean isLivestockFarming() {
@@ -1028,7 +929,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param livestockFarming
      */
     public synchronized void setLivestockFarming(boolean livestockFarming) {
@@ -1036,7 +936,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getLivestockHealth() {
@@ -1044,7 +943,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param livestockHealth
      */
     public synchronized void setLivestockHealth(double livestockHealth) {
@@ -1052,7 +950,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized int getLivestockNumber() {
@@ -1060,7 +957,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param livestockNumber
      */
     public synchronized void setLivestockNumber(int livestockNumber) {
@@ -1068,7 +964,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getFamilyTime() {
@@ -1076,7 +971,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param familyTime
      */
     public synchronized void setFamilyTime(double familyTime) {
@@ -1084,7 +978,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getPeasantFamilyAffinity() {
@@ -1092,7 +985,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param peasantFamilyAffinity
      */
     public synchronized void setPeasantFamilyAffinity(double peasantFamilyAffinity) {
@@ -1100,7 +992,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getFamilyTimeAvailability() {
@@ -1108,7 +999,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param familyTimeAvailability
      */
     public synchronized void setFamilyTimeAvailability(double familyTimeAvailability) {
@@ -1142,7 +1032,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getCommunications() {
@@ -1150,7 +1039,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param communications
      */
     public synchronized void setCommunications(double communications) {
@@ -1158,7 +1046,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getSocialCompatibility() {
@@ -1166,7 +1053,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param socialCompatibility
      */
     public synchronized void setSocialCompatibility(double socialCompatibility) {
@@ -1174,7 +1060,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getRestingTimeAvailibility() {
@@ -1182,7 +1067,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param restingTimeAvailibility
      */
     public synchronized void setRestingTimeAvailibility(double restingTimeAvailibility) {
@@ -1190,7 +1074,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getPeasantRestAffinity() {
@@ -1198,7 +1081,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param peasantRestAffinity
      */
     public synchronized void setPeasantRestAffinity(double peasantRestAffinity) {
@@ -1206,7 +1088,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     public synchronized double getLeisureOptions() {
@@ -1214,7 +1095,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param leisureOptions
      */
     public synchronized void setLeisureOptions(double leisureOptions) {
@@ -1293,7 +1173,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @return
      */
     @Override
@@ -1304,7 +1183,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param object
      * @return
      */
@@ -1341,7 +1219,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param discount
      */
     public synchronized void useMoney(int discount) {
@@ -1354,7 +1231,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param seeds
      */
     public synchronized void useSeeds(int seeds) {
@@ -1362,7 +1238,6 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     }
 
     /**
-     *
      * @param water
      */
     public synchronized void useWater(int water) {
@@ -1408,12 +1283,15 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public int getSeedsNeeded() {
         return seedsNeeded;
     }
+
     public void setSeedsNeeded(int seedsNeeded) {
         this.seedsNeeded = seedsNeeded;
     }
+
     public void increaseSeedsNeeded(int seedsNeeded) {
         this.seedsNeeded += seedsNeeded;
     }
+
     public void decreaseSeedsNeeded(int seedsNeeded) {
         this.seedsNeeded -= seedsNeeded;
     }
@@ -1421,12 +1299,15 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
     public int getToolsNeeded() {
         return toolsNeeded;
     }
+
     public void setToolsNeeded(int toolsNeeded) {
         this.toolsNeeded = toolsNeeded;
     }
+
     public void increaseToolsNeeded(int toolsNeeded) {
         this.toolsNeeded += toolsNeeded;
     }
+
     public void decreaseToolsNeeded(int toolsNeeded) {
         this.toolsNeeded -= toolsNeeded;
     }

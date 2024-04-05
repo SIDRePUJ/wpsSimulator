@@ -1,0 +1,8 @@
+if peasantFamilyAffinity is high and EmotionalState is high then Contribution is high
+if peasantFamilyAffinity is medium and EmotionalState is high then Contribution is high
+if peasantFamilyAffinity is high and EmotionalState is medium then Contribution is high
+if peasantFamilyAffinity is medium and EmotionalState is medium then Contribution is medium
+if peasantFamilyAffinity is low and EmotionalState is medium then Contribution is medium
+if peasantFamilyAffinity is medium and EmotionalState is low then Contribution is medium
+if peasantFamilyAffinity is low and EmotionalState is low then Contribution is low
+

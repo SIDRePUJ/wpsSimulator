@@ -109,43 +109,8 @@ public final class wpsConfig {
     /**
      * @return
      */
-    public PeasantFamilyProfile getHighRiskFarmerProfile() {
-        return highRiskFarmerProfile.clone();
-    }
-
-    /**
-     * @return
-     */
-    public PeasantFamilyProfile getThrivingFarmerProfile() {
-        return thrivingFarmerProfile.clone();
-    }
-
-    /**
-     * @return
-     */
     public String getStartSimulationDate() {
         return startSimulationDate;
-    }
-
-    /**
-     * @param startSimulationDate
-     */
-    public void setStartSimulationDate(String startSimulationDate) {
-        this.startSimulationDate = startSimulationDate;
-    }
-
-    /**
-     * @return
-     */
-    public String getPeasantType() {
-        return peasantType;
-    }
-
-    /**
-     * @param peasantType
-     */
-    public void setPeasantType(String peasantType) {
-        this.peasantType = peasantType;
     }
 
     /**
@@ -227,11 +192,7 @@ public final class wpsConfig {
 
     public List<String> getFuzzyRulesList(String mode) {
         String rawFile = null;
-        if (mode.equals("Single")) {
-            rawFile = loadFile("data.fuzzyRules/EmotionalRules.txt");
-        } else {
-            rawFile = loadFile("data.fuzzyRules/EmotionalRulesFull.txt");
-        }
+        rawFile = loadFile("data.fuzzyRules/" + mode + ".txt");
         assert rawFile != null;
         return Arrays.asList(rawFile.split("\n"));
     }
@@ -316,6 +277,7 @@ public final class wpsConfig {
         pfProfile.setPeasantFamilyAffinity(pfProfile.getPeasantFamilyAffinity() * rnd);
         pfProfile.setPeasantFriendsAffinity(pfProfile.getPeasantFriendsAffinity() * rnd);
         pfProfile.setPeasantLeisureAffinity(pfProfile.getPeasantLeisureAffinity() * rnd);
+        pfProfile.setSocialAffinity(pfProfile.getSocialAffinity() * rnd);
         pfProfile.setMinimumVital(wpsStart.config.getIntProperty("pfagent.minimalVital") * rnd);
 
         Random rand = new Random();

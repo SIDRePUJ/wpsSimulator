@@ -375,7 +375,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
      * @param time
      */
     public void useTime(double time) {
-        EmotionalEvaluator evaluator = new EmotionalEvaluator("Full");
+        EmotionalEvaluator evaluator = new EmotionalEvaluator("EmotionalRulesFull");
         double factor = 1;
         if (isHaveEmotions()) {
             factor = evaluator.emotionalFactor(getEmotionsListCopy(), Semantics.Emotions.Happiness);
