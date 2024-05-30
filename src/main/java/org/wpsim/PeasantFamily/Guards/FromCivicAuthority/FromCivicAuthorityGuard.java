@@ -40,8 +40,6 @@ public class FromCivicAuthorityGuard extends GuardBESA {
         String landName = fromCivicAuthorityMessage.getLandName();
         Map<String, String> assignedLands = fromCivicAuthorityMessage.getAssignedLands();
 
-        //System.out.println("REC: peasant family: " + believes.getAlias() + " Assigned land: " + landName + " Assigned lands: " + assignedLands);
-
         if (landName == null || landName.equals("")) {
             if (landName == null) {
                 believes.setWorkerWithoutLand();
@@ -54,5 +52,4 @@ public class FromCivicAuthorityGuard extends GuardBESA {
             believes.getPeasantProfile().increaseToolsNeeded(fromCivicAuthorityMessage.getAssignedLands().size());
         }
     }
-
 }

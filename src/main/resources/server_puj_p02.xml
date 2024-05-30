@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <container alias="wpsim02" password="0.91" ipaddress="10.195.34.12">
+        <environment seneventattemps="10" sendeventtimeout="5" rmitimeout="1000">
+            <remote rmiport="1000" mcaddress="230.0.0.1" mcport="2222"/>
+        </environment>
+    </container>
+</config>

@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  */
 public class CivicAuthorityState extends StateBESA implements Serializable {
 
-    private static final int GRID_SIZE = 20;
+    private static final int GRID_SIZE = 70;
     /**
      * Map that contains the land ownership information.
      */

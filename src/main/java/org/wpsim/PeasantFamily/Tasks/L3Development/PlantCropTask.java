@@ -114,9 +114,8 @@ public class PlantCropTask extends wpsLandTask {
                     CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
                         return createNewWorld(currentLandInfo, initialRainfallConditions, peasantAlias, cropSize, believes);
                     }, Executors.newCachedThreadPool());
-
                     try {
-                        boolean result = future.get(2, TimeUnit.SECONDS);
+                        boolean result = future.get(4, TimeUnit.SECONDS);
                     } catch (TimeoutException e) {
                         future.cancel(true);
                         return;
@@ -140,9 +139,7 @@ public class PlantCropTask extends wpsLandTask {
                         );
                         profile.useSeeds(1);
                         currentLandInfo.setCurrentSeason(SeasonType.GROWING);
-                        //ReportBESA.info(peasantAlias + " terminando plantación en " + currentLandInfo.getLandName());
                     } catch (Exception ex) {
-                        //ReportBESA.error("Agente no Encontrado" + peasantAlias);
                         break;
                     }
                 }

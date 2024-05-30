@@ -49,7 +49,7 @@ public class DoVoidTask extends Task {
     public void executeTask(Believes parameters) {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         try {
-            Thread.sleep(300);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

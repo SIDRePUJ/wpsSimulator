@@ -17,8 +17,8 @@ StablePeasant:
   cropSize: 1
   seeds: 0
   startRiceSeason: 15/01/2022
-  money: 3000000
-  waterAvailable: 1000
+  money: 1500000
+  waterAvailable: 0
   socialAffinity: 0.6
   peasantFamilyAffinity: 0.7
   peasantLeisureAffinity: 0.4
@@ -40,7 +40,7 @@ StablePeasant:
   farmName: ""  
   farmDistance: 1.0
   farmReady: 0.0  
-  #Crops  
+  #Crops
   cropHealth: 1
   irrigation: 0.0
   irrigationTime: 1.0

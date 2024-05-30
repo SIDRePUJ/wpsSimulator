@@ -170,7 +170,7 @@ public class PeasantFamily extends AgentBDI {
      */
     public PeasantFamily(String alias, PeasantFamilyProfile peasantProfile) throws ExceptionBESA {
         super(alias, createBelieves(alias, peasantProfile), createGoals(), BDITHRESHOLD, createStruct(new StructBESA()));
-        wpsReport.info("Starting " + alias + " " + peasantProfile.getPeasantKind(), alias);
+        //wpsReport.info("Starting " + alias + " " + peasantProfile.getPeasantKind(), alias);
     }
 
     /**
@@ -179,7 +179,7 @@ public class PeasantFamily extends AgentBDI {
     @Override
     public void setupAgentBDI() {
         // Anuncio de que el agente está disponible
-        wpsReport.debug("Setup " + this.getAlias(), this.getAlias());
+        //wpsReport.debug("Setup " + this.getAlias(), this.getAlias());
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) this.getState()).getBelieves();
         try {
             AdmBESA adm = AdmBESA.getInstance();
@@ -196,7 +196,7 @@ public class PeasantFamily extends AgentBDI {
             );
             agHandler.sendEvent(eventBesa);
         } catch (ExceptionBESA ex) {
-            wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+            //wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
         }
     }
 

@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -26,7 +26,6 @@ import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
  * @author jairo
  */
 public class SpendFamilyTimeTask extends wpsTask {
-
     /**
      *
      * @param parameters
@@ -39,5 +38,4 @@ public class SpendFamilyTimeTask extends wpsTask {
         believes.useTime(believes.getTimeLeftOnDay());
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "TIME"));
     }
-
 }

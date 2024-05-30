@@ -40,7 +40,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            throw new RuntimeException(e);
+            System.err.println("falta comunicación.");
         }
     }
 
@@ -57,7 +57,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            throw new RuntimeException(e);
+            System.err.println("falta comunicación.");
         }
     }
 
@@ -74,7 +74,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            throw new RuntimeException(e);
+            System.err.println("falta comunicación.");
         }
     }
 
@@ -91,7 +91,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            throw new RuntimeException(e);
+            System.err.println("falta comunicación.");
         }
     }
 
@@ -108,7 +108,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            throw new RuntimeException(e);
+            System.err.println("falta comunicación.");
         }
     }
 
@@ -125,7 +125,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            throw new RuntimeException(e);
+            System.err.println("falta comunicación.");
         }
     }
 
@@ -142,7 +142,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            throw new RuntimeException(e);
+            System.err.println("falta comunicación.");
         }
     }
 

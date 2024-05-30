@@ -71,7 +71,6 @@ public class wpsStart {
     }
 
     private static void setArgumentsConfig(String[] args) {
-        AdmBESA admLocal = null;
         if (args.length > 0) {
             // Agents to run simulation
             try {
@@ -79,35 +78,47 @@ public class wpsStart {
             } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 peasantFamiliesAgents = wpsStart.config.getIntProperty("pfagent.agenttotest");
             }
+            String env = wpsStart.config.getStringProperty("pfagent.env");
+            String path = "server_" + env + "_" + args[0] + ".xml";
+            System.out.println("Starting in " + path + " mode");
             // Cluster mode
-            admLocal = AdmBESA.getInstance("server_" + args[0] + ".xml");
-            System.out.println("Centralized " + admLocal.getConfigBESA().getAliasContainer());
-            System.out.println("Starting in " + args[0] + " mode");
-            System.out.println("Simulating " + peasantFamiliesAgents + " agents");
+            AdmBESA adm = AdmBESA.getInstance(path);
+            System.out.println(adm.getConfigBESA().getIpaddress()+ " --- " + adm.getConfigBESA().getAliasContainer());
             switch (args[0]) {
-                case "main" -> {
+                case "p01" -> {
                     createServices();
-                }
-                case "peasants_01" -> {
-                    createPeasants(0, 100);
+                    createPeasants(0, 500);
+                    System.out.println("Simulating 500 agents");
                     startAgents();
                 }
-                case "peasants_02" -> {
-                    createPeasants(101, 200);
+                case "p02" -> {
+                    createPeasants(501, 1000);
+                    System.out.println("Simulating 500 agents");
                     startAgents();
                 }
-                case "peasants_03" -> {
-                    createPeasants(201, 300);
+                case "p03" -> {
+                    createPeasants(1001, 1500);
+                    System.out.println("Simulating 500 agents");
                     startAgents();
+                }
+                case "p04" -> {
+                    createPeasants(1501, 2000);
+                    System.out.println("Simulating 500 agents");
+                    startAgents();
+                    showRunningAgents();
                 }
                 case "local" -> {
                     // Single mode
                     createServices();
+                    System.out.println("Simulating "+peasantFamiliesAgents+" agents");
                     createPeasants(1, peasantFamiliesAgents);
+                    startAgents();
+                    showRunningAgents();
                 }
                 case "single" -> {
                     // Single benchmark mode
                     createServices();
+                    System.out.println("Simulating "+peasantFamiliesAgents+" agents");
                     createPeasants(1, peasantFamiliesAgents);
                     startAgents();
                 }

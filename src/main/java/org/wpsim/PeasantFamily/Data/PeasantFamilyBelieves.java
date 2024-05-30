@@ -74,6 +74,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     private boolean askedForCollaboration;
     private boolean wait;
     private boolean updatePriceList;
+    private double personality;
 
     /**
      * @param alias          Peasant Family Alias
@@ -100,6 +101,9 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.currentMoneyOrigin = MoneyOriginType.NONE;
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
+
+        this.setPersonality(wpsStart.config.getDoubleProperty("pfagent.personality"));
+        changePersonalityBase(getPersonality());
 
         if (wpsStart.config.getBooleanProperty("pfagent.randonemotions")) {
             this.setHaveEmotions(Coin.flipCoin());
@@ -835,6 +839,13 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.askedForCollaboration = collaboration;
     }
 
+    public void changePersonalityBase(float value) {
+        List<EmotionAxis> emotions = this.emotionalState.getEmotions();
+        for (EmotionAxis emotion : emotions) {
+            emotion.increaseBaseValue(value);
+        }
+    }
+
     public void changeHappinessBase(float value) {
         List<EmotionAxis> emotions = this.emotionalState.getEmotions();
         for (EmotionAxis emotion : emotions) {
@@ -842,6 +853,14 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
                 emotion.increaseBaseValue(value);
             }
         }
+    }
+
+    public float getPersonality() {
+        return (float) personality;
+    }
+
+    public void setPersonality(Double personality) {
+        this.personality = personality;
     }
 }
 
