@@ -9,45 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Evaluador Fuzzy para varias metas">
-      <change afterPath="$PROJECT_DIR$/run_exp.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_local_p02.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_local_p03.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_local_p04.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_puj_p02.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_puj_p03.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_puj_p04.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_utb_p01.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_utb_p02.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_utb_p03.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_utb_p04.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.1200.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.12000.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.6000.json" afterDir="false" />
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Versión usada para validación">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/runjar.sh" beforeDir="false" afterPath="$PROJECT_DIR$/runjar.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/BankOffice/Guards/BankOfficeGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/BankOffice/Guards/BankOfficeGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCivicAuthority/FromCivicAuthorityGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCivicAuthority/FromCivicAuthorityGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L6Leisure/SpendFamilyTimeTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L6Leisure/SpendFamilyTimeTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/ViewerLens/Util/wpsReport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/ViewerLens/Util/wpsReport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadAgentGuard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/PeasantFamilyProfile.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_local_local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_main.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_peasants_01.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_peasants_02.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_peasants_03.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_p01.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_peasants_04.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_local_p01.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_peasants_05.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_peasants_06.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_peasants_07.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_peasants_08.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_single.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_local_single.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -89,36 +56,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "Downloaded.Files.Path.Enabled": "false",
-    "Maven.Simulator.executor": "Run",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "working",
-    "ignore.preview.features.used": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/jairo/IdeaProjects/wpsSimulator/src/main/resources/web/data",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.16989066",
-    "project.structure.side.proportion": "0.27296937",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Maven.Simulator.executor&quot;: &quot;Run&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;working&quot;,
+    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jairo/IdeaProjects/wpsSimulator/src/main/resources/web/data&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.16989066&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.27296937&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.wpsim.PeasantFamily.Tasks.Base" />
@@ -227,8 +194,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.17011.79" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.17011.79" />
       </set>
     </attachedChunks>
   </component>
@@ -368,15 +335,8 @@
       <workItem from="1715053058140" duration="15000" />
       <workItem from="1715268771396" duration="5320000" />
       <workItem from="1715745823471" duration="38374000" />
-      <workItem from="1716769394441" duration="32166000" />
-    </task>
-    <task id="LOCAL-00019" summary="Preparando la siembra por múltiples oportunidades en el año">
-      <option name="closed" value="true" />
-      <created>1699844905445</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1699844905445</updated>
+      <workItem from="1716769394441" duration="35053000" />
+      <workItem from="1717092629198" duration="39719000" />
     </task>
     <task id="LOCAL-00020" summary="Actualizado el mecanismo de finalización de tareas. Solo se ejecutan una vez al día.">
       <option name="closed" value="true" />
@@ -762,7 +722,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712290869689</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Versión usada para validación">
+      <option name="closed" value="true" />
+      <created>1717079472567</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1717079472567</updated>
+    </task>
+    <option name="localTasksCounter" value="69" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -813,7 +781,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Siembra cambia las condiciones climáticas según el año" />
     <MESSAGE value="Activados los prestamos y pagos en el banco." />
     <MESSAGE value="Mejoras en semillas, banco y herramientas." />
     <MESSAGE value="Trabajo alternativo adicionado, arreglado." />
@@ -838,7 +805,8 @@
     <MESSAGE value="Ahora el terreno se destruye al vender el cultivo y da espacio a que los agentes se refresquen, parece funcionar mejor este enfoque." />
     <MESSAGE value="Nueva versión del simulador funcionado. ya se registran las perturbaciones en un archivo para su análisis." />
     <MESSAGE value="Evaluador Fuzzy para varias metas" />
-    <option name="LAST_COMMIT_MESSAGE" value="Evaluador Fuzzy para varias metas" />
+    <MESSAGE value="Versión usada para validación" />
+    <option name="LAST_COMMIT_MESSAGE" value="Versión usada para validación" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

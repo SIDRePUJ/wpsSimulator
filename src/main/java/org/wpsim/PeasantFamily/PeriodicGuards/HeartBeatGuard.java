@@ -105,13 +105,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (believes.getInternalCurrentDate().equals(wpsStart.config.getStringProperty("control.enddate"))) {
             System.out.println("Cerrando Agente " + this.agent.getAlias());
             this.stopPeriodicCall();
-            try {
-                Thread.sleep(1000);
-                this.agent.shutdownAgent();
-            } catch (Exception e) {
-                System.out.println("Error Cerrando Agente");
-            }
-            //wpsStart.stopSimulation();
+            this.agent.shutdownAgent();
             return true;
         }
         return false;

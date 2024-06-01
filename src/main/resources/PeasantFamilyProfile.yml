@@ -9,16 +9,16 @@
 ## * Social Simulator used to estimate productivity and well-being of peasant *
 ## * families. It is event oriented, high concurrency, heterogeneous time     *
 ## * management and emotional reasoning BDI.                                  *
-## * ======================================================================== *
+## * ======================================================================== *9999999
 ---
 StablePeasant:
   #Variables
   health: 100
   cropSize: 1
   seeds: 0
-  startRiceSeason: 15/01/2022
-  money: 1500000
-  waterAvailable: 0
+  money: 3000000
+  tools: 10
+  waterAvailable: 9999999
   socialAffinity: 0.6
   peasantFamilyAffinity: 0.7
   peasantLeisureAffinity: 0.4
@@ -28,6 +28,7 @@ StablePeasant:
   purpose: ""  
   productivity: 0.0
   wellBeging: 1.0
+  startRiceSeason: 15/01/2022
   worker: true
   employee: false
   peasantQualityFactor: 0.7
@@ -59,7 +60,6 @@ StablePeasant:
   processingTime: 1.0
   riceSeedsByHectare: 20
   #toolsAndSupplies:
-  tools: 0
   toolsAvailability: 1.0
   toolsCost: 1.0
   supplies: 1.0

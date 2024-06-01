@@ -18,6 +18,7 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.SimulationControl.Data.SimulationControlState;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
+import org.wpsim.WellProdSim.wpsStart;
 
 /**
  *
@@ -39,7 +40,10 @@ public class DeadAgentGuard extends GuardBESA {
         SimulationControlState state = (SimulationControlState) this.getAgent().getState();
 
         state.removeAgentFromMap(agentAlias);
-        //wpsReport.debug(state.printDeadAgentMap(), "ControlAgentGuard");
+        if (state.getDeadAgentMap().size() == wpsStart.peasantFamiliesAgents){
+            wpsStart.stopSimulation();
+            return;
+        }
     }
 
 }

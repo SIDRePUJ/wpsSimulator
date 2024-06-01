@@ -125,7 +125,6 @@ public class PeasantFamily extends AgentBDI {
         goals.add(AttendReligiousEventsGoal.buildGoal());
         goals.add(CheckCropsGoal.buildGoal());
         goals.add(HarvestCropsGoal.buildGoal());
-        goals.add(IrrigateCropsGoal.buildGoal());
         //goals.add(MaintainHouseGoal.buildGoal());
         goals.add(ManagePestsGoal.buildGoal());
         goals.add(PlantCropGoal.buildGoal());
@@ -145,9 +144,13 @@ public class PeasantFamily extends AgentBDI {
         goals.add(ObtainSeedsGoal.buildGoal());
         //goals.add(ObtainSuppliesGoal.buildGoal());
         goals.add(ObtainToolsGoal.buildGoal());
-        //goals.add(ObtainWaterGoal.buildGoal());
         //goals.add(ObtainPesticidesGoal.buildGoal());
         goals.add(AlternativeWorkGoal.buildGoal());
+
+        if (wpsStart.config.getBooleanProperty("pfagent.irrigation")) {
+            goals.add(IrrigateCropsGoal.buildGoal());
+            goals.add(ObtainWaterGoal.buildGoal());
+        }
 
         //Level 5 Goals: Social
         //goals.add(CommunicateGoal.buildGoal());
