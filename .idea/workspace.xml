@@ -9,19 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="cierre en modo single">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/wpsim_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/wpsim_jar.xml" afterDir="false" />
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Ya es posible ejecutarlo por línea de comandos para experimentos.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_exp.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run_exp.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Config/wpsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/runjar.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run_exp2.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -347,15 +338,7 @@
       <workItem from="1715745823471" duration="38374000" />
       <workItem from="1716769394441" duration="35053000" />
       <workItem from="1717092629198" duration="40550000" />
-      <workItem from="1717257179200" duration="9932000" />
-    </task>
-    <task id="LOCAL-00021" summary="Los campesinos con tierras hacen saltos temporales.&#10;El mecanismo de ayuda parece estar funcionando, hay que depurar más.">
-      <option name="closed" value="true" />
-      <created>1700001876002</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1700001876002</updated>
+      <workItem from="1717257179200" duration="11644000" />
     </task>
     <task id="LOCAL-00022" summary="Se ajustó el mecanismo de cierre de metas y tareas.">
       <option name="closed" value="true" />
@@ -741,7 +724,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717246628471</updated>
     </task>
-    <option name="localTasksCounter" value="70" />
+    <task id="LOCAL-00070" summary="Ya es posible ejecutarlo por línea de comandos para experimentos.">
+      <option name="closed" value="true" />
+      <created>1717300351362</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1717300351362</updated>
+    </task>
+    <option name="localTasksCounter" value="71" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -792,7 +783,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Mejoras en semillas, banco y herramientas." />
     <MESSAGE value="Trabajo alternativo adicionado, arreglado." />
     <MESSAGE value="indice de criminalidad, trabajos adicionales, semillas." />
     <MESSAGE value="Corrección en cultivos." />
@@ -817,7 +807,8 @@
     <MESSAGE value="Evaluador Fuzzy para varias metas" />
     <MESSAGE value="Versión usada para validación" />
     <MESSAGE value="cierre en modo single" />
-    <option name="LAST_COMMIT_MESSAGE" value="cierre en modo single" />
+    <MESSAGE value="Ya es posible ejecutarlo por línea de comandos para experimentos." />
+    <option name="LAST_COMMIT_MESSAGE" value="Ya es posible ejecutarlo por línea de comandos para experimentos." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
