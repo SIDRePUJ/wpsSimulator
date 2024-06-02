@@ -26,6 +26,8 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.wpsim.WellProdSim.wpsStart.params;
+
 /**
  * @author jairo
  */
@@ -187,9 +189,21 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
         //System.out.println("Available lands: " + this);
 
         int farmId = 1;
+        boolean large = false, medium = false, small = false;
+
+        if (params.land == 12) {
+            large = true;
+        }
+        if (params.land == 6) {
+            medium = true;
+        }
+        if (params.land == 2) {
+            small = true;
+        }
+        //wpsStart.config.getBooleanProperty("pfagent.largefarms")
 
         // Asignar fincas grandes
-        if (wpsStart.config.getBooleanProperty("pfagent.largefarms")) {
+        if (large) {
             while (true) {
                 List<String> farmLands = selectBlock(availableLands, 3, 4);
                 if (farmLands.isEmpty()) {
@@ -200,8 +214,8 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
             }
         }
 
-        // Asignar fincas medianas
-        if (wpsStart.config.getBooleanProperty("pfagent.mediumfarms")) {
+        // Asignar fincas medianas wpsStart.config.getBooleanProperty("pfagent.mediumfarms")
+        if (medium) {
             while (true) {
                 List<String> farmLands = selectBlock(availableLands, 2, 2);
                 if (farmLands.isEmpty()) {
@@ -212,8 +226,8 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
             }
         }
 
-        // Asignar fincas pequeñas
-        if (wpsStart.config.getBooleanProperty("pfagent.smallfarms")) {
+        // Asignar fincas pequeñas wpsStart.config.getBooleanProperty("pfagent.smallfarms")
+        if (small) {
             while (!availableLands.isEmpty()) {
                 List<String> farmLands = selectBlock(availableLands, 1, 2);
                 if (farmLands.isEmpty()) {

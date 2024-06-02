@@ -6,47 +6,57 @@ if [ -z "$BASH_VERSION" ]; then
     exit 1
 fi
 
-cd /home/ubuntu/wpsim/wpsSimulator/out/artifacts/wpsim_jar
-
-# Nombre del archivo de salida del simulador
-OUTPUT_FILE="salida_simulador.log"
-
-# Comando para ejecutar el simulador y redirigir la salida a un archivo y a la pantalla
-java -Xms48g -Xmx48g -jar wpsim.jar single 100 > >(tee $OUTPUT_FILE) 2>&1 &
-
-# Obtener el PID del proceso del simulador
-SIMULATOR_PID=$!
-
-# Patrón de error a buscar
-ERROR_PATTERN="Couldn't send the event because the agent state is \"kill\""
-
-# Variable para contar las ocurrencias del error
-ERROR_COUNT=0
-ERROR_THRESHOLD=20
-
-# Función para monitorear el archivo de salida
-monitor_output() {
-    tail -F $OUTPUT_FILE | while read LINE; do
-        case "$LINE" in
-            *"$ERROR_PATTERN"*)
-                ERROR_COUNT=$((ERROR_COUNT + 1))
-                echo "Error detectado: $LINE (Conteo: $ERROR_COUNT)"
-                if [ "$ERROR_COUNT" -ge "$ERROR_THRESHOLD" ]; then
-                    echo "Error detectado $ERROR_THRESHOLD veces. Terminando el proceso $SIMULATOR_PID."
-                    kill "$SIMULATOR_PID"
-                    exit 0
-                fi
-                ;;
-        esac
-    done
-}
-
-# Ejecutar la función de monitoreo en segundo plano
-monitor_output &
-MONITOR_PID=$!
-
-# Esperar a que el proceso del simulador termine
-wait $SIMULATOR_PID
-
-# Terminar el proceso de monitoreo
-kill $MONITOR_PID
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 2 --personality 0.5 --tools 10 --seeds 10 --water 0 --irrigation 0
+mv logs/ E401/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 2 --personality 0.5 --tools 10 --seeds 999999 --water 999999 --irrigation 1
+mv logs/ E402/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 2 --personality 0.5 --tools 10 --seeds 0 --water 0 --irrigation 1
+mv logs/ E403/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 6 --personality 0.0 --tools 999999 --seeds 10 --water 0 --irrigation 0
+mv logs/ E404/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 6 --personality 0.0 --tools 999999 --seeds 999999 --water 999999 --irrigation 1
+mv logs/ E405/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 6 --personality 0.0 --tools 999999 --seeds 0 --water 0 --irrigation 1
+mv logs/ E406/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 12 --personality -0.5 --tools 0 --seeds 10 --water 0 --irrigation 0
+mv logs/ E407/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 12 --personality -0.5 --tools 0 --seeds 999999 --water 999999 --irrigation 1
+mv logs/ E408/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 750000 --land 12 --personality -0.5 --tools 0 --seeds 0 --water 0 --irrigation 1
+mv logs/ E409/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 2 --personality 0.0 --tools 0 --seeds 10 --water 999999 --irrigation 1
+mv logs/ E410/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 2 --personality 0.0 --tools 0 --seeds 999999 --water 0 --irrigation 1
+mv logs/ E411/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 2 --personality 0.0 --tools 0 --seeds 0 --water 0 --irrigation 0
+mv logs/ E412/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 6 --personality -0.5 --tools 10 --seeds 10 --water 999999 --irrigation 1
+mv logs/ E413/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 6 --personality -0.5 --tools 10 --seeds 999999 --water 0 --irrigation 1
+mv logs/ E414/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 6 --personality -0.5 --tools 10 --seeds 0 --water 0 --irrigation 0
+mv logs/ E415/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 12 --personality 0.5 --tools 999999 --seeds 10 --water 999999 --irrigation 1
+mv logs/ E416/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 12 --personality 0.5 --tools 999999 --seeds 999999 --water 0 --irrigation 1
+mv logs/ E417/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 1500000 --land 12 --personality 0.5 --tools 999999 --seeds 0 --water 0 --irrigation 0
+mv logs/ E418/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 2 --personality -0.5 --tools 999999 --seeds 10 --water 0 --irrigation 1
+mv logs/ E419/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 2 --personality -0.5 --tools 999999 --seeds 999999 --water 0 --irrigation 0
+mv logs/ E420/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 2 --personality -0.5 --tools 999999 --seeds 0 --water 999999 --irrigation 1
+mv logs/ E421/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 6 --personality 0.5 --tools 0 --seeds 10 --water 0 --irrigation 1
+mv logs/ E422/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 6 --personality 0.5 --tools 0 --seeds 999999 --water 0 --irrigation 0
+mv logs/ E423/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 6 --personality 0.5 --tools 0 --seeds 0 --water 999999 --irrigation 1
+mv logs/ E424/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 12 --personality 0.0 --tools 10 --seeds 10 --water 0 --irrigation 1
+mv logs/ E425/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 12 --personality 0.0 --tools 10 --seeds 999999 --water 0 --irrigation 0
+mv logs/ E426/
+java -jar wpsim-1.0.jar --mode single --agents 10 --money 3000000 --land 12 --personality 0.0 --tools 10 --seeds 0 --water 999999 --irrigation 1
+mv logs/ E427/

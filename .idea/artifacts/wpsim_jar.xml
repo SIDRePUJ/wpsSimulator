@@ -38,6 +38,7 @@
       <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.2.10" />
       <element id="library" level="project" name="Maven: com.fuzzylite:jfuzzylite:6.0.1" />
       <element id="library" level="project" name="Maven: org.json:json:20231013" />
+      <element id="library" level="project" name="Maven: commons-cli:commons-cli:1.8.0" />
     </root>
   </artifact>
 </component>

@@ -20,6 +20,12 @@ import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Util.PeriodicDataBESA;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.DefaultParser;
 import org.wpsim.BankOffice.Agent.BankOffice;
 import org.wpsim.SimulationControl.Agent.SimulationControl;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
@@ -30,6 +36,7 @@ import org.wpsim.PeasantFamily.PeriodicGuards.HeartBeatGuard;
 import org.wpsim.PeasantFamily.Agent.PeasantFamily;
 import org.wpsim.PerturbationGenerator.PeriodicGuards.NaturalPhenomena;
 import org.wpsim.PerturbationGenerator.Agent.PerturbationGenerator;
+import org.wpsim.SimulationControl.Util.SimulationParams;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.CommunityDynamics.Agent.CommunityDynamics;
 import org.wpsim.ViewerLens.Util.wpsReport;
@@ -50,6 +57,8 @@ public class wpsStart {
     public static int CREATED_AGENTS = 0;
     public static final long startTime = System.currentTimeMillis();
     private static final List<PeasantFamily> PEASANT_FAMILIES = new ArrayList<>();
+    public static CommandLine cmd;
+    public static SimulationParams params = new SimulationParams();
 
     /**
      * The main method to start the simulation.
@@ -57,76 +66,122 @@ public class wpsStart {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        // Set arguments to config
+        setArgumentsConfig(args);
         // Set initial config of simulation
         config = wpsConfig.getInstance();
         // Set initial date of simulation
-        ControlCurrentDate.getInstance().setCurrentDate(
-                config.getStartSimulationDate()
-        );
+        ControlCurrentDate.getInstance().setCurrentDate(config.getStartSimulationDate());
         // Print header for simulation
         printHeader();
-        // Set arguments to config
-        setArgumentsConfig(args);
         //showRunningAgents();
+        startSimulation();
     }
 
     private static void setArgumentsConfig(String[] args) {
-        if (args.length > 0) {
-            // Agents to run simulation
-            try {
-                peasantFamiliesAgents = Integer.parseInt(args[1]);
-            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                peasantFamiliesAgents = wpsStart.config.getIntProperty("pfagent.agenttotest");
+
+        Options options = new Options();
+        // Definir los parámetros esperados
+        options.addOption(new Option("m", "mode", true, "Mode of operation"));
+        options.addOption(new Option("a", "agents", true, "Number of agents"));
+        options.addOption(new Option("d", "money", true, "Amount of money"));
+        options.addOption(new Option("l", "land", true, "Land area"));
+        options.addOption(new Option("p", "personality", true, "Type of personality"));
+        options.addOption(new Option("t", "tools", true, "Type of tools"));
+        options.addOption(new Option("s", "seeds", true, "Type of seeds"));
+        options.addOption(new Option("w", "water", true, "Amount of water"));
+        options.addOption(new Option("i", "irrigation", true, "Irrigation enabled"));
+
+        // Crear el parser para los argumentos
+        CommandLineParser parser = new DefaultParser();
+        HelpFormatter formatter = new HelpFormatter();
+        CommandLine cmd;
+
+        try {
+            // Parsear los argumentos
+            cmd = parser.parse(options, args);
+            if (cmd.hasOption("agents")) {
+                peasantFamiliesAgents = Integer.parseInt(cmd.getOptionValue("agents"));
             }
-            String env = wpsStart.config.getStringProperty("pfagent.env");
-            String path = "server_" + env + "_" + args[0] + ".xml";
-            System.out.println("Starting in " + path + " mode");
-            // Cluster mode
-            AdmBESA adm = AdmBESA.getInstance(path);
-            System.out.println(adm.getConfigBESA().getIpaddress()+ " --- " + adm.getConfigBESA().getAliasContainer());
-            switch (args[0]) {
-                case "p01" -> {
-                    createServices();
-                    createPeasants(0, 500);
-                    System.out.println("Simulating 500 agents");
-                    startAgents();
-                }
-                case "p02" -> {
-                    createPeasants(501, 1000);
-                    System.out.println("Simulating 500 agents");
-                    startAgents();
-                }
-                case "p03" -> {
-                    createPeasants(1001, 1500);
-                    System.out.println("Simulating 500 agents");
-                    startAgents();
-                }
-                case "p04" -> {
-                    createPeasants(1501, 2000);
-                    System.out.println("Simulating 500 agents");
-                    startAgents();
-                    showRunningAgents();
-                }
-                case "local" -> {
-                    // Single mode
-                    createServices();
-                    System.out.println("Simulating "+peasantFamiliesAgents+" agents");
-                    createPeasants(1, peasantFamiliesAgents);
-                    startAgents();
-                    showRunningAgents();
-                }
-                case "single" -> {
-                    // Single benchmark mode
-                    createServices();
-                    System.out.println("Simulating "+peasantFamiliesAgents+" agents");
-                    createPeasants(1, peasantFamiliesAgents);
-                    startAgents();
-                }
-                default -> System.out.println("No se reconoce el nombre del contendor BESA " + args[0]);
+            if (cmd.hasOption("mode")) {
+                params.mode = cmd.getOptionValue("mode");
             }
-        } else {
-            System.out.println("No hay contenedores válidos: local <cantidad>");
-            System.exit(0);
+            if (cmd.hasOption("money")) {
+                params.money = Integer.parseInt(cmd.getOptionValue("money"));
+            }
+            if (cmd.hasOption("irrigation")) {
+                params.irrigation = Integer.parseInt(cmd.getOptionValue("irrigation"));
+            }
+            if (cmd.hasOption("land")) {
+                params.land = Integer.parseInt(cmd.getOptionValue("land"));
+            }
+            if (cmd.hasOption("personality")) {
+                params.personality = Double.parseDouble(cmd.getOptionValue("personality"));
+            }
+            if (cmd.hasOption("tools")) {
+                params.tools = Integer.parseInt(cmd.getOptionValue("tools"));
+            }
+            if (cmd.hasOption("seeds")) {
+                params.seeds = Integer.parseInt(cmd.getOptionValue("seeds"));
+            }
+            if (cmd.hasOption("water")) {
+                params.water = Integer.parseInt(cmd.getOptionValue("water"));
+            }
+
+        } catch (Exception e) {
+            // Mostrar ayuda si hay un error en el parseo
+            System.out.println(e.getMessage());
+            formatter.printHelp("wpsim", options);
+            System.exit(1);
+        }
+    }
+
+    private static void startSimulation() {
+        String env = wpsStart.config.getStringProperty("pfagent.env");
+        String path = "server_" + env + "_" + params.mode + ".xml";
+        System.out.println("Starting in " + path + " mode");
+        // Cluster mode
+        AdmBESA adm = AdmBESA.getInstance(path);
+        System.out.println(adm.getConfigBESA().getIpaddress() + " --- " + adm.getConfigBESA().getAliasContainer());
+        switch (params.mode) {
+            case "p01" -> {
+                createServices();
+                createPeasants(0, 500);
+                System.out.println("Simulating 500 agents");
+                startAgents();
+            }
+            case "p02" -> {
+                createPeasants(501, 1000);
+                System.out.println("Simulating 500 agents");
+                startAgents();
+            }
+            case "p03" -> {
+                createPeasants(1001, 1500);
+                System.out.println("Simulating 500 agents");
+                startAgents();
+            }
+            case "p04" -> {
+                createPeasants(1501, 2000);
+                System.out.println("Simulating 500 agents");
+                startAgents();
+                showRunningAgents();
+            }
+            case "local" -> {
+                // Single mode
+                createServices();
+                System.out.println("Simulating " + peasantFamiliesAgents + " agents");
+                createPeasants(1, peasantFamiliesAgents);
+                startAgents();
+                showRunningAgents();
+            }
+            case "single" -> {
+                // Single benchmark mode
+                createServices();
+                System.out.println("Simulating " + peasantFamiliesAgents + " agents");
+                createPeasants(1, peasantFamiliesAgents);
+                startAgents();
+            }
+            default -> System.out.println("No se reconoce el nombre del contendor BESA " + params.mode);
         }
     }
 

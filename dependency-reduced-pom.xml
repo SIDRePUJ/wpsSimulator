@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wpsim</groupId>
   <artifactId>wpsim</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <build>
     <plugins>
       <plugin>
@@ -13,7 +13,7 @@
         <configuration>
           <mainClass>org.wpsim.WellProdSim.wpsStart</mainClass>
           <arguments>
-            <argument>local</argument>
+            <argument>--mode single --agents 10 --money 5000 --land 2 --personality 0.5 --tools 5 --seeds 10 --water 2000 --irrigation 1</argument>
           </arguments>
         </configuration>
       </plugin>
@@ -35,6 +35,24 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
       </plugin>
     </plugins>
   </build>

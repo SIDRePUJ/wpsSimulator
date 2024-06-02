@@ -58,6 +58,8 @@ import org.wpsim.ViewerLens.Util.wpsReport;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.wpsim.WellProdSim.wpsStart.params;
+
 /**
  * @TODO: Patrones de comunicación
  */
@@ -147,10 +149,16 @@ public class PeasantFamily extends AgentBDI {
         //goals.add(ObtainPesticidesGoal.buildGoal());
         goals.add(AlternativeWorkGoal.buildGoal());
 
-        if (wpsStart.config.getBooleanProperty("pfagent.irrigation")) {
+        //if (wpsStart.config.getBooleanProperty("pfagent.irrigation")) {
+        if (params.irrigation == 1) {
             goals.add(IrrigateCropsGoal.buildGoal());
             goals.add(ObtainWaterGoal.buildGoal());
-        }
+        }/*else if (params.irrigation == -1){
+            if (wpsStart.config.getBooleanProperty("pfagent.irrigation")){
+                goals.add(IrrigateCropsGoal.buildGoal());
+                goals.add(ObtainWaterGoal.buildGoal());
+            }
+        }*/
 
         //Level 5 Goals: Social
         //goals.add(CommunicateGoal.buildGoal());

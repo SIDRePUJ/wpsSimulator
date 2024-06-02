@@ -25,6 +25,8 @@ import org.wpsim.WellProdSim.wpsStart;
 import java.io.*;
 import java.util.*;
 
+import static org.wpsim.WellProdSim.wpsStart.params;
+
 /**
  * @author jairo
  */
@@ -267,12 +269,32 @@ public final class wpsConfig {
                 getDoubleProperty("pfagent.variance")
         );
 
+        if (params.money != -1) {
+            pfProfile.setInitialMoney((int) (params.money * rnd));
+            pfProfile.setMoney((int) (params.money * rnd));
+        } else {
+            pfProfile.setInitialMoney((int) (pfProfile.getMoney() * rnd));
+            pfProfile.setMoney((int) (pfProfile.getMoney() * rnd));
+        }
+
+        if (params.water != -1) {
+            pfProfile.setWaterAvailable((int) (params.water * rnd));
+        } else {
+            pfProfile.setWaterAvailable((int) (pfProfile.getWaterAvailable() * rnd));
+        }
+
+        if (params.seeds != -1) {
+            pfProfile.setSeeds((int) (params.seeds * rnd));
+        } else {
+            pfProfile.setSeeds((int) (pfProfile.getSeeds() * rnd));
+        }
+
+        if (params.tools != -1) {
+            pfProfile.setTools((int) (params.tools * rnd));
+        }
+
         pfProfile.setHealth((int) (pfProfile.getHealth() * rnd));
         pfProfile.setInitialHealth((int) (pfProfile.getHealth() * rnd));
-        pfProfile.setInitialMoney((int) (pfProfile.getMoney() * rnd));
-        pfProfile.setMoney((int) (pfProfile.getMoney() * rnd));
-        pfProfile.setWaterAvailable((int) (pfProfile.getWaterAvailable() * rnd));
-        pfProfile.setSeeds((int) (pfProfile.getSeeds() * rnd));
         pfProfile.setCropSize((int) (pfProfile.getCropSize() * rnd));
         pfProfile.setPeasantFamilyAffinity(pfProfile.getPeasantFamilyAffinity() * rnd);
         pfProfile.setPeasantFriendsAffinity(pfProfile.getPeasantFriendsAffinity() * rnd);

@@ -42,6 +42,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static org.wpsim.WellProdSim.wpsStart.params;
+
 /**
  * @author jairo
  */
@@ -102,7 +104,12 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
 
-        this.setPersonality(wpsStart.config.getDoubleProperty("pfagent.personality"));
+        if (params.personality != -1.0) {
+            this.setPersonality(params.personality);
+        } else {
+            this.setPersonality(0.0);
+        }
+
         changePersonalityBase(getPersonality());
 
         if (wpsStart.config.getBooleanProperty("pfagent.randonemotions")) {
@@ -280,13 +287,14 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         String taskName = parts[parts.length - 1];
         taskLog.computeIfAbsent(date, k -> ConcurrentHashMap.newKeySet()).add(taskName);
     }
+
     public void addTaskToLog(String date, String landName) {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         String fullClassName = stackTraceElements[2].getClassName();
         String[] parts = fullClassName.split("\\.");
         String taskName = parts[parts.length - 1];
         taskLog.computeIfAbsent(date, k -> ConcurrentHashMap.newKeySet()).add(taskName);
-        taskLog.computeIfAbsent(date, k -> ConcurrentHashMap.newKeySet()).add(taskName+landName);
+        taskLog.computeIfAbsent(date, k -> ConcurrentHashMap.newKeySet()).add(taskName + landName);
     }
 
     /**
@@ -301,10 +309,11 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         //System.out.println(tasks + " " + taskName + " on " + date + " r " + tasks.contains(taskName));
         return tasks.contains(taskName);
     }
+
     public boolean isTaskExecutedOnDateWithLand(String date, String taskName, String landName) {
         Set<String> tasks = taskLog.getOrDefault(date, new HashSet<>());
         //ReportBESA.info(tasks + " " + (taskName+landName) + " on " + date + " r " + tasks.contains(taskName+landName));
-        return tasks.contains(taskName+landName);
+        return tasks.contains(taskName + landName);
     }
 
     public boolean isHaveLoan() {
@@ -438,7 +447,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         timeLeftOnDay = (int) (timeLeftOnDay - time);
         if (timeLeftOnDay <= 30) {
             this.makeNewDay();
-        }else if (timeLeftOnDay < 120){
+        } else if (timeLeftOnDay < 120) {
             timeLeftOnDay = 120;
         }
         //ReportBESA.info("decreaseTime: " + time + ", Queda " + timeLeftOnDay + " para " + getPeasantProfile().getPeasantFamilyAlias());
@@ -671,7 +680,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
 
         taskLog.forEach((dateString, tasks) -> {
             LocalDate date = LocalDate.parse(dateString, formatter);
-            if(date.equals(dateToFind)) {
+            if (date.equals(dateToFind)) {
                 tasksForSpecificDate.put(date.format(formatter), tasks);
             }
         });
