@@ -87,7 +87,7 @@ public class wpsGoalBDI extends GoalBDI {
     public double evaluateEmotionalContribution(StateBDI stateBDI, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("EmotionalRulesFull");
-        if (wpsStart.config.getBooleanProperty("pfagent.emotions") && believes.isHaveEmotions()) {
+        if (believes.isHaveEmotions()) {
             return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
         } else {
             return contribution;
@@ -106,7 +106,7 @@ public class wpsGoalBDI extends GoalBDI {
                     stateBDI.getMachineBDIParams().getPyramidGoals().toString(), believes.getAlias()
             );
         }
-        if (wpsStart.config.getBooleanProperty("pfagent.emotions") && believes.isHaveEmotions()) {
+        if (believes.isHaveEmotions()) {
             return 1 - ((evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2);
         } else {
             return contribution;
@@ -125,7 +125,7 @@ public class wpsGoalBDI extends GoalBDI {
     public double evaluateSingleEmotionContribution(StateBDI stateBDI, String emotionToEvaluate, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("EmotionalRules");
-        if (wpsStart.config.getBooleanProperty("pfagent.emotions") && believes.isHaveEmotions()) {
+        if (believes.isHaveEmotions()) {
             return (evaluator.evaluateSingleEmotion(believes.getEmotionsListCopy(), emotionToEvaluate) + contribution) / 2;
         } else {
             return contribution;

@@ -9,10 +9,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Ya es posible ejecutarlo por línea de comandos para experimentos.">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="script no dinamico para ejecución see xperimentos">
+      <change afterPath="$PROJECT_DIR$/run_ccc18.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_exp.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run_exp.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/runjar.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run_exp2.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L5Social/LookForCollaborationGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L5Social/LookForCollaborationGoal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L6Leisure/SpendFamilyTimeGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L6Leisure/SpendFamilyTimeGoal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsGoalBDI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Base/wpsGoalBDI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_p02.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_p02.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_p03.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_p03.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +79,7 @@
     "git-widget-placeholder": "working",
     "ignore.preview.features.used": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/jairo/IdeaProjects/wpsSimulator/src/main/resources/web/data",
+    "last_opened_file_path": "/home/jairo/IdeaProjects/wpsSimulator",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -93,8 +100,8 @@
       <recent name="org.wpsim.PeasantFamily.Emotions" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources/web/data" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/main/resources/web/data" />
       <recent name="$PROJECT_DIR$/src/main/resources/data.fuzzyRules" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/" />
@@ -338,15 +345,8 @@
       <workItem from="1715745823471" duration="38374000" />
       <workItem from="1716769394441" duration="35053000" />
       <workItem from="1717092629198" duration="40550000" />
-      <workItem from="1717257179200" duration="11644000" />
-    </task>
-    <task id="LOCAL-00022" summary="Se ajustó el mecanismo de cierre de metas y tareas.">
-      <option name="closed" value="true" />
-      <created>1702521110602</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1702521110602</updated>
+      <workItem from="1717257179200" duration="12779000" />
+      <workItem from="1717779896746" duration="4436000" />
     </task>
     <task id="LOCAL-00023" summary="Ajustado el mecanismo de preparación, siembra y recolección de cultivos.">
       <option name="closed" value="true" />
@@ -732,7 +732,15 @@
       <option name="project" value="LOCAL" />
       <updated>1717300351362</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="script no dinamico para ejecución see xperimentos">
+      <option name="closed" value="true" />
+      <created>1717369293008</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1717369293008</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -783,7 +791,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Trabajo alternativo adicionado, arreglado." />
     <MESSAGE value="indice de criminalidad, trabajos adicionales, semillas." />
     <MESSAGE value="Corrección en cultivos." />
     <MESSAGE value="Variables al archivo de configuración con propiedades." />
@@ -808,7 +815,8 @@
     <MESSAGE value="Versión usada para validación" />
     <MESSAGE value="cierre en modo single" />
     <MESSAGE value="Ya es posible ejecutarlo por línea de comandos para experimentos." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ya es posible ejecutarlo por línea de comandos para experimentos." />
+    <MESSAGE value="script no dinamico para ejecución see xperimentos" />
+    <option name="LAST_COMMIT_MESSAGE" value="script no dinamico para ejecución see xperimentos" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

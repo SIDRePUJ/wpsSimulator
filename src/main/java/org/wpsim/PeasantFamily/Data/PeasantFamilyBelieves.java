@@ -112,8 +112,8 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
 
         changePersonalityBase(getPersonality());
 
-        if (wpsStart.config.getBooleanProperty("pfagent.randonemotions")) {
-            this.setHaveEmotions(Coin.flipCoin());
+        if (params.mode.equals("single")) {
+            this.setHaveEmotions(params.emotions == 1);
         } else {
             this.setHaveEmotions(wpsStart.config.getBooleanProperty("pfagent.emotions"));
         }
@@ -797,7 +797,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
                 .append(getOrDefault(getContractor())).append(',')
                 .append(getOrDefault(getDaysToWorkForOther())).append(',')
                 .append(getOrDefault(getAlias())).append(',')
-                .append(getOrDefault(wpsStart.config.getBooleanProperty("pfagent.emotions"))).append(',')
+                .append(getOrDefault(isHaveEmotions())).append(',')
                 .append(getOrDefault(getPeasantFamilyHelper())).append(',')
                 .append(getOrDefault(isHaveEmotions()));
 

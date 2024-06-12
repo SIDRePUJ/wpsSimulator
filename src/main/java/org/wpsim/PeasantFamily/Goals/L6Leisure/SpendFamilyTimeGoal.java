@@ -131,7 +131,7 @@ public class SpendFamilyTimeGoal extends wpsGoalBDI {
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
 
-        if (wpsStart.config.getBooleanProperty("pfagent.emotions") && believes.isHaveEmotions()) {
+        if (believes.isHaveEmotions()) {
 
             List<String> rules = wpsStart.config.getFuzzyRulesList("GoalsSpendFamilyEmotionalRules");
             RuleBlock ruleBlock = new RuleBlock();

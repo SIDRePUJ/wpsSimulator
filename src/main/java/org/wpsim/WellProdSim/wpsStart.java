@@ -91,6 +91,7 @@ public class wpsStart {
         options.addOption(new Option("s", "seeds", true, "Type of seeds"));
         options.addOption(new Option("w", "water", true, "Amount of water"));
         options.addOption(new Option("i", "irrigation", true, "Irrigation enabled"));
+        options.addOption(new Option("e", "emotions", true, "Enable Emotions"));
 
         // Crear el parser para los argumentos
         CommandLineParser parser = new DefaultParser();
@@ -105,6 +106,9 @@ public class wpsStart {
             }
             if (cmd.hasOption("mode")) {
                 params.mode = cmd.getOptionValue("mode");
+            }
+            if (cmd.hasOption("emotions")) {
+                params.emotions = Integer.parseInt(cmd.getOptionValue("emotions"));
             }
             if (cmd.hasOption("money")) {
                 params.money = Integer.parseInt(cmd.getOptionValue("money"));
