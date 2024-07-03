@@ -77,6 +77,8 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     private boolean wait;
     private boolean updatePriceList;
     private double personality;
+    private double trainingLevel;
+    private boolean trainingAvailable;
 
     /**
      * @param alias          Peasant Family Alias
@@ -103,6 +105,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.currentMoneyOrigin = MoneyOriginType.NONE;
         this.currentPeasantActivityType = PeasantActivityType.NONE;
         this.currentPeasantLeisureType = PeasantLeisureType.NONE;
+        this.setHaveEmotions(params.emotions == 1);
 
         if (params.personality != -1.0) {
             this.setPersonality(params.personality);
@@ -110,14 +113,30 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
             this.setPersonality(0.0);
         }
 
-        changePersonalityBase(getPersonality());
-
-        if (params.mode.equals("single")) {
-            this.setHaveEmotions(params.emotions == 1);
-        } else {
-            this.setHaveEmotions(wpsStart.config.getBooleanProperty("pfagent.emotions"));
+        if (params.training == 1) {
+            this.trainingLevel = wpsStart.config.getDoubleProperty("trainingLevel");
+        }else{
+            this.trainingLevel = 0.4;
         }
 
+        changePersonalityBase(getPersonality());
+
+    }
+    public boolean isTrainingAvailable() {
+        return trainingAvailable;
+    }
+
+    public void setTrainingAvailable(boolean trainingAvailable) {
+        this.trainingAvailable = trainingAvailable;
+    }
+
+    public double getTrainingLevel(){
+        return trainingLevel;
+    }
+
+    public void increaseTrainingLevel(){
+        trainingLevel+=0.1;
+        setTrainingAvailable(false);
     }
 
     public boolean isHaveEmotions() {

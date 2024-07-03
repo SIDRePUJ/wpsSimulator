@@ -118,7 +118,7 @@ public class BankOfficeGuard extends wpsGuardBESA {
 
             wpsReport.info("Llegó " + bankOfficeMessage.getPeasantAlias() + " " + bankOfficeMessage.getMessageType(), this.getAgent().getAlias());
         } catch (Exception e) {
-            System.out.println("Error al guardar csv de prestamos");
+            System.out.println("Error al guardar csv de prestamos "  + e.getMessage());
         }
         try {
             this.agent.getAdmLocal().getHandlerByAlias(

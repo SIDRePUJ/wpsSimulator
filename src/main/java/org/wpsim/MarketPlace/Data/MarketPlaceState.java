@@ -51,7 +51,7 @@ public class MarketPlaceState extends StateBESA implements Serializable {
      * @param agentName   El nombre del agente que ofrece el producto.
      * @param productName El nombre del producto ofrecido.
      */
-    public void updateAgentProductMapAndDiversityFactor(String agentName, String productName) {
+    public synchronized void updateAgentProductMapAndDiversityFactor(String agentName, String productName) {
         productAgentMap.computeIfAbsent(productName, k -> new ArrayList<>()).add(System.currentTimeMillis());
         adjustDiversityFactor();
     }
@@ -59,7 +59,7 @@ public class MarketPlaceState extends StateBESA implements Serializable {
     /**
      * Ajusta el diversityFactor basado en la distribución actual de productos.
      */
-    private void adjustDiversityFactor() {
+    private synchronized void adjustDiversityFactor() {
         final long freshnessThreshold = 200; // 200 milisegundos para definir la "frescura" de una oferta
         long currentTime = System.currentTimeMillis();
 
@@ -82,7 +82,7 @@ public class MarketPlaceState extends StateBESA implements Serializable {
     /**
      * Lógica para ajustar precios basados en la rareza de cada producto.
      */
-    public void adjustPrices() {
+    public synchronized void adjustPrices() {
         final long freshnessThreshold = 50; // 200 milisegundos para la frescura
         long currentTime = System.currentTimeMillis();
 
@@ -146,11 +146,11 @@ public class MarketPlaceState extends StateBESA implements Serializable {
         return sb.toString();
     }
 
-    public Map<String, FarmingResource> getResources() {
+    public synchronized Map<String, FarmingResource> getResources() {
         return resources;
     }
 
-    public void setResources(Map<String, FarmingResource> resources) {
+    public synchronized void setResources(Map<String, FarmingResource> resources) {
         this.resources = resources;
     }
 
@@ -163,7 +163,7 @@ public class MarketPlaceState extends StateBESA implements Serializable {
         }
         changePrice(productName, factor * -1);
     }
-    public void increaseCropPrice(int factor) {
+    public synchronized void increaseCropPrice(int factor) {
         String productName;
         if (Coin.flipCoin()) {
             productName = "rice";
@@ -173,22 +173,22 @@ public class MarketPlaceState extends StateBESA implements Serializable {
         changePrice(productName, factor);
     }
 
-    public void increaseToolsPrice(int factor) {
+    public synchronized void increaseToolsPrice(int factor) {
         changePrice("tools", factor);
     }
 
-    public void decreaseToolsPrice(int factor) {
+    public synchronized void decreaseToolsPrice(int factor) {
         changePrice("tools", factor * -1);
     }
 
-    public void decreaseSeedsPrice(int factor) {
+    public synchronized void decreaseSeedsPrice(int factor) {
         changePrice("seeds", factor * -1);
     }
 
-    public void increaseSeedsPrice(int factor) {
+    public synchronized void increaseSeedsPrice(int factor) {
         changePrice("seeds", factor);
     }
-    public void changePrice(String productName, double factor){
+    public synchronized void changePrice(String productName, double factor){
         factor = 1 + (factor / 100);
         double basePrice = resources.get(productName).getCost();
         double newPrice = basePrice * factor;

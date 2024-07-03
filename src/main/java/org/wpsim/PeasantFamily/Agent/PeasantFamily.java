@@ -21,8 +21,14 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
+import BESA.Kernel.System.Directory.AdmHandlerBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import BESA.Remote.AdmRemoteImpBESA;
+import BESA.Remote.Directory.AgRemoteHandlerBESA;
+import BESA.Remote.Directory.RemoteAdmHandlerBESA;
+import BESA.Remote.RemoteAdmBESA;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVoidGoal;
+import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityTrainingGuard;
 import org.wpsim.SimulationControl.Guards.AliveAgentGuard;
 import org.wpsim.SimulationControl.Guards.DeadAgentGuard;
 import org.wpsim.CivicAuthority.Data.LandInfo;
@@ -55,7 +61,9 @@ import org.wpsim.PeasantFamily.Guards.Status.StatusGuard;
 import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.ViewerLens.Util.wpsReport;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import static org.wpsim.WellProdSim.wpsStart.params;
@@ -94,8 +102,9 @@ public class PeasantFamily extends AgentBDI {
         structBESA.addBehavior("FromMarketBehavior");
         structBESA.bindGuard("FromMarketBehavior", FromMarketPlaceGuard.class);
 
-        structBESA.addBehavior("FromGovernmentBehavior");
-        structBESA.bindGuard("FromGovernmentBehavior", FromCivicAuthorityGuard.class);
+        structBESA.addBehavior("FromCivicAuthorityBehavior");
+        structBESA.bindGuard("FromCivicAuthorityBehavior", FromCivicAuthorityGuard.class);
+        structBESA.bindGuard("FromCivicAuthorityBehavior", FromCivicAuthorityTrainingGuard.class);
 
         structBESA.addBehavior("StatusBehavior");
         structBESA.bindGuard("StatusBehavior", StatusGuard.class);
@@ -149,16 +158,14 @@ public class PeasantFamily extends AgentBDI {
         //goals.add(ObtainPesticidesGoal.buildGoal());
         goals.add(AlternativeWorkGoal.buildGoal());
 
-        //if (wpsStart.config.getBooleanProperty("pfagent.irrigation")) {
+        if (wpsStart.config.getBooleanProperty("pfagent.trainingEnabled")) {
+            goals.add(GetTechAssistanceGoal.buildGoal());
+        }
+
         if (params.irrigation == 1) {
             goals.add(IrrigateCropsGoal.buildGoal());
             goals.add(ObtainWaterGoal.buildGoal());
-        }/*else if (params.irrigation == -1){
-            if (wpsStart.config.getBooleanProperty("pfagent.irrigation")){
-                goals.add(IrrigateCropsGoal.buildGoal());
-                goals.add(ObtainWaterGoal.buildGoal());
-            }
-        }*/
+        }
 
         //Level 5 Goals: Social
         //goals.add(CommunicateGoal.buildGoal());
@@ -193,21 +200,19 @@ public class PeasantFamily extends AgentBDI {
         //wpsReport.debug("Setup " + this.getAlias(), this.getAlias());
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) this.getState()).getBelieves();
         try {
-            AdmBESA adm = AdmBESA.getInstance();
-            ToControlMessage toControlMessage = new ToControlMessage(
-                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                    believes.getCurrentDay()
-            );
-            EventBESA eventBesa = new EventBESA(
-                    AliveAgentGuard.class.getName(),
-                    toControlMessage
-            );
-            AgHandlerBESA agHandler = adm.getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getControlAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            AliveAgentGuard.class.getName(),
+                            new ToControlMessage(
+                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                    believes.getCurrentDay()
+                            )
+                    )
             );
-            agHandler.sendEvent(eventBesa);
         } catch (ExceptionBESA ex) {
-            //wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -221,18 +226,6 @@ public class PeasantFamily extends AgentBDI {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) this.getState()).getBelieves();
         wpsReport.mental(believes.toCSV(), this.getAlias());
         wpsReport.ws(believes.toJson(), believes.getAlias());
-        //Eliminar la tierra del agente
-        /*for (LandInfo currentLandInfo : believes.getAssignedLands()) {
-            if (!currentLandInfo.getKind().equals("water")) {
-                try {
-                    //System.out.println("Eliminando la tierra " + currentLandInfo.getLandName());
-                    String agID = AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
-                    AdmBESA.getInstance().killAgent(agID, wpsStart.config.getDoubleProperty("control.passwd"));
-                } catch (Exception ex) {
-                    wpsReport.error("Error Eliminando la tierra " + currentLandInfo.getLandName() + ex.getMessage(), this.getAlias());
-                }
-            }
-        }*/
         //Eliminar el agente
         try {
             AdmBESA.getInstance().getHandlerByAlias(

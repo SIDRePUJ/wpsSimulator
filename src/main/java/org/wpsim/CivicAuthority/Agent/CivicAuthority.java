@@ -15,14 +15,17 @@
 package org.wpsim.CivicAuthority.Agent;
 
 import BESA.ExceptionBESA;
-import BESA.Kernel.Agent.AgentBESA;
-import BESA.Kernel.Agent.KernelAgentExceptionBESA;
-import BESA.Kernel.Agent.StateBESA;
-import BESA.Kernel.Agent.StructBESA;
+import BESA.Kernel.Agent.*;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.System.AdmBESA;
+import BESA.Util.PeriodicDataBESA;
 import org.wpsim.CivicAuthority.Data.CivicAuthorityState;
 import org.wpsim.CivicAuthority.Guards.CivicAuthorityHelpGuard;
 import org.wpsim.CivicAuthority.Guards.CivicAuthorityLandGuard;
 import org.wpsim.CivicAuthority.Guards.CivicAuthorityReleaseLandGuard;
+import org.wpsim.CivicAuthority.Guards.TrainingOfferGuard;
+import org.wpsim.PeasantFamily.PeriodicGuards.HeartBeatGuard;
+import org.wpsim.WellProdSim.Config.wpsConfig;
 
 /**
  *
@@ -47,10 +50,14 @@ public class CivicAuthority extends AgentBESA {
     }
 
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
-        structBESA.addBehavior("GovernmentAgentGuards");
-        structBESA.bindGuard("GovernmentAgentGuards", CivicAuthorityHelpGuard.class);
-        structBESA.bindGuard("GovernmentAgentGuards", CivicAuthorityLandGuard.class);
-        structBESA.bindGuard("GovernmentAgentGuards", CivicAuthorityReleaseLandGuard.class);
+        structBESA.addBehavior("GovernmentAgentBehavior");
+        structBESA.bindGuard("GovernmentAgentBehavior", CivicAuthorityHelpGuard.class);
+        structBESA.bindGuard("GovernmentAgentBehavior", CivicAuthorityLandGuard.class);
+        structBESA.bindGuard("GovernmentAgentBehavior", CivicAuthorityReleaseLandGuard.class);
+
+        structBESA.addBehavior("TrainingOfferBehavior");
+        structBESA.bindGuard("TrainingOfferBehavior", TrainingOfferGuard.class);
+
         return structBESA;
     }
 
@@ -63,7 +70,21 @@ public class CivicAuthority extends AgentBESA {
      */
     @Override
     public void setupAgent() {
-
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(
+                    wpsConfig.getInstance().getGovernmentAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            TrainingOfferGuard.class.getName(),
+                            new PeriodicDataBESA(
+                                    800,
+                                    PeriodicGuardBESA.START_PERIODIC_CALL
+                            )
+                    )
+            );
+        } catch (ExceptionBESA e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

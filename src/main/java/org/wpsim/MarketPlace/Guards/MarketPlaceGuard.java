@@ -50,73 +50,109 @@ public class MarketPlaceGuard extends wpsGuardBESA {
         MarketPlaceMessageType messageType = marketPlaceMessage.getMessageType();
         int quantity = marketPlaceMessage.getQuantity();
 
-        try {
-            FromMarketPlaceMessageType fromMarketPlaceMessageType = null;
-            FromMarketPlaceMessage fromMarketPlaceMessage;
+        if (messageType == MarketPlaceMessageType.ASK_FOR_PRICE_LIST) {
+            try {
+                FromMarketPlaceMessageType fromMarketPlaceMessageType;
+                FromMarketPlaceMessage fromMarketPlaceMessage;
 
-            switch (messageType) {
-                case ASK_FOR_PRICE_LIST -> {
-                    fromMarketPlaceMessageType = FromMarketPlaceMessageType.PRICE_LIST;
-                    fromMarketPlaceMessage = new FromMarketPlaceMessage(
-                            fromMarketPlaceMessageType,
-                            state.getResources()
-                    );
-                }
-                case SELL_CROP -> {
-                    //System.out.println(marketPlaceMessage.getPeasantAlias() + " Recalculando para " + marketPlaceMessage.getCropName());
-                    state.getResources().get(
-                            marketPlaceMessage.getCropName()
-                    ).setQuantity(
-                            quantity + marketPlaceMessage.getQuantity()
-                    );
-                    // Update product price
-                    state.updateAgentProductMapAndDiversityFactor(marketPlaceMessage.getPeasantAlias(), marketPlaceMessage.getCropName());
-                    if (currentWeek != ControlCurrentDate.getInstance().getCurrentWeek()) {
-                        currentWeek = ControlCurrentDate.getInstance().getCurrentWeek();
-                        state.adjustPrices();
-                    }
-                    //wpsReport.warn("Comprado");
-                    fromMarketPlaceMessageType = FromMarketPlaceMessageType.SOLD_CROP;
-                    fromMarketPlaceMessage = new FromMarketPlaceMessage(
-                            fromMarketPlaceMessageType,
-                            marketPlaceMessage.getCropName(),
-                            quantity,
-                            state.getResources().get(
-                                    marketPlaceMessage.getCropName()
-                            ).getCost() * quantity
-                    );
-                }
-                default -> {
-                    productType = switch (messageType) {
-                        case BUY_SEEDS -> "seeds";
-                        case BUY_WATER -> "water";
-                        case BUY_PESTICIDES -> "pesticides";
-                        case BUY_SUPPLIES -> "supplies";
-                        case BUY_TOOLS -> "tools";
-                        case BUY_LIVESTOCK -> "livestock";
-                        default -> throw new IllegalArgumentException("Invalid message type: " + messageType);
-                    };
-                    if (state.getResources().get(productType).isAvailable(quantity)) {
-                        state.getResources().get(productType).discountQuantity(quantity);
-                    }
-                    fromMarketPlaceMessageType = FromMarketPlaceMessageType.valueOf(productType.toUpperCase());
-                    fromMarketPlaceMessage = new FromMarketPlaceMessage(fromMarketPlaceMessageType, quantity);
-                }
+                fromMarketPlaceMessageType = FromMarketPlaceMessageType.PRICE_LIST;
+                fromMarketPlaceMessage = new FromMarketPlaceMessage(
+                        fromMarketPlaceMessageType,
+                        state.getResources()
+                );
+
+                this.agent.getAdmLocal().getHandlerByAlias(
+                        marketPlaceMessage.getPeasantAlias()
+                ).sendEvent(
+                        new EventBESA(
+                                FromMarketPlaceGuard.class.getName(),
+                                fromMarketPlaceMessage
+                        )
+                );
+
+                //System.out.print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n=============" + fromMarketPlaceMessage.getPriceList()+ "================\n\n\n\n\n\n\n\n\n\n\n\n\n\n MarketPlace");
+
+                wpsCSV.log("Market", marketPlaceMessage.getPeasantAlias() + "," + marketPlaceMessage.getCurrentDate() + ",ASK_FOR_PRICE_LIST," + fromMarketPlaceMessage.getMessageType());
+                wpsReport.debug(marketPlaceMessage.getPeasantAlias() + " sending... PRICE_LIST", this.getAgent().getAlias());
+            } catch (Exception e) {
+                wpsReport.error(e.getMessage(), this.getAgent().getAlias());
             }
+        } else if (messageType == MarketPlaceMessageType.SELL_CROP) {
+            try {
+                FromMarketPlaceMessageType fromMarketPlaceMessageType;
+                FromMarketPlaceMessage fromMarketPlaceMessage;
 
-            this.agent.getAdmLocal().getHandlerByAlias(
-                    marketPlaceMessage.getPeasantAlias()
-            ).sendEvent(
-                    new EventBESA(
-                            FromMarketPlaceGuard.class.getName(),
-                            fromMarketPlaceMessage
-                    )
-            );
-            wpsCSV.log("Market", marketPlaceMessage.getPeasantAlias() + "," + marketPlaceMessage.getCurrentDate() + "," + messageType + "," + fromMarketPlaceMessage.getMessageType());
-            wpsReport.debug(marketPlaceMessage.getPeasantAlias() + " sending... " + productType, this.getAgent().getAlias());
-        } catch (Exception e) {
-            wpsReport.error("Mensaje no reconocido de funcExecGuard", this.getAgent().getAlias());
+                state.getResources().get(
+                        marketPlaceMessage.getCropName()
+                ).setQuantity(
+                        quantity + marketPlaceMessage.getQuantity()
+                );
+                state.updateAgentProductMapAndDiversityFactor(marketPlaceMessage.getPeasantAlias(), marketPlaceMessage.getCropName());
+                if (currentWeek != ControlCurrentDate.getInstance().getCurrentWeek()) {
+                    currentWeek = ControlCurrentDate.getInstance().getCurrentWeek();
+                    state.adjustPrices();
+                }
+
+                fromMarketPlaceMessageType = FromMarketPlaceMessageType.SOLD_CROP;
+                fromMarketPlaceMessage = new FromMarketPlaceMessage(
+                        fromMarketPlaceMessageType,
+                        marketPlaceMessage.getCropName(),
+                        quantity,
+                        state.getResources().get(
+                                marketPlaceMessage.getCropName()
+                        ).getCost() * quantity
+                );
+
+                this.agent.getAdmLocal().getHandlerByAlias(
+                        marketPlaceMessage.getPeasantAlias()
+                ).sendEvent(
+                        new EventBESA(
+                                FromMarketPlaceGuard.class.getName(),
+                                fromMarketPlaceMessage
+                        )
+                );
+                wpsCSV.log("Market", marketPlaceMessage.getPeasantAlias() + "," + marketPlaceMessage.getCurrentDate() + ",SELL_CROP," + fromMarketPlaceMessage.getMessageType());
+                wpsReport.debug(marketPlaceMessage.getPeasantAlias() + " sending... SOLD_CROP", this.getAgent().getAlias());
+            } catch (Exception e) {
+                wpsReport.error(e.getMessage(), this.getAgent().getAlias());
+            }
+        } else {
+            try {
+                FromMarketPlaceMessageType fromMarketPlaceMessageType;
+                FromMarketPlaceMessage fromMarketPlaceMessage;
+
+                productType = switch (messageType) {
+                    case BUY_SEEDS -> "seeds";
+                    case BUY_WATER -> "water";
+                    case BUY_PESTICIDES -> "pesticides";
+                    case BUY_SUPPLIES -> "supplies";
+                    case BUY_TOOLS -> "tools";
+                    case BUY_LIVESTOCK -> "livestock";
+                    default -> throw new IllegalArgumentException("Invalid message type: " + messageType);
+                };
+
+                if (state.getResources().get(productType).isAvailable(quantity)) {
+                    state.getResources().get(productType).discountQuantity(quantity);
+                }
+
+                fromMarketPlaceMessageType = FromMarketPlaceMessageType.valueOf(productType.toUpperCase());
+                fromMarketPlaceMessage = new FromMarketPlaceMessage(fromMarketPlaceMessageType, quantity);
+
+                this.agent.getAdmLocal().getHandlerByAlias(
+                        marketPlaceMessage.getPeasantAlias()
+                ).sendEvent(
+                        new EventBESA(
+                                FromMarketPlaceGuard.class.getName(),
+                                fromMarketPlaceMessage
+                        )
+                );
+                wpsCSV.log("Market", marketPlaceMessage.getPeasantAlias() + "," + marketPlaceMessage.getCurrentDate() + "," + messageType + "," + fromMarketPlaceMessage.getMessageType());
+                wpsReport.debug(marketPlaceMessage.getPeasantAlias() + " sending... " + productType.toUpperCase(), this.getAgent().getAlias());
+            } catch (Exception e) {
+                wpsReport.error(e.getMessage(), this.getAgent().getAlias());
+            }
         }
     }
+
 
 }

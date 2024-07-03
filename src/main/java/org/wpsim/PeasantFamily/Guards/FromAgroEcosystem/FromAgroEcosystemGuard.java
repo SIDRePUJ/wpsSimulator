@@ -88,7 +88,7 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                                     Math.ceil(
                                             Double.parseDouble(
                                                     cropData.get("aboveGroundBiomass").toString()
-                                            ) * 0.3 // Solo es aprovechable el 50% de la biomasa + 20% consumo interno
+                                            ) * believes.getTrainingLevel() // Solo es aprovechable el 50% de la biomasa + 20% consumo interno
                                     )
                             )
                     );
@@ -96,7 +96,7 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                             Math.ceil(
                                     Double.parseDouble(
                                             cropData.get("aboveGroundBiomass").toString()
-                                    ) * 0.3 // Solo es aprovechable el 50% de la biomasa + 20% consumo interno
+                                    ) * believes.getTrainingLevel() // Solo es aprovechable el 50% de la biomasa + 20% consumo interno
                             )
                     );
                     believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));

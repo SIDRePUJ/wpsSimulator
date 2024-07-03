@@ -83,7 +83,7 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
         createFarms();
 
         System.out.println("Farms created");
-        System.out.println(farms);
+        //System.out.println(farms);
 
         // Contar fincas por tamaño
         long largeFarmsCount = farms.keySet().stream().filter(farmName -> farmName.contains("_large")).count();

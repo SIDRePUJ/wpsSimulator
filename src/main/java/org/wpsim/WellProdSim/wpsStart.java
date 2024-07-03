@@ -19,13 +19,18 @@ import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
+import BESA.Log.ReportBESA;
 import BESA.Util.PeriodicDataBESA;
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.LoggerContext;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.DefaultParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wpsim.BankOffice.Agent.BankOffice;
 import org.wpsim.SimulationControl.Agent.SimulationControl;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
@@ -43,6 +48,7 @@ import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.ViewerLens.Agent.ViewerLens;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -51,6 +57,7 @@ import java.util.List;
 public class wpsStart {
 
     public static wpsConfig config;
+    public static AdmBESA adm = null;
     private static int PLAN_ID = 0;
     public static int peasantFamiliesAgents;
     public static boolean started = false;
@@ -70,12 +77,23 @@ public class wpsStart {
         setArgumentsConfig(args);
         // Set initial config of simulation
         config = wpsConfig.getInstance();
+        // Create BESA Container
+        createContainer();
         // Set initial date of simulation
         ControlCurrentDate.getInstance().setCurrentDate(config.getStartSimulationDate());
         // Print header for simulation
         printHeader();
         //showRunningAgents();
         startSimulation();
+    }
+
+    private static void createContainer() {
+        String path = "server_" + wpsStart.config.getStringProperty("pfagent.env") + "_" + params.mode + ".xml";
+        System.out.println("Starting in " + path + " mode");
+
+        adm = AdmBESA.getInstance(path);
+
+        System.out.println(adm.getConfigBESA());
     }
 
     private static void setArgumentsConfig(String[] args) {
@@ -92,6 +110,7 @@ public class wpsStart {
         options.addOption(new Option("w", "water", true, "Amount of water"));
         options.addOption(new Option("i", "irrigation", true, "Irrigation enabled"));
         options.addOption(new Option("e", "emotions", true, "Enable Emotions"));
+        options.addOption(new Option("r", "training", true, "Enable Training"));
 
         // Crear el parser para los argumentos
         CommandLineParser parser = new DefaultParser();
@@ -131,6 +150,9 @@ public class wpsStart {
             if (cmd.hasOption("water")) {
                 params.water = Integer.parseInt(cmd.getOptionValue("water"));
             }
+            if (cmd.hasOption("training")) {
+                params.water = Integer.parseInt(cmd.getOptionValue("training"));
+            }
 
         } catch (Exception e) {
             // Mostrar ayuda si hay un error en el parseo
@@ -141,42 +163,33 @@ public class wpsStart {
     }
 
     private static void startSimulation() {
-        String env = wpsStart.config.getStringProperty("pfagent.env");
-        String path = "server_" + env + "_" + params.mode + ".xml";
-        System.out.println("Starting in " + path + " mode");
-        // Cluster mode
-        AdmBESA adm = AdmBESA.getInstance(path);
-        System.out.println(adm.getConfigBESA().getIpaddress() + " --- " + adm.getConfigBESA().getAliasContainer());
+
         switch (params.mode) {
             case "p01" -> {
                 createServices();
-                createPeasants(0, 500);
-                System.out.println("Simulating 500 agents");
-                startAgents();
+                showRunningAgents();
             }
             case "p02" -> {
-                createPeasants(501, 1000);
-                System.out.println("Simulating 500 agents");
-                startAgents();
-            }
-            case "p03" -> {
-                createPeasants(1001, 1500);
-                System.out.println("Simulating 500 agents");
-                startAgents();
-            }
-            case "p04" -> {
-                createPeasants(1501, 2000);
-                System.out.println("Simulating 500 agents");
+                createPeasants(0, peasantFamiliesAgents);
+                System.out.println("Simulating " + peasantFamiliesAgents + " agents");
                 startAgents();
                 showRunningAgents();
             }
-            case "local" -> {
+            case "p03" -> {
+                createPeasants(1000, 1000+peasantFamiliesAgents);
+                System.out.println("Simulating " + peasantFamiliesAgents + " agents");
+                startAgents();
+            }
+            case "p04" -> {
+                createPeasants(2000, 2000+peasantFamiliesAgents);
+                System.out.println("Simulating " + peasantFamiliesAgents + " agents");
+                startAgents();
+            }
+            case "web" -> {
                 // Single mode
                 createServices();
                 System.out.println("Simulating " + peasantFamiliesAgents + " agents");
                 createPeasants(1, peasantFamiliesAgents);
-                startAgents();
-                showRunningAgents();
             }
             case "single" -> {
                 // Single benchmark mode
@@ -184,6 +197,7 @@ public class wpsStart {
                 System.out.println("Simulating " + peasantFamiliesAgents + " agents");
                 createPeasants(1, peasantFamiliesAgents);
                 startAgents();
+                showRunningAgents();
             }
             default -> System.out.println("No se reconoce el nombre del contendor BESA " + params.mode);
         }
@@ -199,12 +213,19 @@ public class wpsStart {
                 throw new RuntimeException(e);
             }
         }
+        /*System.out.println("Contenedores activos");
+        Enumeration<String> containers = adm.getAdmAliasList();
+        while(containers.hasMoreElements()){
+            System.out.println(containers.nextElement());
+        }*/
+
     }
 
     /**
      * Creates the peasant family agents.
      */
     private static void createPeasants(int min, int max) {
+        System.out.println("entrando a crear agentes.... " + min + " " + max );
         try {
             for (int i = min; i <= max; i++) {
                 PeasantFamily peasantFamily = new PeasantFamily(
@@ -213,8 +234,10 @@ public class wpsStart {
                 );
                 CREATED_AGENTS++;
                 PEASANT_FAMILIES.add(peasantFamily);
+                System.out.println("Creado " + peasantFamily.getAlias());
             }
         } catch (Exception ex) {
+            System.out.println("error creando peasants" + ex.getMessage());
             wpsReport.error(ex, "wpsStart");
         }
 
@@ -237,7 +260,6 @@ public class wpsStart {
             bankOffice.start();
             MarketPlace marketPlace = MarketPlace.createAgent(config.getMarketAgentName(), config.getDoubleProperty("control.passwd"));
             marketPlace.start();
-            // Starting Perturbation Agent
             PerturbationGenerator perturbationGenerator = PerturbationGenerator.createAgent(config.getPerturbationAgentName(), config.getDoubleProperty("control.passwd"));
             perturbationGenerator.start();
         } catch (Exception ex) {
@@ -252,6 +274,7 @@ public class wpsStart {
         // Simulation Start
         try {
             startPFAgents(PEASANT_FAMILIES);
+            showRunningAgents();
         } catch (ExceptionBESA e) {
             throw new RuntimeException(e);
         }

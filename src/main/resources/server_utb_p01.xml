@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <container alias="sim1" password="0.91" ipaddress="127.0.0.1"><!--192.168.12.16-->
-        <environment seneventattemps="10" sendeventtimeout="5" rmitimeout="1000">
-            <remote rmiport="1111" mcaddress="224.0.0.1" mcport="2222"/>
+    <container alias="Container1" password="0.91" ipaddress="192.168.12.16">
+        <environment seneventattemps="10" sendeventtimeout="1" rmitimeout="1000">
+            <remote rmiport="1099" mcaddress="224.0.0.3" mcport="4321"/>
         </environment>
     </container>
 </config>

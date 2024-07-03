@@ -38,11 +38,26 @@
         <appender-ref ref="wpsReportData"/>
     </logger>
 
+    <!-- Loggers para suprimir los mensajes de log de RMI -->
+    <logger name="sun.rmi" level="OFF"/>
+    <logger name="java.rmi" level="OFF"/>
+    <logger name="java.rmi.server" level="OFF"/>
+    <logger name="java.rmi.transport" level="OFF"/>
+    <logger name="java.io.ObjectInputFilter" level="OFF"/>
+
+    <!-- Loggers adicionales para suprimir otros mensajes de log innecesarios -->
+    <logger name="io.undertow" level="OFF"/>
+    <logger name="org.xnio" level="OFF"/>
+    <logger name="ch.qos.logback" level="OFF"/>
+
+    <!-- Loggers específicos para suprimir mensajes detallados -->
+    <logger name="sun.rmi.server.UnicastRef" level="OFF"/>
+    <logger name="java.rmi.server.RemoteObjectInvocationHandler" level="OFF"/>
+    <logger name="sun.rmi.transport.StreamRemoteCall" level="OFF"/>
+    <logger name="java.lang.Shutdown" level="OFF"/>
+
     <!-- Root logger captura DEBUG y niveles superiores y los envía a wpsReport -->
     <root level="DEBUG">
         <appender-ref ref="wpsReport" />
     </root>
-
-    <logger name="io.undertow" level="OFF"/>
-    <logger name="org.xnio" level="OFF"/>
 </configuration>

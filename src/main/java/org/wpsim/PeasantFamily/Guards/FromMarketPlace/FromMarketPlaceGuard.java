@@ -44,17 +44,6 @@ public class FromMarketPlaceGuard extends GuardBESA {
 
         switch (fromMarketPlaceMessageType) {
             case SOLD_CROP:
-                // Incrementa el dinero
-                /*System.out.println(
-                        " ++ Cosechado Total " +
-                                believes.getPeasantProfile().getTotalHarvestedWeight() +
-                                " ++ Cosechado " +
-                                believes.getPeasantProfile().getHarvestedWeight() +
-                                " ++ Vendido "
-                                + fromMarketMessage.getQuantity() +
-                                " ++ al Precio de "
-                                + believes.getPriceList().get("rice").getCost()
-                );*/
                 believes.getPeasantProfile().increaseMoney(
                         believes.getPeasantProfile().getHarvestedWeight()
                                 * believes.getPriceList().get("rice").getCost()
@@ -63,6 +52,7 @@ public class FromMarketPlaceGuard extends GuardBESA {
                 break;
             case PRICE_LIST:
                 believes.setPriceList(fromMarketPlaceMessage.getPriceList());
+                //System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n=============" + fromMarketPlaceMessage.getPriceList().size() + "================\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + this.getAgent().getAlias());
                 break;
             case SEEDS:
                 believes.getPeasantProfile().setSeeds(fromMarketPlaceMessage.getQuantity());

@@ -13,7 +13,7 @@
         <configuration>
           <mainClass>org.wpsim.WellProdSim.wpsStart</mainClass>
           <arguments>
-            <argument>--mode single --agents 10 --money 5000 --land 2 --personality 0.5 --tools 5 --seeds 10 --water 2000 --irrigation 1</argument>
+            <argument>--mode single --emotions  1 --agents 10 --money 3000000 --land 2 --personality 0.5 --tools 10 --seeds 10 --water 0 --irrigation 0</argument>
           </arguments>
         </configuration>
       </plugin>

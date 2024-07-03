@@ -17,6 +17,7 @@ package org.wpsim.ViewerLens.Util;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.System.AdmBESA;
+import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.ViewerLens.Data.ViewerLensMessage;
 import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.ViewerLens.Guards.ViewerLensGuard;
@@ -24,14 +25,15 @@ import org.wpsim.ViewerLens.Guards.ViewerLensGuard;
 public class wpsReport {
 
     private wpsReport() {
-
     }
 
     public static void mental(Object message, String alias) {
         try {
-            AdmBESA.getInstance().getHandlerByAlias(
+            AgHandlerBESA agh = (AgHandlerBESA) AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            ).sendEvent(new EventBESA(
+            );
+
+            agh.sendEvent(new EventBESA(
                     ViewerLensGuard.class.getName(),
                     new ViewerLensMessage(
                             message.toString(),
@@ -40,7 +42,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación.");
+            System.err.println("falta comunicación mental. " + e.getMessage());
         }
     }
 
@@ -49,15 +51,16 @@ public class wpsReport {
             AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
             ).sendEvent(new EventBESA(
-                    ViewerLensGuard.class.getName(),
-                    new ViewerLensMessage(
-                            message.toString(),
-                            "TRACE",
-                            alias
+                            ViewerLensGuard.class.getName(),
+                            new ViewerLensMessage(
+                                    message.toString(),
+                                    "TRACE",
+                                    alias
+                            )
                     )
-            ));
+            );
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación.");
+            System.err.println("falta comunicación trace. " + e.getMessage());
         }
     }
 
@@ -74,24 +77,27 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación.");
+            System.err.println("falta comunicación debug. " + e.getMessage());
         }
     }
 
     public static void info(Object message, String alias) {
         try {
-            AdmBESA.getInstance().getHandlerByAlias(
+
+            AgHandlerBESA agh = (AgHandlerBESA) AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            ).sendEvent(new EventBESA(
-                    ViewerLensGuard.class.getName(),
-                    new ViewerLensMessage(
-                            formatMessage(message),
-                            "INFO",
-                            alias
+            );
+            agh.sendEvent(new EventBESA(
+                            ViewerLensGuard.class.getName(),
+                            new ViewerLensMessage(
+                                    formatMessage(message),
+                                    "INFO",
+                                    alias
+                            )
                     )
-            ));
+            );
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación.");
+            System.err.println("falta comunicación info. " + e.getMessage());
         }
     }
 
@@ -108,7 +114,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación.");
+            System.err.println("falta comunicación warn. " + e.getMessage());
         }
     }
 
@@ -125,7 +131,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación.");
+            System.err.println("falta comunicación error. " + e.getMessage());
         }
     }
 
@@ -142,7 +148,7 @@ public class wpsReport {
                     )
             ));
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación.");
+            System.err.println("falta comunicación ws. " + e.getMessage());
         }
     }
 
