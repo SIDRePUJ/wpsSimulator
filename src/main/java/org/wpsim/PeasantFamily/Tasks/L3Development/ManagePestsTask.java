@@ -2,10 +2,10 @@
  * ==========================================================================
  * __      __ _ __   ___  *    WellProdSim                                  *
  * \ \ /\ / /| '_ \ / __| *    @version 1.0                                 *
- *  \ V  V / | |_) |\__ \ *    @since 2023                                  *
- *   \_/\_/  | .__/ |___/ *                                                 *
- *           | |          *    @author Jairo Serrano                        *
- *           |_|          *    @author Enrique Gonzalez                     *
+ * \ V  V / | |_) |\__ \ *    @since 2023                                  *
+ * \_/\_/  | .__/ |___/ *                                                 *
+ * | |          *    @author Jairo Serrano                        *
+ * |_|          *    @author Enrique Gonzalez                     *
  * ==========================================================================
  * Social Simulator used to estimate productivity and well-being of peasant *
  * families. It is event oriented, high concurrency, heterogeneous time     *
@@ -47,25 +47,24 @@ public class ManagePestsTask extends wpsTask {
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(TimeConsumedBy.ManagePestsTask.getTime());
         //believes.setCurrentCropCare(CropCareType.NONE);
-        
-        try {
-            AdmBESA adm = AdmBESA.getInstance();
-            AgHandlerBESA ah = adm.getHandlerByAlias(
-                    believes.getPeasantProfile().getPeasantFamilyLandAlias()
-            );
 
-            AgroEcosystemMessage agroEcosystemMessage;
-            agroEcosystemMessage = new AgroEcosystemMessage(
-                    CROP_PESTICIDE,
-                    "rice", // @TODO: CAMBIAR NOMBRE AL REAL
-                    believes.getInternalCurrentDate(),
-                    believes.getPeasantProfile().getPeasantFamilyAlias());
-            EventBESA ev = new EventBESA(
-                    AgroEcosystemGuard.class.getName(),
-                    agroEcosystemMessage);
-            ah.sendEvent(ev);
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(
+                    believes.getAlias()
+            ).sendEvent(
+                    new EventBESA(
+                            AgroEcosystemGuard.class.getName(),
+                            new AgroEcosystemMessage(
+                                    CROP_PESTICIDE,
+                                    "rice", // @TODO: CAMBIAR NOMBRE AL REAL
+                                    believes.getInternalCurrentDate(),
+                                    believes.getPeasantProfile().getPeasantFamilyAlias()
+                            )
+                    )
+            );
             ControlCurrentDate.getInstance().setCurrentDate(
-                    believes.getInternalCurrentDate());
+                    believes.getInternalCurrentDate()
+            );
             //this.setTaskWaitingForExecution();
 
         } catch (ExceptionBESA ex) {

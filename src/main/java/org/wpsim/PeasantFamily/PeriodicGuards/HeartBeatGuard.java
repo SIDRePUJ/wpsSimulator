@@ -82,7 +82,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         try {
             Thread.sleep(waitTime / 4);
         } catch (InterruptedException e) {
-            ReportBESA.info("error sleepWave");
+            ReportBESA.trace("error sleepWave");
         }
     }
 
@@ -103,7 +103,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
 
     private boolean checkFinish(PeasantFamilyBelieves believes) {
         if (believes.getInternalCurrentDate().equals(wpsStart.config.getStringProperty("control.enddate"))) {
-            System.out.println("Cerrando Agente " + this.agent.getAlias());
+            wpsReport.info("Cerrando Agente ", this.agent.getAlias());
             this.stopPeriodicCall();
             this.agent.shutdownAgent();
             return true;
@@ -115,7 +115,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (believes.getPeasantProfile().getHealth() <= 0) {
             this.stopPeriodicCall();
             try {
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
                 this.agent.shutdownAgent();
             } catch (Exception e) {
                 System.out.println("Error Cerrendo Agente");

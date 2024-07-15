@@ -43,7 +43,7 @@ public class LookForLoanTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.useTime(TimeConsumedBy.LookForLoanTask.getTime());
-        wpsReport.debug("LookForLoanTask", believes.getPeasantProfile().getPeasantFamilyAlias());
+        wpsReport.info("LookForLoanTask", believes.getPeasantProfile().getPeasantFamilyAlias());
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {
             wpsReport.info("Pidiendo prestamo formal", believes.getPeasantProfile().getPeasantFamilyAlias());

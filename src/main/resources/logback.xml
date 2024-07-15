@@ -2,9 +2,14 @@
 <!DOCTYPE configuration>
 
 <configuration>
-    <appender name="wpsReport" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- Definir variables de entorno -->
+    <property name="LOG_LEVEL_CONSOLE" value="${LOG_LEVEL_CONSOLE:-INFO}" />
+    <property name="LOG_LEVEL_FILE" value="${LOG_LEVEL_FILE:-DEBUG}" />
+
+    <!-- Appender para archivo de log -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/wpsSimulator.log</file>
-        <append>false</append>
+        <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>logs/wpsSimulator.%d{yyyy-MM-dd_HH-mm-ss}.log.zip</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -17,9 +22,10 @@
         </encoder>
     </appender>
 
-    <appender name="wpsReportData" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- Appender para archivo CSV -->
+    <appender name="CSV" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/wpsSimulator.csv</file>
-        <append>false</append>
+        <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <fileNamePattern>logs/wpsSimulator.%i.csv.zip</fileNamePattern>
             <minIndex>1</minIndex>
@@ -33,31 +39,42 @@
         </encoder>
     </appender>
 
+    <!-- Appender para consola -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] |-%highlight(%-5level) %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
     <!-- Logger específico para capturar solo mensajes TRACE -->
     <logger name="wpsReportData" level="TRACE" additivity="false">
-        <appender-ref ref="wpsReportData"/>
+        <appender-ref ref="CSV"/>
     </logger>
 
-    <!-- Loggers para suprimir los mensajes de log de RMI -->
-    <logger name="sun.rmi" level="OFF"/>
-    <logger name="java.rmi" level="OFF"/>
-    <logger name="java.rmi.server" level="OFF"/>
-    <logger name="java.rmi.transport" level="OFF"/>
-    <logger name="java.io.ObjectInputFilter" level="OFF"/>
+    <!-- Loggers para capturar los mensajes de log de RMI y otros paquetes de Java -->
+    <logger name="sun.rmi" level="INFO"/>
+    <logger name="java.rmi" level="INFO"/>
+    <logger name="java.rmi.server" level="INFO"/>
+    <logger name="java.rmi.transport" level="INFO"/>
+    <logger name="java.io.ObjectInputFilter" level="INFO"/>
+    <logger name="sun.rmi.server.UnicastRef" level="INFO"/>
+    <logger name="java.rmi.server.RemoteObjectInvocationHandler" level="INFO"/>
+    <logger name="sun.rmi.transport.StreamRemoteCall" level="INFO"/>
+    <logger name="sun.rmi.transport.tcp.TCPTransport$ConnectionHandler" level="INFO"/>
+    <logger name="java.lang.Shutdown" level="INFO"/>
 
-    <!-- Loggers adicionales para suprimir otros mensajes de log innecesarios -->
-    <logger name="io.undertow" level="OFF"/>
-    <logger name="org.xnio" level="OFF"/>
-    <logger name="ch.qos.logback" level="OFF"/>
+    <!-- Loggers adicionales para capturar mensajes de log de otras bibliotecas -->
+    <logger name="io.undertow" level="INFO"/>
+    <logger name="org.xnio" level="INFO"/>
+    <logger name="ch.qos.logback" level="INFO"/>
 
-    <!-- Loggers específicos para suprimir mensajes detallados -->
-    <logger name="sun.rmi.server.UnicastRef" level="OFF"/>
-    <logger name="java.rmi.server.RemoteObjectInvocationHandler" level="OFF"/>
-    <logger name="sun.rmi.transport.StreamRemoteCall" level="OFF"/>
-    <logger name="java.lang.Shutdown" level="OFF"/>
+    <!-- Root logger para archivo de log -->
+    <root level="${LOG_LEVEL_FILE}">
+        <appender-ref ref="FILE" />
+    </root>
 
-    <!-- Root logger captura DEBUG y niveles superiores y los envía a wpsReport -->
-    <root level="DEBUG">
-        <appender-ref ref="wpsReport" />
+    <!-- Root logger para consola -->
+    <root level="${LOG_LEVEL_CONSOLE}">
+        <appender-ref ref="CONSOLE" />
     </root>
 </configuration>

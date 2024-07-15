@@ -51,7 +51,8 @@ public class ObtainPesticidesTask extends wpsTask {
         // @TODO: Se debe calcular cuanto necesitas prestar hasta que se coseche.
         try {
             AdmBESA.getInstance().getHandlerByAlias(
-                    wpsStart.config.getMarketAgentName()).sendEvent(
+                    wpsStart.config.getMarketAgentName()
+            ).sendEvent(
                     new EventBESA(
                             MarketPlaceGuard.class.getName(),
                             new MarketPlaceMessage(

@@ -57,13 +57,13 @@ public class ObtainALandTask extends wpsTask {
             wpsReport.error(ex, "ObtainALandTask");
         }
 
-        while (believes.equals("")) {
+        /*while (believes.equals("")) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ex) {
                 wpsReport.error(ex, "ObtainALandTask");
             }
-        }
+        }*/
 
         // @TODO: setFarmName lo cambia el gobierno o el campesino
         believes.getPeasantProfile().setFarmName(true);

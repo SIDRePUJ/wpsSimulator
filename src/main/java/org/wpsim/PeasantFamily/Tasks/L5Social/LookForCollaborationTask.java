@@ -21,6 +21,7 @@ import org.wpsim.WellProdSim.Base.wpsTask;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.CommunityDynamics.Data.CommunityDynamicsDataMessage;
 import org.wpsim.CommunityDynamics.Guards.CommunityDynamicsRequestHelpGuard;
+import org.wpsim.WellProdSim.wpsStart;
 import rational.mapping.Believes;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
@@ -45,7 +46,7 @@ public class LookForCollaborationTask extends wpsTask {
 
         try {
             AdmBESA.getInstance().getHandlerByAlias(
-                    wpsConfig.getInstance().getSocietyAgentName()
+                    wpsStart.config.getSocietyAgentName()
             ).sendEvent(
                     new EventBESA(CommunityDynamicsRequestHelpGuard.class.getName(),
                             new CommunityDynamicsDataMessage(

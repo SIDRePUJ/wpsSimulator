@@ -4,6 +4,7 @@ import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
 import BESA.Kernel.Agent.GuardBESA;
 import BESA.Kernel.Agent.PeriodicGuardBESA;
+import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import BESA.Log.ReportBESA;
 import BESA.Util.PeriodicDataBESA;
@@ -181,7 +182,7 @@ public class AgroEcosystemGuard extends GuardBESA {
             EventBESA event = new EventBESA(
                     FromAgroEcosystemGuard.class.getName(),
                     peasantMessage);
-            this.agent.getAdmLocal().getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     peasantAgentAlias
             ).sendEvent(
                     event
@@ -200,18 +201,20 @@ public class AgroEcosystemGuard extends GuardBESA {
     public synchronized void notifyPeasantCropProblem(FromAgroEcosystemMessageType messageType, String agentAlias, String date) {
         try {
             //wpsReport.debug("AgentID: " + agentAlias);
-            AgHandlerBESA ah = this.agent.getAdmLocal().getHandlerByAlias(agentAlias);
             FromAgroEcosystemMessage peasantMessage = new FromAgroEcosystemMessage(
                     messageType,
                     agentAlias,
                     null,
                     this.getAgent().getAlias());
             peasantMessage.setDate(date);
-            EventBESA event = new EventBESA(
-                    FromAgroEcosystemGuard.class.getName(),
-                    peasantMessage);
             //wpsReport.debug("Sent: " + peasantMessage.getSimpleMessage());
-            ah.sendEvent(event);
+            AdmBESA.getInstance().getHandlerByAlias(
+                    agentAlias
+            ).sendEvent(
+                    new EventBESA(
+                    FromAgroEcosystemGuard.class.getName(),
+                    peasantMessage)
+            );
         } catch (ExceptionBESA e) {
             wpsReport.error(e.getMessage(), "WorldAgent.notifyPeasantCropProblem");
         }
@@ -224,18 +227,18 @@ public class AgroEcosystemGuard extends GuardBESA {
     public synchronized void notifyPeasantCropReadyToHarvest(String agentAlias, String date) {
         try {
             //wpsReport.debug("AgentID: " + agentAlias);
-            AgHandlerBESA ah = this.agent.getAdmLocal().getHandlerByAlias(agentAlias);
             FromAgroEcosystemMessage peasantMessage = new FromAgroEcosystemMessage(
                     FromAgroEcosystemMessageType.NOTIFY_CROP_READY_HARVEST,
                     agentAlias,
                     null,
-                    this.getAgent().getAlias());
+                    this.getAgent().getAlias()
+            );
             peasantMessage.setDate(date);
             EventBESA event = new EventBESA(
                     FromAgroEcosystemGuard.class.getName(),
                     peasantMessage);
             //wpsReport.debug("Sent: " + peasantMessage.getSimpleMessage());
-            ah.sendEvent(event);
+            AdmBESA.getInstance().getHandlerByAlias(agentAlias).sendEvent(event);
         } catch (ExceptionBESA e) {
             wpsReport.error(e.getMessage(), "WorldAgent.notifyPeasantCropReadyToHarvest");
         }
@@ -247,7 +250,7 @@ public class AgroEcosystemGuard extends GuardBESA {
     public synchronized void harvestCrop(CropLayer cropLayer) {
         cropLayer.writeCropData();
         try {
-            AgHandlerBESA ah = this.agent.getAdmLocal().getHandlerByAid(this.agent.getAid());
+            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAid(this.agent.getAid());
             PeriodicDataBESA periodicDataBESA = new PeriodicDataBESA(PeriodicGuardBESA.STOP_CALL);
             EventBESA eventPeriodic = new EventBESA(
                     FromAgroEcosystemGuard.class.getName(),

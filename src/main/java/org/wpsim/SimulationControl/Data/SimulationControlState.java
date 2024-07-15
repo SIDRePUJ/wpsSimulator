@@ -35,23 +35,23 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class SimulationControlState extends StateBESA implements Serializable {
-    private AtomicInteger activeAgentsCount = new AtomicInteger(0);
-    private AtomicBoolean unblocking = new AtomicBoolean(false);
+    //private AtomicInteger activeAgentsCount = new AtomicInteger(0);
+    //private AtomicBoolean unblocking = new AtomicBoolean(false);
     private ConcurrentMap<String, AgentInfo> agentMap = new ConcurrentHashMap<>();
     private ConcurrentMap<String, Boolean> deadAgentMap = new ConcurrentHashMap<>();
     //private Timer timer = new Timer();
-    private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
+    //private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
     private ScheduledExecutorService scheduler;
 
     public SimulationControlState() {
         super();
-        this.scheduler = Executors.newScheduledThreadPool(1);
+        //this.scheduler = Executors.newScheduledThreadPool(1);
         //scheduler.scheduleAtFixedRate(this::checkAgentsStatus, 0, 1000, TimeUnit.MILLISECONDS);
     }
 
-    public ConcurrentMap<String, AgentInfo> getAliveAgentMap() {
+    /*public ConcurrentMap<String, AgentInfo> getAliveAgentMap() {
         return agentMap;
-    }
+    }*/
 
     public ConcurrentMap<String, Boolean> getDeadAgentMap() {
         return deadAgentMap;
@@ -61,28 +61,32 @@ public class SimulationControlState extends StateBESA implements Serializable {
 
         //printAgentsStatusTable();
         // Antes de comenzar, verificar si todos los agentes están muertos y detener la simulación si es necesario.
-        if (deadAgentMap.size() == wpsStart.peasantFamiliesAgents){
+        /*if (deadAgentMap.size() == wpsStart.peasantFamiliesAgents){
             wpsStart.stopSimulation();
             return;
-        }
+        }*/
 
         // Determinar el día mínimo y máximo entre todos los agentes vivos para entender el rango de tiempo actual.
         int minDay = agentMap.values().stream().mapToInt(AgentInfo::getCurrentDay).min().orElse(Integer.MAX_VALUE);
         int maxDay = agentMap.values().stream().mapToInt(AgentInfo::getCurrentDay).max().orElse(Integer.MIN_VALUE);
 
         try {
-            EventBESA eventBesa = null;
-
-            boolean needsPause = currentDay - minDay >= wpsStart.config.getIntProperty("control.daystocheck")*2;
             //System.out.println("Min " + minDay + " Max " + maxDay + " " + agentName + " Days " + needsPause + " " + (currentDay - minDay) + " = " + currentDay + " - " + minDay + " >= " + wpsStart.config.getIntProperty("control.daystocheck"));
-
-            if (needsPause) {
-                eventBesa = new EventBESA(FromSimulationControlGuard.class.getName(), new ControlMessage(peasantFamily, true));
-                AdmBESA.getInstance().getHandlerByAlias(peasantFamily).sendEvent(eventBesa);
+            if (currentDay - minDay >= wpsStart.config.getIntProperty("control.daystocheck")) {
+                AdmBESA.getInstance().getHandlerByAlias(
+                        peasantFamily
+                ).sendEvent(
+                        new EventBESA(
+                                FromSimulationControlGuard.class.getName(),
+                                new ControlMessage(
+                                        peasantFamily,
+                                        true
+                                )
+                        )
+                );
             }
-
         } catch (ExceptionBESA ex) {
-            wpsReport.debug(ex, "ControlAgentState");
+            wpsReport.debug(ex, wpsStart.config.getControlAgentName());
         }
     }
 
@@ -125,11 +129,11 @@ public class SimulationControlState extends StateBESA implements Serializable {
             WebsocketServer.getInstance().broadcastMessage("m=" + agentMap.toString());
         }
     }
-    public void stopScheduler() {
+    /*public void stopScheduler() {
         if (scheduler != null) {
             scheduler.shutdown();
         }
-    }
+    }*/
 
 }
 

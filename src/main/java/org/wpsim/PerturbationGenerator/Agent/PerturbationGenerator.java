@@ -15,13 +15,16 @@
 package org.wpsim.PerturbationGenerator.Agent;
 
 import BESA.ExceptionBESA;
-import BESA.Kernel.Agent.AgentBESA;
-import BESA.Kernel.Agent.KernelAgentExceptionBESA;
-import BESA.Kernel.Agent.StateBESA;
-import BESA.Kernel.Agent.StructBESA;
+import BESA.Kernel.Agent.*;
+import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.System.AdmBESA;
+import BESA.Util.PeriodicDataBESA;
 import org.wpsim.PerturbationGenerator.Data.PerturbationGeneratorState;
 import org.wpsim.PerturbationGenerator.PeriodicGuards.NaturalPhenomena;
 import org.wpsim.PerturbationGenerator.Guards.PerturbationGeneratorGuard;
+import org.wpsim.ViewerLens.Util.wpsReport;
+
+import static org.wpsim.WellProdSim.wpsStart.config;
 
 /**
  *
@@ -69,7 +72,21 @@ public class PerturbationGenerator extends AgentBESA {
      */
     @Override
     public void setupAgent() {
-
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(
+                    config.getPerturbationAgentName()
+            ).sendEvent(
+                    new EventBESA(
+                            NaturalPhenomena.class.getName(),
+                            new PeriodicDataBESA(
+                                    config.getLongProperty("control.steptime") * 100L,
+                                    PeriodicGuardBESA.START_PERIODIC_CALL
+                            )
+                    )
+            );
+        } catch (ExceptionBESA e) {
+            wpsReport.error(e.getMessage(), "getPerturbationAgentName NO OK");
+        }
     }
 
     /**

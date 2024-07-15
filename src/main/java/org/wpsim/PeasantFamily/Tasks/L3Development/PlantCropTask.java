@@ -154,7 +154,7 @@ public class PlantCropTask extends wpsLandTask {
             AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName());
             return AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).getAgId();
         } catch (Exception ex) {
-            ReportBESA.info(peasantAlias + " debe crear el agente mundo " + currentLandInfo.getLandName());
+            ReportBESA.trace(peasantAlias + " debe crear el agente mundo " + currentLandInfo.getLandName());
         }
         return "";
     }

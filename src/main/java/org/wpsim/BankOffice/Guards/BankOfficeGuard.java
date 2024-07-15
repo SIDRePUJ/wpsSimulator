@@ -16,6 +16,7 @@ package org.wpsim.BankOffice.Guards;
 
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AgHandlerBESA;
 import org.wpsim.BankOffice.Data.BankOfficeState;
 import org.wpsim.BankOffice.Data.BankOfficeMessage;
@@ -40,7 +41,6 @@ public class BankOfficeGuard extends wpsGuardBESA {
         super();
         wpsCSV.log("Bank", "Agent,CurrentDate,Action,Response");
         wpsCSV.log("Loans", "Agent,CurrentDate,amount,messageType,paidTerm");
-
     }
 
     /**
@@ -121,7 +121,7 @@ public class BankOfficeGuard extends wpsGuardBESA {
             System.out.println("Error al guardar csv de prestamos "  + e.getMessage());
         }
         try {
-            this.agent.getAdmLocal().getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     bankOfficeMessage.getPeasantAlias()
             ).sendEvent(
                     new EventBESA(

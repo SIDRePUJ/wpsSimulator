@@ -61,14 +61,17 @@ public class IrrigateCropsTask extends wpsTask {
                 currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
                 believes.getPeasantProfile().useWater((int) waterUsed);
                 try {
-                    AdmBESA.getInstance().getHandlerByAlias(currentLandInfo.getLandName()).sendEvent(
+                    AdmBESA.getInstance().getHandlerByAlias(
+                            currentLandInfo.getLandName()
+                    ).sendEvent(
                             new EventBESA(
-                                    AgroEcosystemGuard.class.getName(), new AgroEcosystemMessage(
-                                    CROP_IRRIGATION,
-                                    currentLandInfo.getLandName(),
-                                    believes.getInternalCurrentDate(),
-                                    believes.getPeasantProfile().getPeasantFamilyAlias()
-                            )
+                                    AgroEcosystemGuard.class.getName(),
+                                    new AgroEcosystemMessage(
+                                        CROP_IRRIGATION,
+                                        currentLandInfo.getLandName(),
+                                        believes.getInternalCurrentDate(),
+                                        believes.getPeasantProfile().getPeasantFamilyAlias()
+                                    )
                             )
                     );
                     believes.addTaskToLog(believes.getInternalCurrentDate());

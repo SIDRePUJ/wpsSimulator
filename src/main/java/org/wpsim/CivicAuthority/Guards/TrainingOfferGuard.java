@@ -31,7 +31,7 @@ public class TrainingOfferGuard extends PeriodicGuardBESA {
     @Override
     public synchronized void funcPeriodicExecGuard(EventBESA event) {
         String selectedAgent = "";
-        if (wpsStart.started) {
+        if (wpsStart.started && wpsStart.params.training == 1) {
             // ControlCurrentDate.getInstance()
             selectedAgent = peasantFamilyAgentAliases.get(currentIndex);
             try {

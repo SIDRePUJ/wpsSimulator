@@ -29,20 +29,19 @@ public class wpsReport {
 
     public static void mental(Object message, String alias) {
         try {
-            AgHandlerBESA agh = (AgHandlerBESA) AdmBESA.getInstance().getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            );
-
-            agh.sendEvent(new EventBESA(
-                    ViewerLensGuard.class.getName(),
-                    new ViewerLensMessage(
-                            message.toString(),
-                            "MENTAL",
-                            alias
+            ).sendEvent(new EventBESA(
+                            ViewerLensGuard.class.getName(),
+                            new ViewerLensMessage(
+                                    message.toString(),
+                                    "MENTAL",
+                                    alias
+                            )
                     )
-            ));
+            );
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación mental. " + e.getMessage());
+            System.err.println("falta comunicación trace. " + e.getMessage());
         }
     }
 
@@ -83,21 +82,18 @@ public class wpsReport {
 
     public static void info(Object message, String alias) {
         try {
-
-            AgHandlerBESA agh = (AgHandlerBESA) AdmBESA.getInstance().getHandlerByAlias(
+            AdmBESA.getInstance().getHandlerByAlias(
                     wpsStart.config.getViewerAgentName()
-            );
-            agh.sendEvent(new EventBESA(
-                            ViewerLensGuard.class.getName(),
-                            new ViewerLensMessage(
-                                    formatMessage(message),
-                                    "INFO",
-                                    alias
-                            )
+            ).sendEvent(new EventBESA(
+                    ViewerLensGuard.class.getName(),
+                    new ViewerLensMessage(
+                            formatMessage(message),
+                            "INFO",
+                            alias
                     )
-            );
+            ));
         } catch (ExceptionBESA e) {
-            System.err.println("falta comunicación info. " + e.getMessage());
+            System.err.println("falta comunicación INFO. " + e.getMessage());
         }
     }
 

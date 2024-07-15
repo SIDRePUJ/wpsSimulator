@@ -14,6 +14,7 @@
  */
 package org.wpsim.WellProdSim.Config;
 
+import BESA.Kernel.System.AdmBESA;
 import BESA.Log.ReportBESA;
 import com.google.gson.Gson;
 import org.snakeyaml.engine.v2.api.Load;
@@ -44,7 +45,7 @@ public final class wpsConfig {
     private String rainfallConditions;
     private String perturbation;
     private String startSimulationDate;
-    private int peasantSerialID;
+    public int peasantSerialID;
     private Properties properties = new Properties();
     private PeasantFamilyProfile defaultPeasantFamilyProfile;
     private PeasantFamilyProfile highRiskFarmerProfile;
@@ -95,6 +96,9 @@ public final class wpsConfig {
 
     public String getControlAgentName() {
         return ControlAgentName;
+    }
+    public void setControlAgentName(String name) {
+        ControlAgentName = name;
     }
 
     public String getViewerAgentName() {
@@ -311,7 +315,7 @@ public final class wpsConfig {
     }
 
     public synchronized String getUniqueFarmerName() {
-        return "PeasantFamily_" + peasantSerialID++;
+        return AdmBESA.getInstance().getConfigBESA().getAliasContainer() + "_PeasantFamily_" + peasantSerialID++;
     }
 
     public String getGovernmentAgentName() {
@@ -344,5 +348,9 @@ public final class wpsConfig {
 
     public long getLongProperty(String property) {
         return Long.parseLong(properties.getProperty(property, "0.0"));
+    }
+
+    public void setViewerAgentName(String name) {
+        this.ViewerAgentName = name;
     }
 }

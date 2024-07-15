@@ -22,6 +22,7 @@ import BESA.Kernel.Agent.StructBESA;
 import org.wpsim.ViewerLens.Data.ViewerLensState;
 import org.wpsim.ViewerLens.Guards.ViewerLensGuard;
 import org.wpsim.ViewerLens.Server.WebsocketServer;
+import org.wpsim.WellProdSim.Config.wpsConfig;
 
 /**
  *
@@ -61,9 +62,10 @@ public class ViewerLens extends AgentBESA {
      */
     @Override
     public void setupAgent() {
-        Thread websocketServerThread = new Thread(WebsocketServer.getInstance());
-        websocketServerThread.start();
-
+        if (wpsConfig.getInstance().getBooleanProperty("viewer.webui")) {
+            Thread websocketServerThread = new Thread(WebsocketServer.getInstance());
+            websocketServerThread.start();
+        }
     }
 
     /**

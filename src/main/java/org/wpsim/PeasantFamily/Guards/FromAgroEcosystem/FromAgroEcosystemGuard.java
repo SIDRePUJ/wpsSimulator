@@ -82,7 +82,7 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                     JSONObject cropData = new JSONObject(
                             peasantCommMessage.getPayload()
                     );
-                    wpsReport.warn(cropData, this.getAgent().getAlias());
+                    wpsReport.info(cropData, this.getAgent().getAlias());
                     believes.getPeasantProfile().setHarvestedWeight(
                             (int) Math.round(
                                     Math.ceil(

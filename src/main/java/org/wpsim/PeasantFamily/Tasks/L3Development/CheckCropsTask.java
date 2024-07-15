@@ -74,7 +74,7 @@ public class CheckCropsTask extends wpsTask {
                     }
                     believes.addTaskToLog(believes.getInternalCurrentDate(), currentLandInfo.getLandName());
                 }
-                wpsReport.warn("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
+                wpsReport.info("enviado CROP_INFORMATION a " + currentLandInfo.getLandName(), believes.getPeasantProfile().getPeasantFamilyAlias());
             }
         }
         believes.addTaskToLog(believes.getInternalCurrentDate());

@@ -38,9 +38,9 @@ public class FromSimulationControlGuard extends GuardBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
         believes.setWait(controlMessage.isWaiting());
         if (controlMessage.isWaiting()) {
-            wpsReport.debug("Bloqueando " + believes.getAlias() + " -- " + controlMessage.isWaiting(), believes.getAlias());
+            wpsReport.info("Bloqueando " + believes.getAlias() + " -- " + controlMessage.isWaiting(), believes.getAlias());
         }else{
-            wpsReport.debug("Desbloqueando " + believes.getAlias() + " -- " + controlMessage.isWaiting(), believes.getAlias());
+            wpsReport.info("Desbloqueado " + believes.getAlias() + " -- " + controlMessage.isWaiting(), believes.getAlias());
         }
     }
 }

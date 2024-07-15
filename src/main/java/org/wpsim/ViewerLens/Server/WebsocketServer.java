@@ -84,7 +84,7 @@ public class WebsocketServer implements Runnable {
                                                 System.out.println("Received message: " + msg);
 
                                                 if (msg.contains("start")) {
-                                                    wpsStart.startAgents();
+                                                    //wpsStart.startAgents(); @TODO
                                                 } else if (msg.contains("stop")) {
                                                     wpsStart.stopSimulation();
                                                 } else if (msg.contains("setup")) {

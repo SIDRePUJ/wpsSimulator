@@ -19,6 +19,7 @@ import BESA.BDI.AgentStructuralModel.GoalBDI;
 import BESA.BDI.AgentStructuralModel.StateBDI;
 import BESA.ExceptionBESA;
 import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.Agent.PeriodicGuardBESA;
 import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import BESA.Kernel.System.Directory.AdmHandlerBESA;
@@ -27,6 +28,7 @@ import BESA.Remote.AdmRemoteImpBESA;
 import BESA.Remote.Directory.AgRemoteHandlerBESA;
 import BESA.Remote.Directory.RemoteAdmHandlerBESA;
 import BESA.Remote.RemoteAdmBESA;
+import BESA.Util.PeriodicDataBESA;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVoidGoal;
 import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityTrainingGuard;
 import org.wpsim.SimulationControl.Guards.AliveAgentGuard;
@@ -66,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import static org.wpsim.WellProdSim.wpsStart.config;
 import static org.wpsim.WellProdSim.wpsStart.params;
 
 /**
@@ -136,29 +139,30 @@ public class PeasantFamily extends AgentBDI {
         goals.add(AttendReligiousEventsGoal.buildGoal());
         goals.add(CheckCropsGoal.buildGoal());
         goals.add(HarvestCropsGoal.buildGoal());
-        //goals.add(MaintainHouseGoal.buildGoal());
         goals.add(ManagePestsGoal.buildGoal());
         goals.add(PlantCropGoal.buildGoal());
         goals.add(PrepareLandGoal.buildGoal());
         goals.add(DeforestingLandGoal.buildGoal());
-        //goals.add(ProcessProductsGoal.buildGoal());
         goals.add(SellCropGoal.buildGoal());
-        //goals.add(SellProductsGoal.buildGoal());
         goals.add(SearchForHelpAndNecessityGoal.buildGoal());
         goals.add(WorkForOtherGoal.buildGoal());
 
+        //goals.add(ProcessProductsGoal.buildGoal());
+        //goals.add(SellProductsGoal.buildGoal());
+        //goals.add(MaintainHouseGoal.buildGoal());
+
         //Level 4 Goals: Skills And Resources
         goals.add(GetPriceListGoal.buildGoal());
-        //goals.add(GetTrainingGoal.buildGoal());
         goals.add(ObtainALandGoal.buildGoal());
-        //goals.add(ObtainLivestockGoal.buildGoal());
         goals.add(ObtainSeedsGoal.buildGoal());
-        //goals.add(ObtainSuppliesGoal.buildGoal());
         goals.add(ObtainToolsGoal.buildGoal());
-        //goals.add(ObtainPesticidesGoal.buildGoal());
         goals.add(AlternativeWorkGoal.buildGoal());
+        //goals.add(ObtainPesticidesGoal.buildGoal());
+        //goals.add(ObtainSuppliesGoal.buildGoal());
+        //goals.add(ObtainLivestockGoal.buildGoal());
 
-        if (wpsStart.config.getBooleanProperty("pfagent.trainingEnabled")) {
+
+        if (config.getBooleanProperty("pfagent.trainingEnabled")) {
             goals.add(GetTechAssistanceGoal.buildGoal());
         }
 
@@ -196,12 +200,28 @@ public class PeasantFamily extends AgentBDI {
      */
     @Override
     public void setupAgentBDI() {
-        // Anuncio de que el agente está disponible
         //wpsReport.debug("Setup " + this.getAlias(), this.getAlias());
+        // Internal HeartBeat ping
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) this.getState()).getBelieves();
         try {
             AdmBESA.getInstance().getHandlerByAlias(
-                    wpsStart.config.getControlAgentName()
+                    getAlias()
+            ).sendEvent(
+                    new EventBESA(
+                            HeartBeatGuard.class.getName(),
+                            new PeriodicDataBESA(
+                                    config.getLongProperty("control.steptime"),
+                                    PeriodicGuardBESA.START_PERIODIC_CALL
+                            )
+                    )
+            );
+        } catch (ExceptionBESA ex) {
+            System.out.println(ex.getMessage());
+        }
+        // External Alive Ping
+        try {
+            AdmBESA.getInstance().getHandlerByAlias(
+                    config.getControlAgentName()
             ).sendEvent(
                     new EventBESA(
                             AliveAgentGuard.class.getName(),
@@ -214,6 +234,7 @@ public class PeasantFamily extends AgentBDI {
         } catch (ExceptionBESA ex) {
             System.out.println(ex.getMessage());
         }
+
     }
 
     /**
@@ -229,7 +250,7 @@ public class PeasantFamily extends AgentBDI {
         //Eliminar el agente
         try {
             AdmBESA.getInstance().getHandlerByAlias(
-                    wpsStart.config.getControlAgentName()
+                    config.getControlAgentName()
             ).sendEvent(
                     new EventBESA(
                             DeadAgentGuard.class.getName(),
@@ -240,7 +261,7 @@ public class PeasantFamily extends AgentBDI {
                     )
             );
             String agID = AdmBESA.getInstance().getHandlerByAlias(this.getAlias()).getAgId();
-            AdmBESA.getInstance().killAgent(agID, wpsStart.config.getDoubleProperty("control.passwd"));
+            AdmBESA.getInstance().killAgent(agID, config.getDoubleProperty("control.passwd"));
         } catch (Exception ex) {
             wpsReport.error(ex.getMessage(), believes.getAlias());
         }

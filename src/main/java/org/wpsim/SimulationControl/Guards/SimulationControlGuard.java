@@ -19,6 +19,7 @@ import BESA.Kernel.Agent.GuardBESA;
 import org.wpsim.SimulationControl.Data.SimulationControlState;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
+import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.ViewerLens.Server.WebsocketServer;
@@ -50,6 +51,8 @@ public class SimulationControlGuard extends GuardBESA {
         String agentCurrentDate = toControlMessage.getCurrentDate();
         int currentDay = toControlMessage.getCurrentDay();
         SimulationControlState state = (SimulationControlState) this.getAgent().getState();
+
+        wpsReport.info("Llegó a control el agente " + toControlMessage.getPeasantFamilyAlias() + ", en el día " + toControlMessage.getCurrentDay(), this.getAgent().getAlias());
 
         //wpsReport.debug("ControlAgentGuard: " + agentAlias + " acd " + agentCurrentDate + " gcd " + ControlCurrentDate.getInstance().getCurrentDate(), "ControlAgentGuard");
         state.modifyAgentMap(toControlMessage.getPeasantFamilyAlias(), currentDay);
@@ -86,7 +89,7 @@ public class SimulationControlGuard extends GuardBESA {
         long elapsedDays = ChronoUnit.DAYS.between(MIN_DATE, currentDate);
 
         double progressPercentage = (100.0 * elapsedDays) / totalDays;
-        System.out.printf("Progreso desde %s hasta %s - la fecha (%s): %.2f%%%n", MIN_DATE, MAX_DATE, currentDateStr, progressPercentage);
+        wpsReport.warn("Progreso desde "+MIN_DATE+" hasta "+MAX_DATE+" - la fecha ("+currentDateStr+"): " + progressPercentage, wpsStart.config.getControlAgentName());
     }
 
 }

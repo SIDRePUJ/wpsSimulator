@@ -19,6 +19,7 @@ import BESA.Kernel.Agent.AgentBESA;
 import BESA.Kernel.Agent.KernelAgentExceptionBESA;
 import BESA.Kernel.Agent.StateBESA;
 import BESA.Kernel.Agent.StructBESA;
+import BESA.Kernel.System.AdmBESA;
 import org.wpsim.SimulationControl.Data.SimulationControlState;
 import org.wpsim.SimulationControl.Guards.AliveAgentGuard;
 import org.wpsim.SimulationControl.Guards.SimulationControlGuard;
@@ -73,7 +74,7 @@ public class SimulationControl extends AgentBESA {
      */
     @Override
     public void shutdownAgent() {
-        ((SimulationControlState) state).stopScheduler();
+        //((SimulationControlState) state).stopScheduler();
     }
     
 }

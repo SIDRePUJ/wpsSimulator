@@ -15,11 +15,13 @@
 
 package org.wpsim.PeasantFamily.Data.Utils;
 
+import java.io.Serializable;
+
 /**
  *
  * @author jairo
  */
-public class FarmingResource {
+public class FarmingResource implements Serializable {
 
     int cost;
     String name;

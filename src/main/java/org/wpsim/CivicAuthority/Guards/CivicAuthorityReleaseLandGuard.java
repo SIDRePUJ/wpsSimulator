@@ -47,10 +47,17 @@ public class CivicAuthorityReleaseLandGuard extends GuardBESA  {
 
         try {
             //System.out.println("peaasant family: " + data.getFamilyName() + " Assigned farm: " + assignedFarmName + " Assigned lands: " + assignedLands);
-            AgHandlerBESA ah = AdmBESA.getInstance().getHandlerByAlias(data.getFamilyName());
-            FromCivicAuthorityMessage fromCivicAuthorityMessage = new FromCivicAuthorityMessage(assignedFarmName, assignedLands);
-            EventBESA ev = new EventBESA(FromCivicAuthorityGuard.class.getName(), fromCivicAuthorityMessage);
-            ah.sendEvent(ev);
+            AdmBESA.getInstance().getHandlerByAlias(
+                    data.getFamilyName()
+            ).sendEvent(
+                    new EventBESA(
+                            FromCivicAuthorityGuard.class.getName(),
+                            new FromCivicAuthorityMessage(
+                                    assignedFarmName,
+                                    assignedLands
+                            )
+                    )
+            );
         } catch (ExceptionBESA ex) {
             System.out.println(ex);
         }

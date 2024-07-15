@@ -15,6 +15,7 @@
 package org.wpsim.MarketPlace.Guards;
 
 import BESA.Kernel.Agent.Event.EventBESA;
+import BESA.Kernel.System.AdmBESA;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.MarketPlace.Data.MarketPlaceState;
 import org.wpsim.MarketPlace.Data.MarketPlaceMessage;
@@ -25,6 +26,7 @@ import org.wpsim.PeasantFamily.Guards.FromMarketPlace.FromMarketPlaceMessageType
 import org.wpsim.WellProdSim.Base.wpsGuardBESA;
 import org.wpsim.WellProdSim.Util.wpsCSV;
 import org.wpsim.ViewerLens.Util.wpsReport;
+import org.wpsim.WellProdSim.wpsStart;
 
 /**
  * @author jairo
@@ -46,7 +48,7 @@ public class MarketPlaceGuard extends wpsGuardBESA {
         MarketPlaceMessage marketPlaceMessage = (MarketPlaceMessage) event.getData();
         MarketPlaceState state = (MarketPlaceState) this.agent.getState();
         String productType = "";
-
+        wpsReport.info("Llegó mensaje de " + marketPlaceMessage.getPeasantAlias(), wpsStart.config.getMarketAgentName());
         MarketPlaceMessageType messageType = marketPlaceMessage.getMessageType();
         int quantity = marketPlaceMessage.getQuantity();
 
@@ -61,7 +63,7 @@ public class MarketPlaceGuard extends wpsGuardBESA {
                         state.getResources()
                 );
 
-                this.agent.getAdmLocal().getHandlerByAlias(
+                AdmBESA.getInstance().getHandlerByAlias(
                         marketPlaceMessage.getPeasantAlias()
                 ).sendEvent(
                         new EventBESA(
@@ -103,7 +105,7 @@ public class MarketPlaceGuard extends wpsGuardBESA {
                         ).getCost() * quantity
                 );
 
-                this.agent.getAdmLocal().getHandlerByAlias(
+                AdmBESA.getInstance().getHandlerByAlias(
                         marketPlaceMessage.getPeasantAlias()
                 ).sendEvent(
                         new EventBESA(
@@ -138,7 +140,7 @@ public class MarketPlaceGuard extends wpsGuardBESA {
                 fromMarketPlaceMessageType = FromMarketPlaceMessageType.valueOf(productType.toUpperCase());
                 fromMarketPlaceMessage = new FromMarketPlaceMessage(fromMarketPlaceMessageType, quantity);
 
-                this.agent.getAdmLocal().getHandlerByAlias(
+                AdmBESA.getInstance().getHandlerByAlias(
                         marketPlaceMessage.getPeasantAlias()
                 ).sendEvent(
                         new EventBESA(

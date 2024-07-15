@@ -26,6 +26,7 @@ import org.wpsim.CivicAuthority.Guards.CivicAuthorityReleaseLandGuard;
 import org.wpsim.CivicAuthority.Guards.TrainingOfferGuard;
 import org.wpsim.PeasantFamily.PeriodicGuards.HeartBeatGuard;
 import org.wpsim.WellProdSim.Config.wpsConfig;
+import org.wpsim.WellProdSim.wpsStart;
 
 /**
  *
@@ -72,7 +73,7 @@ public class CivicAuthority extends AgentBESA {
     public void setupAgent() {
         try {
             AdmBESA.getInstance().getHandlerByAlias(
-                    wpsConfig.getInstance().getGovernmentAgentName()
+                    wpsStart.config.getGovernmentAgentName()
             ).sendEvent(
                     new EventBESA(
                             TrainingOfferGuard.class.getName(),
