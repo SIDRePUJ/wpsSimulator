@@ -265,26 +265,15 @@ public class wpsStart {
     public static void stopSimulation() {
         System.out.println("All agents stopped");
         //getStatus();
-        wpsReport.info("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n", "wpsStart");
-        System.exit(0);
-    }
-
-    /**
-     * Sends status events to the peasant family agents.
-     */
-    public static void getStatus() {
-        // first heart beat to families
+        //if (params.mode.equals("main")) {
+        //}
         try {
-            for (int i = 1; i <= peasantFamiliesAgents; i++) {
-                AdmBESA adm = AdmBESA.getInstance();
-                EventBESA eventBesa = new EventBESA(StatusGuard.class.getName(), null);
-                AgHandlerBESA agHandler = adm.getHandlerByAlias("PeasantFamily_" + i);
-                agHandler.sendEvent(eventBesa);
-            }
-            //Thread.sleep(5000);
-        } catch (ExceptionBESA ex) {// | InterruptedException ex) {
-            wpsReport.error(ex, "wpsStart");
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+        System.out.println("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n");
+        System.exit(0);
     }
 
     /**

@@ -2,9 +2,9 @@
 <!DOCTYPE configuration>
 
 <configuration>
-    <!-- Definir variables de entorno -->
+    <!-- Definir variables de entorno
     <property name="LOG_LEVEL_CONSOLE" value="${LOG_LEVEL_CONSOLE:-INFO}" />
-    <property name="LOG_LEVEL_FILE" value="${LOG_LEVEL_FILE:-DEBUG}" />
+    <property name="LOG_LEVEL_FILE" value="${LOG_LEVEL_FILE:-DEBUG}" />-->
 
     <!-- Appender para archivo de log -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">

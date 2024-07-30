@@ -89,7 +89,7 @@ public class SimulationControlGuard extends GuardBESA {
         long elapsedDays = ChronoUnit.DAYS.between(MIN_DATE, currentDate);
 
         double progressPercentage = (100.0 * elapsedDays) / totalDays;
-        wpsReport.warn("Progreso desde "+MIN_DATE+" hasta "+MAX_DATE+" - la fecha ("+currentDateStr+"): " + progressPercentage, wpsStart.config.getControlAgentName());
+        wpsReport.warn("UPDATE: Progreso desde "+MIN_DATE+" hasta "+MAX_DATE+" - la fecha ("+currentDateStr+"): " + progressPercentage, wpsStart.config.getControlAgentName());
     }
 
 }

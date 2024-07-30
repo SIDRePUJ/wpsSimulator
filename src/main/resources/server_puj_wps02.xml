@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <container alias="p02"   password="0.91" ipaddress="10.195.20.28">
+    <container alias="wps02" password="0.91" ipaddress="10.195.34.16">
         <environment seneventattemps="5" sendeventtimeout="1000" rmitimeout="1000">
             <remote rmiport="1097" mcaddress="230.0.0.1" mcport="2222"/>
         </environment>
@@ -8,7 +8,7 @@
     <Log
             trace="false"
             debug="false"
-            info="true"
+            info="false"
             warn="true"
             error="true"
             fatal="true"
