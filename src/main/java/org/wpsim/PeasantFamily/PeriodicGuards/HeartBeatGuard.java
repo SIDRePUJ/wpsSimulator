@@ -52,7 +52,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
 
         if (ControlCurrentDate.getInstance().getDaysBetweenDates(believes.getInternalCurrentDate()) < -90){
             ReportBESA.info(
-                    "=========" + believes.getAlias() + "========= " + believes.getTimeLeftOnDay() +
+                    "UPDATE: \n=========" + believes.getAlias() + "========= " + believes.getTimeLeftOnDay() +
                     "Intention " + state.getMachineBDIParams().getIntention() +
                     "getTasks " + state.getMachineBDIParams().getIntention().getRole().getRolePlan().getTasks().toString() +
                     "======================================================"

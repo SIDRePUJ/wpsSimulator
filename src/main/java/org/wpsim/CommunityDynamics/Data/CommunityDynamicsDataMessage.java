@@ -15,11 +15,25 @@ public class CommunityDynamicsDataMessage extends DataBESA  {
     String peasantFamilyContractor;
     String peasantFamilyHelper;
     int availableDays;
+    String currentDate;
+    String agentAlias;
 
     public CommunityDynamicsDataMessage(String peasantFamilyContractor, String peasantFamilyHelper, int days) {
         this.peasantFamilyContractor = peasantFamilyContractor;
         this.peasantFamilyHelper = peasantFamilyHelper;
         this.availableDays = days;
+    }
+
+    public CommunityDynamicsDataMessage(String agentAlias, String currentDate) {
+        this.agentAlias = peasantFamilyContractor;
+        this.currentDate = currentDate;
+    }
+
+    public String getCurrentDate() {
+        return currentDate;
+    }
+    public String getAgentAlias() {
+        return agentAlias;
     }
 
     public int getAvailableDays() {

@@ -66,7 +66,7 @@ public class SimulationControlGuard extends GuardBESA {
                 WebsocketServer.getInstance().broadcastMessage("d=" + ControlCurrentDate.getInstance().getCurrentDate());
             }
             // Check if some agent is ahead of the global advance date
-            if (ControlCurrentDate.getInstance().isFirstDayOfMonth(agentCurrentDate)) {
+            if (ControlCurrentDate.getInstance().isFirstDayOfWeek(agentCurrentDate)) {
                 printProgress(agentCurrentDate);
             }
         }
@@ -89,7 +89,11 @@ public class SimulationControlGuard extends GuardBESA {
         long elapsedDays = ChronoUnit.DAYS.between(MIN_DATE, currentDate);
 
         double progressPercentage = (100.0 * elapsedDays) / totalDays;
-        wpsReport.warn("UPDATE: Progreso desde "+MIN_DATE+" hasta "+MAX_DATE+" - la fecha ("+currentDateStr+"): " + progressPercentage, wpsStart.config.getControlAgentName());
+        System.out.println("UPDATE: Progreso desde " +
+                MIN_DATE + " hasta " + MAX_DATE +
+                " - fecha actual " + currentDateStr + ": " +
+                String.format("%.2f", progressPercentage) + "%"
+        );
     }
 
 }

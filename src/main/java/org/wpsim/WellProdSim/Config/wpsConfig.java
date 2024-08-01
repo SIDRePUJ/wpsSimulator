@@ -315,7 +315,7 @@ public final class wpsConfig {
     }
 
     public synchronized String getUniqueFarmerName() {
-        return AdmBESA.getInstance().getConfigBESA().getAliasContainer() + "_PeasantFamily_" + peasantSerialID++;
+        return AdmBESA.getInstance().getConfigBESA().getAliasContainer() + "PeasantFamily" + peasantSerialID++;
     }
 
     public String getGovernmentAgentName() {

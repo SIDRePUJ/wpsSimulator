@@ -31,6 +31,7 @@ import BESA.Remote.RemoteAdmBESA;
 import BESA.Util.PeriodicDataBESA;
 import org.wpsim.PeasantFamily.Goals.L1Survival.DoVoidGoal;
 import org.wpsim.PeasantFamily.Guards.FromCivicAuthority.FromCivicAuthorityTrainingGuard;
+import org.wpsim.PeasantFamily.Guards.FromCommunityDynamics.SocietyWorkerDateSyncGuard;
 import org.wpsim.SimulationControl.Guards.AliveAgentGuard;
 import org.wpsim.SimulationControl.Guards.DeadAgentGuard;
 import org.wpsim.CivicAuthority.Data.LandInfo;
@@ -95,6 +96,7 @@ public class PeasantFamily extends AgentBDI {
         structBESA.bindGuard("SocietyBehavior", SocietyWorkerContractGuard.class);
         structBESA.bindGuard("SocietyBehavior", SocietyWorkerContractorGuard.class);
         structBESA.bindGuard("SocietyBehavior", PeasantWorkerContractFinishedGuard.class);
+        structBESA.bindGuard("SocietyBehavior", SocietyWorkerDateSyncGuard.class);
 
         structBESA.addBehavior("FromControlBehavior");
         structBESA.bindGuard("FromControlBehavior", FromSimulationControlGuard.class);

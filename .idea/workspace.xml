@@ -9,19 +9,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Modo distribuido">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadContainerGuard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps03.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Modo distribuido y con finalización sincronizada">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerDateSyncGuard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CommunityDynamics/Data/CommunityDynamicsDataMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CommunityDynamics/Data/CommunityDynamicsDataMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Agent/SimulationControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Agent/SimulationControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Data/SimulationControlState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Data/SimulationControlState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadAgentGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadAgentGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/benckmark-checkpoint.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/benckmark-checkpoint.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerContractGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerContractGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/SimulationControlGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/SimulationControlGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Config/wpsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Config/wpsConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -129,11 +126,11 @@
       <recent name="org.wpsim.Government" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="org.wpsim.PeasantFamily.Guards.FromCommunityDynamics" />
       <recent name="org.wpsim.SimulationControl.Guards" />
       <recent name="org.wpsim.PeasantFamily.Guards.FromCivicAuthority" />
       <recent name="org.wpsim.PeasantFamily.Tasks.L3Development" />
       <recent name="org.wpsim.PeasantFamily.Goals.L3Development" />
-      <recent name="org.wpsim.PeasantFamily.Tasks.L1Survival" />
     </key>
   </component>
   <component name="RunManager" selected="Maven.Simulator">
@@ -364,15 +361,8 @@
       <workItem from="1720968153921" duration="37310000" />
       <workItem from="1722285177782" duration="17575000" />
       <workItem from="1722359082546" duration="8283000" />
-      <workItem from="1722470772762" duration="10350000" />
-    </task>
-    <task id="LOCAL-00026" summary="Reglas Fuzzy funcionando para HappinessSadness y HopefulUncertainty">
-      <option name="closed" value="true" />
-      <created>1704658255355</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1704658255355</updated>
+      <workItem from="1722470772762" duration="10796000" />
+      <workItem from="1722514767974" duration="7207000" />
     </task>
     <task id="LOCAL-00027" summary="Reglas Fuzzy funcionando para HappinessSadness y HopefulUncertainty. Listo para jugar con la contribución.">
       <option name="closed" value="true" />
@@ -758,7 +748,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721079999425</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Modo distribuido y con finalización sincronizada">
+      <option name="closed" value="true" />
+      <created>1722482110655</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1722482110656</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -809,7 +807,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Componente base emocional actualizado" />
     <MESSAGE value="ignorar los jar compilados" />
     <MESSAGE value="Ajustes a nombres y optimización de velocidad" />
     <MESSAGE value="Ajustes al mecanismo de rescate del corazón de la familia campesina y sincronización." />
@@ -834,7 +831,8 @@
     <MESSAGE value="Experimentos para el CCC18" />
     <MESSAGE value="Training de las familias campesinas funcional." />
     <MESSAGE value="Modo distribuido" />
-    <option name="LAST_COMMIT_MESSAGE" value="Modo distribuido" />
+    <MESSAGE value="Modo distribuido y con finalización sincronizada" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modo distribuido y con finalización sincronizada" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
