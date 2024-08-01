@@ -24,9 +24,12 @@ import org.wpsim.CivicAuthority.Agent.CivicAuthority;
 import org.wpsim.CommunityDynamics.Agent.CommunityDynamics;
 import org.wpsim.MarketPlace.Agent.MarketPlace;
 import org.wpsim.PeasantFamily.Agent.PeasantFamily;
+import org.wpsim.PeasantFamily.Guards.FromSimulationControl.ToControlMessage;
 import org.wpsim.PeasantFamily.Guards.Status.StatusGuard;
 import org.wpsim.PerturbationGenerator.Agent.PerturbationGenerator;
 import org.wpsim.SimulationControl.Agent.SimulationControl;
+import org.wpsim.SimulationControl.Guards.DeadAgentGuard;
+import org.wpsim.SimulationControl.Guards.DeadContainerGuard;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
 import org.wpsim.SimulationControl.Util.SimulationParams;
 import org.wpsim.ViewerLens.Agent.ViewerLens;
@@ -46,7 +49,6 @@ public class wpsStart {
     public static boolean started = false;
     public static int CREATED_AGENTS = 0;
     public static final long startTime = System.currentTimeMillis();
-    public static CommandLine cmd;
     public static SimulationParams params = new SimulationParams();
 
     /**
@@ -69,23 +71,12 @@ public class wpsStart {
         startSimulation();
     }
 
-    private static void createContainer() {
-        // update ControlAgent Name
-        config.setControlAgentName(wpsStart.params.mode + "_" + config.getControlAgentName());
-        // update ViewerAgent Name
-        config.setViewerAgentName(wpsStart.params.mode + "_" + config.getViewerAgentName());
-
-        String path = "server_" + wpsStart.config.getStringProperty("pfagent.env") + "_" + params.mode + ".xml";
-        System.out.println("Starting in " + path + " mode");
-        AdmBESA adm = AdmBESA.getInstance(path);
-        System.out.println(adm.getConfigBESA());
-    }
-
     private static void setArgumentsConfig(String[] args) {
 
         Options options = new Options();
         // Definir los parámetros esperados
         options.addOption(new Option("m", "mode", true, "Mode of operation"));
+        options.addOption(new Option("n", "nodes", true, "Nodes"));
         options.addOption(new Option("a", "agents", true, "Number of agents"));
         options.addOption(new Option("d", "money", true, "Amount of money"));
         options.addOption(new Option("l", "land", true, "Land area"));
@@ -110,6 +101,9 @@ public class wpsStart {
             }
             if (cmd.hasOption("mode")) {
                 params.mode = cmd.getOptionValue("mode");
+            }
+            if (cmd.hasOption("nodes")) {
+                params.nodes = Integer.parseInt(cmd.getOptionValue("nodes"));
             }
             if (cmd.hasOption("emotions")) {
                 params.emotions = Integer.parseInt(cmd.getOptionValue("emotions"));
@@ -141,24 +135,37 @@ public class wpsStart {
 
         } catch (Exception e) {
             // Mostrar ayuda si hay un error en el parseo
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             formatter.printHelp("wpsim", options);
             System.exit(1);
         }
+    }
+
+    private static void createContainer() {
+        if (!params.mode.equals("wpsmain")) {
+            // update ControlAgent Name
+            config.setControlAgentName(wpsStart.params.mode + "_" + config.getControlAgentName());
+            // update ViewerAgent Name
+            config.setViewerAgentName(wpsStart.params.mode + "_" + config.getViewerAgentName());
+        }
+        // container creation
+        String path = "server_" + wpsStart.config.getStringProperty("pfagent.env") + "_" + params.mode + ".xml";
+        System.out.println("Starting in " + path + " mode");
+        AdmBESA adm = AdmBESA.getInstance(path);
+        System.out.println(adm.getConfigBESA());
     }
 
     private static void startSimulation() {
 
         System.out.println("Es centralizado: " + AdmBESA.getInstance().isCentralized());
 
-
         switch (params.mode) {
-            case "main" -> {
+            case "wpsmain" -> {
                 createServices();
                 createPeasants(config.peasantSerialID, peasantFamiliesAgents);
                 showRunningAgents();
             }
-            case "p01", "p02", "p03" -> {
+            case "wps01", "wps02", "wps03" -> {
                 createPeasants(config.peasantSerialID, peasantFamiliesAgents);
                 System.out.println("Simulating " + peasantFamiliesAgents + " agents");
                 showRunningAgents();
@@ -191,10 +198,10 @@ public class wpsStart {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("Contenedores activos");
+        System.out.println("UPDATE: Contenedores activos");
         Enumeration<String> containers = AdmBESA.getInstance().getAdmAliasList();
         while (containers.hasMoreElements()) {
-            System.out.println(containers.nextElement());
+            System.out.println("UPDATE:" + containers.nextElement());
         }
 
     }
@@ -210,7 +217,7 @@ public class wpsStart {
             ViewerLens viewerAgent = ViewerLens.createAgent(config.getViewerAgentName(), config.getDoubleProperty("control.passwd"));
             viewerAgent.start();
         } catch (ExceptionBESA e) {
-            System.out.println("Problemas al crear el control o Viewer decentralizados");
+            System.err.println("Problemas al crear el control o Viewer decentralizados");
         }
 
         wpsReport.info("Creando agentes, desde " + min + ", hasta " + max, AdmBESA.getInstance().getConfigBESA().getAliasContainer());
@@ -224,8 +231,7 @@ public class wpsStart {
                 peasantFamily.start();
             }
         } catch (Exception ex) {
-            System.out.println("error creando peasants" + ex.getMessage());
-            wpsReport.error(ex, "wpsStart");
+            System.err.println("error creando peasants" + ex.getMessage());
         }
 
     }
@@ -237,17 +243,18 @@ public class wpsStart {
         try {
             CommunityDynamics communityDynamics = CommunityDynamics.createAgent(config.getSocietyAgentName(), config.getDoubleProperty("control.passwd"));
             communityDynamics.start();
+            MarketPlace marketPlace = MarketPlace.createAgent(config.getMarketAgentName(), config.getDoubleProperty("control.passwd"));
+            marketPlace.start();
             CivicAuthority civicAuthority = CivicAuthority.createAgent(config.getGovernmentAgentName(), config.getDoubleProperty("control.passwd"));
             civicAuthority.start();
             BankOffice bankOffice = BankOffice.createBankAgent(config.getBankAgentName(), config.getDoubleProperty("control.passwd"));
             bankOffice.start();
-            MarketPlace marketPlace = MarketPlace.createAgent(config.getMarketAgentName(), config.getDoubleProperty("control.passwd"));
-            marketPlace.start();
             PerturbationGenerator perturbationGenerator = PerturbationGenerator.createAgent(config.getPerturbationAgentName(), config.getDoubleProperty("control.passwd"));
             perturbationGenerator.start();
         } catch (Exception ex) {
-            wpsReport.error(ex.getMessage(), "wpsStart_noOK");
+            System.err.println(ex.getMessage() + " wpsStart_noOK");
         }
+        pauseThread(1000);
     }
 
     /**
@@ -264,15 +271,8 @@ public class wpsStart {
      */
     public static void stopSimulation() {
         System.out.println("All agents stopped");
-        //getStatus();
-        //if (params.mode.equals("main")) {
-        //}
-        try {
-            Thread.sleep(60000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        System.out.println("Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.\n\n\n\n");
+        System.out.println("UPDATE: Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.");
+
         System.exit(0);
     }
 
@@ -304,9 +304,12 @@ public class wpsStart {
         return System.currentTimeMillis() - startTime;
     }
 
-}
+    public static void pauseThread(int milis){
+        try {
+            Thread.sleep(milis);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-/**
- * Bienestar depende de salud y mood - además de tener un ingreso sostenible, con eso siembra más fácil y rápido
- * El ingreso sostenible es un variable moduladora de las variables que alimentan el bienestar
- */
+}

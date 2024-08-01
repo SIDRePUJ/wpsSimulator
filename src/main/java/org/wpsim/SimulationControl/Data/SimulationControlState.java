@@ -41,7 +41,7 @@ public class SimulationControlState extends StateBESA implements Serializable {
     private ConcurrentMap<String, Boolean> deadAgentMap = new ConcurrentHashMap<>();
     //private Timer timer = new Timer();
     //private ConcurrentMap<String, Timer> agentTimers = new ConcurrentHashMap<>();
-    private ScheduledExecutorService scheduler;
+    //private ScheduledExecutorService scheduler;
 
     public SimulationControlState() {
         super();

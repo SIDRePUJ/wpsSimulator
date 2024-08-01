@@ -22,6 +22,7 @@ import BESA.Kernel.Agent.StructBESA;
 import BESA.Kernel.System.AdmBESA;
 import org.wpsim.SimulationControl.Data.SimulationControlState;
 import org.wpsim.SimulationControl.Guards.AliveAgentGuard;
+import org.wpsim.SimulationControl.Guards.DeadContainerGuard;
 import org.wpsim.SimulationControl.Guards.SimulationControlGuard;
 import org.wpsim.SimulationControl.Guards.DeadAgentGuard;
 
@@ -54,6 +55,8 @@ public class SimulationControl extends AgentBESA {
         structBESA.bindGuard("AliveAgentGuard", AliveAgentGuard.class);
         structBESA.addBehavior("DeadAgentGuard");
         structBESA.bindGuard("DeadAgentGuard", DeadAgentGuard.class);
+        structBESA.addBehavior("DeadContainerGuard");
+        structBESA.bindGuard("DeadContainerGuard", DeadContainerGuard.class);
         return structBESA;
     }
     
@@ -66,7 +69,7 @@ public class SimulationControl extends AgentBESA {
      */
     @Override
     public void setupAgent() {
-        
+        System.out.println("UPDATE: " + getAlias() + " Creado");
     }
 
     /**

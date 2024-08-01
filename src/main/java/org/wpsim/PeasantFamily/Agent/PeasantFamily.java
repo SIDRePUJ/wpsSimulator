@@ -260,10 +260,14 @@ public class PeasantFamily extends AgentBDI {
                             )
                     )
             );
-            String agID = AdmBESA.getInstance().getHandlerByAlias(this.getAlias()).getAgId();
-            AdmBESA.getInstance().killAgent(agID, config.getDoubleProperty("control.passwd"));
+            AdmBESA.getInstance().killAgent(
+                    AdmBESA.getInstance().getHandlerByAlias(
+                            this.getAlias()
+                    ).getAgId(),
+                    config.getDoubleProperty("control.passwd")
+            );
         } catch (Exception ex) {
-            wpsReport.error(ex.getMessage(), believes.getAlias());
+            System.err.println(ex.getMessage() + " " + believes.getAlias());
         }
     }
 

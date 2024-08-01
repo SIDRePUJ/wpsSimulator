@@ -11,4 +11,5 @@ public class SimulationParams {
     public int irrigation = -1;
     public int emotions = -1;
     public int training = -1;
+    public int nodes = 0;
 }
