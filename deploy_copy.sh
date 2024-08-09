@@ -1,3 +1,5 @@
+cd ../
+
 ./bni_besa_simple.sh
 
 #scp -r * wpsim01:/wpsim

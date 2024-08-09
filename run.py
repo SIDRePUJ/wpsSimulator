@@ -16,15 +16,17 @@ ssh_key_path = "/home/sistemas/.ssh/id_rsa"  # Ruta a tu clave privada
 
 # Tiempo de espera por experimento
 waiting_time = 30000
-# Parámetros a variar
-agents_list = [25, 100, 200, 500]
-land_list = [12]
 
 # Directorio del ejecutable
 jar_path = "/home/sistemas/wpsim/wpsSimulator/target/wpsim-1.0.jar"
 
 # Evento para señalizar la finalización de los hilos
 finished_events = [threading.Event() for _ in range(len(servers))]
+
+# Vector de opciones predefinido
+experiment_options = [
+    [3000000, 12, 0.0, 20, 50, 5000, 1, 1, 0, 3, 25]
+]
 
 def execute_command(server, user, ssh_key_path, command, index, timeout, work_dir):
     ssh = paramiko.SSHClient()
@@ -65,59 +67,61 @@ def execute_command(server, user, ssh_key_path, command, index, timeout, work_di
     return True
 
 # Comando base
-base_command = "java -XX:+UseG1GC -XX:MaxMetaspaceSize=4096m -Xmx1024m -Xmx60g -jar wpsim-1.0.jar --money 3000000 --land {land} --personality 0.0 --tools 20 --seeds 50 --water 5000 --irrigation 1 --emotions 1 --training 0 --nodes 3 --mode {mode} --agents {agents} 2>&1 | grep -v 'FINE' | grep UPDATE"
+base_command_template = "java -XX:+UseG1GC -XX:MaxMetaspaceSize=4096m -Xmx1024m -Xmx60g -jar wpsim-1.0.jar --money {money} --land {land} --personality {personality} --tools {tools} --seeds {seeds} --water {water} --irrigation {irrigation} --emotions {emotions} --training {training} --nodes {nodes} --mode {mode} --agents {agents} 2>&1 | grep -v 'FINE' | grep UPDATE"
 
 def run_experiments():
     timestamp = datetime.now().strftime("%Y%m%d%H%M")
     experiment_id = 1
-    for land in land_list:
-        for agents in agents_list:
-            threads = []
-            finished_events = [threading.Event() for _ in range(len(servers))]
 
-            def timer_callback():
-                if not all(event.is_set() for event in finished_events):
-                    print("Un hilo se ha demorado más de 5 minutos. Reiniciando simulación.")
-                    for thread in threads:
-                        if thread.is_alive():
-                            print(f"Terminando hilo {thread.name}")
-                            # Aquí no podemos forzar la terminación del hilo, solo podemos esperar a que termine.
+    for options in experiment_options:
+        money, land, personality, tools, seeds, water, irrigation, emotions, training, nodes, agents = options
 
-                    run_experiments()
+        threads = []
+        finished_events = [threading.Event() for _ in range(len(servers))]
 
-            timer = threading.Timer(waiting_time, timer_callback)
-            timer.start()
+        def timer_callback():
+            if not all(event.is_set() for event in finished_events):
+                print("Un hilo se ha demorado más de 5 minutos. Reiniciando simulación.")
+                for thread in threads:
+                    if thread.is_alive():
+                        print(f"Terminando hilo {thread.name}")
+                        # Aquí no podemos forzar la terminación del hilo, solo podemos esperar a que termine.
 
-            for i, server in enumerate(servers):
-                mode = server  # El modo es el mismo nombre del servidor
-                work_dir = f"/home/sistemas/experiments/exp_{experiment_id}_{timestamp}"
-                command = base_command.format(land=land, mode=mode, agents=agents)
-                print(f"Ejecutando en {server}: {command} \n Directorio {work_dir}")
+                run_experiments()
 
-                thread = threading.Thread(target=execute_command, args=(server, user, ssh_key_path, command, i, waiting_time, work_dir))
-                threads.append(thread)
-                thread.start()
+        timer = threading.Timer(waiting_time, timer_callback)
+        timer.start()
 
-                # Esperar 5 segundos antes de iniciar el siguiente servidor
-                if i < len(servers) - 1:
-                    time.sleep(2)
+        for i, server in enumerate(servers):
+            mode = server  # El modo es el mismo nombre del servidor
+            work_dir = f"/home/sistemas/experiments/exp_{experiment_id}_{timestamp}"
+            command = base_command_template.format(
+                money=money, land=land, personality=personality, tools=tools, seeds=seeds,
+                water=water, irrigation=irrigation, emotions=emotions, training=training,
+                nodes=nodes, mode=mode, agents=agents
+            )
+            print(f"Ejecutando en {server}: {command} \n Directorio {work_dir}")
 
-            # Esperar a que todos los hilos terminen antes de pasar a la siguiente combinación de parámetros
-            for thread in threads:
-                thread.join()
+            thread = threading.Thread(target=execute_command, args=(server, user, ssh_key_path, command, i, waiting_time, work_dir))
+            threads.append(thread)
+            thread.start()
 
-            # Cancelar el temporizador si todos los hilos terminan antes de los 5 minutos
-            timer.cancel()
+            # Esperar 5 segundos antes de iniciar el siguiente servidor
+            if i < len(servers) - 1:
+                time.sleep(2)
 
-            # Incrementar el ID del experimento
-            experiment_id += 1
+        # Esperar a que todos los hilos terminen antes de pasar a la siguiente combinación de parámetros
+        for thread in threads:
+            thread.join()
 
-            # Esperar que todos los comandos terminen antes de iniciar el segundo experimento
-            time.sleep(60)  # Ajustar según el tiempo esperado de ejecución del comando
+        # Cancelar el temporizador si todos los hilos terminan antes de los 5 minutos
+        timer.cancel()
 
-            # Segundo experimento (si se requiere)
-            # command = base_command.format(land=land, mode=mode, agents=agents)
-            # execute_command(server, user, password, command)
+        # Incrementar el ID del experimento
+        experiment_id += 1
+
+        # Esperar que todos los comandos terminen antes de iniciar el siguiente experimento
+        time.sleep(60)  # Ajustar según el tiempo esperado de ejecución del comando
 
 if __name__ == "__main__":
     run_experiments()
