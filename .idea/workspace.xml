@@ -9,21 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Sincronización entre Contratista y Empleado">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.3000.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.4000.json" afterDir="false" />
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Ajustes para enlazar SonarCloud">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/get_logs.sh" beforeDir="false" afterPath="$PROJECT_DIR$/get_logs.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L1Survival/SeekPurposeGoal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Goals/L1Survival/SeekPurposeGoal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromAgroEcosystem/FromAgroEcosystemGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromAgroEcosystem/FromAgroEcosystemGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L1Survival/DoVoidTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/ViewerLens/Guards/ViewerLensGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/ViewerLens/Guards/ViewerLensGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/BankOffice/Agent/BankOffice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/BankOffice/Agent/BankOffice.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -372,14 +362,7 @@
       <workItem from="1723236783241" duration="6496000" />
       <workItem from="1723510178391" duration="4161000" />
       <workItem from="1723578486754" duration="10211000" />
-    </task>
-    <task id="LOCAL-00028" summary="Adicionada la evaluación de Emociones General a las Metas.">
-      <option name="closed" value="true" />
-      <created>1704772834449</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1704772834449</updated>
+      <workItem from="1723682288037" duration="1893000" />
     </task>
     <task id="LOCAL-00029" summary="Evaluación de emociones general en todas las metas e inclusión de emociones en las tareas.">
       <option name="closed" value="true" />
@@ -765,7 +748,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722534858677</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="Ajustes para enlazar SonarCloud">
+      <option name="closed" value="true" />
+      <created>1723682431002</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1723682431002</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -819,7 +810,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Ajustes a nombres y optimización de velocidad" />
     <MESSAGE value="Ajustes al mecanismo de rescate del corazón de la familia campesina y sincronización." />
     <MESSAGE value="Cambio de nombres a los agentes y demás componentes" />
     <MESSAGE value="Ajustado el cambio de precios del mercado, ahora parece que funciona completamente y ajusta según la oferta y demanda, rondando al precio inicial." />
@@ -844,7 +834,8 @@
     <MESSAGE value="Modo distribuido" />
     <MESSAGE value="Modo distribuido y con finalización sincronizada" />
     <MESSAGE value="Sincronización entre Contratista y Empleado" />
-    <option name="LAST_COMMIT_MESSAGE" value="Sincronización entre Contratista y Empleado" />
+    <MESSAGE value="Ajustes para enlazar SonarCloud" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajustes para enlazar SonarCloud" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

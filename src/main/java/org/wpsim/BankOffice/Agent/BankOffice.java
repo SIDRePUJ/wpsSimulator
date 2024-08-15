@@ -61,16 +61,14 @@ public class BankOffice extends AgentBESA {
      *
      */
     @Override
-    public void setupAgent() {
-        
+    public void setupAgent() { // Noncompliant - method is empty
     }
 
     /**
      *
      */
     @Override
-    public void shutdownAgent() {
-        
+    public void shutdownAgent() { // Noncompliant - method is empty
     }
     
 }
