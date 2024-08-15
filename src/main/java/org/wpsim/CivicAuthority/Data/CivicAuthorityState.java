@@ -82,7 +82,7 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
 
         createFarms();
 
-        System.out.println("Farms created");
+        System.out.println("UPDATE: Farms created");
         //System.out.println(farms);
 
         // Contar fincas por tamaño
@@ -96,11 +96,11 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
                 .sum();
 
         // Imprimir la información
-        System.out.println("Total farms created: " + farms.size());
-        System.out.println("Large farms: " + largeFarmsCount);
-        System.out.println("Medium farms: " + mediumFarmsCount);
-        System.out.println("Small farms: " + smallFarmsCount);
-        System.out.println("Total lands assigned: " + totalLandsAssigned);
+        System.out.println("UPDATE: Total farms created: " + farms.size());
+        System.out.println("UPDATE: Large farms: " + largeFarmsCount);
+        System.out.println("UPDATE: Medium farms: " + mediumFarmsCount);
+        System.out.println("UPDATE: Small farms: " + smallFarmsCount);
+        System.out.println("UPDATE: Total lands assigned: " + totalLandsAssigned);
     }
 
     private Point landNameToPoint(String landName) {

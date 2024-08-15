@@ -3,6 +3,7 @@ import threading
 import time
 import os
 from datetime import datetime
+import argparse
 
 # Configuración de los servidores y credenciales
 servers = [
@@ -15,7 +16,7 @@ user = "sistemas"
 ssh_key_path = "/home/sistemas/.ssh/id_rsa"  # Ruta a tu clave privada
 
 # Tiempo de espera por experimento
-waiting_time = 30000
+waiting_time = 10800
 
 # Directorio del ejecutable
 jar_path = "/home/sistemas/wpsim/wpsSimulator/target/wpsim-1.0.jar"
@@ -25,7 +26,25 @@ finished_events = [threading.Event() for _ in range(len(servers))]
 
 # Vector de opciones predefinido
 experiment_options = [
-    [3000000, 12, 0.0, 20, 50, 5000, 1, 1, 0, 3, 25]
+#    [3000000, 2, 0.0, 50, 50, 3000, 1, 1, 0, 3, 25],
+#    [750000, 2, 0.0, 50, 50, 3000, 1, 1, 0, 3, 25],
+#    [3000000, 6, 0.0, 50, 50, 3000, 1, 1, 0, 3, 25],
+#    [750000, 6, 0.0, 50, 50, 3000, 1, 1, 0, 3, 25],
+#    [3000000, 12, 0.0, 50, 50, 3000, 1, 1, 0, 3, 25],
+#    [750000, 12, 0.0, 50, 50, 3000, 1, 1, 0, 3, 25],
+#    [3000000, 2, 0.0, 50, 50, 3000, 1, 1, 0, 3, 25],
+#    [750000, 2, 0.0, 50, 50, 3000, 1, 1, 0, 3, 50],
+#    [3000000, 6, 0.0, 50, 50, 3000, 1, 1, 0, 3, 50],
+#    [750000, 6, 0.0, 50, 50, 3000, 1, 1, 0, 3, 50],
+#    [3000000, 12, 0.0, 50, 50, 3000, 1, 1, 0, 3, 50],
+#    [750000, 12, 0.0, 50, 50, 3000, 1, 1, 0, 3, 50],
+#    [3000000, 2, 0.0, 50, 50, 3000, 1, 1, 0, 3, 50],
+#    [750000, 2, 0.0, 50, 50, 3000, 1, 1, 0, 3, 150],
+#    [3000000, 6, 0.0, 50, 50, 3000, 1, 1, 0, 3, 150],
+#    [750000, 6, 0.0, 50, 50, 3000, 1, 1, 0, 3, 150],
+#    [3000000, 12, 0.0, 50, 50, 3000, 1, 1, 0, 3, 150],
+#    [750000, 12, 0.0, 50, 50, 3000, 1, 1, 0, 3, 150]
+    [3000000, 12, 0.0, 50, 50, 3000, 1, 1, 0, 3, 300]
 ]
 
 def execute_command(server, user, ssh_key_path, command, index, timeout, work_dir):
@@ -69,7 +88,7 @@ def execute_command(server, user, ssh_key_path, command, index, timeout, work_di
 # Comando base
 base_command_template = "java -XX:+UseG1GC -XX:MaxMetaspaceSize=4096m -Xmx1024m -Xmx60g -jar wpsim-1.0.jar --money {money} --land {land} --personality {personality} --tools {tools} --seeds {seeds} --water {water} --irrigation {irrigation} --emotions {emotions} --training {training} --nodes {nodes} --mode {mode} --agents {agents} 2>&1 | grep -v 'FINE' | grep UPDATE"
 
-def run_experiments():
+def run_experiments(experiment_name):
     timestamp = datetime.now().strftime("%Y%m%d%H%M")
     experiment_id = 1
 
@@ -87,14 +106,14 @@ def run_experiments():
                         print(f"Terminando hilo {thread.name}")
                         # Aquí no podemos forzar la terminación del hilo, solo podemos esperar a que termine.
 
-                run_experiments()
+                run_experiments(experiment_name)
 
         timer = threading.Timer(waiting_time, timer_callback)
         timer.start()
 
         for i, server in enumerate(servers):
             mode = server  # El modo es el mismo nombre del servidor
-            work_dir = f"/home/sistemas/experiments/exp_{experiment_id}_{timestamp}"
+            work_dir = f"/home/sistemas/experiments/{experiment_name}_exp_{experiment_id}_{timestamp}"
             command = base_command_template.format(
                 money=money, land=land, personality=personality, tools=tools, seeds=seeds,
                 water=water, irrigation=irrigation, emotions=emotions, training=training,
@@ -124,4 +143,9 @@ def run_experiments():
         time.sleep(60)  # Ajustar según el tiempo esperado de ejecución del comando
 
 if __name__ == "__main__":
-    run_experiments()
+    parser = argparse.ArgumentParser(description="Ejecutar experimentos en servidores remotos.")
+    parser.add_argument("experiment_name", type=str, help="Nombre del experimento para identificar las carpetas.")
+
+    args = parser.parse_args()
+
+    run_experiments(args.experiment_name)

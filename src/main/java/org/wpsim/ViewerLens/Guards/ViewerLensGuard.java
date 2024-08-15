@@ -66,7 +66,7 @@ public class ViewerLensGuard extends GuardBESA {
     }
 
     public void logHeaderData() {
-        String csvData = "HappinessSadness,HopefulUncertainty,SecureInsecure,money,health,currentSeason," +
+        String csvData = "Timestamp,HappinessSadness,HopefulUncertainty,SecureInsecure,money,health,currentSeason," +
                 "robberyAccount,purpose,peasantFamilyAffinity,peasantLeisureAffinity," +
                 "peasantFriendsAffinity,currentPeasantLeisureType," +
                 "currentResourceNeededType,currentDay,internalCurrentDate,toPay,peasantKind," +

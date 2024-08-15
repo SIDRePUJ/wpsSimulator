@@ -65,6 +65,7 @@ import org.wpsim.WellProdSim.wpsStart;
 import org.wpsim.ViewerLens.Util.wpsReport;
 
 import java.rmi.RemoteException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -247,7 +248,7 @@ public class PeasantFamily extends AgentBDI {
         System.out.println("Shutdown " + this.getAlias());
         // Anuncio de que el agente está muerto
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) this.getState()).getBelieves();
-        wpsReport.mental(believes.toCSV(), this.getAlias());
+        wpsReport.mental(Instant.now() + "," + believes.toCSV(), this.getAlias());
         wpsReport.ws(believes.toJson(), believes.getAlias());
         //Eliminar el agente
         try {

@@ -67,17 +67,6 @@ public class SeekPurposeGoal extends wpsGoalBDI {
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
-    public double evaluateViability(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
-    }
-
-    /**
-     *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         if (believes.getPeasantProfile().getPurpose().isBlank()) {
@@ -89,24 +78,13 @@ public class SeekPurposeGoal extends wpsGoalBDI {
 
     /**
      *
-     * @param parameters
-     * @return
-     * @throws KernellAgentEventExceptionBESA
-     */
-    @Override
-    public double evaluatePlausibility(Believes parameters) throws KernellAgentEventExceptionBESA {
-        return 1;
-    }
-
-    /**
-     *
      * @param stateBDI
      * @return
      * @throws KernellAgentEventExceptionBESA
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return 0.9;
+        return 1;
     }
 
     /**

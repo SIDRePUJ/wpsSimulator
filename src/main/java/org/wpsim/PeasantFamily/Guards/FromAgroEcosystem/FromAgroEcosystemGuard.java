@@ -25,6 +25,8 @@ import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.ViewerLens.Util.wpsReport;
 
+import java.time.Instant;
+
 /**
  *
  * @author jairo
@@ -101,7 +103,7 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                     );
                     believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
                     //System.out.println("🍙🍙🍙: CROP_HARVEST OK");
-                    wpsReport.mental(believes.toCSV(), believes.getAlias());
+                    wpsReport.mental(Instant.now() + "," + believes.toCSV(), believes.getAlias());
                     break;
                 default:
                     // Código a ejecutar si messageType no coincide con ninguno de los casos anteriores

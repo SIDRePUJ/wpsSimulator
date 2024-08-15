@@ -50,7 +50,7 @@ public class DoVoidTask extends Task {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         //@TODO: REVISAR
         try {
-            Thread.sleep(50);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -36,6 +36,7 @@ import org.wpsim.ViewerLens.Util.wpsReport;
 import rational.data.InfoData;
 import rational.mapping.Believes;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -115,13 +116,14 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
 
         if (params.training == 1) {
             this.trainingLevel = wpsStart.config.getDoubleProperty("trainingLevel");
-        }else{
+        } else {
             this.trainingLevel = 0.4;
         }
 
         changePersonalityBase(getPersonality());
 
     }
+
     public boolean isTrainingAvailable() {
         return trainingAvailable;
     }
@@ -130,12 +132,12 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.trainingAvailable = trainingAvailable;
     }
 
-    public double getTrainingLevel(){
+    public double getTrainingLevel() {
         return trainingLevel;
     }
 
-    public void increaseTrainingLevel(){
-        trainingLevel+=0.1;
+    public void increaseTrainingLevel() {
+        trainingLevel += 0.1;
         setTrainingAvailable(false);
     }
 
@@ -433,7 +435,7 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         // Report the agent's beliefs to the wpsViewer
         wpsReport.ws(this.toJson(), this.getAlias());
         // Report the agent's beliefs to the wpsViewer
-        wpsReport.mental(this.toCSV(), this.getAlias());
+        wpsReport.mental(Instant.now() + "," + this.toCSV(), this.getAlias());
     }
 
     private void notifyInternalCurrentDay() {
