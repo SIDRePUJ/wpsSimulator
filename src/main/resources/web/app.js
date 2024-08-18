@@ -57,7 +57,7 @@ function addPeasantFamily(name) {
 function updateAgent(jsonData) {
     let unSynchronized = "";
     let haveEmotions = "";
-    //console.log("Updating agent:", jsonData);
+    console.log("Updating agent:", jsonData);
     let agent = document.getElementById(jsonData.name);
     let state = JSON.parse(jsonData.state);
     //console.log(state);
@@ -229,7 +229,7 @@ if (window.WebSocket) {
             case "q=":
                 let number = parseInt(data, 10);
                 for (let i = 1; i <= number; i++) {
-                    addPeasantFamily("PeasantFamily_" + i);
+                    addPeasantFamily("MAS_PeasantFamily" + i);
                 }
                 break;
             case "d=":

@@ -43,7 +43,7 @@ public class wpsStart {
     public static boolean started = false;
     public static int CREATED_AGENTS = 0;
     public static final long startTime = System.currentTimeMillis();
-    public static SimulationParams params = new SimulationParams();
+    public static SimulationParams params = new SimulationParams();;
 
     /**
      * The main method to start the simulation.
@@ -69,6 +69,7 @@ public class wpsStart {
 
         Options options = new Options();
         // Definir los parámetros esperados
+        options.addOption(new Option("env", "env", true, "Environment"));
         options.addOption(new Option("m", "mode", true, "Mode of operation"));
         options.addOption(new Option("n", "nodes", true, "Nodes"));
         options.addOption(new Option("a", "agents", true, "Number of agents"));
@@ -92,6 +93,9 @@ public class wpsStart {
             cmd = parser.parse(options, args);
             if (cmd.hasOption("agents")) {
                 peasantFamiliesAgents = Integer.parseInt(cmd.getOptionValue("agents"));
+            }
+            if (cmd.hasOption("env")) {
+                params.mode = cmd.getOptionValue("env");
             }
             if (cmd.hasOption("mode")) {
                 params.mode = cmd.getOptionValue("mode");
@@ -143,7 +147,7 @@ public class wpsStart {
             config.setViewerAgentName(wpsStart.params.mode + "_" + config.getViewerAgentName());
         }
         // container creation
-        String path = "server_" + wpsStart.config.getStringProperty("pfagent.env") + "_" + params.mode + ".xml";
+        String path = "server_" + wpsStart.params.env + "_" + params.mode + ".xml";
         System.out.println("Starting in " + path + " mode");
         AdmBESA adm = AdmBESA.getInstance(path);
         System.out.println(adm.getConfigBESA());
