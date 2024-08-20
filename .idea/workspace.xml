@@ -9,14 +9,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Funciona por defecto como web">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PerturbationGenerator/Agent/PerturbationGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PerturbationGenerator/Agent/PerturbationGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadContainerGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadContainerGuard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/web/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -382,15 +384,7 @@
       <workItem from="1723510178391" duration="4161000" />
       <workItem from="1723578486754" duration="10211000" />
       <workItem from="1723682288037" duration="3567000" />
-      <workItem from="1723844549505" duration="19537000" />
-    </task>
-    <task id="LOCAL-00031" summary="versión 0.2 Completa.&#10;Menos bloqueos, simulador acelerado con el manejo más eficiente de las tareas.">
-      <option name="closed" value="true" />
-      <created>1705289161656</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1705289161656</updated>
+      <workItem from="1723844549505" duration="22245000" />
     </task>
     <task id="LOCAL-00032" summary="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo.">
       <option name="closed" value="true" />
@@ -776,7 +770,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723955390515</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="Funciona por defecto como web">
+      <option name="closed" value="true" />
+      <created>1724119569357</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1724119569357</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -830,7 +832,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Ajustado el cambio de precios del mercado, ahora parece que funciona completamente y ajusta según la oferta y demanda, rondando al precio inicial." />
     <MESSAGE value="Ajustada la simulación con 8 agentes para las pruebas" />
     <MESSAGE value="Tarea vacía para recuperar los agentes zombies" />
     <MESSAGE value="ajuste en los temporizadores para simulación a 10 años." />
@@ -855,7 +856,8 @@
     <MESSAGE value="Ajustes para enlazar SonarCloud" />
     <MESSAGE value="Testing Sonar" />
     <MESSAGE value="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5" />
-    <option name="LAST_COMMIT_MESSAGE" value="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5" />
+    <MESSAGE value="Funciona por defecto como web" />
+    <option name="LAST_COMMIT_MESSAGE" value="Funciona por defecto como web" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

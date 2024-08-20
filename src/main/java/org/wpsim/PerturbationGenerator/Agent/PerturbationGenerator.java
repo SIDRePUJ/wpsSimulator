@@ -23,6 +23,7 @@ import org.wpsim.PerturbationGenerator.Data.PerturbationGeneratorState;
 import org.wpsim.PerturbationGenerator.PeriodicGuards.NaturalPhenomena;
 import org.wpsim.PerturbationGenerator.Guards.PerturbationGeneratorGuard;
 import org.wpsim.ViewerLens.Util.wpsReport;
+import org.wpsim.WellProdSim.wpsStart;
 
 import static org.wpsim.WellProdSim.wpsStart.config;
 
@@ -79,7 +80,7 @@ public class PerturbationGenerator extends AgentBESA {
                     new EventBESA(
                             NaturalPhenomena.class.getName(),
                             new PeriodicDataBESA(
-                                    config.getLongProperty("control.steptime") * 100L,
+                                    wpsStart.params.steptime * 100L,
                                     PeriodicGuardBESA.START_PERIODIC_CALL
                             )
                     )

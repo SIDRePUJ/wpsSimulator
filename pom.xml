@@ -42,7 +42,7 @@
                         <argument>-water</argument>
                         <argument>0</argument>
                         <argument>-nodes</argument>
-                        <argument>0</argument>
+                        <argument>1</argument>
                         <argument>-irrigation</argument>
                         <argument>0</argument>
                         <argument>-emotions</argument>

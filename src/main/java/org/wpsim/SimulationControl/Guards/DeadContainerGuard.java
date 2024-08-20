@@ -43,7 +43,7 @@ public class DeadContainerGuard extends GuardBESA {
 
         System.out.println("UPDATE: Llegó mensaje de " + agentAlias);
 
-        if (agentAlias.equals("wps01") || agentAlias.equals("wps02") || agentAlias.equals("wps03")) {
+        if (agentAlias.equals("web") ||agentAlias.equals("wps01") || agentAlias.equals("wps02") || agentAlias.equals("wps03")) {
             wpsStart.params.nodes--;
             System.out.println("UPDATE: Descontando un nodo");
         }

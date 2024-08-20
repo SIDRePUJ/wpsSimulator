@@ -213,7 +213,7 @@ public class PeasantFamily extends AgentBDI {
                     new EventBESA(
                             HeartBeatGuard.class.getName(),
                             new PeriodicDataBESA(
-                                    config.getLongProperty("control.steptime"),
+                                    wpsStart.params.steptime,
                                     PeriodicGuardBESA.START_PERIODIC_CALL
                             )
                     )

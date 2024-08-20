@@ -27,5 +27,6 @@ public class SimulationParams {
     public int emotions = -1;
     public int training = -1;
     public int nodes = 0;
+    public int steptime = 50;
 
 }

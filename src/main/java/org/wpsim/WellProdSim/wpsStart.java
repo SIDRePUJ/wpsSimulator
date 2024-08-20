@@ -82,6 +82,7 @@ public class wpsStart {
         options.addOption(new Option("irrigation", true, "Irrigation enabled"));
         options.addOption(new Option("emotions", true, "Enable Emotions"));
         options.addOption(new Option("training", true, "Enable Training"));
+        options.addOption(new Option("step", false, "Step Time"));
 
         // Crear el parser para los argumentos
         CommandLineParser parser = new DefaultParser();
@@ -130,6 +131,13 @@ public class wpsStart {
             if (cmd.hasOption("training")) {
                 params.training = Integer.parseInt(cmd.getOptionValue("training"));
             }
+
+            if (cmd.hasOption("step")) {
+                params.steptime = Integer.parseInt(cmd.getOptionValue("step"));
+            }else{
+                params.steptime = Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
+            }
+
 
         } catch (Exception e) {
             // Mostrar ayuda si hay un error en el parseo

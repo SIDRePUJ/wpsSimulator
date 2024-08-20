@@ -36,7 +36,7 @@ import rational.guards.InformationFlowGuard;
  */
 public class HeartBeatGuard extends PeriodicGuardBESA {
 
-    int waitTime = Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
+    int waitTime = wpsStart.params.steptime;
     String currentRole = "";
 
     /**
@@ -75,7 +75,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         } catch (Exception e) {
             currentRole = "Void";
         }
-        waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
+        waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * wpsStart.params.steptime;
         if (waitTime == 0) {
             waitTime = Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
         }
