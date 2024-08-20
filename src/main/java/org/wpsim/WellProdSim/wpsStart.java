@@ -43,7 +43,7 @@ public class wpsStart {
     public static boolean started = false;
     public static int CREATED_AGENTS = 0;
     public static final long startTime = System.currentTimeMillis();
-    public static SimulationParams params = new SimulationParams();;
+    public static SimulationParams params = new SimulationParams();
 
     /**
      * The main method to start the simulation.
@@ -67,21 +67,21 @@ public class wpsStart {
 
     private static void setArgumentsConfig(String[] args) {
 
-        Options options = new Options();
         // Definir los parámetros esperados
-        options.addOption(new Option("env", "env", true, "Environment"));
-        options.addOption(new Option("m", "mode", true, "Mode of operation"));
-        options.addOption(new Option("n", "nodes", true, "Nodes"));
-        options.addOption(new Option("a", "agents", true, "Number of agents"));
-        options.addOption(new Option("d", "money", true, "Amount of money"));
-        options.addOption(new Option("l", "land", true, "Land area"));
-        options.addOption(new Option("p", "personality", true, "Type of personality"));
-        options.addOption(new Option("t", "tools", true, "Type of tools"));
-        options.addOption(new Option("s", "seeds", true, "Type of seeds"));
-        options.addOption(new Option("w", "water", true, "Amount of water"));
-        options.addOption(new Option("i", "irrigation", true, "Irrigation enabled"));
-        options.addOption(new Option("e", "emotions", true, "Enable Emotions"));
-        options.addOption(new Option("r", "training", true, "Enable Training"));
+        Options options = new Options();
+        options.addOption(new Option("env", true, "Environment"));
+        options.addOption(new Option("mode", true, "Mode of operation"));
+        options.addOption(new Option("nodes", true, "Nodes"));
+        options.addOption(new Option("agents", true, "Number of agents"));
+        options.addOption(new Option("money", true, "Amount of money"));
+        options.addOption(new Option("land", true, "Land area"));
+        options.addOption(new Option("personality", true, "Type of personality"));
+        options.addOption(new Option("tools", true, "Type of tools"));
+        options.addOption(new Option("seeds", true, "Type of seeds"));
+        options.addOption(new Option("water", true, "Amount of water"));
+        options.addOption(new Option("irrigation", true, "Irrigation enabled"));
+        options.addOption(new Option("emotions", true, "Enable Emotions"));
+        options.addOption(new Option("training", true, "Enable Training"));
 
         // Crear el parser para los argumentos
         CommandLineParser parser = new DefaultParser();
@@ -95,7 +95,7 @@ public class wpsStart {
                 peasantFamiliesAgents = Integer.parseInt(cmd.getOptionValue("agents"));
             }
             if (cmd.hasOption("env")) {
-                params.mode = cmd.getOptionValue("env");
+                params.env = cmd.getOptionValue("env");
             }
             if (cmd.hasOption("mode")) {
                 params.mode = cmd.getOptionValue("mode");
@@ -142,12 +142,12 @@ public class wpsStart {
     private static void createContainer() {
         if (!params.mode.equals("wpsmain")) {
             // update ControlAgent Name
-            config.setControlAgentName(wpsStart.params.mode + "_" + config.getControlAgentName());
+            config.setControlAgentName(params.mode + "_" + config.getControlAgentName());
             // update ViewerAgent Name
-            config.setViewerAgentName(wpsStart.params.mode + "_" + config.getViewerAgentName());
+            config.setViewerAgentName(params.mode + "_" + config.getViewerAgentName());
         }
         // container creation
-        String path = "server_" + wpsStart.params.env + "_" + params.mode + ".xml";
+        String path = "server_" + params.env + "_" + params.mode + ".xml";
         System.out.println("Starting in " + path + " mode");
         AdmBESA adm = AdmBESA.getInstance(path);
         System.out.println(adm.getConfigBESA());
@@ -172,7 +172,7 @@ public class wpsStart {
                 // Single mode
                 createServices();
                 System.out.println("Simulating " + peasantFamiliesAgents + " agents");
-                createPeasants(1, peasantFamiliesAgents);
+                createPeasants(config.peasantSerialID, peasantFamiliesAgents);
             }
             case "single" -> {
                 // Single benchmark mode

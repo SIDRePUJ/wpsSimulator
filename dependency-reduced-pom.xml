@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.wpsim</groupId>
-  <artifactId>wpsim</artifactId>
+  <artifactId>wpsSimulator</artifactId>
   <version>1.0</version>
   <build>
     <plugins>
@@ -13,7 +13,7 @@
         <configuration>
           <mainClass>org.wpsim.WellProdSim.wpsStart</mainClass>
           <arguments>
-            <argument>--mode single --emotions  1 --agents 10 --money 3000000 --land 2 --personality 0.5 --tools 10 --seeds 10 --water 0 --irrigation 0</argument>
+            <argument>--env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5</argument>
           </arguments>
         </configuration>
       </plugin>

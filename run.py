@@ -86,7 +86,7 @@ def execute_command(server, user, ssh_key_path, command, index, timeout, work_di
     return True
 
 # Comando base
-base_command_template = "java -XX:+UseG1GC -XX:MaxMetaspaceSize=4096m -Xmx1024m -Xmx60g -jar wpsim-1.0.jar --money {money} --land {land} --personality {personality} --tools {tools} --seeds {seeds} --water {water} --irrigation {irrigation} --emotions {emotions} --training {training} --nodes {nodes} --mode {mode} --agents {agents} 2>&1 | grep -v 'FINE' | grep UPDATE"
+base_command_template = "java -XX:+UseG1GC -XX:MaxMetaspaceSize=4096m -Xmx1024m -Xmx60g -jar wpsSimulator-1.0.jar --env puj --money {money} --land {land} --personality {personality} --tools {tools} --seeds {seeds} --water {water} --irrigation {irrigation} --emotions {emotions} --training {training} --nodes {nodes} --mode {mode} --agents {agents} 2>&1 | grep -v 'FINE' | grep UPDATE"
 
 def run_experiments(experiment_name):
     timestamp = datetime.now().strftime("%Y%m%d%H%M")

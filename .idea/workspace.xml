@@ -9,11 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Testing Sonar">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_local_web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_local_web.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/web/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
@@ -165,7 +167,22 @@
       <target name="ubuntu@144.24.0.171:22" />
       <MavenSettings>
         <option name="myGeneralSettings" />
-        <option name="myRunnerSettings" />
+        <option name="myRunnerSettings">
+          <MavenRunnerSettings>
+            <option name="delegateBuildToMaven" value="false" />
+            <option name="environmentProperties">
+              <map />
+            </option>
+            <option name="jreName" value="#USE_PROJECT_JDK" />
+            <option name="mavenProperties">
+              <map />
+            </option>
+            <option name="passParentEnv" value="true" />
+            <option name="runMavenInBackground" value="true" />
+            <option name="skipTests" value="false" />
+            <option name="vmOptions" value="" />
+          </MavenRunnerSettings>
+        </option>
         <option name="myRunnerParameters">
           <MavenRunnerParameters>
             <option name="cmdOptions" />
@@ -178,7 +195,7 @@
               </list>
             </option>
             <option name="multimoduleDir" />
-            <option name="pomFileName" value="../../pom.xml" />
+            <option name="pomFileName" value="../pom.xml" />
             <option name="profilesMap">
               <map />
             </option>
@@ -186,7 +203,7 @@
               <list />
             </option>
             <option name="resolveToWorkspace" value="false" />
-            <option name="workingDirPath" value="$PROJECT_DIR$/target/classes" />
+            <option name="workingDirPath" value="$PROJECT_DIR$/target/" />
           </MavenRunnerParameters>
         </option>
       </MavenSettings>
@@ -365,15 +382,7 @@
       <workItem from="1723510178391" duration="4161000" />
       <workItem from="1723578486754" duration="10211000" />
       <workItem from="1723682288037" duration="3567000" />
-      <workItem from="1723844549505" duration="7345000" />
-    </task>
-    <task id="LOCAL-00030" summary="Nuevo modo benckmark single.">
-      <option name="closed" value="true" />
-      <created>1704861475404</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1704861475404</updated>
+      <workItem from="1723844549505" duration="19537000" />
     </task>
     <task id="LOCAL-00031" summary="versión 0.2 Completa.&#10;Menos bloqueos, simulador acelerado con el manejo más eficiente de las tareas.">
       <option name="closed" value="true" />
@@ -759,7 +768,15 @@
       <option name="project" value="LOCAL" />
       <updated>1723684615169</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5">
+      <option name="closed" value="true" />
+      <created>1723955390514</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955390515</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -813,7 +830,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Cambio de nombres a los agentes y demás componentes" />
     <MESSAGE value="Ajustado el cambio de precios del mercado, ahora parece que funciona completamente y ajusta según la oferta y demanda, rondando al precio inicial." />
     <MESSAGE value="Ajustada la simulación con 8 agentes para las pruebas" />
     <MESSAGE value="Tarea vacía para recuperar los agentes zombies" />
@@ -838,7 +854,8 @@
     <MESSAGE value="Sincronización entre Contratista y Empleado" />
     <MESSAGE value="Ajustes para enlazar SonarCloud" />
     <MESSAGE value="Testing Sonar" />
-    <option name="LAST_COMMIT_MESSAGE" value="Testing Sonar" />
+    <MESSAGE value="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5" />
+    <option name="LAST_COMMIT_MESSAGE" value="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

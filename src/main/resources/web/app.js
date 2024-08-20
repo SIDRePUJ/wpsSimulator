@@ -57,7 +57,7 @@ function addPeasantFamily(name) {
 function updateAgent(jsonData) {
     let unSynchronized = "";
     let haveEmotions = "";
-    console.log("Updating agent:", jsonData);
+    //console.log("Updating agent:", jsonData);
     let agent = document.getElementById(jsonData.name);
     let state = JSON.parse(jsonData.state);
     //console.log(state);

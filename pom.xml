@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.wpsim</groupId>
-    <artifactId>wpsim</artifactId>
+    <artifactId>wpsSimulator</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -25,7 +25,32 @@
                 <configuration>
                     <mainClass>org.wpsim.WellProdSim.wpsStart</mainClass>
                     <arguments>
-                        <argument>--mode single --emotions  1 --agents 10 --money 3000000 --land 2 --personality 0.5 --tools 10 --seeds 10 --water 0 --irrigation 0</argument>
+                        <argument>-env</argument>
+                        <argument>local</argument>
+                        <argument>-mode</argument>
+                        <argument>web</argument>
+                        <argument>-money</argument>
+                        <argument>750000</argument>
+                        <argument>-land</argument>
+                        <argument>2</argument>
+                        <argument>-personality</argument>
+                        <argument>0.0</argument>
+                        <argument>-tools</argument>
+                        <argument>20</argument>
+                        <argument>-seeds</argument>
+                        <argument>50</argument>
+                        <argument>-water</argument>
+                        <argument>0</argument>
+                        <argument>-nodes</argument>
+                        <argument>0</argument>
+                        <argument>-irrigation</argument>
+                        <argument>0</argument>
+                        <argument>-emotions</argument>
+                        <argument>1</argument>
+                        <argument>-training</argument>
+                        <argument>0</argument>
+                        <argument>-agents</argument>
+                        <argument>5</argument>
                     </arguments>
                 </configuration>
             </plugin>
