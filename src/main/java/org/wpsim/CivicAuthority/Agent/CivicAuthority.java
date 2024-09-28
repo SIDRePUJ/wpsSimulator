@@ -56,8 +56,8 @@ public class CivicAuthority extends AgentBESA {
         structBESA.bindGuard("GovernmentAgentBehavior", CivicAuthorityLandGuard.class);
         structBESA.bindGuard("GovernmentAgentBehavior", CivicAuthorityReleaseLandGuard.class);
 
-        structBESA.addBehavior("TrainingOfferBehavior");
-        structBESA.bindGuard("TrainingOfferBehavior", TrainingOfferGuard.class);
+        //structBESA.addBehavior("TrainingOfferBehavior");
+        structBESA.bindGuard("GovernmentAgentBehavior", TrainingOfferGuard.class);
 
         return structBESA;
     }

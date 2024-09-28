@@ -90,30 +90,32 @@ public class PeasantFamily extends AgentBDI {
         structBESA.addBehavior("HeartBeatBehavior");
         structBESA.bindGuard("HeartBeatBehavior", HeartBeatGuard.class);
 
-        structBESA.addBehavior("FromWorldBehavior");
-        structBESA.bindGuard("FromWorldBehavior", FromAgroEcosystemGuard.class);
+        structBESA.addBehavior("PeasantBehavior");
+        
+        //structBESA.addBehavior("FromWorldBehavior");
+        structBESA.bindGuard("PeasantBehavior", FromAgroEcosystemGuard.class);
 
-        structBESA.addBehavior("SocietyBehavior");
-        structBESA.bindGuard("SocietyBehavior", SocietyWorkerContractGuard.class);
-        structBESA.bindGuard("SocietyBehavior", SocietyWorkerContractorGuard.class);
-        structBESA.bindGuard("SocietyBehavior", PeasantWorkerContractFinishedGuard.class);
-        structBESA.bindGuard("SocietyBehavior", SocietyWorkerDateSyncGuard.class);
+        //structBESA.addBehavior("SocietyBehavior");
+        structBESA.bindGuard("PeasantBehavior", SocietyWorkerContractGuard.class);
+        structBESA.bindGuard("PeasantBehavior", SocietyWorkerContractorGuard.class);
+        structBESA.bindGuard("PeasantBehavior", PeasantWorkerContractFinishedGuard.class);
+        structBESA.bindGuard("PeasantBehavior", SocietyWorkerDateSyncGuard.class);
 
-        structBESA.addBehavior("FromControlBehavior");
-        structBESA.bindGuard("FromControlBehavior", FromSimulationControlGuard.class);
+        //structBESA.addBehavior("FromControlBehavior");
+        structBESA.bindGuard("PeasantBehavior", FromSimulationControlGuard.class);
 
-        structBESA.addBehavior("FromBankBehavior");
-        structBESA.bindGuard("FromBankBehavior", FromBankOfficeGuard.class);
+        //structBESA.addBehavior("FromBankBehavior");
+        structBESA.bindGuard("PeasantBehavior", FromBankOfficeGuard.class);
 
-        structBESA.addBehavior("FromMarketBehavior");
-        structBESA.bindGuard("FromMarketBehavior", FromMarketPlaceGuard.class);
+        //structBESA.addBehavior("FromMarketBehavior");
+        structBESA.bindGuard("PeasantBehavior", FromMarketPlaceGuard.class);
 
-        structBESA.addBehavior("FromCivicAuthorityBehavior");
-        structBESA.bindGuard("FromCivicAuthorityBehavior", FromCivicAuthorityGuard.class);
-        structBESA.bindGuard("FromCivicAuthorityBehavior", FromCivicAuthorityTrainingGuard.class);
+        //structBESA.addBehavior("FromCivicAuthorityBehavior");
+        structBESA.bindGuard("PeasantBehavior", FromCivicAuthorityGuard.class);
+        structBESA.bindGuard("PeasantBehavior", FromCivicAuthorityTrainingGuard.class);
 
-        structBESA.addBehavior("StatusBehavior");
-        structBESA.bindGuard("StatusBehavior", StatusGuard.class);
+        //structBESA.addBehavior("StatusBehavior");
+        structBESA.bindGuard("PeasantBehavior", StatusGuard.class);
 
         return structBESA;
     }

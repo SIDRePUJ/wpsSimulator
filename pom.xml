@@ -28,7 +28,7 @@
                         <argument>-env</argument>
                         <argument>local</argument>
                         <argument>-mode</argument>
-                        <argument>web</argument>
+                        <argument>single</argument>
                         <argument>-money</argument>
                         <argument>750000</argument>
                         <argument>-land</argument>
@@ -50,7 +50,7 @@
                         <argument>-training</argument>
                         <argument>0</argument>
                         <argument>-agents</argument>
-                        <argument>5</argument>
+                        <argument>1</argument>
                     </arguments>
                 </configuration>
             </plugin>

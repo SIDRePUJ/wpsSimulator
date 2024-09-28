@@ -43,6 +43,9 @@ public class DeadAgentGuard extends GuardBESA {
         state.removeAgentFromMap(agentAlias);
         if (state.getDeadAgentMap().size() == wpsStart.peasantFamiliesAgents) {
             try {
+                if (!wpsStart.params.mode.equals("wpsmain")) {
+                    wpsStart.stopSimulation();
+                }
                 System.out.println("UPDATE: cerrando simulación desde " + wpsStart.params.mode);
                 AdmBESA.getInstance().getHandlerByAlias(
                         "wpsControl"
@@ -56,9 +59,6 @@ public class DeadAgentGuard extends GuardBESA {
                 );
                 System.out.println("UPDATE: mensaje enviado desde " + wpsStart.params.mode);
                 Thread.sleep(1000);
-                if (!wpsStart.params.mode.equals("wpsmain")) {
-                    wpsStart.stopSimulation();
-                }
             } catch (Exception ex) {
                 System.err.println("UPDATE: " + ex.getMessage() + "wpsmain");
             }

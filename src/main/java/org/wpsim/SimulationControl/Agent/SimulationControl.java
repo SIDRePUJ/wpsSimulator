@@ -51,12 +51,12 @@ public class SimulationControl extends AgentBESA {
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         structBESA.addBehavior("ControlAgentGuard");
         structBESA.bindGuard("ControlAgentGuard", SimulationControlGuard.class);
-        structBESA.addBehavior("AliveAgentGuard");
-        structBESA.bindGuard("AliveAgentGuard", AliveAgentGuard.class);
-        structBESA.addBehavior("DeadAgentGuard");
-        structBESA.bindGuard("DeadAgentGuard", DeadAgentGuard.class);
-        structBESA.addBehavior("DeadContainerGuard");
-        structBESA.bindGuard("DeadContainerGuard", DeadContainerGuard.class);
+        //structBESA.addBehavior("AliveAgentGuard");
+        structBESA.bindGuard("ControlAgentGuard", AliveAgentGuard.class);
+        //structBESA.addBehavior("DeadAgentGuard");
+        structBESA.bindGuard("ControlAgentGuard", DeadAgentGuard.class);
+        //structBESA.addBehavior("DeadContainerGuard");
+        structBESA.bindGuard("ControlAgentGuard", DeadContainerGuard.class);
         return structBESA;
     }
     
