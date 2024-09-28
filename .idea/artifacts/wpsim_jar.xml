@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/wpsim_jar</output-path>
     <root id="root">
       <element id="archive" name="wpsim.jar">
-        <element id="module-output" name="wpsim" />
+        <element id="module-output" name="wpsSimulator" />
       </element>
       <element id="library" level="project" name="Maven: com.tersesystems.logback:logback-classic:1.2.0" />
       <element id="library" level="project" name="Maven: org.wildfly.common:wildfly-common:1.5.4.Final" />

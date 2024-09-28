@@ -66,24 +66,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (checkFinish(believes)) return;
         // Send BDI Pulse to BDI Information Flow
         sendBDIPulse(this.agent.getAlias());
-        wpsReport.info("Tiempo restante " + believes.getTimeLeftOnDay() + " Ya ejecutadas: " + believes.getTasksBySpecificDate(believes.getInternalCurrentDate()), believes.getAlias());
-    }
-
-    private void sleepWave(StateBDI state, PeasantFamilyBelieves believes) {
-        try {
-            currentRole = state.getMainRole().getRoleName();
-        } catch (Exception e) {
-            currentRole = "Void";
-        }
-        waitTime = TimeConsumedBy.valueOf(currentRole).getTime() * wpsStart.params.steptime;
-        if (waitTime == 0) {
-            waitTime = Integer.parseInt(wpsStart.config.getStringProperty("control.steptime"));
-        }
-        try {
-            Thread.sleep(waitTime / 4);
-        } catch (InterruptedException e) {
-            ReportBESA.trace("error sleepWave");
-        }
+        //wpsReport.info("Tiempo restante " + believes.getTimeLeftOnDay() + " Ya ejecutadas: " + believes.getTasksBySpecificDate(believes.getInternalCurrentDate()), believes.getAlias());
     }
 
     private static void sendBDIPulse(String alias) {

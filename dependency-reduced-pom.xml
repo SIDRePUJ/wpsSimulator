@@ -10,6 +10,13 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
           <mainClass>org.wpsim.WellProdSim.wpsStart</mainClass>
           <arguments>
@@ -38,7 +45,7 @@
             <argument>-training</argument>
             <argument>0</argument>
             <argument>-agents</argument>
-            <argument>1</argument>
+            <argument>100</argument>
           </arguments>
         </configuration>
       </plugin>
@@ -81,6 +88,51 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>Perfilado</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+              <mainClass>org.wpsim.WellProdSim.wpsStart</mainClass>
+              <arguments>
+                <argument>-env</argument>
+                <argument>local</argument>
+                <argument>-mode</argument>
+                <argument>single</argument>
+                <argument>-money</argument>
+                <argument>750000</argument>
+                <argument>-land</argument>
+                <argument>2</argument>
+                <argument>-personality</argument>
+                <argument>0.0</argument>
+                <argument>-tools</argument>
+                <argument>20</argument>
+                <argument>-seeds</argument>
+                <argument>50</argument>
+                <argument>-water</argument>
+                <argument>0</argument>
+                <argument>-nodes</argument>
+                <argument>1</argument>
+                <argument>-irrigation</argument>
+                <argument>0</argument>
+                <argument>-emotions</argument>
+                <argument>1</argument>
+                <argument>-training</argument>
+                <argument>0</argument>
+                <argument>-agents</argument>
+                <argument>1</argument>
+              </arguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <properties>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.source>17</maven.compiler.source>

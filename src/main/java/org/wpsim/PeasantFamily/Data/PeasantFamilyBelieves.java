@@ -432,10 +432,12 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         this.internalCurrentDate = ControlCurrentDate.getInstance().getDatePlusOneDay(internalCurrentDate);
 
         notifyInternalCurrentDay();
-        // Report the agent's beliefs to the wpsViewer
-        wpsReport.ws(this.toJson(), this.getAlias());
-        // Report the agent's beliefs to the wpsViewer
-        wpsReport.mental(Instant.now() + "," + this.toCSV(), this.getAlias());
+        if (ControlCurrentDate.getInstance().isFirstDayOfWeek(internalCurrentDate)) {
+            // Report the agent's beliefs to the wpsViewer
+            wpsReport.ws(this.toJson(), this.getAlias());
+            // Report the agent's beliefs to the wpsViewer
+            wpsReport.mental(Instant.now() + "," + this.toCSV(), this.getAlias());
+        }
     }
 
     private void notifyInternalCurrentDay() {
