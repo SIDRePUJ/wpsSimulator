@@ -10,13 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Funciona por defecto como web">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/wpsim_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/wpsim_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Data/PeasantFamilyBelieves.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/PeriodicGuards/HeartBeatGuard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +35,11 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="JavaAutoRunManager">
+    <enabled-run-configurations>
+      <run-configuration type="MavenRunConfiguration" name="Simulator" />
+    </enabled-run-configurations>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -71,7 +72,7 @@
     "Downloaded.Files.Path.Enabled": "false",
     "Maven.Compile.executor": "Run",
     "Maven.Simulator.executor": "Debug",
-    "Maven.wpsSimulator Profile.executor": "Run",
+    "Maven.wpsSimulator Profile.executor": "Debug",
     "Maven.wpsSimulator [package].executor": "Run",
     "Maven.wpsim [clean].executor": "Run",
     "Maven.wpsim [package].executor": "Run",
@@ -185,7 +186,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Simulator" type="MavenRunConfiguration" factoryName="Maven">
-      <target name="ubuntu@144.24.0.171:22" />
+      <target name="@@@LOCAL@@@" />
       <MavenSettings>
         <option name="myGeneralSettings" />
         <option name="myRunnerSettings">
@@ -231,6 +232,7 @@
       <method v="2" />
     </configuration>
     <configuration name="wpsSimulator Profile" type="MavenRunConfiguration" factoryName="Maven">
+      <target name="jairo@192.168.1.40:22" />
       <MavenSettings>
         <option name="myGeneralSettings" />
         <option name="myRunnerSettings" />
@@ -271,8 +273,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
       </set>
     </attachedChunks>
   </component>
@@ -445,6 +447,7 @@
       <workItem from="1726505268929" duration="75000" />
       <workItem from="1726505414167" duration="6000" />
       <workItem from="1727360501758" duration="5028000" />
+      <workItem from="1727558644003" duration="2799000" />
     </task>
     <task id="LOCAL-00032" summary="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo.">
       <option name="closed" value="true" />
