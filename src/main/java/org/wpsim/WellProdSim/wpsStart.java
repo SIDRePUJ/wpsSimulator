@@ -226,7 +226,7 @@ public class wpsStart {
             System.err.println("Problemas al crear el control o Viewer decentralizados");
         }
 
-        wpsReport.info("Creando agentes, desde " + min + ", hasta " + max, AdmBESA.getInstance().getConfigBESA().getAliasContainer());
+        //wpsReport.info("Creando agentes, desde " + min + ", hasta " + max, AdmBESA.getInstance().getConfigBESA().getAliasContainer());
         try {
             for (int i = min; i <= max; i++) {
                 PeasantFamily peasantFamily = new PeasantFamily(

@@ -118,7 +118,7 @@ public class MarketPlaceState extends StateBESA implements Serializable {
             resources.get(productName).setCost((int) newPrice);
             resources.get(productName).setBehavior(Double.compare(currentPrice, newPrice));
         }
-        wpsReport.info("Adjusted prices around the initial price with moderated fluctuations.", "wpsMarket");
+        //wpsReport.info("Adjusted prices around the initial price with moderated fluctuations.", "wpsMarket");
     }
 
 

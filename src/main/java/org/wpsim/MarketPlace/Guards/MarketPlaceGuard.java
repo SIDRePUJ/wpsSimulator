@@ -48,7 +48,7 @@ public class MarketPlaceGuard extends wpsGuardBESA {
         MarketPlaceMessage marketPlaceMessage = (MarketPlaceMessage) event.getData();
         MarketPlaceState state = (MarketPlaceState) this.agent.getState();
         String productType = "";
-        wpsReport.info("Llegó mensaje de " + marketPlaceMessage.getPeasantAlias(), wpsStart.config.getMarketAgentName());
+        //wpsReport.info("Llegó mensaje de " + marketPlaceMessage.getPeasantAlias(), wpsStart.config.getMarketAgentName());
         MarketPlaceMessageType messageType = marketPlaceMessage.getMessageType();
         int quantity = marketPlaceMessage.getQuantity();
 

@@ -2,79 +2,53 @@
 <!DOCTYPE configuration>
 
 <configuration>
-    <!-- Definir variables de entorno
+    <!-- Definir variables de entorno -->
     <property name="LOG_LEVEL_CONSOLE" value="${LOG_LEVEL_CONSOLE:-INFO}" />
-    <property name="LOG_LEVEL_FILE" value="${LOG_LEVEL_FILE:-DEBUG}" />-->
+    <property name="LOG_LEVEL_FILE" value="${LOG_LEVEL_FILE:-DEBUG}" />
 
     <!-- Appender para archivo de log -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/wpsSimulator.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/wpsSimulator.%d{yyyy-MM-dd_HH-mm-ss}.log.zip</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <fileNamePattern>logs/wpsSimulator.%d{yyyy-MM-dd_HH-mm-ss}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>5GB</maxFileSize>
+            <maxFileSize>500MB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] |-%highlight(%-5level) %logger{36} %X{peasantAlias} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] |-%-5level %logger{36} %X{peasantAlias} - %msg%n</pattern>
         </encoder>
-    </appender>
-
-    <!-- Appender para archivo CSV -->
-    <appender name="CSV" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/wpsSimulator.csv</file>
-        <append>true</append>
-        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>logs/wpsSimulator.%i.csv.zip</fileNamePattern>
-            <minIndex>1</minIndex>
-            <maxIndex>3</maxIndex>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>5GB</maxFileSize>
-        </triggeringPolicy>
-        <encoder>
-            <pattern>%msg%n</pattern>
-        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${LOG_LEVEL_FILE}</level>
+        </filter>
+        <bufferSize>8KB</bufferSize>
     </appender>
 
     <!-- Appender para consola -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] |-%highlight(%-5level) %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] |-%-5level %logger{36} - %msg%n</pattern>
         </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${LOG_LEVEL_CONSOLE}</level>
+        </filter>
     </appender>
 
-    <!-- Logger específico para capturar solo mensajes TRACE -->
-    <logger name="wpsReportData" level="TRACE" additivity="false">
-        <appender-ref ref="CSV"/>
+    <!-- Logger específico para capturar mensajes -->
+    <logger name="wpsReportData" level="DEBUG" additivity="false">
+        <appender-ref ref="FILE"/>
     </logger>
 
-    <!-- Loggers para capturar los mensajes de log de RMI y otros paquetes de Java -->
-    <logger name="sun.rmi" level="INFO"/>
-    <logger name="java.rmi" level="INFO"/>
-    <logger name="java.rmi.server" level="INFO"/>
-    <logger name="java.rmi.transport" level="INFO"/>
-    <logger name="java.io.ObjectInputFilter" level="INFO"/>
-    <logger name="sun.rmi.server.UnicastRef" level="INFO"/>
-    <logger name="java.rmi.server.RemoteObjectInvocationHandler" level="INFO"/>
-    <logger name="sun.rmi.transport.StreamRemoteCall" level="INFO"/>
-    <logger name="sun.rmi.transport.tcp.TCPTransport$ConnectionHandler" level="INFO"/>
-    <logger name="java.lang.Shutdown" level="INFO"/>
+    <!-- Loggers para paquetes de Java -->
+    <logger name="sun.rmi" level="WARN"/>
+    <!-- ... otros loggers ... -->
 
-    <!-- Loggers adicionales para capturar mensajes de log de otras bibliotecas -->
-    <logger name="io.undertow" level="INFO"/>
-    <logger name="org.xnio" level="INFO"/>
-    <logger name="ch.qos.logback" level="INFO"/>
-
-    <!-- Root logger para archivo de log -->
-    <root level="${LOG_LEVEL_FILE}">
+    <!-- Root logger -->
+    <root level="DEBUG">
         <appender-ref ref="FILE" />
-    </root>
-
-    <!-- Root logger para consola -->
-    <root level="${LOG_LEVEL_CONSOLE}">
         <appender-ref ref="CONSOLE" />
     </root>
 </configuration>

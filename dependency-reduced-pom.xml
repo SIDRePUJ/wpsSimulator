@@ -125,7 +125,7 @@
                 <argument>-training</argument>
                 <argument>0</argument>
                 <argument>-agents</argument>
-                <argument>1</argument>
+                <argument>500</argument>
               </arguments>
             </configuration>
           </plugin>
@@ -134,8 +134,8 @@
     </profile>
   </profiles>
   <properties>
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sonar.organization>sidrepuj</sonar.organization>

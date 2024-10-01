@@ -112,7 +112,8 @@ public class WasteTimeAndResourcesGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 0.1);
+        return 0.1;
+        //return evaluateEmotionalContribution(stateBDI, 0.1);
     }
 
 }

@@ -66,7 +66,7 @@ public class BankOfficeGuard extends wpsGuardBESA {
                         bankOfficeMessage.getPeasantAlias(),
                         bankOfficeMessage.getAmount()
                 )) {
-                    wpsReport.info("$$$ APPROBED Bank to " + bankOfficeMessage.getPeasantAlias(), this.getAgent().getAlias());
+                    //wpsReport.info("$$$ APPROBED Bank to " + bankOfficeMessage.getPeasantAlias(), this.getAgent().getAlias());
                     fromBankOfficeMessageType = APPROBED_LOAN;
                 } else {
                     wpsReport.info("$$$ DENIED Bank to " + bankOfficeMessage.getPeasantAlias(), this.getAgent().getAlias());
@@ -79,11 +79,11 @@ public class BankOfficeGuard extends wpsGuardBESA {
                         bankOfficeMessage.getPeasantAlias(),
                         bankOfficeMessage.getAmount()
                 )) {
-                    wpsReport.info("$$$ APPROBED Bank to " + bankOfficeMessage.getPeasantAlias(), this.getAgent().getAlias());
+                    //wpsReport.info("$$$ APPROBED Bank to " + bankOfficeMessage.getPeasantAlias(), this.getAgent().getAlias());
                     fromBankOfficeMessageType = APPROBED_INFORMAL_LOAN;
                 } else {
                     wpsReport.info("$$$ DENIED Bank to " + bankOfficeMessage.getPeasantAlias(), this.getAgent().getAlias());
-                    fromBankOfficeMessageType = DENIED_INFORMAL_LOAN;
+                    //fromBankOfficeMessageType = DENIED_INFORMAL_LOAN;
                 }
                 amount = bankOfficeMessage.getAmount();
                 break;
@@ -103,7 +103,7 @@ public class BankOfficeGuard extends wpsGuardBESA {
                         bankOfficeMessage.getPeasantAlias()
                 );
                 fromBankOfficeMessageType = TERM_PAYED;
-                wpsReport.info(bankOfficeMessage.getPeasantAlias() + " Pagó " + amount + " - " + bankOfficeMessage.getMessageType(), this.getAgent().getAlias());
+                //wpsReport.info(bankOfficeMessage.getPeasantAlias() + " Pagó " + amount + " - " + bankOfficeMessage.getMessageType(), this.getAgent().getAlias());
                 //System.out.println(bankOfficeMessage.getPeasantAlias() + " Pagó " + amount + " - " + bankOfficeMessage.getMessageType() + " " + this.getAgent().getAlias());
                 break;
         }
@@ -116,7 +116,7 @@ public class BankOfficeGuard extends wpsGuardBESA {
                             state.getLoans().get(bankOfficeMessage.getPeasantAlias()).getPaidTerm()
             );
 
-            wpsReport.info("Llegó " + bankOfficeMessage.getPeasantAlias() + " " + bankOfficeMessage.getMessageType(), this.getAgent().getAlias());
+            //wpsReport.info("Llegó " + bankOfficeMessage.getPeasantAlias() + " " + bankOfficeMessage.getMessageType(), this.getAgent().getAlias());
         } catch (Exception e) {
             System.out.println("Error al guardar csv de prestamos "  + e.getMessage());
         }

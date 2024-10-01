@@ -131,7 +131,7 @@ public class SpendFamilyTimeGoal extends wpsGoalBDI {
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
 
-        if (believes.isHaveEmotions()) {
+        /*if (believes.isHaveEmotions()) {
 
             List<String> rules = wpsStart.config.getFuzzyRulesList("GoalsSpendFamilyEmotionalRules");
             RuleBlock ruleBlock = new RuleBlock();
@@ -151,9 +151,9 @@ public class SpendFamilyTimeGoal extends wpsGoalBDI {
             engine.process();
 
             return engine.getOutputValue("Contribution");
-        } else {
+        } else {*/
             return evaluateEmotionalContribution(stateBDI, believes.getPeasantProfile().getPeasantFamilyAffinity());
-        }
+        //}
     }
 
 }

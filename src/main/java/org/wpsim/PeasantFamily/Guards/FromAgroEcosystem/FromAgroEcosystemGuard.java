@@ -45,7 +45,7 @@ public class FromAgroEcosystemGuard extends GuardBESA {
         String landName = peasantCommMessage.getLandName();
 
         long initTime = System.currentTimeMillis();
-        wpsReport.info("Llegó a FromWorldGuard: " + initTime + " " + landName, this.getAgent().getAlias());
+        //wpsReport.info("Llegó a FromWorldGuard: " + initTime + " " + landName, this.getAgent().getAlias());
 
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
         LandInfo landInfo = believes.getLandInfo(landName);
@@ -57,18 +57,18 @@ public class FromAgroEcosystemGuard extends GuardBESA {
             switch (messageType) {
                 case NOTIFY_CROP_DISEASE:
                     believes.getPeasantProfile().setCropHealth(0.5);
-                    wpsReport.info("🍙🍙🍙: NOTIFY_CROP_DISEASE", this.getAgent().getAlias());
+                    //wpsReport.info("🍙🍙🍙: NOTIFY_CROP_DISEASE", this.getAgent().getAlias());
                     believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CROPDISEASES", "CROPS"));
                     believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CROPDISEASES", "FOOD"));
                     break;
                 case CROP_PESTICIDE:
                     believes.setCurrentCropCareType(landName, CropCareType.PESTICIDE);
                     believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "CROPDISEASES", "CROPS"));
-                    wpsReport.info("🍙🍙🍙: CROP_PESTICIDE", this.getAgent().getAlias());
+                    //wpsReport.info("🍙🍙🍙: CROP_PESTICIDE", this.getAgent().getAlias());
                     break;
                 case NOTIFY_CROP_WATER_STRESS:
                     believes.setCurrentCropCareType(landName, CropCareType.IRRIGATION);
-                    wpsReport.info("🍙🍙🍙: NOTIFY_CROP_WATER_STRESS", this.getAgent().getAlias());
+                    //wpsReport.info("🍙🍙🍙: NOTIFY_CROP_WATER_STRESS", this.getAgent().getAlias());
                     break;
                 case CROP_INFORMATION_NOTIFICATION:
                     break;
@@ -80,11 +80,11 @@ public class FromAgroEcosystemGuard extends GuardBESA {
                     believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "HARVESTING", "CROPS"));
                     break;
                 case CROP_HARVEST:
-                    wpsReport.info("🍙🍙🍙: CROP_HARVEST OK", this.getAgent().getAlias());
+                    //wpsReport.info("🍙🍙🍙: CROP_HARVEST OK", this.getAgent().getAlias());
                     JSONObject cropData = new JSONObject(
                             peasantCommMessage.getPayload()
                     );
-                    wpsReport.info(cropData, this.getAgent().getAlias());
+                    //wpsReport.info(cropData, this.getAgent().getAlias());
                     believes.getPeasantProfile().setHarvestedWeight(
                             (int) Math.round(
                                     Math.ceil(
@@ -112,6 +112,6 @@ public class FromAgroEcosystemGuard extends GuardBESA {
         } catch (Exception e) {
             wpsReport.warn("error?" + e, this.getAgent().getAlias());
         }
-        wpsReport.info("Mensaje procesado: " + (System.currentTimeMillis() - initTime) + " " + landName, this.getAgent().getAlias());
+        //wpsReport.info("Mensaje procesado: " + (System.currentTimeMillis() - initTime) + " " + landName, this.getAgent().getAlias());
     }
 }

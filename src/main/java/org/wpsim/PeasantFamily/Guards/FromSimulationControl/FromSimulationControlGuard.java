@@ -37,10 +37,10 @@ public class FromSimulationControlGuard extends GuardBESA {
         StateBDI state = (StateBDI) this.agent.getState();
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) state.getBelieves();
         believes.setWait(controlMessage.isWaiting());
-        if (controlMessage.isWaiting()) {
+        /*if (controlMessage.isWaiting()) {
             wpsReport.info("Bloqueando " + believes.getAlias() + " -- " + controlMessage.isWaiting(), believes.getAlias());
         }else{
             wpsReport.info("Desbloqueado " + believes.getAlias() + " -- " + controlMessage.isWaiting(), believes.getAlias());
-        }
+        }*/
     }
 }

@@ -48,10 +48,10 @@ public class IrrigateCropsTask extends wpsTask {
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getKind().equals("water")) {
                 waterUsed = 0;
-                wpsReport.info("🚰🚰🚰🚰 tiene agua", believes.getPeasantProfile().getPeasantFamilyAlias());
+                //wpsReport.info("🚰🚰🚰🚰 tiene agua", believes.getPeasantProfile().getPeasantFamilyAlias());
                 break;
             } else {
-                wpsReport.info("NO tiene agua", believes.getPeasantProfile().getPeasantFamilyAlias());
+                //wpsReport.info("NO tiene agua", believes.getPeasantProfile().getPeasantFamilyAlias());
             }
         }
 
@@ -75,7 +75,7 @@ public class IrrigateCropsTask extends wpsTask {
                             )
                     );
                     believes.addTaskToLog(believes.getInternalCurrentDate());
-                    wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivo " + currentLandInfo.getLandName() + " con " + waterUsed, believes.getPeasantProfile().getPeasantFamilyAlias());
+                    //wpsReport.info("🚰🚰🚰🚰 Irrigación de cultivo " + currentLandInfo.getLandName() + " con " + waterUsed, believes.getPeasantProfile().getPeasantFamilyAlias());
                 } catch (ExceptionBESA ex) {
                     wpsReport.error(ex, believes.getPeasantProfile().getPeasantFamilyAlias());
                 }

@@ -44,7 +44,7 @@ public class ObtainWaterTask extends wpsTask {
         this.setExecuted(false);
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
-        wpsReport.info("🚰🚰🚰 Comprando Agua", believes.getPeasantProfile().getPeasantFamilyAlias());
+        //wpsReport.info("🚰🚰🚰 Comprando Agua", believes.getPeasantProfile().getPeasantFamilyAlias());
         believes.useTime(TimeConsumedBy.ObtainWaterTask.getTime());
         try {
             AdmBESA.getInstance().getHandlerByAlias(

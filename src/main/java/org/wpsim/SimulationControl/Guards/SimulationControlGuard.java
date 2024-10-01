@@ -52,7 +52,7 @@ public class SimulationControlGuard extends GuardBESA {
         int currentDay = toControlMessage.getCurrentDay();
         SimulationControlState state = (SimulationControlState) this.getAgent().getState();
 
-        wpsReport.info("Llegó a control el agente " + toControlMessage.getPeasantFamilyAlias() + ", en el día " + toControlMessage.getCurrentDay(), this.getAgent().getAlias());
+        //wpsReport.info("Llegó a control el agente " + toControlMessage.getPeasantFamilyAlias() + ", en el día " + toControlMessage.getCurrentDay(), this.getAgent().getAlias());
 
         //wpsReport.debug("ControlAgentGuard: " + agentAlias + " acd " + agentCurrentDate + " gcd " + ControlCurrentDate.getInstance().getCurrentDate(), "ControlAgentGuard");
         state.modifyAgentMap(toControlMessage.getPeasantFamilyAlias(), currentDay);

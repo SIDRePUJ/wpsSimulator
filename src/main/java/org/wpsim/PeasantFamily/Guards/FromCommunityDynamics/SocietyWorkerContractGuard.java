@@ -43,7 +43,7 @@ public class SocietyWorkerContractGuard extends GuardBESA {
         believes.setDaysToWorkForOther(communityDynamicsDataMessage.getAvailableDays());
 
         try {
-            System.out.println("UPDATE: cerrando simulación desde " + wpsStart.params.mode);
+            //System.out.println("UPDATE: cerrando simulación desde " + wpsStart.params.mode);
             AdmBESA.getInstance().getHandlerByAlias(
                     believes.getContractor()
             ).sendEvent(

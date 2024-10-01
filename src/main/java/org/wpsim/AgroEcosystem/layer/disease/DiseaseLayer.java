@@ -132,7 +132,7 @@ public class DiseaseLayer extends GenericWorldLayerGraphCell<DiseaseCell> {
                 DiseaseCellState newCellState = new DiseaseCellState();
                 if (this.worldConfig.isDiseasePerturbation()) {
                     double nextRand = this.random.nextDouble();
-                    wpsReport.info("Current rand for disease " + nextRand, "DiseaseLayer");
+                    //wpsReport.info("Current rand for disease " + nextRand, "DiseaseLayer");
                     this.updateCellInsecticideFromCellEvents(currentCell);
                     if (currentCell.getDateInsecticideApplication() == null || DateHelper.differenceDaysBetweenTwoDates(dateExecution, currentCell.getDateInsecticideApplication()) > insecticideDaysEffectiveness) {
                         newCellState.setCurrentProbabilityDisease(currentCellState.getCurrentProbabilityDisease() + probabilityDiseaseConfigured);

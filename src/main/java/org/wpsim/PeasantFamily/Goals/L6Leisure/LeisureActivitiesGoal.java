@@ -118,7 +118,9 @@ public class LeisureActivitiesGoal extends wpsGoalBDI {
      */
     @Override
     public double evaluateContribution(StateBDI stateBDI) throws KernellAgentEventExceptionBESA {
-        return evaluateEmotionalContribution(stateBDI, 0.2);
+        return 0.2;
+        //return evaluateContribution(stateBDI);
+        //return evaluateEmotionalContribution(stateBDI, 0.2);
     }
 
 }

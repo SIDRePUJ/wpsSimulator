@@ -53,10 +53,10 @@ public class DeforestingLandTask extends wpsLandTask {
                 this.increaseWorkDone(believes,currentLandInfo.getLandName(), TimeConsumedBy.DeforestingLandTask.getTime()*factor); // Paso 2: Gastar tiempo
                 if (this.isWorkDone(believes, currentLandInfo.getLandName())) { // Paso 3: Revisar si se completó el tiempo necesario
                     currentLandInfo.setKind("land");
-                    wpsReport.info(
-                            "Finished the deforesting process " + currentLandInfo.getLandName(),
-                            believes.getPeasantProfile().getPeasantFamilyAlias()
-                    );
+                    //wpsReport.info(
+                    //        "Finished the deforesting process " + currentLandInfo.getLandName(),
+                    //        believes.getPeasantProfile().getPeasantFamilyAlias()
+                    //);
                     currentLandInfo.resetElapsedWorkTime();
                 }
                 believes.addTaskToLog(believes.getInternalCurrentDate());

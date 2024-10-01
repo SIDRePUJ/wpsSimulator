@@ -87,7 +87,7 @@ public class PlantCropTask extends wpsLandTask {
                 if (currentLandInfo.getCropName().isEmpty()) {
                     currentLandInfo.setCropName(currentCropName);
                 }
-                wpsReport.info("Plantando for " + currentLandInfo.getLandName(), peasantAlias);
+                //wpsReport.info("Plantando for " + currentLandInfo.getLandName(), peasantAlias);
                 if (believes.getPeasantFamilyHelper().isBlank()) {
                     factor = (TimeConsumedBy.PlantCropTask.getTime() / harvestReady);
                 } else {

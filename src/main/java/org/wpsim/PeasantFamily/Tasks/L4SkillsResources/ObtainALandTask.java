@@ -74,7 +74,7 @@ public class ObtainALandTask extends wpsTask {
         believes.getPeasantProfile().setHousingLocation(1);
         believes.getPeasantProfile().setFarmDistance(1);
 
-        wpsReport.info("🥬 " + believes.getPeasantProfile().getPeasantFamilyAlias() + " ya tiene tierra " + believes.getPeasantProfile().getPeasantFamilyLandAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
+        //wpsReport.info("🥬 " + believes.getPeasantProfile().getPeasantFamilyAlias() + " ya tiene tierra " + believes.getPeasantProfile().getPeasantFamilyLandAlias(), believes.getPeasantProfile().getPeasantFamilyAlias());
         believes.addTaskToLog(believes.getInternalCurrentDate());
     }
 

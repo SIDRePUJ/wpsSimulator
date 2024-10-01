@@ -50,11 +50,11 @@ public class DoVoidTask extends Task {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         //@TODO: REVISAR
         try {
-            Thread.sleep(20);
+            Thread.sleep(50);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        wpsReport.info("Adelantado " + believes.getAlias() + " esperando 50 ms", believes.getAlias());
+        //wpsReport.info("Adelantado " + believes.getAlias() + " esperando 50 ms", believes.getAlias());
         believes.setWait(false);
     }
 

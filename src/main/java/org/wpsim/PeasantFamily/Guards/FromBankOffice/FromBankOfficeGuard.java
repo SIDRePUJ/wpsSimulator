@@ -44,12 +44,12 @@ public class FromBankOfficeGuard extends GuardBESA {
 
             switch (fromBankOfficeMessageType) {
                 case APPROBED_LOAN:
-                    wpsReport.info(
+                    /*wpsReport.info(
                             believes.getPeasantProfile().getPeasantFamilyAlias()
                                     + " incrementó el dinero con prestamo en: "
                                     + fromBankOfficeMessage.getAmount(),
                             this.getAgent().getAlias()
-                    );
+                    );*/
                     believes.getPeasantProfile().increaseMoney(
                             fromBankOfficeMessage.getAmount()
                     );
@@ -59,10 +59,10 @@ public class FromBankOfficeGuard extends GuardBESA {
                     believes.setCurrentMoneyOrigin(MoneyOriginType.LOAN);
                     break;
                 case APPROBED_SOCIAL:
-                    wpsReport.info(
+                    /*wpsReport.info(
                             believes.getPeasantProfile().getPeasantFamilyAlias() + " incrementó el dinero en de social para: " + fromBankOfficeMessage.getAmount(),
                             this.getAgent().getAlias()
-                    );
+                    );*/
                     believes.getPeasantProfile().increaseMoney(
                             fromBankOfficeMessage.getAmount()
                     );
@@ -70,7 +70,7 @@ public class FromBankOfficeGuard extends GuardBESA {
                     break;
                 case DENIED_FORMAL_LOAN:
                     // @TODO: Pedir prestado en otro lado? cancelar?
-                    wpsReport.info("Denegado DENIED_FORMAL_LOAN", this.getAgent().getAlias());
+                    //wpsReport.info("Denegado DENIED_FORMAL_LOAN", this.getAgent().getAlias());
                     believes.setLoanDenied(true);
                     believes.setCurrentMoneyOrigin(MoneyOriginType.LOAN_DENIED);
                     break;
@@ -83,7 +83,7 @@ public class FromBankOfficeGuard extends GuardBESA {
                     believes.setCurrentMoneyOrigin(MoneyOriginType.INFORMAL_DENIED);
                     break;
                 case TERM_TO_PAY:
-                    wpsReport.info("Llegó la cuota a pagar por " + fromBankOfficeMessage.getAmount(), this.getAgent().getAlias());
+                    //wpsReport.info("Llegó la cuota a pagar por " + fromBankOfficeMessage.getAmount(), this.getAgent().getAlias());
                     if (believes.getPeasantProfile().getLoanAmountToPay() > 0) {
                         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "UNPAYINGDEBTS", "MONEY"));
                     }

@@ -49,7 +49,7 @@ public class CommunityDynamicsRequestHelpGuard extends GuardBESA  {
             if (agentHelper == null) {
                 return;
             }else{
-                wpsReport.info("Disponible " + agentHelper + " para ayudar a " + agentContractor, this.getAgent().getAlias());
+                //wpsReport.info("Disponible " + agentHelper + " para ayudar a " + agentContractor, this.getAgent().getAlias());
             }
 
             //wpsReport.info("enviando ayuda " +  agentHelper + " para " + societyDataMessage.getPeasantFamilyAgent(), this.getAgent().getAlias());

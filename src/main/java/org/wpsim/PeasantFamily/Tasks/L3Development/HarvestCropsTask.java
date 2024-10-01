@@ -86,7 +86,7 @@ public class HarvestCropsTask extends wpsLandTask {
                         currentLandInfo.setCurrentCropCareType(CropCareType.NONE);
                         currentLandInfo.resetElapsedWorkTime();
                     } catch (Exception ex) {
-                        ReportBESA.info(ex.getMessage() + " " + believes.getAlias());
+                        //ReportBESA.info(ex.getMessage() + " " + believes.getAlias());
                     }
                 } else {
                     //ReportBESA.info("Trabajo de harvest no terminado en " + currentLandInfo.getLandName());

@@ -99,12 +99,12 @@ public class wpsGoalBDI extends GoalBDI {
         if (wpsStart.config.getBooleanProperty("control.showPyramid")) {
             wpsCSV.log("Pyramid", "Día de simulación: " + believes.getCurrentDay());
             wpsCSV.log("Pyramid", stateBDI.getMachineBDIParams().getPyramidGoals().toString());
-            wpsReport.info("\nDía de simulación: " + believes.getCurrentDay() + "\n " +
+            /*wpsReport.info("\nDía de simulación: " + believes.getCurrentDay() + "\n " +
                     "getMainGoal " + stateBDI.getMachineBDIParams().getMainGoal() + "\n " +
                     "getIntention " + stateBDI.getMachineBDIParams().getIntention() + "\n " +
                     "getPotencialGoals " + stateBDI.getMachineBDIParams().getPotencialGoals().toString() + "\n " +
                     stateBDI.getMachineBDIParams().getPyramidGoals().toString(), believes.getAlias()
-            );
+            );*/
         }
         if (believes.isHaveEmotions()) {
             return 1 - ((evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2);
