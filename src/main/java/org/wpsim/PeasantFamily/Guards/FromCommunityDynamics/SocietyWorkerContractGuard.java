@@ -55,7 +55,7 @@ public class SocietyWorkerContractGuard extends GuardBESA {
                             )
                     )
             );
-            System.out.println("UPDATE: Enviando Sincronización de Fecha entre " + this.agent.getAlias() + " y " + believes.getContractor());
+            //System.out.println("UPDATE: Enviando Sincronización de Fecha entre " + this.agent.getAlias() + " y " + believes.getContractor());
         } catch (Exception ex) {
             System.err.println("UPDATE: " + ex.getMessage() + "wpsmain");
         }

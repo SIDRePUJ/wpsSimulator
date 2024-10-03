@@ -44,11 +44,11 @@ public class SocietyWorkerDateSyncGuard extends GuardBESA {
 
         try {
             if (ControlCurrentDate.getInstance().isAfterDate(communityDynamicsDataMessage.getCurrentDate())) {
-                System.out.println("UPDATE: Sincronizando con el otro agente " +
+                /*System.out.println("UPDATE: Sincronizando con el otro agente " +
                         communityDynamicsDataMessage.getCurrentDate() + " - C " +
                         communityDynamicsDataMessage.getAgentAlias() + " " +
                         this.agent.getAlias()
-                );
+                );*/
                 AdmBESA.getInstance().getHandlerByAlias(
                         communityDynamicsDataMessage.getAgentAlias()
                 ).sendEvent(

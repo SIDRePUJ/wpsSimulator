@@ -2,53 +2,49 @@
 <!DOCTYPE configuration>
 
 <configuration>
-    <!-- Definir variables de entorno -->
-    <property name="LOG_LEVEL_CONSOLE" value="${LOG_LEVEL_CONSOLE:-INFO}" />
-    <property name="LOG_LEVEL_FILE" value="${LOG_LEVEL_FILE:-DEBUG}" />
-
-    <!-- Appender para archivo de log -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="wpsReport" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/wpsSimulator.log</file>
-        <append>true</append>
+        <append>false</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/wpsSimulator.%d{yyyy-MM-dd_HH-mm-ss}.log</fileNamePattern>
-            <maxHistory>7</maxHistory>
+            <fileNamePattern>logs/wpsSimulator.%d{yyyy-MM-dd_HH-mm-ss}.log.zip</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>5GB</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] |-%highlight(%-5level) %logger{36} %X{peasantAlias} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="wpsReportData" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/wpsSimulator.csv</file>
+        <append>false</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>logs/wpsSimulator.%i.csv.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>3</maxIndex>
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>500MB</maxFileSize>
+            <maxFileSize>1GB</maxFileSize>
         </triggeringPolicy>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] |-%-5level %logger{36} %X{peasantAlias} - %msg%n</pattern>
+            <pattern>%msg%n</pattern>
         </encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>${LOG_LEVEL_FILE}</level>
-        </filter>
         <bufferSize>8KB</bufferSize>
     </appender>
 
-    <!-- Appender para consola -->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] |-%-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>${LOG_LEVEL_CONSOLE}</level>
-        </filter>
-    </appender>
-
-    <!-- Logger específico para capturar mensajes -->
-    <logger name="wpsReportData" level="DEBUG" additivity="false">
-        <appender-ref ref="FILE"/>
+    <!-- Logger específico para capturar solo mensajes TRACE -->
+    <logger name="wpsReportData" level="TRACE" additivity="false">
+        <appender-ref ref="wpsReportData"/>
     </logger>
 
-    <!-- Loggers para paquetes de Java -->
-    <logger name="sun.rmi" level="WARN"/>
-    <!-- ... otros loggers ... -->
-
-    <!-- Root logger -->
+    <!-- Root logger captura DEBUG y niveles superiores y los envía a wpsReport -->
     <root level="DEBUG">
-        <appender-ref ref="FILE" />
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="wpsReport" />
     </root>
+
+    <logger name="io.undertow" level="OFF"/>
+    <logger name="org.xnio" level="OFF"/>
 </configuration>
