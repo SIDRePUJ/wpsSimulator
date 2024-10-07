@@ -11,13 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Funciona por defecto como web">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rice_water_stress_.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/roots_water_stress_.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CommunityDynamics/Data/CommunityDynamicsState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CommunityDynamics/Data/CommunityDynamicsState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerContractGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerContractGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerDateSyncGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerDateSyncGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Util/wpsCSV.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Util/wpsCSV.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -442,6 +435,7 @@
       <workItem from="1726505414167" duration="6000" />
       <workItem from="1727360501758" duration="5028000" />
       <workItem from="1727558644003" duration="2799000" />
+      <workItem from="1728059031792" duration="90000" />
     </task>
     <task id="LOCAL-00032" summary="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo.">
       <option name="closed" value="true" />
