@@ -12,6 +12,7 @@ target/
 *.iml
 *.ipr
 *.jar
+*.csv
 
 ### Eclipse ###
 .apt_generated

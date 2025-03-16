@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <container alias="wpsmain" password="0.91" ipaddress="10.195.34.12">
+    <container alias="wps04" password="0.91" ipaddress="10.195.34.12">
         <environment seneventattemps="5" sendeventtimeout="1000" rmitimeout="1000">
             <remote rmiport="1099" mcaddress="230.0.0.1" mcport="2222"/>
         </environment>

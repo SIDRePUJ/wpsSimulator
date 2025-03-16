@@ -10,14 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Funciona por defecto como web">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps05.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rice_water_stress_.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/roots_water_stress_.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CommunityDynamics/Data/CommunityDynamicsState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CommunityDynamics/Data/CommunityDynamicsState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerContractGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerContractGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerDateSyncGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Guards/FromCommunityDynamics/SocietyWorkerDateSyncGuard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Util/wpsCSV.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/Util/wpsCSV.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/benckmark-checkpoint.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/benckmark-checkpoint.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps01.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps01.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps03.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps03.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wpsmain.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps04.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,44 +72,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
-    &quot;Maven.Compile.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Simulator.executor&quot;: &quot;Profiler#1&quot;,
-    &quot;Maven.wpsSimulator Profile.executor&quot;: &quot;Debug&quot;,
-    &quot;Maven.wpsSimulator [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.wpsSimulator [package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.wpsim [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.wpsim [package].executor&quot;: &quot;Run&quot;,
-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jairo/IdeaProjects/wpsSimulator&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.16989066&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.27296937&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Downloaded.Files.Path.Enabled": "false",
+    "Maven.Compile.executor": "Run",
+    "Maven.Simulator.executor": "Profiler#1",
+    "Maven.wpsSimulator Profile.executor": "Debug",
+    "Maven.wpsSimulator [clean].executor": "Run",
+    "Maven.wpsSimulator [package].executor": "Run",
+    "Maven.wpsim [clean].executor": "Run",
+    "Maven.wpsim [package].executor": "Run",
+    "Repository.Attach.Annotations": "false",
+    "Repository.Attach.JavaDocs": "false",
+    "Repository.Attach.Sources": "false",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "ignore.preview.features.used": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/jairo/IdeaProjects/wpsSimulator",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.16989066",
+    "project.structure.side.proportion": "0.27296937",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="org.wpsim.PeasantFamily.Tasks.Base" />
@@ -116,9 +118,9 @@
       <recent name="org.wpsim.PeasantFamily.Emotions" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/resources/web/data" />
       <recent name="$PROJECT_DIR$/src/main/resources" />
-      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/resources/data.fuzzyRules" />
       <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/" />
     </key>
@@ -267,8 +269,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
       </set>
     </attachedChunks>
   </component>
@@ -442,6 +444,8 @@
       <workItem from="1726505414167" duration="6000" />
       <workItem from="1727360501758" duration="5028000" />
       <workItem from="1727558644003" duration="2799000" />
+      <workItem from="1729737301643" duration="601000" />
+      <workItem from="1742136538821" duration="11151000" />
     </task>
     <task id="LOCAL-00032" summary="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo.">
       <option name="closed" value="true" />

@@ -148,7 +148,7 @@ public class wpsStart {
     }
 
     private static void createContainer() {
-        if (!params.mode.equals("wpsmain")) {
+        if (!params.mode.equals("wps01")) {
             // update ControlAgent Name
             config.setControlAgentName(params.mode + "_" + config.getControlAgentName());
             // update ViewerAgent Name
@@ -166,12 +166,12 @@ public class wpsStart {
         System.out.println("Es centralizado: " + AdmBESA.getInstance().isCentralized());
 
         switch (params.mode) {
-            case "wpsmain" -> {
+            case "wps01" -> {
                 createServices();
                 createPeasants(config.peasantSerialID, peasantFamiliesAgents);
                 showRunningAgents();
             }
-            case "wps01", "wps02", "wps03" -> {
+            case "wps02", "wps03", "wps04", "wps05" -> {
                 createPeasants(config.peasantSerialID, peasantFamiliesAgents);
                 System.out.println("Simulating " + peasantFamiliesAgents + " agents");
                 showRunningAgents();
