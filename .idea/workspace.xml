@@ -10,16 +10,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Funciona por defecto como web">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps05.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependency-reduced-pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dependency-reduced-pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/benckmark-checkpoint.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/.ipynb_checkpoints/benckmark-checkpoint.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_local_single.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_local_single.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps01.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps01.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps02.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps02.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps03.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps03.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wpsmain.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps04.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/wpsConfig.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps04.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps04.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps05.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps05.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/web/data/mediumworld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.400.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/web/data/smallworld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.5.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/web/data/world.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.20.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -447,14 +450,6 @@
       <workItem from="1729737301643" duration="601000" />
       <workItem from="1742136538821" duration="11151000" />
     </task>
-    <task id="LOCAL-00032" summary="avance a la versión 0.3, no terminado.&#10;log en csv a un solo archivo.">
-      <option name="closed" value="true" />
-      <created>1705358994236</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1705358994236</updated>
-    </task>
     <task id="LOCAL-00033" summary="El log de los estados mentales se redirecciona al agente encargado y se concentra la recolección.">
       <option name="closed" value="true" />
       <created>1705599986388</created>
@@ -839,7 +834,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724119569357</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="Funciona por defecto como web">
+      <option name="closed" value="true" />
+      <created>1742165587096</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1742165587096</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

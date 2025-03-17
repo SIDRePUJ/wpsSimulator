@@ -61,7 +61,7 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
             JSONArray landsArray = new JSONArray(
                     Objects.requireNonNull(
                             wpsConfig.getInstance().loadFile(
-                                    "web/data/" + wpsStart.config.getStringProperty("government.world")
+                                    "web/data/world." + params.world + ".json" //config.getStringProperty("government.world")
                             )
                     )
             );
