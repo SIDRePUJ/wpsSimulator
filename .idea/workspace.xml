@@ -9,20 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Funciona por defecto como web">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Configuración hilos bajos, fuzzy bajo.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/CivicAuthority/Data/CivicAuthorityState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Util/SimulationParams.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_local_single.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_local_single.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps01.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps01.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps02.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps02.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps03.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps03.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps04.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps04.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/server_puj_wps05.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/server_puj_wps05.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/web/data/mediumworld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.400.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/web/data/smallworld.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.5.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/web/data/world.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/web/data/world.20.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadContainerGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadContainerGuard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -449,14 +438,7 @@
       <workItem from="1727558644003" duration="2799000" />
       <workItem from="1729737301643" duration="601000" />
       <workItem from="1742136538821" duration="11151000" />
-    </task>
-    <task id="LOCAL-00033" summary="El log de los estados mentales se redirecciona al agente encargado y se concentra la recolección.">
-      <option name="closed" value="true" />
-      <created>1705599986388</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1705599986388</updated>
+      <workItem from="1742350158230" duration="1769000" />
     </task>
     <task id="LOCAL-00034" summary="log externo usando logger.">
       <option name="closed" value="true" />
@@ -842,7 +824,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742165587096</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="Configuración hilos bajos, fuzzy bajo.">
+      <option name="closed" value="true" />
+      <created>1742180602824</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1742180602824</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -896,7 +886,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Ajustada la simulación con 8 agentes para las pruebas" />
     <MESSAGE value="Tarea vacía para recuperar los agentes zombies" />
     <MESSAGE value="ajuste en los temporizadores para simulación a 10 años." />
     <MESSAGE value="Ajustes al simulador para el avance del tiempo de forma coherente." />
@@ -921,7 +910,8 @@
     <MESSAGE value="Testing Sonar" />
     <MESSAGE value="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5" />
     <MESSAGE value="Funciona por defecto como web" />
-    <option name="LAST_COMMIT_MESSAGE" value="Funciona por defecto como web" />
+    <MESSAGE value="Configuración hilos bajos, fuzzy bajo." />
+    <option name="LAST_COMMIT_MESSAGE" value="Configuración hilos bajos, fuzzy bajo." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
