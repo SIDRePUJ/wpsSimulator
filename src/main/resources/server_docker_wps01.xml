@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <container alias="wps01" password="0.91" ipaddress="10.195.34.35">
+        <environment seneventattemps="5" sendeventtimeout="1000" rmitimeout="1000">
+            <remote rmiport="1091" mcaddress="230.0.0.1" mcport="2222"/>
+        </environment>
+    </container>
+    <Log
+            trace="false"
+            debug="false"
+            info="false"
+            warn="true"
+            error="true"
+            fatal="true"
+            dateformat="hh:mm:ss:SS" />
+</config>
