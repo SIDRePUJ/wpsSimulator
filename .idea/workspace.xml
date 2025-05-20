@@ -9,9 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Configuración hilos bajos, fuzzy bajo.">
+    <list default="true" id="392c53ea-9274-4c97-a65a-fcdba989e4d5" name="Changes" comment="Adicionado corte para 5 wps">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadContainerGuard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/SimulationControl/Guards/DeadContainerGuard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Agent/PeasantFamily.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/PeasantFamily/Tasks/L3Development/PlantCropTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/wpsim/WellProdSim/wpsStart.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +91,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.preview.features.used&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/jairo/IdeaProjects/wpsSimulator&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jairo/IdeaProjects/wpsSimulator/src/main/resources&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -110,9 +113,9 @@
       <recent name="org.wpsim.PeasantFamily.Emotions" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/resources/web/data" />
-      <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/src/main/resources/data.fuzzyRules" />
       <recent name="$PROJECT_DIR$/src/main/java/org/wpsim/World/layer/" />
     </key>
@@ -438,15 +441,10 @@
       <workItem from="1727558644003" duration="2799000" />
       <workItem from="1729737301643" duration="601000" />
       <workItem from="1742136538821" duration="11151000" />
-      <workItem from="1742350158230" duration="1769000" />
-    </task>
-    <task id="LOCAL-00034" summary="log externo usando logger.">
-      <option name="closed" value="true" />
-      <created>1705783170244</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1705783170244</updated>
+      <workItem from="1742350158230" duration="1795000" />
+      <workItem from="1742422780979" duration="608000" />
+      <workItem from="1742512333348" duration="6690000" />
+      <workItem from="1747778995994" duration="467000" />
     </task>
     <task id="LOCAL-00035" summary="Control de tiempo ajustado, los agentes esperan a los agentes demorados.">
       <option name="closed" value="true" />
@@ -832,7 +830,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742180602824</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="Adicionado corte para 5 wps">
+      <option name="closed" value="true" />
+      <created>1742352516178</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1742352516179</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -886,7 +892,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Tarea vacía para recuperar los agentes zombies" />
     <MESSAGE value="ajuste en los temporizadores para simulación a 10 años." />
     <MESSAGE value="Ajustes al simulador para el avance del tiempo de forma coherente." />
     <MESSAGE value="Avance y restricción del tiempo de forma correcta." />
@@ -911,7 +916,8 @@
     <MESSAGE value="Corregido parcialmente el WebMode:&#10;java -jar wpsim-1.0.jar --env local --mode web --money 750000 --land 2 --personality 0.0 --tools 20 --seeds 50 --water 0 --irrigation 0 --emotions 1 --training 0 --agents 5" />
     <MESSAGE value="Funciona por defecto como web" />
     <MESSAGE value="Configuración hilos bajos, fuzzy bajo." />
-    <option name="LAST_COMMIT_MESSAGE" value="Configuración hilos bajos, fuzzy bajo." />
+    <MESSAGE value="Adicionado corte para 5 wps" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adicionado corte para 5 wps" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

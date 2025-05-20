@@ -172,6 +172,7 @@ public class wpsStart {
         switch (params.mode) {
             case "wps01" -> {
                 createServices();
+                pauseThread(3000);
                 createPeasants(config.peasantSerialID, peasantFamiliesAgents);
                 showRunningAgents();
             }
@@ -199,7 +200,7 @@ public class wpsStart {
     }
 
     private static void showRunningAgents() {
-        var idList = AdmBESA.getInstance().getIdList();
+        /*var idList = AdmBESA.getInstance().getIdList();
         while (idList.hasMoreElements()) {
             String id = (String) idList.nextElement();
             try {
@@ -207,7 +208,7 @@ public class wpsStart {
             } catch (ExceptionBESA e) {
                 throw new RuntimeException(e);
             }
-        }
+        }*/
         System.out.println("UPDATE: Contenedores activos");
         Enumeration<String> containers = AdmBESA.getInstance().getAdmAliasList();
         while (containers.hasMoreElements()) {

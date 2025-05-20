@@ -300,7 +300,7 @@ public class PlantCropTask extends wpsLandTask {
         switch (arg) {
             case "wet" -> rainfallFile = worldConfiguration.getProperty("data.rainfall.wet");
             case "dry" -> rainfallFile = worldConfiguration.getProperty("data.rainfall.dry");
-            case "normal" -> rainfallFile = worldConfiguration.getProperty("data.rainfall");
+            //case "normal" -> rainfallFile = worldConfiguration.getProperty("data.rainfall");
             default -> rainfallFile = worldConfiguration.getProperty("data.rainfall");
         }
         return rainfallFile;

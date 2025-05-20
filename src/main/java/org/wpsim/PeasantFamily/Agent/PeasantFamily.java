@@ -87,11 +87,13 @@ public class PeasantFamily extends AgentBDI {
 
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         // Cada comportamiento es un hilo.
-        structBESA.addBehavior("HeartBeatBehavior");
-        structBESA.bindGuard("HeartBeatBehavior", HeartBeatGuard.class);
+        //structBESA.addBehavior("HeartBeatBehavior");
+        //structBESA.bindGuard("HeartBeatBehavior", HeartBeatGuard.class);
 
         structBESA.addBehavior("PeasantBehavior");
-        
+
+        structBESA.bindGuard("PeasantBehavior", HeartBeatGuard.class);
+
         //structBESA.addBehavior("FromWorldBehavior");
         structBESA.bindGuard("PeasantBehavior", FromAgroEcosystemGuard.class);
 
