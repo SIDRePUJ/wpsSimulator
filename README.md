@@ -41,7 +41,7 @@ mvn install:install-file -Dfile=RemoteBESA/dist/RemoteBESA.jar -DgroupId=BESA -D
 mvn install:install-file -Dfile=RationalBESA/dist/RationalBESA.jar -DgroupId=BESA -DartifactId=RationalBESA -Dversion=3.17 -Dpackaging=jar
 ```
 
-Ahora descarga el proyecto y abrelo en IntelliJ u otro IDE de tu preferencia:
+Ahora descarga el proyecto y abrelo en IntelliJ:
 ```
 git clone git@github.com:SIDRePUJ/wpsSimulator.git
 ```
