@@ -33,12 +33,19 @@ import java.time.temporal.ChronoUnit;
  */
 public class SimulationControlGuard extends GuardBESA {
 
+    static int currentYear = java.time.LocalDate.now().getYear();
+    static int x = wpsStart.params.years;
+    static int end_year = currentYear + x;
+
+    static String end_date = "01/01/" + end_year;
+    static String start_date = "01/01/" + currentYear;
+
     private static final LocalDate MIN_DATE = LocalDate.parse(
-            wpsConfig.getInstance().getStartSimulationDate(),
+            start_date,
             DateTimeFormatter.ofPattern("dd/MM/yyyy")
     );
     private static final LocalDate MAX_DATE = LocalDate.parse(
-            wpsStart.config.getStringProperty("control.enddate"),
+            end_date,
             DateTimeFormatter.ofPattern("dd/MM/yyyy")
     );
 

@@ -163,10 +163,14 @@ public final class wpsConfig {
     }
 
     private void loadWPSConfig() {
+
+        int currentYear = java.time.LocalDate.now().getYear();
+        String start_date = "01/01/" + currentYear;
+
         // @TODO: Incluir todas las config del wpsStart
         try {
             properties.load(loadFileAsStream("wpsConfig.properties"));
-            this.startSimulationDate = properties.getProperty("control.startdate");
+            this.startSimulationDate = start_date;
             this.BankAgentName = properties.getProperty("bank.name");
             this.ControlAgentName = properties.getProperty("control.name");
             this.MarketAgentName = properties.getProperty("market.name");
