@@ -83,6 +83,7 @@ public class wpsStart {
         options.addOption(new Option("emotions", true, "Enable Emotions"));
         options.addOption(new Option("training", true, "Enable Training"));
         options.addOption(new Option("world", true, "World Size"));
+        options.addOption(new Option("years", true, "Number of years"));
         //options.addOption(new Option("step", false, "Step Time"));
 
         // Crear el parser para los argumentos
@@ -134,6 +135,9 @@ public class wpsStart {
             }
             if (cmd.hasOption("world")) {
                 params.world = cmd.getOptionValue("world");
+            }
+            if (cmd.hasOption("years")) {
+                params.years = Integer.parseInt(cmd.getOptionValue("years"));
             }
 
             /*if (cmd.hasOption("step")) {
