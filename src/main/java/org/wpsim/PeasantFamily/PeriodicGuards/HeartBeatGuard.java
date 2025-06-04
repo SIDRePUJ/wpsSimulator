@@ -85,7 +85,13 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
     }
 
     private boolean checkFinish(PeasantFamilyBelieves believes) {
-        if (believes.getInternalCurrentDate().equals(wpsStart.config.getStringProperty("control.enddate"))) {
+
+        int x = wpsStart.params.years;
+        int currentYear = java.time.LocalDate.now().getYear();
+        int end_year = currentYear + x;
+        String end_date = "01/01/" + end_year;
+
+        if (believes.getInternalCurrentDate().equals(end_date)) {
             wpsReport.info("Cerrando Agente ", this.agent.getAlias());
             this.stopPeriodicCall();
             this.agent.shutdownAgent();
