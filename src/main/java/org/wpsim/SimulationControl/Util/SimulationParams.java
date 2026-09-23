@@ -29,6 +29,7 @@ public class SimulationParams {
     public int nodes = 0;
     public int steptime = 50;
     public int years = 1;
+    public int startYear = -1;
     public String world;
 
 }

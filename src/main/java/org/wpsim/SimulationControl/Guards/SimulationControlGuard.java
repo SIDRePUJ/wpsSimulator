@@ -33,7 +33,7 @@ import java.time.temporal.ChronoUnit;
  */
 public class SimulationControlGuard extends GuardBESA {
 
-    static int currentYear = java.time.LocalDate.now().getYear();
+    static int currentYear = wpsStart.config.getStartYear();
     static int x = wpsStart.params.years;
     static int end_year = currentYear + x;
 

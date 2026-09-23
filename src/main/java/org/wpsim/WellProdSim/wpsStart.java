@@ -55,6 +55,9 @@ public class wpsStart {
         setArgumentsConfig(args);
         // Set initial config of simulation
         config = wpsConfig.getInstance();
+        if (params.startYear > 0) {
+            config.setStartSimulationDate("01/01/" + params.startYear);
+        }
         // Create BESA Container
         createContainer();
         // Set initial date of simulation
@@ -84,6 +87,7 @@ public class wpsStart {
         options.addOption(new Option("training", true, "Enable Training"));
         options.addOption(new Option("world", true, "World Size"));
         options.addOption(new Option("years", true, "Number of years"));
+        options.addOption(new Option("startyear", true, "Start year (default: control.startdate)"));
         //options.addOption(new Option("step", false, "Step Time"));
 
         // Crear el parser para los argumentos
@@ -138,6 +142,9 @@ public class wpsStart {
             }
             if (cmd.hasOption("years")) {
                 params.years = Integer.parseInt(cmd.getOptionValue("years"));
+            }
+            if (cmd.hasOption("startyear")) {
+                params.startYear = Integer.parseInt(cmd.getOptionValue("startyear"));
             }
 
             /*if (cmd.hasOption("step")) {

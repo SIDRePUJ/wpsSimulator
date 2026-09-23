@@ -120,6 +120,20 @@ public final class wpsConfig {
     }
 
     /**
+     * Overrides the simulation start date (dd/MM/yyyy).
+     */
+    public void setStartSimulationDate(String startSimulationDate) {
+        this.startSimulationDate = startSimulationDate;
+    }
+
+    /**
+     * @return year of the simulation start date
+     */
+    public int getStartYear() {
+        return Integer.parseInt(startSimulationDate.substring(startSimulationDate.length() - 4));
+    }
+
+    /**
      * @return
      */
     public String getPerturbation() {
@@ -164,13 +178,12 @@ public final class wpsConfig {
 
     private void loadWPSConfig() {
 
-        int currentYear = java.time.LocalDate.now().getYear();
-        String start_date = "01/01/" + currentYear;
 
         // @TODO: Incluir todas las config del wpsStart
         try {
             properties.load(loadFileAsStream("wpsConfig.properties"));
-            this.startSimulationDate = start_date;
+            // Start date comes from control.startdate (first year with climate config data.rainfall.YYYY)
+            this.startSimulationDate = properties.getProperty("control.startdate", "01/01/2022").trim();
             this.BankAgentName = properties.getProperty("bank.name");
             this.ControlAgentName = properties.getProperty("control.name");
             this.MarketAgentName = properties.getProperty("market.name");

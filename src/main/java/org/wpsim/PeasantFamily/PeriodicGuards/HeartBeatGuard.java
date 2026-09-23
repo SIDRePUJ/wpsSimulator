@@ -87,7 +87,7 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
     private boolean checkFinish(PeasantFamilyBelieves believes) {
 
         int x = wpsStart.params.years;
-        int currentYear = java.time.LocalDate.now().getYear();
+        int currentYear = wpsStart.config.getStartYear();
         int end_year = currentYear + x;
         String end_date = "01/01/" + end_year;
 
