@@ -27,6 +27,6 @@ public abstract class GenericWorldLayerGraphCell<C extends LayerCell> extends Ge
     /**
      * For random purposes if necessary
      */
-    protected Random random = new Random();
+    protected Random random = org.wpsim.WellProdSim.Util.SimRandom.get();
 
 }

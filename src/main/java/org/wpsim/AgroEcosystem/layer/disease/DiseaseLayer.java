@@ -134,10 +134,11 @@ public class DiseaseLayer extends GenericWorldLayerGraphCell<DiseaseCell> {
                     double nextRand = this.random.nextDouble();
                     //wpsReport.info("Current rand for disease " + nextRand, "DiseaseLayer");
                     this.updateCellInsecticideFromCellEvents(currentCell);
-                    if (currentCell.getDateInsecticideApplication() == null || DateHelper.differenceDaysBetweenTwoDates(dateExecution, currentCell.getDateInsecticideApplication()) > insecticideDaysEffectiveness) {
-                        newCellState.setCurrentProbabilityDisease(currentCellState.getCurrentProbabilityDisease() + probabilityDiseaseConfigured);
+                    if (currentCell.getDateInsecticideApplication() == null || DateHelper.differenceDaysBetweenTwoDates(currentCell.getDateInsecticideApplication(), dateExecution) > insecticideDaysEffectiveness) {
+                        // Revisión TCSS (R2.18): probabilidad acotada a [0,1]
+                        newCellState.setCurrentProbabilityDisease(Math.min(1.0, currentCellState.getCurrentProbabilityDisease() + probabilityDiseaseConfigured));
                         // Evaluates if it should get infected if the random is less or equal of the current accumulated probability of generating a disease plus the quantity of neighbors infected multiplied the configured factor
-                        newCellState.setInfected(((DiseaseCellState) currentCell.getCellState()).isInfected() || nextRand <= currentCellState.getCurrentProbabilityDisease() + quantityNeighborsInfected * incrementNeighborInfected);
+                        newCellState.setInfected(((DiseaseCellState) currentCell.getCellState()).isInfected() || nextRand <= Math.min(1.0, currentCellState.getCurrentProbabilityDisease() + quantityNeighborsInfected * incrementNeighborInfected));
                     } else {
                         double insecticideCoverage = currentCell.getPercentageOfCropCoverage();
                         newCellState.setCurrentProbabilityDisease(0);

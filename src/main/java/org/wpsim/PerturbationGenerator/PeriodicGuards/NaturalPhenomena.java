@@ -24,7 +24,7 @@ public class NaturalPhenomena extends PeriodicGuardBESA {
 
     @Override
     public void funcPeriodicExecGuard(EventBESA eventBESA) {
-        if (Math.random() < wpsConfig.getInstance().getDoubleProperty("perturbation.probability.value")) {
+        if (org.wpsim.WellProdSim.Util.SimRandom.nextDouble() < wpsConfig.getInstance().getDoubleProperty("perturbation.probability.value")) {
             try {
                 MarketPlaceMessageType randomIncreaseOrDecreaseType = selectRandomIncreaseOrDecrease();
                 int randomNumber = selectRandomNumber();
@@ -56,13 +56,13 @@ public class NaturalPhenomena extends PeriodicGuardBESA {
                 MarketPlaceMessageType.DECREASE_SEEDS_PRICE,
                 MarketPlaceMessageType.DECREASE_CROP_PRICE
         );
-        Random random = new Random();
+        Random random = org.wpsim.WellProdSim.Util.SimRandom.get();
         int index = random.nextInt(increaseDecreaseMessages.size());
         return increaseDecreaseMessages.get(index);
     }
 
     public static int selectRandomNumber() {
-        Random random = new Random();
+        Random random = org.wpsim.WellProdSim.Util.SimRandom.get();
         int randomNumber = random.nextInt(32);
         return 5 + (randomNumber * 5);
     }

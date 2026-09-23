@@ -42,13 +42,13 @@ public class SearchForHelpAndNecessityTask extends wpsTask {
             believes.increaseRobberyAccount();
             believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "THIEVING", "MONEY"));
             believes.processEmotionalEvent(new EmotionalEvent("STRANGER", "THIEVING", "MONEY"));
-            if (Math.random() < 0.4) {
+            if (org.wpsim.WellProdSim.Util.SimRandom.nextDouble() < 0.4) {
                 believes.getPeasantProfile().increaseMoney(65000);
             } else {
                 believes.getPeasantProfile().increaseMoney(130000);
             }
             // Puede pasarle algo mal
-            if (Math.random() < 0.6) {
+            if (org.wpsim.WellProdSim.Util.SimRandom.nextDouble() < 0.6) {
                 believes.decreaseHealth();
             }
             believes.setCurrentMoneyOrigin(MoneyOriginType.ROBERY);

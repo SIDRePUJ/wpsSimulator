@@ -44,6 +44,8 @@ public class wpsStart {
     public static int CREATED_AGENTS = 0;
     public static final long startTime = System.currentTimeMillis();
     public static SimulationParams params = new SimulationParams();
+    private static Long seedArg = null;            // revisión TCSS: -seed
+    private static String perturbationArg = null;  // revisión TCSS: -perturbation
 
     /**
      * The main method to start the simulation.
@@ -55,6 +57,13 @@ public class wpsStart {
         setArgumentsConfig(args);
         // Set initial config of simulation
         config = wpsConfig.getInstance();
+        // Revisión TCSS: semilla registrada (R2.8) y perturbación de cultivos configurable (R2.18)
+        long seed = (seedArg != null) ? seedArg : System.nanoTime();
+        org.wpsim.WellProdSim.Util.SimRandom.setSeed(seed);
+        System.out.println("SEED: " + seed);
+        String perturbation = (perturbationArg != null) ? perturbationArg : config.getStringProperty("simulation.perturbation");
+        config.setPerturbation(perturbation);
+        System.out.println("PERTURBATION: " + perturbation);
         if (params.startYear > 0) {
             config.setStartSimulationDate("01/01/" + params.startYear);
         }
@@ -88,6 +97,8 @@ public class wpsStart {
         options.addOption(new Option("world", true, "World Size"));
         options.addOption(new Option("years", true, "Number of years"));
         options.addOption(new Option("startyear", true, "Start year (default: control.startdate)"));
+        options.addOption(new Option("seed", true, "Random seed (default: System.nanoTime)"));
+        options.addOption(new Option("perturbation", true, "Crop perturbation: none|disease|course|all"));
         //options.addOption(new Option("step", false, "Step Time"));
 
         // Crear el parser para los argumentos
@@ -145,6 +156,12 @@ public class wpsStart {
             }
             if (cmd.hasOption("startyear")) {
                 params.startYear = Integer.parseInt(cmd.getOptionValue("startyear"));
+            }
+            if (cmd.hasOption("seed")) {
+                seedArg = Long.parseLong(cmd.getOptionValue("seed"));
+            }
+            if (cmd.hasOption("perturbation")) {
+                perturbationArg = cmd.getOptionValue("perturbation");
             }
 
             /*if (cmd.hasOption("step")) {

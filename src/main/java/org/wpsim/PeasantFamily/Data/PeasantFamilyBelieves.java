@@ -115,13 +115,16 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         }
 
         if (params.training == 1) {
-            this.trainingLevel = wpsStart.config.getDoubleProperty("trainingLevel");
+            this.trainingLevel = wpsStart.config.getDoubleProperty("pfagent.trainingLevel");
         } else {
             this.trainingLevel = 0.4;
         }
 
         changePersonalityBase(getPersonality());
 
+        // Revisión TCSS (R3.5): el olvido emocional avanza con el tiempo simulado de la
+        // familia (1000 unidades = 1 día), no con el reloj del computador.
+        this.setTimeSource(() -> currentDay * 1000L + Math.round((1440.0 - timeLeftOnDay) / 1440.0 * 1000.0));
     }
 
     public boolean isTrainingAvailable() {

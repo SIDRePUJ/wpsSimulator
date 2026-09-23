@@ -157,7 +157,7 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
             return null;
         }
 
-        Random rand = new Random();
+        Random rand = org.wpsim.WellProdSim.Util.SimRandom.get();
         String selectedFarm = availableFarms.get(rand.nextInt(availableFarms.size()));
 
         List<String> landsOfSelectedFarm = farms.get(selectedFarm);

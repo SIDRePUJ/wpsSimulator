@@ -76,7 +76,7 @@ public class FromBankOfficeGuard extends GuardBESA {
                     break;
                 case DENIED_INFORMAL_LOAN:
                     // @TODO: Pedir prestado en otro lado? cancelar?
-                    //if (Math.random() < 0.2) {
+                    //if (org.wpsim.WellProdSim.Util.SimRandom.nextDouble() < 0.2) {
                     //believes.setCurrentMoneyOrigin(MoneyOriginType.BENEFICENCIA);
                     wpsReport.info("Denegado DENIED_INFORMAL_LOAN", this.getAgent().getAlias());
                     believes.setLoanDenied(true);

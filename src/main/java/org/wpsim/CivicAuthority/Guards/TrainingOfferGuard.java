@@ -20,7 +20,7 @@ public class TrainingOfferGuard extends PeriodicGuardBESA {
 
     public TrainingOfferGuard(){
         super();
-        Collections.shuffle(peasantFamilyAgentAliases);
+        Collections.shuffle(peasantFamilyAgentAliases, org.wpsim.WellProdSim.Util.SimRandom.get());
     }
 
     /**

@@ -258,7 +258,7 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
         } else if (this.health <= 0) {
             this.health = 0;
         } else {
-            this.health = this.health + (int) ((Math.random() * 21) * factor);
+            this.health = this.health + (int) ((org.wpsim.WellProdSim.Util.SimRandom.nextDouble() * 21) * factor);
         }
     }
 
@@ -330,6 +330,16 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      */
     public synchronized void setTools(int tools) {
         this.tools += tools;
+    }
+
+    /** Asigna (no suma) las herramientas iniciales de la familia (revisión TCSS). */
+    public synchronized void initTools(int tools) {
+        this.tools = tools;
+    }
+
+    /** Asigna (no suma) el agua inicial de la familia (revisión TCSS). */
+    public synchronized void initWaterAvailable(double waterAvailable) {
+        this.waterAvailable = (int) waterAvailable;
     }
 
     /**

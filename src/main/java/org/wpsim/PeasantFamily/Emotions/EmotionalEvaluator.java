@@ -132,7 +132,12 @@ public class EmotionalEvaluator {
     }
 
     public double emotionalFactor(List<EmotionAxis> emotions, String emotionToEvaluate){
-        double internalFactor = evaluateSingleEmotion(emotions, emotionToEvaluate);
+        // Revisión TCSS: las reglas EmotionalRulesFull usan los tres ejes; con un solo eje
+        // las otras entradas quedaban en NaN y la salida era ~0.5 constante.
+        double internalFactor = evaluate(emotions);
+        if (Double.isNaN(internalFactor)) {
+            return 1.0;
+        }
         if (internalFactor >= 0.7){
             return 1.4;
         }else if(internalFactor > 0.5){

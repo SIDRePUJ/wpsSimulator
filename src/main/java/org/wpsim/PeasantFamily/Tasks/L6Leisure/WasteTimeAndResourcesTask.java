@@ -35,7 +35,7 @@ public class WasteTimeAndResourcesTask extends wpsTask {
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
-        Random random = new Random();
+        Random random = org.wpsim.WellProdSim.Util.SimRandom.get();
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());

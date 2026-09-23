@@ -277,7 +277,7 @@ public final class wpsConfig {
 
 
     private double generateRandomNumber(double min, double max) {
-        Random random = new Random();
+        Random random = org.wpsim.WellProdSim.Util.SimRandom.get();
         return min + (max - min) * random.nextDouble();
     }
 
@@ -299,9 +299,9 @@ public final class wpsConfig {
         }
 
         if (params.water != -1) {
-            pfProfile.setWaterAvailable((int) (params.water * rnd));
+            pfProfile.initWaterAvailable((int) (params.water * rnd));
         } else {
-            pfProfile.setWaterAvailable((int) (pfProfile.getWaterAvailable() * rnd));
+            pfProfile.initWaterAvailable((int) (pfProfile.getWaterAvailable() * rnd));
         }
 
         if (params.seeds != -1) {
@@ -311,7 +311,7 @@ public final class wpsConfig {
         }
 
         if (params.tools != -1) {
-            pfProfile.setTools((int) (params.tools * rnd));
+            pfProfile.initTools((int) (params.tools * rnd));
         }
 
         pfProfile.setHealth((int) (pfProfile.getHealth() * rnd));
@@ -323,7 +323,7 @@ public final class wpsConfig {
         pfProfile.setSocialAffinity(pfProfile.getSocialAffinity() * rnd);
         pfProfile.setMinimumVital(wpsStart.config.getIntProperty("pfagent.minimalVital") * rnd);
 
-        Random rand = new Random();
+        Random rand = org.wpsim.WellProdSim.Util.SimRandom.get();
         if (rand.nextInt(101) <= getIntProperty("society.criminality")) {
             pfProfile.setCriminalityAffinity(true);
         }

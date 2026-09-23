@@ -38,7 +38,7 @@ public abstract class SimWorldSimpleLayer<C extends LayerCell> extends GenericWo
      */
     public SimWorldSimpleLayer(String dataFile) {
         this.loadYearDataFromFile(dataFile);
-        this.random = new Random();
+        this.random = org.wpsim.WellProdSim.Util.SimRandom.get();
     }
 
     /**

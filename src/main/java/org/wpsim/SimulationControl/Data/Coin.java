@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Coin {
     public static boolean flipCoin() {
-        Random random = new Random();
+        Random random = org.wpsim.WellProdSim.Util.SimRandom.get();
         return random.nextBoolean();
     }
 }
