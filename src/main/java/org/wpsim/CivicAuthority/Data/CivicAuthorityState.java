@@ -110,38 +110,72 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
         return new Point(x, y);
     }
 
-    private List<String> selectBlock(List<String> availableLands, int rows, int cols) {
-        // Recorrer cada punto posible como punto de inicio del bloque
-        for (int y = 0; y <= GRID_SIZE - rows; y++) {
-            for (int x = 0; x <= GRID_SIZE - cols; x++) {
-                Point startPoint = new Point(x, y);
-                if (isBlockAvailable(startPoint, rows, cols, availableLands)) {
-                    return extractBlock(startPoint, rows, cols, availableLands);
-                }
+    // Revisión TCSS: cuadrícula deducida de los nombres del mapa ("land_x_y", o "land_N" en filas de GRID_SIZE)
+    private transient Map<Point, String> gridIndex;
+    private int gridWidth;
+    private int gridHeight;
+    private int scanCursor;
+
+    private void buildGridIndex() {
+        gridIndex = new HashMap<>();
+        gridWidth = 0;
+        gridHeight = 0;
+        for (String name : landOwnership.keySet()) {
+            Point p = gridPoint(name);
+            if (p != null) {
+                gridIndex.put(p, name);
+                gridWidth = Math.max(gridWidth, p.x + 1);
+                gridHeight = Math.max(gridHeight, p.y + 1);
             }
         }
+        scanCursor = 0;
+    }
+
+    private Point gridPoint(String landName) {
+        try {
+            String[] parts = landName.replace("land_", "").split("_");
+            if (parts.length == 2) {
+                return new Point(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+            }
+            int number = Integer.parseInt(parts[0]);
+            return new Point((number - 1) % GRID_SIZE, (number - 1) / GRID_SIZE);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    /**
+     * Busca el siguiente bloque rows x cols de tierras disponibles. Como la disponibilidad solo
+     * disminuye, las posiciones ya descartadas no vuelven a revisarse (cursor).
+     */
+    private List<String> selectBlock(Set<String> availableLands, int rows, int cols) {
+        int w = gridWidth - cols + 1;
+        int h = gridHeight - rows + 1;
+        if (w <= 0 || h <= 0) {
+            return new ArrayList<>();
+        }
+        int positions = w * h;
+        for (int k = scanCursor; k < positions; k++) {
+            List<String> block = blockAt(k % w, k / w, rows, cols, availableLands);
+            if (block != null) {
+                availableLands.removeAll(block);
+                scanCursor = k;
+                return block;
+            }
+        }
+        scanCursor = positions;
         return new ArrayList<>();
     }
 
-    private boolean isBlockAvailable(Point startPoint, int rows, int cols, List<String> availableLands) {
-        for (int y = startPoint.y; y < startPoint.y + rows; y++) {
-            for (int x = startPoint.x; x < startPoint.x + cols; x++) {
-                String landName = "land_" + (y * GRID_SIZE + x + 1);
-                if (!availableLands.contains(landName)) {
-                    return false;
+    private List<String> blockAt(int x0, int y0, int rows, int cols, Set<String> availableLands) {
+        List<String> block = new ArrayList<>(rows * cols);
+        for (int y = y0; y < y0 + rows; y++) {
+            for (int x = x0; x < x0 + cols; x++) {
+                String name = gridIndex.get(new Point(x, y));
+                if (name == null || !availableLands.contains(name)) {
+                    return null;
                 }
-            }
-        }
-        return true;
-    }
-
-    private List<String> extractBlock(Point startPoint, int rows, int cols, List<String> availableLands) {
-        List<String> block = new ArrayList<>();
-        for (int y = startPoint.y; y < startPoint.y + rows; y++) {
-            for (int x = startPoint.x; x < startPoint.x + cols; x++) {
-                String landName = "land_" + (y * GRID_SIZE + x + 1);
-                block.add(landName);
-                availableLands.remove(landName);
+                block.add(name);
             }
         }
         return block;
@@ -170,12 +204,12 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
     }
 
     public void createFarms() {
-        List<String> availableLands = null;
+        Set<String> availableLands;
         if (wpsStart.config.getBooleanProperty("pfagent.deforestation")) {
             availableLands = landOwnership.entrySet().stream()
                     .filter(e -> !e.getValue().getKind().equals("road") && e.getValue().getFarmName() == null)
                     .map(Map.Entry::getKey)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
         } else {
             availableLands = landOwnership.entrySet().stream()
                     .filter(e -> !e.getValue().getKind().equals("road")
@@ -183,9 +217,10 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
                             && !e.getValue().getKind().equals("forest")
                             && !e.getValue().getKind().equals("water"))
                     .map(Map.Entry::getKey)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toCollection(LinkedHashSet::new));
         }
 
+        buildGridIndex();
         //System.out.println("Available lands: " + this);
 
         int farmId = 1;
@@ -217,7 +252,8 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
         // Asignar fincas medianas wpsStart.config.getBooleanProperty("pfagent.mediumfarms")
         if (medium) {
             while (true) {
-                List<String> farmLands = selectBlock(availableLands, 2, 2);
+                // Revisión TCSS: finca mediana de 6 parcelas (2x3), como en el diseño experimental
+                List<String> farmLands = selectBlock(availableLands, 2, 3);
                 if (farmLands.isEmpty()) {
                     break;
                 }
@@ -240,8 +276,9 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
             while (!availableLands.isEmpty() && availableLands.size() >= 2) {
                 // Tomamos cualquier bloque de 2 tierras contiguas disponibles
                 List<String> farmLands = new ArrayList<>();
-                farmLands.add(availableLands.get(0));
-                farmLands.add(availableLands.get(1));
+                Iterator<String> it = availableLands.iterator();
+                farmLands.add(it.next());
+                farmLands.add(it.next());
 
                 // Removemos esas tierras de availableLands
                 availableLands.removeAll(farmLands);
