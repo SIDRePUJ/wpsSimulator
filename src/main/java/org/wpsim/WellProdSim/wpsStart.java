@@ -53,6 +53,7 @@ public class wpsStart {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        System.out.println("CFG_OVERRIDES: " + org.wpsim.WellProdSim.Util.ConfigOverrides.active());
         // Set arguments to config
         setArgumentsConfig(args);
         // Set initial config of simulation

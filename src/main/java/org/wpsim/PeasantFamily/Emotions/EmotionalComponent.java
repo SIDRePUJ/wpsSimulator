@@ -23,6 +23,23 @@ import java.util.List;
 public abstract class EmotionalComponent extends EmotionalModel {
 
     /** Factor de olvido por día simulado, leído de wpsConfig (revisión TCSS, R3.5). */
+    /** Revisión TCSS (R1.6): ablación por eje; pfagent.emotion.freeze = Happiness,Hopeful,Secure */
+    private static void freezeIfConfigured(EmotionAxis axis) {
+        try {
+            String v = org.wpsim.WellProdSim.wpsStart.config.getStringProperty("pfagent.emotion.freeze");
+            if (v == null || v.isBlank()) {
+                return;
+            }
+            for (String name : v.split("[,;]")) {
+                if (name.trim().equalsIgnoreCase(axis.getPositiveName())) {
+                    axis.getEventInfluences().clear();
+                }
+            }
+        } catch (Exception e) {
+            // sin configuración: no se congela ningún eje
+        }
+    }
+
     private static float forgetFactorFromConfig(String key, float defaultValue, float legacyValue) {
         if (org.wpsim.WellProdSim.Util.Legacy.FORGET) {
             return legacyValue;
@@ -110,6 +127,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         HappinessSadness.setEventInfluence(EmotionalEventType.UNPAYINGDEBTS.name(), 0.1f);
         HappinessSadness.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
         HappinessSadness.setEventInfluence(EmotionalEventType.THIEVING.name(), 0.8f);
+        freezeIfConfigured(HappinessSadness);
         this.addEmotionAxis(HappinessSadness);
 
         EmotionAxis HopefulUncertainty = new EmotionAxis(
@@ -127,6 +145,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         HopefulUncertainty.setEventInfluence(EmotionalEventType.HELPED.name(), 0.3f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.WORK.name(), 0.4f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.5f);
+        freezeIfConfigured(HopefulUncertainty);
         this.addEmotionAxis(HopefulUncertainty);
 
         //@TODO: falta eventos de perturbación, rumores, noticias etc llega a un evento de comunicación
@@ -140,6 +159,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         SecureInsecure.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.4f);
         SecureInsecure.setEventInfluence(EmotionalEventType.PLANTING.name(), 0.5f);
         SecureInsecure.setEventInfluence(EmotionalEventType.HARVESTING.name(), 0.5f);
+        freezeIfConfigured(SecureInsecure);
         this.addEmotionAxis(SecureInsecure);
 
     }

@@ -24,6 +24,7 @@ public class WorldConfiguration {
             //load a properties file from class path, inside static method
             this.appProperties = new Properties();
             this.appProperties.load(in);
+            org.wpsim.WellProdSim.Util.ConfigOverrides.apply(this.appProperties);
 
         } catch (IOException ex) {
             System.err.println("No app config file found!!");

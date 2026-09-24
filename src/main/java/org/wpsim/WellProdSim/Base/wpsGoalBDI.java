@@ -84,11 +84,23 @@ public class wpsGoalBDI extends GoalBDI {
      * @return contribution
      * @throws KernellAgentEventExceptionBESA exception
      */
+    /** Susceptibilidad emocional lambda (pfagent.emotion.lambda, por defecto 0.5). */
+    protected static double emotionalLambda() {
+        try {
+            String v = wpsStart.config.getStringProperty("pfagent.emotion.lambda");
+            return (v == null || v.isBlank()) ? 0.5 : Math.max(0.0, Math.min(1.0, Double.parseDouble(v.trim())));
+        } catch (Exception e) {
+            return 0.5;
+        }
+    }
+
     public double evaluateEmotionalContribution(StateBDI stateBDI, double contribution) throws KernellAgentEventExceptionBESA {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("EmotionalRulesFull");
         if (believes.isHaveEmotions()) {
-            return (evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2;
+            // Revisión TCSS (R2.12): c~ = (1-lambda) c + lambda phi(E); lambda = 0.5 reproduce (phi + c)/2
+            double lambda = emotionalLambda();
+            return (1 - lambda) * contribution + lambda * evaluator.evaluate(believes.getEmotionsListCopy());
         } else {
             return contribution;
         }
@@ -107,7 +119,8 @@ public class wpsGoalBDI extends GoalBDI {
             );*/
         }
         if (believes.isHaveEmotions()) {
-            return 1 - ((evaluator.evaluate(believes.getEmotionsListCopy()) + contribution) / 2);
+            double lambda = emotionalLambda();
+            return 1 - ((1 - lambda) * contribution + lambda * evaluator.evaluate(believes.getEmotionsListCopy()));
         } else {
             return contribution;
         }
@@ -126,7 +139,8 @@ public class wpsGoalBDI extends GoalBDI {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) stateBDI.getBelieves();
         EmotionalEvaluator evaluator = new EmotionalEvaluator("EmotionalRules");
         if (believes.isHaveEmotions()) {
-            return (evaluator.evaluateSingleEmotion(believes.getEmotionsListCopy(), emotionToEvaluate) + contribution) / 2;
+            double lambda = emotionalLambda();
+            return (1 - lambda) * contribution + lambda * evaluator.evaluateSingleEmotion(believes.getEmotionsListCopy(), emotionToEvaluate);
         } else {
             return contribution;
         }

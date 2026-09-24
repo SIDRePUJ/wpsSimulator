@@ -182,6 +182,7 @@ public final class wpsConfig {
         // @TODO: Incluir todas las config del wpsStart
         try {
             properties.load(loadFileAsStream("wpsConfig.properties"));
+            org.wpsim.WellProdSim.Util.ConfigOverrides.apply(properties);
             // Start date comes from control.startdate (first year with climate config data.rainfall.YYYY)
             this.startSimulationDate = properties.getProperty("control.startdate", "01/01/2022").trim();
             this.BankAgentName = properties.getProperty("bank.name");
