@@ -32,6 +32,15 @@ public class WasteTimeAndResourcesTask extends wpsTask {
      *
      * @param parameters Believes
      */
+    private static double cfg(String key, double defaultValue) {
+        try {
+            String v = org.wpsim.WellProdSim.wpsStart.config.getStringProperty(key);
+            return (v == null || v.isBlank()) ? defaultValue : Double.parseDouble(v.trim());
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
     @Override
     public void executeTask(Believes parameters) {
         this.setExecuted(false);
@@ -39,7 +48,20 @@ public class WasteTimeAndResourcesTask extends wpsTask {
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
         believes.addTaskToLog(believes.getInternalCurrentDate());
         believes.useTime(believes.getTimeLeftOnDay());
-        believes.getPeasantProfile().useMoney(random.nextInt(100000));
+        if (org.wpsim.WellProdSim.Util.Legacy.LEISURE) {
+            believes.getPeasantProfile().useMoney(random.nextInt(100000));
+        } else if (random.nextDouble() < cfg("pfagent.leisure.spendProbability", 0.5)) {
+            // Revisión TCSS: el ocio puede o no implicar gasto; el gasto tiene tope por evento,
+            // por fracción del dinero disponible y por presupuesto mensual.
+            double money = Math.max(0, believes.getPeasantProfile().getMoney());
+            double cap = Math.min(cfg("pfagent.leisure.maxPerEvent", 30000),
+                    cfg("pfagent.leisure.maxMoneyFraction", 0.05) * money);
+            double spend = believes.takeLeisureBudget(random.nextDouble() * cap,
+                    cfg("pfagent.leisure.monthlyMax", 60000));
+            if (spend >= 1) {
+                believes.getPeasantProfile().useMoney((int) spend);
+            }
+        }
         believes.setCurrentPeasantLeisureType(PeasantLeisureType.NONE);
         believes.processEmotionalEvent(new EmotionalEvent("FAMILY", "LEISURE", "MONEY"));
     }

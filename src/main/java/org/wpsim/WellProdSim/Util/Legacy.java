@@ -11,6 +11,7 @@ public final class Legacy {
     public static final boolean FORGET = flag("wps.legacyForget");
     public static final boolean CLAMP = flag("wps.legacyClamp");
     public static final boolean FAO = flag("wps.legacyFao");
+    public static final boolean LEISURE = flag("wps.legacyLeisure");
 
     private Legacy() {
     }
@@ -21,6 +22,6 @@ public final class Legacy {
     }
 
     public static String describe() {
-        return "water=" + WATER + " factor=" + FACTOR + " forget=" + FORGET + " clamp=" + CLAMP + " fao=" + FAO;
+        return "water=" + WATER + " factor=" + FACTOR + " forget=" + FORGET + " clamp=" + CLAMP + " fao=" + FAO + " leisure=" + LEISURE;
     }
 }

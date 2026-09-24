@@ -129,6 +129,25 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         }
     }
 
+    // Revisión TCSS: presupuesto mensual de gasto en ocio
+    private String leisureMonth = "";
+    private double leisureSpentMonth = 0;
+
+    /**
+     * Descuenta del presupuesto mensual de ocio y devuelve cuánto se puede gastar
+     * (entre 0 y amount) sin superar monthlyMax en el mes simulado actual.
+     */
+    public synchronized double takeLeisureBudget(double amount, double monthlyMax) {
+        String month = internalCurrentDate.length() >= 7 ? internalCurrentDate.substring(3) : internalCurrentDate;
+        if (!month.equals(leisureMonth)) {
+            leisureMonth = month;
+            leisureSpentMonth = 0;
+        }
+        double allowed = Math.max(0, Math.min(amount, monthlyMax - leisureSpentMonth));
+        leisureSpentMonth += allowed;
+        return allowed;
+    }
+
     public boolean isTrainingAvailable() {
         return trainingAvailable;
     }
