@@ -131,6 +131,15 @@ public class EmotionalEvaluator {
         return engine.getOutputValue("EmotionalState");
     }
 
+    private static double factorFromConfig(String key, double defaultValue) {
+        try {
+            String v = wpsStart.config.getStringProperty(key);
+            return (v == null || v.isBlank()) ? defaultValue : Double.parseDouble(v.trim());
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
     public double emotionalFactor(List<EmotionAxis> emotions, String emotionToEvaluate){
         // Revisión TCSS: las reglas EmotionalRulesFull usan los tres ejes; con un solo eje
         // las otras entradas quedaban en NaN y la salida era ~0.5 constante.
@@ -138,14 +147,17 @@ public class EmotionalEvaluator {
         if (Double.isNaN(internalFactor)) {
             return 1.0;
         }
+        boolean legacy = org.wpsim.WellProdSim.Util.Legacy.FACTOR;
+        // Revisión TCSS: magnitudes según Oswald, Proto y Sgroi (2015): felicidad ~ +12 %,
+        // eventos negativos ~ -10 % de productividad. Valores originales: 1.4/1.2/1.0/0.9.
         if (internalFactor >= 0.7){
-            return 1.4;
+            return legacy ? 1.4 : factorFromConfig("pfagent.emotion.factor.positive", 1.12);
         }else if(internalFactor > 0.5){
-            return 1.2;
+            return legacy ? 1.2 : factorFromConfig("pfagent.emotion.factor.mild", 1.06);
         }else if(internalFactor > 0.3){
-            return 1.0;
+            return legacy ? 1.0 : factorFromConfig("pfagent.emotion.factor.neutral", 1.0);
         }else{
-            return 0.90;
+            return legacy ? 0.90 : factorFromConfig("pfagent.emotion.factor.negative", 0.90);
         }
     }
 
