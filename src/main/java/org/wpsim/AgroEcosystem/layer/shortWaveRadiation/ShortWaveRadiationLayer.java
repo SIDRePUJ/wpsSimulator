@@ -44,6 +44,14 @@ public class ShortWaveRadiationLayer extends SimWorldSimpleLayer<ShortWaveRadiat
 
     @Override
     public void setupLayer() {
+        if (!org.wpsim.WellProdSim.Util.Legacy.CLIMATE) {
+            // Revisión TCSS: la tabla del hemisferio norte está en southernData indexada por (70 - latitud)
+            int lat = this.latitudeDegrees % 2 == 0 ? this.latitudeDegrees : this.latitudeDegrees + 1;
+            this.monthlyExtraterrestrialRadiationForLocation = (this.hemisphere == Hemisphere.NORTHERN)
+                    ? ExtraterrestrialRadiation.getSouthernData().get(70 - lat)
+                    : ExtraterrestrialRadiation.getNorthernData().get(lat);
+            return;
+        }
         if (this.hemisphere == Hemisphere.NORTHERN) {
             this.monthlyExtraterrestrialRadiationForLocation = ExtraterrestrialRadiation.getNorthernData().get(
                     this.latitudeDegrees % 2 == 0 ? this.latitudeDegrees : this.latitudeDegrees + 1
@@ -88,7 +96,20 @@ public class ShortWaveRadiationLayer extends SimWorldSimpleLayer<ShortWaveRadiat
 
     private double calculateShortWaveRadiation(int month) {
         MonthData monthData = this.monthlyData.get(month);
-        return (this.a_s + this.b_s * (this.calculateGaussianFromMonthData(month) / monthData.getMaxValue())) * this.monthlyExtraterrestrialRadiationForLocation[month];
+        if (org.wpsim.WellProdSim.Util.Legacy.CLIMATE) {
+            return (this.a_s + this.b_s * (this.calculateGaussianFromMonthData(month) / monthData.getMaxValue())) * this.monthlyExtraterrestrialRadiationForLocation[month];
+        }
+        // Revisión TCSS: Ångström con n/N, donde N es la duración astronómica del día (FAO-56, Ecs. 24 y 34)
+        double ratio = Math.max(0.0, Math.min(1.0, this.calculateGaussianFromMonthData(month) / this.dayLengthHours(month)));
+        return (this.a_s + this.b_s * ratio) * this.monthlyExtraterrestrialRadiationForLocation[month];
+    }
+
+    private double dayLengthHours(int month) {
+        int[] midMonthDay = {15, 46, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349};
+        double phi = Math.toRadians((this.hemisphere == Hemisphere.NORTHERN ? 1 : -1) * this.latitudeDegrees);
+        double delta = 0.409 * Math.sin(2 * Math.PI / 365 * midMonthDay[month] - 1.39);
+        double ws = Math.acos(Math.max(-1.0, Math.min(1.0, -Math.tan(phi) * Math.tan(delta))));
+        return 24 / Math.PI * ws;
     }
 
 

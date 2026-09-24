@@ -44,10 +44,15 @@ public class FromMarketPlaceGuard extends GuardBESA {
 
         switch (fromMarketPlaceMessageType) {
             case SOLD_CROP:
-                believes.getPeasantProfile().increaseMoney(
-                        believes.getPeasantProfile().getHarvestedWeight()
-                                * believes.getPriceList().get("rice").getCost()
-                );
+                if (org.wpsim.WellProdSim.Util.Legacy.SALES) {
+                    believes.getPeasantProfile().increaseMoney(
+                            believes.getPeasantProfile().getHarvestedWeight()
+                                    * believes.getPriceList().get("rice").getCost()
+                    );
+                } else {
+                    // Revisión TCSS: valor de la venta calculado por el mercado (precio del cultivo x cantidad)
+                    believes.getPeasantProfile().increaseMoney(fromMarketPlaceMessage.getValue());
+                }
                 believes.setUpdatePriceList(true);
                 break;
             case PRICE_LIST:

@@ -87,7 +87,8 @@ public class MarketPlaceGuard extends wpsGuardBESA {
                 state.getResources().get(
                         marketPlaceMessage.getCropName()
                 ).setQuantity(
-                        quantity + marketPlaceMessage.getQuantity()
+                        org.wpsim.WellProdSim.Util.Legacy.SALES ? quantity + marketPlaceMessage.getQuantity()
+                                : state.getResources().get(marketPlaceMessage.getCropName()).getQuantity() + quantity
                 );
                 state.updateAgentProductMapAndDiversityFactor(marketPlaceMessage.getPeasantAlias(), marketPlaceMessage.getCropName());
                 if (currentWeek != ControlCurrentDate.getInstance().getCurrentWeek()) {

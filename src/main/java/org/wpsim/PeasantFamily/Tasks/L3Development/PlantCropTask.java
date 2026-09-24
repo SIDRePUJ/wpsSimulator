@@ -111,17 +111,29 @@ public class PlantCropTask extends wpsLandTask {
 
                     //ReportBESA.info(peasantAlias + " cultivando en " + currentLandInfo.getLandName() + " " + currentLandInfo.getCropName() + " " + currentCropName);
 
-                    CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
-                        return createNewWorld(currentLandInfo, initialRainfallConditions, peasantAlias, cropSize, believes);
-                    }, Executors.newCachedThreadPool());
-                    try {
-                        boolean result = future.get(4, TimeUnit.SECONDS);
-                    } catch (TimeoutException e) {
-                        future.cancel(true);
-                        return;
-                    } catch (InterruptedException | ExecutionException e) {
-                        //ReportBESA.info(peasantAlias + " no alcanzó a crear la tierrita nueva " + currentLandInfo.getLandName());
-                        return;
+                    if (org.wpsim.WellProdSim.Util.Legacy.PLANT) {
+                        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
+                            return createNewWorld(currentLandInfo, initialRainfallConditions, peasantAlias, cropSize, believes);
+                        }, Executors.newCachedThreadPool());
+                        try {
+                            boolean result = future.get(4, TimeUnit.SECONDS);
+                        } catch (TimeoutException e) {
+                            future.cancel(true);
+                            return;
+                        } catch (InterruptedException | ExecutionException e) {
+                            return;
+                        }
+                    } else {
+                        // Revisión TCSS: creación síncrona; el resultado ya no depende de la carga del computador
+                        boolean created;
+                        try {
+                            created = createNewWorld(currentLandInfo, initialRainfallConditions, peasantAlias, cropSize, believes);
+                        } catch (Exception e) {
+                            created = false;
+                        }
+                        if (!created) {
+                            return;
+                        }
                     }
                     try {
                         AdmBESA.getInstance().getHandlerByAlias(
@@ -194,8 +206,8 @@ public class PlantCropTask extends wpsLandTask {
         WorldConfiguration worldConfiguration = WorldConfiguration.getPropsInstance();
         ShortWaveRadiationLayer radiationLayer = new ShortWaveRadiationLayer(
                 worldConfiguration.getProperty("data.radiation"),
-                Hemisphere.SOUTHERN,
-                9);
+                org.wpsim.WellProdSim.Util.Legacy.CLIMATE ? Hemisphere.SOUTHERN : Hemisphere.NORTHERN,
+                org.wpsim.WellProdSim.Util.Legacy.CLIMATE ? 9 : 10); // Revisión TCSS: María La Baja ~10°N
         TemperatureLayer temperatureLayer = new TemperatureLayer(
                 worldConfiguration.getProperty("data.temperature"));
         EvapotranspirationLayer evapotranspirationLayer = new EvapotranspirationLayer(
