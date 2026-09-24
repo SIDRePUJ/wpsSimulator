@@ -38,6 +38,11 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
 
     int waitTime = wpsStart.params.steptime;
     String currentRole = "";
+    long dbgCount = 0; // diagnóstico (-Dwps.debugPulse)
+    private static final int IDLE_PULSES = Integer.getInteger("wps.idlePulses", 10);
+    private int idleDay = -1;
+    private double idleLeft = -1;
+    private int idlePulses = 0;
 
     /**
      * The method that will be executed when the guard is triggered.
@@ -64,6 +69,28 @@ public class HeartBeatGuard extends PeriodicGuardBESA {
         if (checkDead(believes)) return;
         // Check if the simulation has finished
         if (checkFinish(believes)) return;
+        // Revisión TCSS: fin de día por inactividad. Si durante IDLE_PULSES pulsos seguidos la
+        // familia no consume tiempo (ninguna meta pendiente cabe en lo que queda del día),
+        // descansa el resto del día. No aplica mientras espera por sincronización.
+        if (!believes.isWaiting()) {
+            if (believes.getCurrentDay() == idleDay && believes.getTimeLeftOnDay() == idleLeft) {
+                if (++idlePulses >= IDLE_PULSES) {
+                    idlePulses = 0;
+                    believes.decreaseTime(believes.getTimeLeftOnDay());
+                }
+            } else {
+                idleDay = believes.getCurrentDay();
+                idleLeft = believes.getTimeLeftOnDay();
+                idlePulses = 0;
+            }
+        }
+        // Diagnóstico opcional: -Dwps.debugPulse=1 imprime el estado cada 250 pulsos
+        if (System.getProperty("wps.debugPulse") != null && (++dbgCount % 250 == 0)) {
+            String intent = String.valueOf(state.getMachineBDIParams().getIntention());
+            System.out.println("DBG " + believes.getAlias() + " day=" + believes.getCurrentDay() + " left=" + believes.getTimeLeftOnDay()
+                + " intention=" + intent + " emo=" + believes.getEmotionsListCopy().stream().map(e -> String.format("%.2f", e.getCurrentValue())).toList() + " wait=" + believes.isWaiting()
+                + " tasksToday=" + believes.getTasksBySpecificDate(believes.getInternalCurrentDate()));
+        }
         // Send BDI Pulse to BDI Information Flow
         sendBDIPulse(this.agent.getAlias());
         //wpsReport.info("Tiempo restante " + believes.getTimeLeftOnDay() + " Ya ejecutadas: " + believes.getTasksBySpecificDate(believes.getInternalCurrentDate()), believes.getAlias());

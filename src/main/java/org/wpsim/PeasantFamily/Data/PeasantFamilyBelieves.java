@@ -471,10 +471,11 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
     public synchronized void decreaseTime(double time) {
 
         timeLeftOnDay = (int) (timeLeftOnDay - time);
+        // Revisión TCSS: el día tiene un presupuesto fijo de 1440 min. Antes, si quedaban
+        // entre 30 y 120 min se devolvían a 120, lo que daba tiempo extra ilimitado cuando el
+        // factor emocional acortaba las tareas y podía bloquear el día.
         if (timeLeftOnDay <= 30) {
             this.makeNewDay();
-        } else if (timeLeftOnDay < 120) {
-            timeLeftOnDay = 120;
         }
         //ReportBESA.info("decreaseTime: " + time + ", Queda " + timeLeftOnDay + " para " + getPeasantProfile().getPeasantFamilyAlias());
     }
