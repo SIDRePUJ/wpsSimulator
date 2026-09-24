@@ -23,7 +23,10 @@ import java.util.List;
 public abstract class EmotionalComponent extends EmotionalModel {
 
     /** Factor de olvido por día simulado, leído de wpsConfig (revisión TCSS, R3.5). */
-    private static float forgetFactorFromConfig(String key, float defaultValue) {
+    private static float forgetFactorFromConfig(String key, float defaultValue, float legacyValue) {
+        if (org.wpsim.WellProdSim.Util.Legacy.FORGET) {
+            return legacyValue;
+        }
         try {
             String v = org.wpsim.WellProdSim.wpsStart.config.getStringProperty(key);
             return (v == null || v.isBlank()) ? defaultValue : Float.parseFloat(v.trim());
@@ -97,7 +100,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         EmotionAxis HappinessSadness = new EmotionAxis(
                 Semantics.Emotions.Happiness,
                 Semantics.Emotions.Sadness,
-                0.0f, 0.0f, forgetFactorFromConfig("pfagent.forget.happiness", 0.24f)
+                0.0f, 0.0f, forgetFactorFromConfig("pfagent.forget.happiness", 0.24f, 0.4f)
         );
         HappinessSadness.setEventInfluence(EmotionalEventType.LEISURE.name(), 0.7f);
         HappinessSadness.setEventInfluence(EmotionalEventType.DOVITALS.name(), 0.3f);
@@ -112,7 +115,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         EmotionAxis HopefulUncertainty = new EmotionAxis(
                 Semantics.Emotions.Hopeful,
                 Semantics.Emotions.Uncertainty,
-                0.0f, 0.0f, forgetFactorFromConfig("pfagent.forget.hope", 0.06f)
+                0.0f, 0.0f, forgetFactorFromConfig("pfagent.forget.hope", 0.06f, 0.1f)
         );
         HopefulUncertainty.setEventInfluence(EmotionalEventType.PLANTING.name(), 1.0f);
         HopefulUncertainty.setEventInfluence(EmotionalEventType.SELLING.name(), 0.8f);
@@ -130,7 +133,7 @@ public abstract class EmotionalComponent extends EmotionalModel {
         EmotionAxis SecureInsecure = new EmotionAxis(
                 Semantics.Emotions.Secure,
                 Semantics.Emotions.Insecure,
-                0.0f, 0.0f, forgetFactorFromConfig("pfagent.forget.security", 0.06f)
+                0.0f, 0.0f, forgetFactorFromConfig("pfagent.forget.security", 0.06f, 0.1f)
         );
         SecureInsecure.setEventInfluence(EmotionalEventType.HOUSEHOLDING.name(), 0.5f);
         SecureInsecure.setEventInfluence(EmotionalEventType.THIEVING.name(), 1.0f);

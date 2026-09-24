@@ -167,7 +167,8 @@ public class CropLayer extends GenericWorldLayer {
     // Equation extracted from https://www.fao.org/3/x0490e/x0490e0e.htm#total%20available%20water%20(taw) A numerical approximation for adjusting p for ETc rate is p = pTable 22 + 0.04 (5 - ETc) where the adjusted p is limited to 0.1 £ p £ 0.8 and, ETc is in mm/day.
     private double calculateDepletionFractionAdjusted(double depletionFraction, double cropEvapotranspiration) {
         // Revisión TCSS: acotado a [0.1, 0.8] como indica FAO-56
-        return Math.max(0.1, Math.min(0.8, depletionFraction + 0.04 * (5 - cropEvapotranspiration)));
+        double p = depletionFraction + 0.04 * (5 - cropEvapotranspiration);
+        return org.wpsim.WellProdSim.Util.Legacy.FAO ? p : Math.max(0.1, Math.min(0.8, p));
     }
 
     private double calculateWaterStressEvapotranspiration(CropCellState previousState, CropCellState newState, CropCell currentCell, double depletionFraction, double rainfallForDate, double cropEvapotranspiration) {
@@ -175,7 +176,10 @@ public class CropLayer extends GenericWorldLayer {
         double depletionRootZoneStart = previousState.getRootZoneDepletionAtTheEndOfDay();
         double k_s = 1;
         if (depletionRootZoneStart > currentCell.getReadilyAvailableWater()) {
-            k_s = Math.max(0.0, Math.min(1.0, (currentCell.getTotalAvailableWater() - depletionRootZoneStart) / ((1 - depletionFraction) * currentCell.getTotalAvailableWater())));
+            k_s = (currentCell.getTotalAvailableWater() - depletionRootZoneStart) / ((1 - depletionFraction) * currentCell.getTotalAvailableWater());
+            if (!org.wpsim.WellProdSim.Util.Legacy.FAO) {
+                k_s = Math.max(0.0, Math.min(1.0, k_s));
+            }
             newState.setWaterStress(true);
         } else {
             newState.setWaterStress(false);
@@ -183,7 +187,9 @@ public class CropLayer extends GenericWorldLayer {
         double newCropEvapotranspiration = cropEvapotranspiration * k_s;
         // Calculate new root zone depletion for the end of the day based from the soil water balance - from: https://www.fao.org/3/x0490e/x0490e0e.htm#total%20available%20water%20(taw) equation 85
         // Revisión TCSS: balance FAO-56 (Ec. 85) acotado a 0 <= D_r <= TAW; el exceso de lluvia drena
-        double rootZoneDepletionEndOfDay = Math.max(0.0, Math.min(currentCell.getTotalAvailableWater(),
+        double rootZoneDepletionEndOfDay = org.wpsim.WellProdSim.Util.Legacy.FAO
+                ? ((rainfallForDate > depletionRootZoneStart) ? currentCell.getReadilyAvailableWater() : depletionRootZoneStart - rainfallForDate - this.sumCurrentIrrigationEvents(currentCell) + newCropEvapotranspiration)
+                : Math.max(0.0, Math.min(currentCell.getTotalAvailableWater(),
                 depletionRootZoneStart - rainfallForDate - this.sumCurrentIrrigationEvents(currentCell) + newCropEvapotranspiration));
         newState.setRootZoneDepletionAtTheEndOfDay(rootZoneDepletionEndOfDay);
         return newCropEvapotranspiration;

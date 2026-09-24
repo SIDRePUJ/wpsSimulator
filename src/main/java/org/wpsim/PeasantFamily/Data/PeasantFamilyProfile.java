@@ -334,12 +334,12 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
 
     /** Asigna (no suma) las herramientas iniciales de la familia (revisión TCSS). */
     public synchronized void initTools(int tools) {
-        this.tools = tools;
+        this.tools = org.wpsim.WellProdSim.Util.Legacy.WATER ? this.tools + tools : tools;
     }
 
     /** Asigna (no suma) el agua inicial de la familia (revisión TCSS). */
     public synchronized void initWaterAvailable(double waterAvailable) {
-        this.waterAvailable = (int) waterAvailable;
+        this.waterAvailable = org.wpsim.WellProdSim.Util.Legacy.WATER ? this.waterAvailable + (int) waterAvailable : (int) waterAvailable;
     }
 
     /**

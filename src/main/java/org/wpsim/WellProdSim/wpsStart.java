@@ -64,6 +64,7 @@ public class wpsStart {
         String perturbation = (perturbationArg != null) ? perturbationArg : config.getStringProperty("simulation.perturbation");
         config.setPerturbation(perturbation);
         System.out.println("PERTURBATION: " + perturbation);
+        System.out.println("LEGACY: " + org.wpsim.WellProdSim.Util.Legacy.describe());
         if (params.startYear > 0) {
             config.setStartSimulationDate("01/01/" + params.startYear);
         }

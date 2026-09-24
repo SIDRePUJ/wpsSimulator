@@ -134,7 +134,7 @@ public class EmotionalEvaluator {
     public double emotionalFactor(List<EmotionAxis> emotions, String emotionToEvaluate){
         // Revisión TCSS: las reglas EmotionalRulesFull usan los tres ejes; con un solo eje
         // las otras entradas quedaban en NaN y la salida era ~0.5 constante.
-        double internalFactor = evaluate(emotions);
+        double internalFactor = org.wpsim.WellProdSim.Util.Legacy.FACTOR ? evaluateSingleEmotion(emotions, emotionToEvaluate) : evaluate(emotions);
         if (Double.isNaN(internalFactor)) {
             return 1.0;
         }

@@ -124,7 +124,9 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
 
         // Revisión TCSS (R3.5): el olvido emocional avanza con el tiempo simulado de la
         // familia (1000 unidades = 1 día), no con el reloj del computador.
-        this.setTimeSource(() -> currentDay * 1000L + Math.round((1440.0 - timeLeftOnDay) / 1440.0 * 1000.0));
+        if (!org.wpsim.WellProdSim.Util.Legacy.FORGET) {
+            this.setTimeSource(() -> currentDay * 1000L + Math.round((1440.0 - timeLeftOnDay) / 1440.0 * 1000.0));
+        }
     }
 
     public boolean isTrainingAvailable() {
@@ -476,6 +478,8 @@ public class PeasantFamilyBelieves extends EmotionalComponent implements Believe
         // factor emocional acortaba las tareas y podía bloquear el día.
         if (timeLeftOnDay <= 30) {
             this.makeNewDay();
+        } else if (org.wpsim.WellProdSim.Util.Legacy.CLAMP && timeLeftOnDay < 120) {
+            timeLeftOnDay = 120;
         }
         //ReportBESA.info("decreaseTime: " + time + ", Queda " + timeLeftOnDay + " para " + getPeasantProfile().getPeasantFamilyAlias());
     }
