@@ -504,10 +504,12 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      * @param money
      */
     public synchronized void increaseMoney(double money) {
+        org.wpsim.WellProdSim.Util.Ledger.record("in", money);
         this.money += money;
     }
 
     public synchronized void decreaseMoney(double money) {
+        org.wpsim.WellProdSim.Util.Ledger.record("out", money);
         this.money -= money;
     }
 
@@ -1232,11 +1234,13 @@ public class PeasantFamilyProfile implements Serializable, Cloneable {
      * @param discount
      */
     public synchronized void useMoney(int discount) {
+        org.wpsim.WellProdSim.Util.Ledger.record("out", Math.min(discount, Math.max(this.money, 0)));
         int money = (int) (this.money - discount);
         this.money = Math.max(money, 0);
     }
 
     public synchronized void useMoney(double discount) {
+        org.wpsim.WellProdSim.Util.Ledger.record("out", (int) discount);
         this.money -= (int) discount;
     }
 
