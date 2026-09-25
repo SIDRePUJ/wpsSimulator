@@ -1,0 +1,46 @@
+You are implementing one mechanism of an agent-based social simulator in Python 3.
+Implement the module `m4_goal_selection.py` so that it satisfies the specification below exactly.
+Keep the class and function signatures of the stub. Use only the Python standard library.
+Return only the complete content of `m4_goal_selection.py` in a single ```python code block, with no explanation.
+
+## Specification
+
+# Traceability-matrix row T11b: lexicographic goal selection with affective blend
+
+| Field | Content |
+|---|---|
+| Objective | O3 |
+| Requirement | FR1: household decisions follow a priority pyramid of goals derived from fieldwork, modulated by affect |
+| Evidence source | Goal library derived from the field characterization |
+| Implementation units | `modulated_contribution`, `select_goal` in `m4_goal_selection.py` |
+| Parameters (baseline) | lambda = 0.5 for emotionally susceptible goals, 0 otherwise |
+
+## Behaviour specification
+
+- **Input:** list of goals, each a dict with keys `name`, `level` (int, 1 = highest priority), `active` (bool), `c` (base contribution in (0, 1]), `lam` (susceptibility in [0, 1]); affective contribution phi in [0, 1]; flag `emotions_enabled`.
+- **Rules:**
+  1. `modulated_contribution(c, lam, phi)` = (1 - lam) * c + lam * phi.
+  2. `select_goal`: ignore inactive goals; if none is active return None.
+  3. Consider only the goals in the highest-priority level (smallest `level` number) that has at least one active goal.
+  4. Among them, select the goal with the largest modulated contribution; if `emotions_enabled` is False, use lam = 0 for every goal.
+  5. Ties are broken in favour of the goal that appears first in the list. Return the goal's `name`.
+
+## Test oracle (examples)
+
+| Case | Expected |
+|---|---|
+| `modulated_contribution(0.6, 0.5, 0.9)` | 0.75 |
+| goals: rest (level 3, active, c 0.9, lam 0.5), vitals (1, active, 0.99, 0), plant (2, active, 0.9, 0.5); phi = 0.3 | "vitals" |
+| goals: a (2, active, 0.6, 0.5), b (2, active, 0.65, 0); phi = 0.9 | "a" (0.75 > 0.65) |
+| same goals; phi = 0.5 | "b" (0.55 < 0.65) |
+
+## Stub
+
+```python
+def modulated_contribution(c, lam, phi):
+    raise NotImplementedError
+
+
+def select_goal(goals, phi, emotions_enabled=True):
+    raise NotImplementedError
+```

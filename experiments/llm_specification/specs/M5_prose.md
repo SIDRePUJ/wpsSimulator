@@ -1,0 +1,3 @@
+# Water-stress coefficient (model description)
+
+Crop water stress follows the FAO-56 soil-water-balance rule. The depletion fraction p is the tabulated value p_tab adjusted for the evaporative demand, p = p_tab + 0.04 * (5 - ETc), where ETc is the crop evapotranspiration in mm per day, and p is bounded to [0.1, 0.8]. With the root-zone depletion Dr (mm), the total available water TAW (mm), and the readily available water RAW = p * TAW, the water-stress coefficient Ks equals 1 while Dr is at most RAW; beyond that it decreases linearly as (TAW - Dr) / ((1 - p) * TAW), and it is bounded to [0, 1], so it is 0 when Dr reaches or exceeds TAW. A non-positive TAW or a negative Dr is an error (ValueError).

@@ -1,0 +1,3 @@
+# Productivity factor (model description)
+
+The affective contribution phi, a number between 0 and 1 produced by the fuzzy operator, is mapped to a productivity factor f with four levels: f = 1.12 when phi is at least 0.7; f = 1.06 when phi is above 0.5 and below 0.7; f = 1.00 when phi is above 0.3 and at most 0.5; and f = 0.90 otherwise. Values of phi outside [0, 1] are errors (ValueError). The factor scales the time that a task consumes: a task whose base duration is tau minutes takes (2 - f) * tau minutes. When emotions are disabled (the non-affective baseline), every task takes its base duration tau. A negative base duration is an error (ValueError).

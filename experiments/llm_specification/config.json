@@ -1,0 +1,16 @@
+{
+  "mechanisms": {
+    "M1": "m1_forgetting",
+    "M2": "m2_productivity",
+    "M3": "m3_loan",
+    "M4": "m4_goal_selection",
+    "M5": "m5_water_stress"
+  },
+  "conditions": ["prose", "matrix"],
+  "models": ["claude-sonnet-5", "claude-opus-5"],
+  "replications": 10,
+  "temperature": 1.0,
+  "max_tokens": 4000,
+  "random_seed": 20261001,
+  "mode": "cli"
+}

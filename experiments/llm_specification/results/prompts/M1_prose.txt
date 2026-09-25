@@ -1,0 +1,21 @@
+You are implementing one mechanism of an agent-based social simulator in Python 3.
+Implement the module `m1_forgetting.py` so that it satisfies the specification below exactly.
+Keep the class and function signatures of the stub. Use only the Python standard library.
+Return only the complete content of `m1_forgetting.py` in a single ```python code block, with no explanation.
+
+## Specification
+
+# Emotional axis with forgetting (model description)
+
+Each household agent holds an emotional axis whose intensity e lies between -1 and 1 and relaxes towards a base value b, also in [-1, 1]. Forgetting is linear rather than geometric: whenever the axis is updated, its intensity first moves towards b by gamma times the simulated time, in days, elapsed since the previous update of that axis (the clock starts at day 0 when the axis is created), without overshooting b. The rate gamma is positive (0.24 per day for happiness-sadness). Because the elapsed time is measured on the simulated clock, the amount forgotten does not depend on how many times the axis is updated. After the relaxation, the appraisal increments of the events perceived in that update are added, and the result is clipped to [-1, 1]. Simulated time never goes backwards; an update with an earlier time than the previous one is an error (ValueError). Invalid construction arguments (base or value outside [-1, 1], non-positive gamma) are also errors (ValueError). The update returns the new intensity, which is also stored in the attribute `value`.
+
+## Stub
+
+```python
+class EmotionalAxis:
+    def __init__(self, base=0.0, gamma=0.24, value=0.0):
+        raise NotImplementedError
+
+    def update(self, t_days, deltas=()):
+        raise NotImplementedError
+```

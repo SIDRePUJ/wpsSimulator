@@ -1,0 +1,14 @@
+You are implementing one mechanism of an agent-based social simulator in Python 3.
+Implement the module `{module}.py` so that it satisfies the specification below exactly.
+Keep the class and function signatures of the stub. Use only the Python standard library.
+Return only the complete content of `{module}.py` in a single ```python code block, with no explanation.
+
+## Specification
+
+{spec}
+
+## Stub
+
+```python
+{stub}
+```
