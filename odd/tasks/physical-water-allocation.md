@@ -40,5 +40,5 @@ The existing irrigation event is a fixed depth-like value broadcast to every cro
 - 2026-09-26: PW-02 focused `RiceYieldResponseTest` passed alongside PW-01. The `6 t/ha` and `Ky=1.1` test inputs are arithmetic fixtures, not locally calibrated values.
 - 2026-09-26: PW-03 integration seam inspected. Full simulator compilation is blocked locally: Maven is not on PATH and the complete set of built BESA jars is unavailable, although sibling BESA source checkouts exist. Changing agent guards without a build and a synchronized delivery plan would risk legacy scenarios, so this task remains open.
 - 2026-09-26: PW-04 analyzer's three synthetic unit tests passed; no real scenario outputs exist, so no sensitivity result or validation claim has been made.
-- 2026-09-26: One-command `python experiments/water_allocation/verify_physical.py` passes both Java and all three Python tests. Corrected small-plot protection to exclude zero-demand plots; changes pending commit.
+- 2026-09-26: One-command `python experiments/water_allocation/verify_physical.py` passes both Java and all three Python tests. Corrected small-plot protection to exclude zero-demand plots in commit `22065bc`.
 - Next: obtain a verifiable full build and integrate a complete synchronized allocation batch into plot-specific delivery. Only then run/interpret simulations.
