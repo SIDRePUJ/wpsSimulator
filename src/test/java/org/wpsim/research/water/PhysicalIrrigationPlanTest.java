@@ -54,6 +54,13 @@ public final class PhysicalIrrigationPlanTest {
                 if (!missingCsv.contains("PLOT_ABSENT") || !missingCsv.contains("NOT_APPLIED")) {
                     throw new AssertionError("missing audit statuses not written");
                 }
+                plan.recordRegistrationFailure("second-season-plot");
+                PhysicalIrrigationPlan.AuditSummary failed = plan.writeAudit(auditDir.resolve("failed.csv"));
+                if (failed.valid() || failed.failedPlotRegistrations() != 1
+                        || !Files.readString(auditDir.resolve("failed.csv"))
+                                .contains(",second-season-plot,,,,,PLOT_REGISTRATION_FAILED")) {
+                    throw new AssertionError("asynchronous plot registration failure went unnoticed: " + failed);
+                }
             } finally {
                 for (Path file : Files.list(auditDir).toList()) {
                     Files.deleteIfExists(file);

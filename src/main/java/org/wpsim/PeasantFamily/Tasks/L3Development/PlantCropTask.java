@@ -131,6 +131,7 @@ public class PlantCropTask extends wpsLandTask {
                             created = createNewWorld(currentLandInfo, initialRainfallConditions, peasantAlias, cropSize, believes);
                         } catch (Exception e) {
                             if (PhysicalIrrigationPlan.enabled()) {
+                                PhysicalIrrigationPlan.active().recordRegistrationFailure(currentLandInfo.getLandName());
                                 throw new IllegalStateException("Physical irrigation plot registration failed: "
                                         + currentLandInfo.getLandName(), e);
                             }
@@ -259,6 +260,10 @@ public class PlantCropTask extends wpsLandTask {
                             agentAlias
                     )
             );
+        }
+        if (Boolean.getBoolean("wps.water.discoverPlots")) {
+            System.out.println("WATER_PLOT: plot_id=" + plotId + " crop=" + cropName
+                    + " area_ha=" + cropSize);
         }
         if (PhysicalIrrigationPlan.enabled()) {
             if (!"rice".equals(cropName)) {

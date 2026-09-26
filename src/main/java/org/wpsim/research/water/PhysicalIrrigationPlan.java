@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.Set;
 
 /**
  * Exogenous, complete irrigation request rounds allocated before agents run.
@@ -28,14 +29,15 @@ public final class PhysicalIrrigationPlan {
     private final double remainingM3;
     private final ConcurrentMap<String, Double> registeredPlots = new ConcurrentHashMap<>();
     private final ConcurrentMap<DeliveryKey, Double> appliedMm = new ConcurrentHashMap<>();
+    private final Set<String> failedPlotRegistrations = ConcurrentHashMap.newKeySet();
 
     private record DeliveryKey(LocalDate date, String plotId) {
     }
 
-    public record AuditSummary(int plannedPlots, int registeredPlots, int absentPlots,
+    public record AuditSummary(int plannedPlots, int registeredPlots, int absentPlots, int failedPlotRegistrations,
                                int missingDeliveries, int appliedDeliveries) {
         public boolean valid() {
-            return absentPlots == 0 && missingDeliveries == 0;
+            return absentPlots == 0 && failedPlotRegistrations == 0 && missingDeliveries == 0;
         }
     }
 
@@ -150,6 +152,11 @@ public final class PhysicalIrrigationPlan {
         }
     }
 
+    /** Retain worker-thread planting failures until the main shutdown audit. */
+    public void recordRegistrationFailure(String plotId) {
+        failedPlotRegistrations.add(plotId);
+    }
+
     /** Record a delivery only after the crop water-balance update succeeds. */
     public void recordApplied(String date, String plotId, double netMm) {
         LocalDate day = LocalDate.parse(date, DATE);
@@ -195,10 +202,14 @@ public final class PhysicalIrrigationPlan {
                         .append(delivered == null ? "" : delivered).append(',').append(status).append('\n');
             }
         }
+        for (String plotId : failedPlotRegistrations.stream().sorted().toList()) {
+            csv.append(',').append(plotId).append(",,,,,PLOT_REGISTRATION_FAILED\n");
+        }
         Files.writeString(file, csv.toString(), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
         int absentPlotCount = (int) areaHaByPlot.keySet().stream()
                 .filter(plotId -> !registeredPlots.containsKey(plotId)).count();
-        return new AuditSummary(areaHaByPlot.size(), registeredPlots.size(), absentPlotCount, missing, applied);
+        return new AuditSummary(areaHaByPlot.size(), registeredPlots.size(), absentPlotCount,
+                failedPlotRegistrations.size(), missing, applied);
     }
 
     public double initialM3() {

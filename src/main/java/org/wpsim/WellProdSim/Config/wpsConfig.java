@@ -317,7 +317,13 @@ public final class wpsConfig {
 
         pfProfile.setHealth((int) (pfProfile.getHealth() * rnd));
         pfProfile.setInitialHealth((int) (pfProfile.getHealth() * rnd));
-        pfProfile.setCropSize((int) (pfProfile.getCropSize() * rnd));
+        if (org.wpsim.research.water.PhysicalIrrigationPlan.enabled()
+                || Boolean.getBoolean("wps.water.discoverPlots")) {
+            // Research worlds need a positive hectare area; legacy truncation can turn 1 ha into 0.
+            pfProfile.setCropSize(Math.max(1, (int) Math.round(pfProfile.getCropSize() * rnd)));
+        } else {
+            pfProfile.setCropSize((int) (pfProfile.getCropSize() * rnd));
+        }
         pfProfile.setPeasantFamilyAffinity(pfProfile.getPeasantFamilyAffinity() * rnd);
         pfProfile.setPeasantFriendsAffinity(pfProfile.getPeasantFriendsAffinity() * rnd);
         pfProfile.setPeasantLeisureAffinity(pfProfile.getPeasantLeisureAffinity() * rnd);
