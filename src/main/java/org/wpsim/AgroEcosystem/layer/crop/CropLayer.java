@@ -52,8 +52,11 @@ public class CropLayer extends GenericWorldLayer {
             throw new IllegalStateException("Physical irrigation plan is not configured");
         }
         physicalPlotId = plotId;
+        if (cropCellMap.size() != 1) {
+            throw new IllegalStateException("Research irrigation requires exactly one crop per world: " + plotId);
+        }
         for (CropCell crop : cropCellMap.values()) {
-            physicalPlan.verifyPlotArea(plotId, crop.getCropArea());
+            physicalPlan.registerPlot(plotId, crop.getCropArea());
         }
     }
 
@@ -175,10 +178,11 @@ public class CropLayer extends GenericWorldLayer {
         double depletionFractionAdjusted = this.calculateDepletionFractionAdjusted(currentCell.getDepletionFraction(), cropEvapotranspirationStandard);
         newCellState.setDepletionFractionAdjusted(depletionFractionAdjusted);
 
+        double scheduledNetMm = 0.0;
         if (physicalPlan != null) {
-            double netMm = physicalPlan.netMm(newDate, physicalPlotId);
-            if (netMm > 0.0) {
-                addIrrigationEventToCrop(currentCell.getId(), netMm, newDate);
+            scheduledNetMm = physicalPlan.netMm(newDate, physicalPlotId);
+            if (scheduledNetMm > 0.0) {
+                addIrrigationEventToCrop(currentCell.getId(), scheduledNetMm, newDate);
             }
         }
 
@@ -195,6 +199,9 @@ public class CropLayer extends GenericWorldLayer {
                 previousState.getAboveGroundBiomass() +
                         maximumRadiationEfficiency * (newCellState.getEvapotranspiration() / evapotranspirationReference) * getShortWaveRadiationForDate * agbConversionFactor);
         currentCell.setCellState(newDate, newCellState);
+        if (scheduledNetMm > 0.0) {
+            physicalPlan.recordApplied(newDate, physicalPlotId, scheduledNetMm);
+        }
     }
 
     // Equation extracted from https://www.fao.org/3/x0490e/x0490e0e.htm#total%20available%20water%20(taw) A numerical approximation for adjusting p for ETc rate is p = pTable 22 + 0.04 (5 - ETc) where the adjusted p is limited to 0.1 £ p £ 0.8 and, ETc is in mm/day.

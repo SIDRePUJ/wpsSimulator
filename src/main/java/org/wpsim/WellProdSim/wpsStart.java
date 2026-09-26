@@ -32,6 +32,8 @@ import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.research.water.PhysicalIrrigationPlan;
 
 import java.util.Enumeration;
+import java.nio.file.Path;
+import java.io.IOException;
 
 /**
  *
@@ -69,6 +71,9 @@ public class wpsStart {
         System.out.println("LEGACY: " + org.wpsim.WellProdSim.Util.Legacy.describe());
         PhysicalIrrigationPlan irrigationPlan = PhysicalIrrigationPlan.active();
         if (irrigationPlan != null) {
+            if (System.getProperty("wps.water.auditCsv", "").isBlank()) {
+                throw new IllegalArgumentException("Research irrigation requires wps.water.auditCsv");
+            }
             System.out.println("PHYSICAL_WATER: plots=" + irrigationPlan.plannedPlotCount()
                     + " source_m3=" + irrigationPlan.initialM3()
                     + " allocated_m3=" + (irrigationPlan.initialM3() - irrigationPlan.remainingM3()));
@@ -320,8 +325,22 @@ public class wpsStart {
     public static void stopSimulation() {
         System.out.println("All agents stopped");
         System.out.println("UPDATE: Simulation finished in " + ((System.currentTimeMillis() - startTime) / 1000) + " seconds.");
-
-        System.exit(0);
+        int exitCode = 0;
+        PhysicalIrrigationPlan irrigationPlan = PhysicalIrrigationPlan.active();
+        if (irrigationPlan != null) {
+            try {
+                Path auditFile = Path.of(System.getProperty("wps.water.auditCsv"));
+                PhysicalIrrigationPlan.AuditSummary audit = irrigationPlan.writeAudit(auditFile);
+                System.out.println("PHYSICAL_WATER_AUDIT: " + audit + " file=" + auditFile);
+                if (!audit.valid()) {
+                    exitCode = 2;
+                }
+            } catch (IOException | RuntimeException e) {
+                System.err.println("PHYSICAL_WATER_AUDIT_FAILED: " + e.getMessage());
+                exitCode = 2;
+            }
+        }
+        System.exit(exitCode);
     }
 
     /**

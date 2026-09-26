@@ -3,6 +3,7 @@ package org.wpsim.research.water;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
@@ -11,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * Exogenous, complete irrigation request rounds allocated before agents run.
@@ -23,6 +26,18 @@ public final class PhysicalIrrigationPlan {
     private final Map<String, Double> areaHaByPlot;
     private final double initialM3;
     private final double remainingM3;
+    private final ConcurrentMap<String, Double> registeredPlots = new ConcurrentHashMap<>();
+    private final ConcurrentMap<DeliveryKey, Double> appliedMm = new ConcurrentHashMap<>();
+
+    private record DeliveryKey(LocalDate date, String plotId) {
+    }
+
+    public record AuditSummary(int plannedPlots, int registeredPlots, int absentPlots,
+                               int missingDeliveries, int appliedDeliveries) {
+        public boolean valid() {
+            return absentPlots == 0 && missingDeliveries == 0;
+        }
+    }
 
     private PhysicalIrrigationPlan(Map<LocalDate, Map<String, WaterAllocation>> allocations,
                                    Map<String, Double> areaHaByPlot, double initialM3, double remainingM3) {
@@ -125,6 +140,65 @@ public final class PhysicalIrrigationPlan {
         if (Math.abs(planned - actualAreaHa) > 1e-9) {
             throw new IllegalArgumentException("Plot area disagrees with irrigation plan: " + plotId);
         }
+    }
+
+    /** Register the actual crop world, not merely a planned CSV row. */
+    public void registerPlot(String plotId, double actualAreaHa) {
+        verifyPlotArea(plotId, actualAreaHa);
+        if (registeredPlots.putIfAbsent(plotId, actualAreaHa) != null) {
+            throw new IllegalStateException("Duplicate crop world for plot: " + plotId);
+        }
+    }
+
+    /** Record a delivery only after the crop water-balance update succeeds. */
+    public void recordApplied(String date, String plotId, double netMm) {
+        LocalDate day = LocalDate.parse(date, DATE);
+        if (!registeredPlots.containsKey(plotId)) {
+            throw new IllegalStateException("Unregistered crop world: " + plotId);
+        }
+        WaterAllocation planned = allocations.getOrDefault(day, Map.of()).get(plotId);
+        if (planned == null || planned.netMm() <= 0.0 || Math.abs(planned.netMm() - netMm) > 1e-8) {
+            throw new IllegalStateException("Applied depth differs from allocation: " + plotId + " on " + date);
+        }
+        if (appliedMm.putIfAbsent(new DeliveryKey(day, plotId), netMm) != null) {
+            throw new IllegalStateException("Duplicate irrigation delivery: " + plotId + " on " + date);
+        }
+    }
+
+    /** Create a one-run, plot-level reconciliation file; never overwrite prior evidence. */
+    public AuditSummary writeAudit(Path file) throws IOException {
+        if (file == null) {
+            throw new IllegalArgumentException("audit file is required");
+        }
+        StringBuilder csv = new StringBuilder("date,plot_id,area_ha,gross_m3,net_mm,applied_net_mm,status\n");
+        int missing = 0;
+        int applied = 0;
+        for (LocalDate date : new TreeMap<>(allocations).keySet()) {
+            for (String plotId : allocations.get(date).keySet().stream().sorted().toList()) {
+                WaterAllocation allocation = allocations.get(date).get(plotId);
+                Double delivered = appliedMm.get(new DeliveryKey(date, plotId));
+                String status;
+                if (!registeredPlots.containsKey(plotId)) {
+                    status = "PLOT_ABSENT";
+                } else if (allocation.netMm() > 0.0 && delivered == null) {
+                    status = "NOT_APPLIED";
+                    missing++;
+                } else if (delivered != null) {
+                    status = "APPLIED";
+                    applied++;
+                } else {
+                    status = "NO_DELIVERY";
+                }
+                csv.append(date.format(DATE)).append(',').append(plotId).append(',')
+                        .append(areaHaByPlot.get(plotId)).append(',').append(allocation.grossM3()).append(',')
+                        .append(allocation.netMm()).append(',')
+                        .append(delivered == null ? "" : delivered).append(',').append(status).append('\n');
+            }
+        }
+        Files.writeString(file, csv.toString(), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+        int absentPlotCount = (int) areaHaByPlot.keySet().stream()
+                .filter(plotId -> !registeredPlots.containsKey(plotId)).count();
+        return new AuditSummary(areaHaByPlot.size(), registeredPlots.size(), absentPlotCount, missing, applied);
     }
 
     public double initialM3() {

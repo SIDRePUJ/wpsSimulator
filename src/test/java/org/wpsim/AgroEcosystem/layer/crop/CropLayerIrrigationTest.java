@@ -14,6 +14,7 @@ import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationCellSt
 import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationLayer;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureCellState;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureLayer;
+import org.wpsim.research.water.PhysicalIrrigationPlan;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -77,6 +78,15 @@ public final class CropLayerIrrigationTest {
             if (Math.abs(controlDepletion - scheduledDepletion - 10) > 1e-8) {
                 throw new AssertionError("scheduled net depth did not enter the crop water balance: "
                         + controlDepletion + " versus " + scheduledDepletion);
+            }
+            Path audit = requests.resolveSibling(requests.getFileName() + ".audit.csv");
+            try {
+                PhysicalIrrigationPlan.AuditSummary summary = PhysicalIrrigationPlan.active().writeAudit(audit);
+                if (!summary.valid() || summary.appliedDeliveries() != 1) {
+                    throw new AssertionError("scheduled delivery did not reconcile: " + summary);
+                }
+            } finally {
+                Files.deleteIfExists(audit);
             }
         } finally {
             System.clearProperty("wps.water.requests");
