@@ -1,0 +1,1205 @@
+{
+  "generated_utc_date": "2026-09-26",
+  "source_files": [
+    {
+      "path": "data/raw/agronet_eva_2007_2018.xlsx",
+      "bytes": 19971181,
+      "sha256": "f8b96353bd8e4e7f64aa5789904b48483a26b66497b8b36079ead4cd3bc103f5"
+    },
+    {
+      "path": "data/raw/dane_cna2014_bolivar_csv.zip",
+      "bytes": 10878037,
+      "sha256": "de646ba96b08a819bc5b4d06b5d23c991231231688dad4ff4fe267531c50d608"
+    },
+    {
+      "path": "data/raw/ideam_station_catalog.csv",
+      "bytes": 3056998,
+      "sha256": "2ad7c7613ccc2596bd15989e8a141ff0766a5e65bd6e7eb3d2efbdacc488a7b5"
+    },
+    {
+      "path": "data/raw/nasa_power_maria_la_baja_2013_2024_daily.csv",
+      "bytes": 214978,
+      "sha256": "93118ab56cdba3f3847108f782802d46d74f41f11fbe3d75d6f34089d722b8bd"
+    },
+    {
+      "path": "data/raw/upra_eva_2019_2024.xlsx",
+      "bytes": 11660712,
+      "sha256": "9143ae74790be059eff6fd671f4a2219284caef68a1384cb3cc245da16a36814"
+    },
+    {
+      "path": "data/raw/upra_eva_2019_2025.xlsx",
+      "bytes": 26285407,
+      "sha256": "355e70a7a5b8f3ce76f26f97463f77c24d4c5e63abd7b28c9b6395a1f65854b0"
+    },
+    {
+      "path": "data/raw/upra_eva_2025_crop_calendar.xlsx",
+      "bytes": 201087,
+      "sha256": "6a7f776c1724b5a73f484bd0b23b06b932f4b876ab39afb88eb71c18ebecc91f"
+    },
+    {
+      "path": "reports/raw/adr_irrigation_district_operating_procedure.pdf",
+      "bytes": 776105,
+      "sha256": "3912ae0392fba83999fb15540bb56a6e3fec14be052836f3cfcbb288d6c06480"
+    },
+    {
+      "path": "reports/raw/dane_cna2014_data_dictionary.xlsx",
+      "bytes": 1644225,
+      "sha256": "ad3caee9ae0e6e6e97388f7fd04e0be061ef0f55e2b41d8da16f350843167abc"
+    },
+    {
+      "path": "reports/raw/dane_cna2014_ficha_metodologica.pdf",
+      "bytes": 551546,
+      "sha256": "59b8d758dd04a967f5a6f25d9c0f55811ba0b06160af0112729ec75e8aa16945"
+    },
+    {
+      "path": "reports/raw/dane_cna2014_questionnaire.pdf",
+      "bytes": 3270083,
+      "sha256": "217385a6f8961c4cd8fd29b8adae5aee0aecd2552a6b798e00dc12d244eabe67"
+    },
+    {
+      "path": "reports/raw/upra_eva_2024_final.pdf",
+      "bytes": 33648476,
+      "sha256": "320ea59f01208c841e3c1c07c40c6a83edacef889e3432688078bc8e2d99c456"
+    }
+  ],
+  "cna_2014": {
+    "municipality_code": "13442",
+    "upa_rows": 3630,
+    "upa_unique_composite_keys": 3630,
+    "upa_duplicate_composite_keys": 0,
+    "upa_missing_composite_key": 0,
+    "upa_irrigation_district_source_yes": 543,
+    "upa_2013_drought_difficulty_yes": 1648,
+    "upa_both_district_source_and_drought_difficulty": 188,
+    "crop_rows": 12867,
+    "crop_unique_composite_keys": 2244,
+    "crop_rows_matching_upa_composite_key": 12867,
+    "crop_rows_with_positive_yield": 8672,
+    "household_rows": 508,
+    "household_unique_composite_keys": 472,
+    "household_keys_matching_upa": 472,
+    "household_keys_in_district_source_upa": 49,
+    "rice_district_source_upa_with_positive_yield_and_household": 4,
+    "rice_district_source_positive_yield_summary": {
+      "records": 39,
+      "median_yield_t_ha": 2.0223333583,
+      "harvested_area_ha_in_cna_records": 293.18435198250006,
+      "production_t_in_cna_records": 593.8337953142999,
+      "aggregate_yield_t_ha": 2.0254621070286363
+    },
+    "crop_counts": {
+      "Yuca": {
+        "records": 5028,
+        "harvested_area_records": 3447,
+        "positive_yield_records": 3447,
+        "records_in_drought_difficulty_upa": 2544,
+        "positive_yield_records_in_district_source_upa": 285,
+        "records_in_district_source_upa": 380,
+        "unique_upa_with_positive_yield_in_district_source": 71
+      },
+      "Achiote": {
+        "records": 1939,
+        "harvested_area_records": 1939,
+        "positive_yield_records": 1939,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Palma africana": {
+        "records": 1403,
+        "harvested_area_records": 1058,
+        "positive_yield_records": 1058,
+        "records_in_drought_difficulty_upa": 681,
+        "positive_yield_records_in_district_source_upa": 169,
+        "records_in_district_source_upa": 227,
+        "unique_upa_with_positive_yield_in_district_source": 158
+      },
+      "Maíz Blanco": {
+        "records": 1370,
+        "harvested_area_records": 702,
+        "positive_yield_records": 702,
+        "records_in_drought_difficulty_upa": 747,
+        "positive_yield_records_in_district_source_upa": 43,
+        "records_in_district_source_upa": 85,
+        "unique_upa_with_positive_yield_in_district_source": 40
+      },
+      "Ñame": {
+        "records": 790,
+        "harvested_area_records": 213,
+        "positive_yield_records": 213,
+        "records_in_drought_difficulty_upa": 489,
+        "records_in_district_source_upa": 21,
+        "positive_yield_records_in_district_source_upa": 2,
+        "unique_upa_with_positive_yield_in_district_source": 2
+      },
+      "Maíz Amarillo": {
+        "records": 714,
+        "harvested_area_records": 369,
+        "positive_yield_records": 369,
+        "records_in_drought_difficulty_upa": 319,
+        "positive_yield_records_in_district_source_upa": 23,
+        "records_in_district_source_upa": 46,
+        "unique_upa_with_positive_yield_in_district_source": 21
+      },
+      "Platano": {
+        "records": 640,
+        "harvested_area_records": 618,
+        "positive_yield_records": 618,
+        "records_in_drought_difficulty_upa": 310,
+        "positive_yield_records_in_district_source_upa": 52,
+        "records_in_district_source_upa": 54,
+        "unique_upa_with_positive_yield_in_district_source": 51
+      },
+      "Arroz verde": {
+        "records": 295,
+        "records_in_district_source_upa": 109,
+        "records_in_drought_difficulty_upa": 138,
+        "harvested_area_records": 49,
+        "positive_yield_records": 49,
+        "positive_yield_records_in_district_source_upa": 39,
+        "unique_upa_with_positive_yield_in_district_source": 39
+      },
+      "Caña agria": {
+        "records": 245,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Fríjol": {
+        "records": 101,
+        "harvested_area_records": 61,
+        "positive_yield_records": 61,
+        "records_in_drought_difficulty_upa": 53,
+        "positive_yield_records_in_district_source_upa": 4,
+        "records_in_district_source_upa": 5,
+        "unique_upa_with_positive_yield_in_district_source": 4
+      },
+      "UNMAPPED: 00164001001": {
+        "records": 60,
+        "records_in_district_source_upa": 21,
+        "harvested_area_records": 42,
+        "positive_yield_records": 42,
+        "records_in_drought_difficulty_upa": 26,
+        "positive_yield_records_in_district_source_upa": 13,
+        "unique_upa_with_positive_yield_in_district_source": 6
+      },
+      "Huerta Casera": {
+        "records": 44,
+        "harvested_area_records": 44,
+        "positive_yield_records": 44,
+        "records_in_drought_difficulty_upa": 27,
+        "positive_yield_records_in_district_source_upa": 4,
+        "records_in_district_source_upa": 4,
+        "unique_upa_with_positive_yield_in_district_source": 4
+      },
+      "Palma de vino": {
+        "records": 30,
+        "harvested_area_records": 30,
+        "positive_yield_records": 30,
+        "positive_yield_records_in_district_source_upa": 11,
+        "records_in_district_source_upa": 11,
+        "records_in_drought_difficulty_upa": 11,
+        "unique_upa_with_positive_yield_in_district_source": 1
+      },
+      "Ajíes y pimientos": {
+        "records": 24,
+        "records_in_district_source_upa": 3,
+        "records_in_drought_difficulty_upa": 14,
+        "harvested_area_records": 11,
+        "positive_yield_records": 11,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Tabaco": {
+        "records": 24,
+        "records_in_district_source_upa": 4,
+        "harvested_area_records": 21,
+        "positive_yield_records": 21,
+        "positive_yield_records_in_district_source_upa": 3,
+        "records_in_drought_difficulty_upa": 8,
+        "unique_upa_with_positive_yield_in_district_source": 1
+      },
+      "Corozo": {
+        "records": 18,
+        "harvested_area_records": 18,
+        "positive_yield_records": 18,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Teca": {
+        "records": 18,
+        "records_in_district_source_upa": 1,
+        "records_in_drought_difficulty_upa": 3,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Ahuyama": {
+        "records": 16,
+        "records_in_drought_difficulty_upa": 8,
+        "records_in_district_source_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Maiz Forrajero": {
+        "records": 15,
+        "harvested_area_records": 1,
+        "positive_yield_records": 1,
+        "records_in_drought_difficulty_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Otro permanente": {
+        "records": 14,
+        "harvested_area_records": 14,
+        "positive_yield_records": 14,
+        "records_in_drought_difficulty_upa": 9,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Melón": {
+        "records": 10,
+        "records_in_district_source_upa": 2,
+        "records_in_drought_difficulty_upa": 6,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Cuipo, macando, ceiba bonga": {
+        "records": 8,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Limón": {
+        "records": 7,
+        "harvested_area_records": 7,
+        "positive_yield_records": 7,
+        "records_in_drought_difficulty_upa": 4,
+        "positive_yield_records_in_district_source_upa": 4,
+        "records_in_district_source_upa": 4,
+        "unique_upa_with_positive_yield_in_district_source": 2
+      },
+      "Aguacate": {
+        "records": 6,
+        "harvested_area_records": 5,
+        "positive_yield_records": 5,
+        "records_in_drought_difficulty_upa": 3,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Juansoco": {
+        "records": 6,
+        "records_in_drought_difficulty_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Coco": {
+        "records": 5,
+        "records_in_drought_difficulty_upa": 1,
+        "harvested_area_records": 3,
+        "positive_yield_records": 3,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Naranja": {
+        "records": 5,
+        "harvested_area_records": 5,
+        "positive_yield_records": 5,
+        "positive_yield_records_in_district_source_upa": 1,
+        "records_in_district_source_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 1
+      },
+      "Papaya": {
+        "records": 5,
+        "harvested_area_records": 5,
+        "positive_yield_records": 5,
+        "records_in_drought_difficulty_upa": 3,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Sandía - Patilla": {
+        "records": 5,
+        "records_in_district_source_upa": 2,
+        "records_in_drought_difficulty_upa": 3,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Mango": {
+        "records": 4,
+        "records_in_drought_difficulty_upa": 2,
+        "harvested_area_records": 1,
+        "positive_yield_records": 1,
+        "records_in_district_source_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Marañon- Merey- Caju": {
+        "records": 4,
+        "harvested_area_records": 3,
+        "positive_yield_records": 3,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Café Castilla": {
+        "records": 2,
+        "harvested_area_records": 1,
+        "positive_yield_records": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Estevia": {
+        "records": 2,
+        "records_in_district_source_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Guandul": {
+        "records": 2,
+        "records_in_drought_difficulty_upa": 2,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Berenjenas": {
+        "records": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Flor de jamaica": {
+        "records": 1,
+        "harvested_area_records": 1,
+        "positive_yield_records": 1,
+        "records_in_drought_difficulty_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Ginger": {
+        "records": 1,
+        "harvested_area_records": 1,
+        "positive_yield_records": 1,
+        "records_in_drought_difficulty_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Granada": {
+        "records": 1,
+        "records_in_drought_difficulty_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Guanabana": {
+        "records": 1,
+        "records_in_drought_difficulty_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Maracuya": {
+        "records": 1,
+        "harvested_area_records": 1,
+        "positive_yield_records": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Patinoa Almirajo": {
+        "records": 1,
+        "harvested_area_records": 1,
+        "positive_yield_records": 1,
+        "records_in_drought_difficulty_upa": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      },
+      "Piña": {
+        "records": 1,
+        "harvested_area_records": 1,
+        "positive_yield_records": 1,
+        "unique_upa_with_positive_yield_in_district_source": 0
+      }
+    },
+    "note": "UPA, crop and household tables have different units. A matching composite key does not imply one household per UPA."
+  },
+  "eva_2024_final_base": {
+    "file": "upra_eva_2019_2024.xlsx",
+    "local_rows": 125,
+    "rows_by_year": {
+      "2019": 16,
+      "2020": 16,
+      "2021": 22,
+      "2022": 22,
+      "2023": 23,
+      "2024": 26
+    },
+    "latest_year": 2024,
+    "latest_top_crops_by_harvested_ha": [
+      [
+        "Palma de aceite",
+        8000.0
+      ],
+      [
+        "Maíz",
+        6060.0
+      ],
+      [
+        "Arroz",
+        1850.0
+      ],
+      [
+        "Ñame",
+        1380.0
+      ],
+      [
+        "Yuca",
+        1350.0
+      ],
+      [
+        "Plátano",
+        500.0
+      ],
+      [
+        "Cacao",
+        76.0
+      ],
+      [
+        "Frijol",
+        40.0
+      ],
+      [
+        "Naranja",
+        15.0
+      ],
+      [
+        "Pomelo",
+        10.0
+      ],
+      [
+        "Ahuyama",
+        0
+      ],
+      [
+        "Ají",
+        0
+      ]
+    ],
+    "rice_rows": [
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2019,
+        "period": "2019A",
+        "sown_ha": 1148.0,
+        "harvested_ha": 1147.5,
+        "production_t": 3591.68,
+        "yield_t_ha": 3.13
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2019,
+        "period": "2019B",
+        "sown_ha": 156.0,
+        "harvested_ha": 155.5,
+        "production_t": 1057.4,
+        "yield_t_ha": 6.8
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2020,
+        "period": "2020A",
+        "sown_ha": 1262.0,
+        "harvested_ha": 1250.0,
+        "production_t": 4125.0,
+        "yield_t_ha": 3.3
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2020,
+        "period": "2020B",
+        "sown_ha": 174.0,
+        "harvested_ha": 173.0,
+        "production_t": 1051.84,
+        "yield_t_ha": 6.08
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2021,
+        "period": "2021A",
+        "sown_ha": 350.0,
+        "harvested_ha": 350.0,
+        "production_t": 2499.0,
+        "yield_t_ha": 7.14
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2021,
+        "period": "2021B",
+        "sown_ha": 200.0,
+        "harvested_ha": 200.0,
+        "production_t": 952.0,
+        "yield_t_ha": 4.76
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2022,
+        "period": "2022A",
+        "sown_ha": 500.0,
+        "harvested_ha": 400.0,
+        "production_t": 2856.0,
+        "yield_t_ha": 7.14
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2022,
+        "period": "2022B",
+        "sown_ha": 702.0,
+        "harvested_ha": 692.0,
+        "production_t": 2768.0,
+        "yield_t_ha": 4.0
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2023,
+        "period": "2023A",
+        "sown_ha": 1400.0,
+        "harvested_ha": 370.0,
+        "production_t": 2220.0,
+        "yield_t_ha": 6.0
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2023,
+        "period": "2023B",
+        "sown_ha": 300.0,
+        "harvested_ha": 1240.0,
+        "production_t": 7440.0,
+        "yield_t_ha": 6.0
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2024,
+        "period": "2024A",
+        "sown_ha": 1300.0,
+        "harvested_ha": 1200.0,
+        "production_t": 8568.0,
+        "yield_t_ha": 7.14
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2024,
+        "period": "2024B",
+        "sown_ha": 400.0,
+        "harvested_ha": 300.0,
+        "production_t": 1800.0,
+        "yield_t_ha": 6.0
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2019,
+        "period": "2019B",
+        "sown_ha": 500.0,
+        "harvested_ha": 500.0,
+        "production_t": 1190.0,
+        "yield_t_ha": 2.38
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2020,
+        "period": "2020B",
+        "sown_ha": 500.0,
+        "harvested_ha": 500.0,
+        "production_t": 1190.0,
+        "yield_t_ha": 2.38
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2021,
+        "period": "2021A",
+        "sown_ha": 70.0,
+        "harvested_ha": 70.0,
+        "production_t": 166.6,
+        "yield_t_ha": 2.38
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2021,
+        "period": "2021B",
+        "sown_ha": 700.0,
+        "harvested_ha": 700.0,
+        "production_t": 1666.0,
+        "yield_t_ha": 2.38
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2022,
+        "period": "2022A",
+        "sown_ha": 70.0,
+        "harvested_ha": 170.0,
+        "production_t": 255.0,
+        "yield_t_ha": 1.5
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2022,
+        "period": "2022B",
+        "sown_ha": 600.0,
+        "harvested_ha": 478.0,
+        "production_t": 956.0,
+        "yield_t_ha": 2.0
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2023,
+        "period": "2023A",
+        "sown_ha": 150.0,
+        "harvested_ha": 122.0,
+        "production_t": 183.0,
+        "yield_t_ha": 1.5
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2023,
+        "period": "2023B",
+        "sown_ha": 700.0,
+        "harvested_ha": 500.0,
+        "production_t": 750.0,
+        "yield_t_ha": 1.5
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2024,
+        "period": "2024A",
+        "sown_ha": 150.0,
+        "harvested_ha": 100.0,
+        "production_t": 178.5,
+        "yield_t_ha": 1.78
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2024,
+        "period": "2024B",
+        "sown_ha": 700.0,
+        "harvested_ha": 250.0,
+        "production_t": 375.0,
+        "yield_t_ha": 1.5
+      }
+    ],
+    "header_row": 8
+  },
+  "eva_2025_base": {
+    "file": "upra_eva_2019_2025.xlsx",
+    "local_rows": 153,
+    "rows_by_year": {
+      "2019": 16,
+      "2020": 16,
+      "2021": 22,
+      "2022": 22,
+      "2023": 23,
+      "2024": 26,
+      "2025": 28
+    },
+    "latest_year": 2025,
+    "latest_top_crops_by_harvested_ha": [
+      [
+        "Maíz",
+        8620.0
+      ],
+      [
+        "Palma de aceite",
+        8000.0
+      ],
+      [
+        "Arroz",
+        2442.0
+      ],
+      [
+        "Ñame",
+        1050.0
+      ],
+      [
+        "Yuca",
+        800.0
+      ],
+      [
+        "Plátano",
+        600.0
+      ],
+      [
+        "Frijol",
+        80.0
+      ],
+      [
+        "Cacao",
+        76.0
+      ],
+      [
+        "Ají",
+        40.0
+      ],
+      [
+        "Ahuyama",
+        35.0
+      ],
+      [
+        "Papaya",
+        21.0
+      ],
+      [
+        "Pomelo",
+        20.0
+      ]
+    ],
+    "rice_rows": [
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2019,
+        "period": "2019A",
+        "sown_ha": 1148.0,
+        "harvested_ha": 1147.5,
+        "production_t": 3591.68,
+        "yield_t_ha": 3.13
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2019,
+        "period": "2019B",
+        "sown_ha": 156.0,
+        "harvested_ha": 155.5,
+        "production_t": 1057.4,
+        "yield_t_ha": 6.8
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2020,
+        "period": "2020A",
+        "sown_ha": 1262.0,
+        "harvested_ha": 1250.0,
+        "production_t": 4125.0,
+        "yield_t_ha": 3.3
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2020,
+        "period": "2020B",
+        "sown_ha": 174.0,
+        "harvested_ha": 173.0,
+        "production_t": 1051.84,
+        "yield_t_ha": 6.08
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2021,
+        "period": "2021A",
+        "sown_ha": 350.0,
+        "harvested_ha": 350.0,
+        "production_t": 2499.0,
+        "yield_t_ha": 7.14
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2021,
+        "period": "2021B",
+        "sown_ha": 200.0,
+        "harvested_ha": 200.0,
+        "production_t": 952.0,
+        "yield_t_ha": 4.76
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2022,
+        "period": "2022A",
+        "sown_ha": 500.0,
+        "harvested_ha": 400.0,
+        "production_t": 2856.0,
+        "yield_t_ha": 7.14
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2022,
+        "period": "2022B",
+        "sown_ha": 702.0,
+        "harvested_ha": 692.0,
+        "production_t": 2768.0,
+        "yield_t_ha": 4.0
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2023,
+        "period": "2023A",
+        "sown_ha": 1400.0,
+        "harvested_ha": 370.0,
+        "production_t": 2220.0,
+        "yield_t_ha": 6.0
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2023,
+        "period": "2023B",
+        "sown_ha": 300.0,
+        "harvested_ha": 1240.0,
+        "production_t": 7440.0,
+        "yield_t_ha": 6.0
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2024,
+        "period": "2024A",
+        "sown_ha": 1300.0,
+        "harvested_ha": 1200.0,
+        "production_t": 8568.0,
+        "yield_t_ha": 7.14
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2024,
+        "period": "2024B",
+        "sown_ha": 400.0,
+        "harvested_ha": 300.0,
+        "production_t": 1800.0,
+        "yield_t_ha": 6.0
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2025,
+        "period": "2025A",
+        "sown_ha": 1472.0,
+        "harvested_ha": 1230.0,
+        "production_t": 7380.0,
+        "yield_t_ha": 6.0
+      },
+      {
+        "crop_detail": "Arroz riego",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2025,
+        "period": "2025B",
+        "sown_ha": 200.0,
+        "harvested_ha": 442.0,
+        "production_t": 2652.0,
+        "yield_t_ha": 6.0
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2019,
+        "period": "2019B",
+        "sown_ha": 500.0,
+        "harvested_ha": 500.0,
+        "production_t": 1190.0,
+        "yield_t_ha": 2.38
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2020,
+        "period": "2020B",
+        "sown_ha": 500.0,
+        "harvested_ha": 500.0,
+        "production_t": 1190.0,
+        "yield_t_ha": 2.38
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2021,
+        "period": "2021A",
+        "sown_ha": 70.0,
+        "harvested_ha": 70.0,
+        "production_t": 166.6,
+        "yield_t_ha": 2.38
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2021,
+        "period": "2021B",
+        "sown_ha": 700.0,
+        "harvested_ha": 700.0,
+        "production_t": 1666.0,
+        "yield_t_ha": 2.38
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2022,
+        "period": "2022A",
+        "sown_ha": 70.0,
+        "harvested_ha": 170.0,
+        "production_t": 255.0,
+        "yield_t_ha": 1.5
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2022,
+        "period": "2022B",
+        "sown_ha": 600.0,
+        "harvested_ha": 478.0,
+        "production_t": 956.0,
+        "yield_t_ha": 2.0
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2023,
+        "period": "2023A",
+        "sown_ha": 150.0,
+        "harvested_ha": 122.0,
+        "production_t": 183.0,
+        "yield_t_ha": 1.5
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2023,
+        "period": "2023B",
+        "sown_ha": 700.0,
+        "harvested_ha": 500.0,
+        "production_t": 750.0,
+        "yield_t_ha": 1.5
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2024,
+        "period": "2024A",
+        "sown_ha": 150.0,
+        "harvested_ha": 100.0,
+        "production_t": 178.5,
+        "yield_t_ha": 1.78
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2024,
+        "period": "2024B",
+        "sown_ha": 700.0,
+        "harvested_ha": 250.0,
+        "production_t": 375.0,
+        "yield_t_ha": 1.5
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2025,
+        "period": "2025A",
+        "sown_ha": 170.0,
+        "harvested_ha": 500.0,
+        "production_t": 750.0,
+        "yield_t_ha": 1.5
+      },
+      {
+        "crop_detail": "Arroz secano manual",
+        "crop": "Arroz",
+        "cycle": "Transitorio",
+        "year": 2025,
+        "period": "2025B",
+        "sown_ha": 700.0,
+        "harvested_ha": 270.0,
+        "production_t": 405.0,
+        "yield_t_ha": 1.5
+      }
+    ],
+    "header_row": 9
+  },
+  "eva_2007_2018_historical": {
+    "local_rows": 173,
+    "rows_by_year": {
+      "2006": 3,
+      "2007": 14,
+      "2008": 13,
+      "2009": 16,
+      "2010": 13,
+      "2011": 12,
+      "2012": 15,
+      "2013": 16,
+      "2014": 16,
+      "2015": 14,
+      "2016": 13,
+      "2017": 16,
+      "2018": 12
+    },
+    "rice_irrigated_2013_rows": [
+      {
+        "crop": "ARROZ",
+        "system": "ARROZ RIEGO",
+        "year": 2013,
+        "period": "2013A",
+        "sown_ha": 3000.0,
+        "harvested_ha": 3000.0,
+        "production_t": 21000.0,
+        "yield_t_ha": 7.0
+      },
+      {
+        "crop": "ARROZ",
+        "system": "ARROZ RIEGO",
+        "year": 2013,
+        "period": "2013B",
+        "sown_ha": 300.0,
+        "harvested_ha": 300.0,
+        "production_t": 1800.0,
+        "yield_t_ha": 6.0
+      }
+    ],
+    "rice_irrigated_2013_harvested_ha": 3300.0,
+    "rice_irrigated_2013_production_t": 22800.0,
+    "rice_irrigated_2013_aggregate_yield_t_ha": 6.909090909090909,
+    "note": "Historical EVA reports municipal production by sowing period, whereas CNA reports UPA crop records; comparability is not guaranteed."
+  },
+  "ideam_catalog": {
+    "local_station_count": 49,
+    "active_rain_station_count": 4,
+    "active_rain_stations": [
+      {
+        "Codigo": "0029030160",
+        "Nombre": "FLAMENCO [29030160]",
+        "Categoria": "Pluviométrica",
+        "Estado": "Activa",
+        "LATITUD": "9.986669",
+        "LONGITUD": "-75.398285",
+        "Fecha_instalacion": "15/11/1963",
+        "Fecha_suspension": ""
+      },
+      {
+        "Codigo": "0029030780",
+        "Nombre": "MAMPUJAN [29030780]",
+        "Categoria": "Pluviométrica",
+        "Estado": "Activa",
+        "LATITUD": "9.987741",
+        "LONGITUD": "-75.229856",
+        "Fecha_instalacion": "15/07/1983",
+        "Fecha_suspension": ""
+      },
+      {
+        "Codigo": "0029035040",
+        "Nombre": "NUEVA FLORIDA [29035040]",
+        "Categoria": "Pluviométrica",
+        "Estado": "Activa",
+        "LATITUD": "9.944806",
+        "LONGITUD": "-75.351561",
+        "Fecha_instalacion": "15/01/1963",
+        "Fecha_suspension": ""
+      },
+      {
+        "Codigo": "0029030080",
+        "Nombre": "PUERTO SANTANDER [29030080]",
+        "Categoria": "Pluviométrica",
+        "Estado": "Activa",
+        "LATITUD": "10.00374",
+        "LONGITUD": "-75.316291",
+        "Fecha_instalacion": "15/01/1964",
+        "Fecha_suspension": ""
+      }
+    ],
+    "note": "Catalog installation and status do not establish observation completeness or quality."
+  },
+  "nasa_power": {
+    "by_year": {
+      "2013": {
+        "days": 365,
+        "precipitation_mm": 709.4499999999995,
+        "missing_precipitation_days": 0
+      },
+      "2014": {
+        "days": 365,
+        "precipitation_mm": 611.6699999999997,
+        "missing_precipitation_days": 0
+      },
+      "2015": {
+        "days": 365,
+        "precipitation_mm": 671.5799999999998,
+        "missing_precipitation_days": 0
+      },
+      "2016": {
+        "days": 366,
+        "precipitation_mm": 1160.8399999999997,
+        "missing_precipitation_days": 0
+      },
+      "2017": {
+        "days": 365,
+        "precipitation_mm": 1559.1499999999992,
+        "missing_precipitation_days": 0
+      },
+      "2018": {
+        "days": 365,
+        "precipitation_mm": 1152.1199999999988,
+        "missing_precipitation_days": 0
+      },
+      "2019": {
+        "days": 365,
+        "precipitation_mm": 1019.6899999999996,
+        "missing_precipitation_days": 0
+      },
+      "2020": {
+        "days": 366,
+        "precipitation_mm": 441.06999999999954,
+        "missing_precipitation_days": 0
+      },
+      "2021": {
+        "days": 365,
+        "precipitation_mm": 460.92999999999995,
+        "missing_precipitation_days": 0
+      },
+      "2022": {
+        "days": 365,
+        "precipitation_mm": 1603.56,
+        "missing_precipitation_days": 0
+      },
+      "2023": {
+        "days": 365,
+        "precipitation_mm": 1544.9400000000003,
+        "missing_precipitation_days": 0
+      },
+      "2024": {
+        "days": 366,
+        "precipitation_mm": 1190.5299999999993,
+        "missing_precipitation_days": 0
+      }
+    },
+    "note": "NASA POWER is a gridded MERRA-2/CERES proxy, not an IDEAM station observation or observed district water supply."
+  }
+}
