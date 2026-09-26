@@ -46,6 +46,13 @@ public final class SharedWaterSourceTest {
                 capped, AllocationRule.EQUAL_PER_HECTARE);
         close(10.0, equal.get(0).grossM3());
         close(90.0, equal.get(1).grossM3());
+        List<WaterRequest> idleAndActive = List.of(
+                new WaterRequest("idle", 0.1, 0, 1),
+                new WaterRequest("active", 1, 30, 1));
+        List<WaterAllocation> protectedActive = new SharedWaterSource(100).allocateRound(
+                idleAndActive, AllocationRule.SMALL_PLOT_FLOOR);
+        close(0.0, protectedActive.get(0).grossM3());
+        close(100.0, protectedActive.get(1).grossM3());
         expectFailure(() -> new SharedWaterSource(1).allocateRound(
                 List.of(farms.get(0), farms.get(0)), AllocationRule.EQUAL_PER_HECTARE));
         System.out.println("SharedWaterSourceTest PASS");

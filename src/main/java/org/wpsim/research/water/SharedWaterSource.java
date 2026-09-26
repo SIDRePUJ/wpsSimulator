@@ -114,11 +114,16 @@ public final class SharedWaterSource {
                                        double[] gross, double available) {
         List<Integer> order = new ArrayList<>();
         for (int i = 0; i < requests.size(); i++) {
-            order.add(i);
+            if (demand[i] > 0.0) {
+                order.add(i);
+            }
+        }
+        if (order.isEmpty()) {
+            return;
         }
         order.sort(Comparator.comparingDouble((Integer i) -> requests.get(i).areaHa())
                 .thenComparing(i -> requests.get(i).plotId()));
-        int protectedCount = Math.max(1, (requests.size() + 3) / 4);
+        int protectedCount = Math.max(1, (order.size() + 3) / 4);
         double[] protectedNeed = new double[demand.length];
         for (int i = 0; i < protectedCount; i++) {
             int index = order.get(i);

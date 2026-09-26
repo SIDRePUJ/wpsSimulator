@@ -4,7 +4,7 @@ The research kernel is **separate from the legacy WellProdSim harvest equation**
 
 ## Quick check
 
-Compile the dependency-free Java files under `src/main/java/org/wpsim/research/water/` together with the two `src/test/java/org/wpsim/research/water/` classes, then run `SharedWaterSourceTest` and `RiceYieldResponseTest` with assertions enabled. The tests cover exact unit conversions, source conservation, delivery losses, rule behavior, and limiting yield cases. They do not run the full simulator.
+From this directory run `python verify_physical.py` with Python 3 and Java 21 `javac`/`java` on PATH. It compiles the dependency-free Java files into a temporary directory, runs `SharedWaterSourceTest` and `RiceYieldResponseTest` with assertions enabled, and runs the synthetic paired-output analyzer tests. The tests cover exact unit conversions, source conservation, delivery losses, rule behavior, and limiting yield cases. They do not run the full simulator.
 
 ## Unit contract
 
@@ -18,7 +18,7 @@ Compile the dependency-free Java files under `src/main/java/org/wpsim/research/w
 | Potential/actual rice yield | t/ha | Crop output per harvested hectare. |
 | Rice production | t | Yield multiplied by harvested hectares. |
 
-For any area `A` in hectares, depth `d` in millimetres and delivery efficiency `e`, net plot water is `10 × A × d` m3 and source withdrawal is `10 × A × d / e` m3. The allocator takes a **complete batch** of requests per decision round and never withdraws more than the remaining stock. Its small-plot rule gives the smallest quarter of plots (by area, ties broken by ID) priority for up to half their request, then divides residual water in proportion to unmet need. That definition is a testable scenario assumption, not an observed local institution.
+For any area `A` in hectares, depth `d` in millimetres and delivery efficiency `e`, net plot water is `10 × A × d` m3 and source withdrawal is `10 × A × d / e` m3. The allocator takes a **complete batch** of requests per decision round and never withdraws more than the remaining stock. The equal-per-hectare rule equalizes **gross source m3/ha**, subject to request caps. Its small-plot rule gives the smallest quarter of **positive-demand** plots (by area, ties broken by ID) priority for up to half their request, then divides residual water in proportion to unmet need. Those definitions are testable scenario assumptions, not observed local institutions.
 
 The rice module uses the [FAO-33 relative-yield equation](https://www.fao.org/4/X5647E/x5647e0e.htm): `1 − Ya/Ym = Ky(1 − ETa/ETm)`, bounded to `[0, 1]` relative yield. `Ym` (t/ha) and `Ky` remain explicit inputs; the test's `6 t/ha` and `Ky = 1.1` are arithmetic fixtures, **not** estimates for María La Baja. This simpler seasonal response does not reproduce [AquaCrop's](https://www.fao.org/aquacrop/overview/calculation-scheme/) canopy, transpiration, biomass and harvest-index dynamics.
 
