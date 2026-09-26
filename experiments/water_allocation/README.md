@@ -9,6 +9,8 @@ This directory supports a **proposed**, not yet executed, WellProdSim study of s
 3. Compare the `source_files` sizes and SHA-256 hashes in that JSON to the files on disk. The recorded inventory describes downloads acquired on **2026-09-26**; newer source revisions need a new audit.
 4. Read [EVIDENCE.md](EVIDENCE.md) before choosing calibration targets or claiming empirical validation.
 
+The opt-in physical-unit research kernel and its limitations are described in [PHYSICAL_MODEL.md](PHYSICAL_MODEL.md). [RESULTS_PROTOCOL.md](RESULTS_PROTOCOL.md) defines the proposed paired-rule output and sensitivity analysis; no integrated scenario outputs exist yet.
+
 `data/raw/` and `reports/raw/` are intentionally Git-ignored. In particular, [DANE's CNA microdata access terms](https://microdatos.dane.gov.co/catalog/513) do not authorize redistribution of the individual-level archive through this repository. The aggregate profile is not a substitute for the original data or its documentation. Do not copy raw files into Overleaf.
 
 ## Source roles and provenance
