@@ -6,6 +6,8 @@ The research kernel is **separate from the legacy WellProdSim harvest equation**
 
 From this directory run `python verify_physical.py` with Python 3 and Java 21 `javac`/`java` on PATH. It compiles the dependency-free Java files into a temporary directory, runs `SharedWaterSourceTest`, `RiceYieldResponseTest`, and `PhysicalIrrigationPlanTest` with assertions enabled, and runs the synthetic paired-output analyzer tests. The tests cover exact unit conversions, source conservation, delivery losses, complete request rounds, rule behavior, and limiting yield cases. They do not run the full simulator.
 
+On Windows, `powershell -File verify_source_build.ps1` also compiles all six local BESA source modules and this isolated simulator worktree, then runs `CropLayerIrrigationTest`. It creates a unique directory under the project-level `tools` folder and does not overwrite the shared `bin` JARs. This is a source-build and controlled crop-water-balance check, not a full agent simulation.
+
 ## Unit contract
 
 | Quantity | Unit | Meaning |
