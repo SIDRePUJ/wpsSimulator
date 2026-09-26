@@ -24,6 +24,7 @@ import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.CropCareType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L3Development.IrrigateCropsTask;
+import org.wpsim.research.water.PhysicalIrrigationPlan;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -71,6 +72,9 @@ public class IrrigateCropsGoal extends wpsGoalBDI {
      */
     @Override
     public double detectGoal(Believes parameters) throws KernellAgentEventExceptionBESA {
+        if (PhysicalIrrigationPlan.enabled()) {
+            return 0;
+        }
         PeasantFamilyBelieves believes = (PeasantFamilyBelieves) parameters;
 
         if (this.isAlreadyExecutedToday(believes)) {

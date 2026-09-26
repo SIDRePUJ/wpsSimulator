@@ -21,6 +21,7 @@ import org.wpsim.AgroEcosystem.layer.crop.CropLayer;
 import org.wpsim.AgroEcosystem.layer.crop.cell.CropCell;
 import org.wpsim.AgroEcosystem.layer.crop.cell.CropCellState;
 import org.wpsim.AgroEcosystem.layer.disease.DiseaseCellState;
+import org.wpsim.research.water.PhysicalIrrigationPlan;
 
 /**
  * BESA world's guard, holds the actions that receive from the peasant agent
@@ -111,6 +112,9 @@ public class AgroEcosystemGuard extends GuardBESA {
                     //ReportBESA.info(agroEcosystemMessage.getCropId() + " takes " +  (System.currentTimeMillis()-timeCost));
                     break;
                 case CROP_IRRIGATION:
+                    if (PhysicalIrrigationPlan.enabled()) {
+                        throw new IllegalStateException("Legacy irrigation event in physical allocation mode");
+                    }
                     String cropIdToIrrigate = agroEcosystemMessage.getCropId();
                     String defaultWaterQuantity = this.worldConfig.getProperty("crop.defaultValuePerIrrigation");
                     //int irrigateValue = Integer.parseInt(defaultWaterQuantity) * worldState.getCropLayer().getCropCellById(cropIdToIrrigate).getCropArea();

@@ -42,6 +42,7 @@ import org.wpsim.AgroEcosystem.layer.crop.cell.rice.RiceCell;
 import org.wpsim.AgroEcosystem.layer.crop.cell.roots.RootsCell;
 import org.wpsim.AgroEcosystem.layer.disease.DiseaseCell;
 import org.wpsim.AgroEcosystem.layer.disease.DiseaseLayer;
+import org.wpsim.research.water.PhysicalIrrigationPlan;
 import org.wpsim.AgroEcosystem.layer.evapotranspiration.EvapotranspirationLayer;
 import org.wpsim.AgroEcosystem.layer.rainfall.RainfallLayer;
 import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationLayer;
@@ -129,6 +130,10 @@ public class PlantCropTask extends wpsLandTask {
                         try {
                             created = createNewWorld(currentLandInfo, initialRainfallConditions, peasantAlias, cropSize, believes);
                         } catch (Exception e) {
+                            if (PhysicalIrrigationPlan.enabled()) {
+                                throw new IllegalStateException("Physical irrigation plot registration failed: "
+                                        + currentLandInfo.getLandName(), e);
+                            }
                             created = false;
                         }
                         if (!created) {
@@ -201,6 +206,7 @@ public class PlantCropTask extends wpsLandTask {
     private static AgroEcosystemState buildWorldState(
             String rainfallFile,
             String agentAlias,
+            String plotId,
             int cropSize,
             String cropName) {
         WorldConfiguration worldConfiguration = WorldConfiguration.getPropsInstance();
@@ -254,6 +260,12 @@ public class PlantCropTask extends wpsLandTask {
                     )
             );
         }
+        if (PhysicalIrrigationPlan.enabled()) {
+            if (!"rice".equals(cropName)) {
+                throw new IllegalStateException("Physical allocation mode currently supports rice-only experiments");
+            }
+            cropLayer.enablePhysicalIrrigation(plotId);
+        }
         cropLayer.bindLayer("radiation", radiationLayer);
         cropLayer.bindLayer("rainfall", rainfallLayer);
         cropLayer.bindLayer("temperature", temperatureLayer);
@@ -294,7 +306,7 @@ public class PlantCropTask extends wpsLandTask {
             int cropSize,
             String cropName) {
         //wpsReport.warn(agentAlias + " " + aliasWorldAgent, "ObtainALandTask");
-        AgroEcosystemState agroEcosystemState = buildWorldState(rainfallFile, agentAlias, cropSize, cropName);
+        AgroEcosystemState agroEcosystemState = buildWorldState(rainfallFile, agentAlias, aliasWorldAgent, cropSize, cropName);
         StructBESA structBESA = new StructBESA();
         structBESA.bindGuard(AgroEcosystemGuard.class);
         structBESA.bindGuard(CloseAgroEcosystemGuard.class);

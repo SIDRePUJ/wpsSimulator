@@ -1,0 +1,141 @@
+package org.wpsim.research.water;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+/**
+ * Exogenous, complete irrigation request rounds allocated before agents run.
+ * This avoids arrival-order bias from asynchronous farm decisions.
+ */
+public final class PhysicalIrrigationPlan {
+    private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("dd/MM/uuuu")
+            .withResolverStyle(ResolverStyle.STRICT);
+    private final Map<LocalDate, Map<String, WaterAllocation>> allocations;
+    private final Map<String, Double> areaHaByPlot;
+    private final double initialM3;
+    private final double remainingM3;
+
+    private PhysicalIrrigationPlan(Map<LocalDate, Map<String, WaterAllocation>> allocations,
+                                   Map<String, Double> areaHaByPlot, double initialM3, double remainingM3) {
+        this.allocations = Map.copyOf(allocations);
+        this.areaHaByPlot = Map.copyOf(areaHaByPlot);
+        this.initialM3 = initialM3;
+        this.remainingM3 = remainingM3;
+    }
+
+    public static boolean enabled() {
+        String file = System.getProperty("wps.water.requests");
+        return file != null && !file.isBlank();
+    }
+
+    /** Returns null unless the research mode was explicitly configured. */
+    public static PhysicalIrrigationPlan active() {
+        return Holder.INSTANCE;
+    }
+
+    private static final class Holder {
+        private static final PhysicalIrrigationPlan INSTANCE = configured();
+    }
+
+    private static PhysicalIrrigationPlan configured() {
+        if (!enabled()) {
+            return null;
+        }
+        String stock = System.getProperty("wps.water.sourceM3");
+        String selectedRule = System.getProperty("wps.water.rule");
+        if (stock == null || selectedRule == null) {
+            throw new IllegalArgumentException("Research irrigation requires wps.water.sourceM3 and wps.water.rule");
+        }
+        try {
+            return load(Path.of(System.getProperty("wps.water.requests")), Double.parseDouble(stock),
+                    AllocationRule.valueOf(selectedRule));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("Cannot read research irrigation requests", e);
+        }
+    }
+
+    /** CSV columns: date,plot_id,area_ha,net_demand_mm,delivery_efficiency. */
+    public static PhysicalIrrigationPlan load(Path file, double sourceM3, AllocationRule rule) throws IOException {
+        WaterUnits.requireNonNegativeFinite(sourceM3, "sourceM3");
+        if (file == null || rule == null) {
+            throw new IllegalArgumentException("file and rule are required");
+        }
+        List<String> lines = Files.readAllLines(file);
+        if (lines.isEmpty() || !lines.get(0).replace("\uFEFF", "").equals(
+                "date,plot_id,area_ha,net_demand_mm,delivery_efficiency")) {
+            throw new IllegalArgumentException("Unexpected irrigation request CSV header");
+        }
+        Map<LocalDate, List<WaterRequest>> rounds = new TreeMap<>();
+        Map<String, Double> areas = new HashMap<>();
+        for (int lineNumber = 1; lineNumber < lines.size(); lineNumber++) {
+            String line = lines.get(lineNumber);
+            if (line.isBlank()) {
+                continue;
+            }
+            String[] columns = line.split(",", -1);
+            if (columns.length != 5) {
+                throw new IllegalArgumentException("Expected five columns at line " + (lineNumber + 1));
+            }
+            try {
+                LocalDate date = LocalDate.parse(columns[0].trim(), DATE);
+                WaterRequest request = new WaterRequest(columns[1].trim(),
+                        Double.parseDouble(columns[2].trim()), Double.parseDouble(columns[3].trim()),
+                        Double.parseDouble(columns[4].trim()));
+                Double previousArea = areas.putIfAbsent(request.plotId(), request.areaHa());
+                if (previousArea != null && Double.compare(previousArea, request.areaHa()) != 0) {
+                    throw new IllegalArgumentException("Plot area changes across rounds: " + request.plotId());
+                }
+                rounds.computeIfAbsent(date, ignored -> new ArrayList<>()).add(request);
+            } catch (RuntimeException e) {
+                throw new IllegalArgumentException("Invalid irrigation request at line " + (lineNumber + 1), e);
+            }
+        }
+        SharedWaterSource source = new SharedWaterSource(sourceM3);
+        Map<LocalDate, Map<String, WaterAllocation>> allocated = new HashMap<>();
+        for (Map.Entry<LocalDate, List<WaterRequest>> round : rounds.entrySet()) {
+            Map<String, WaterAllocation> plots = new HashMap<>();
+            for (WaterAllocation allocation : source.allocateRound(round.getValue(), rule)) {
+                plots.put(allocation.plotId(), allocation);
+            }
+            allocated.put(round.getKey(), Map.copyOf(plots));
+        }
+        return new PhysicalIrrigationPlan(allocated, areas, sourceM3, source.remainingM3());
+    }
+
+    public double netMm(String date, String plotId) {
+        LocalDate day = LocalDate.parse(date, DATE);
+        WaterAllocation allocation = allocations.getOrDefault(day, Map.of()).get(plotId);
+        return allocation == null ? 0.0 : allocation.netMm();
+    }
+
+    public void verifyPlotArea(String plotId, double actualAreaHa) {
+        Double planned = areaHaByPlot.get(plotId);
+        if (planned == null) {
+            throw new IllegalArgumentException("Rice plot is absent from irrigation plan: " + plotId);
+        }
+        if (Math.abs(planned - actualAreaHa) > 1e-9) {
+            throw new IllegalArgumentException("Plot area disagrees with irrigation plan: " + plotId);
+        }
+    }
+
+    public double initialM3() {
+        return initialM3;
+    }
+
+    public double remainingM3() {
+        return remainingM3;
+    }
+
+    public int plannedPlotCount() {
+        return areaHaByPlot.size();
+    }
+}

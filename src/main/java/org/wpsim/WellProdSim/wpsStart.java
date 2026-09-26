@@ -29,6 +29,7 @@ import org.wpsim.SimulationControl.Util.SimulationParams;
 import org.wpsim.ViewerLens.Agent.ViewerLens;
 import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.WellProdSim.Config.wpsConfig;
+import org.wpsim.research.water.PhysicalIrrigationPlan;
 
 import java.util.Enumeration;
 
@@ -66,6 +67,12 @@ public class wpsStart {
         config.setPerturbation(perturbation);
         System.out.println("PERTURBATION: " + perturbation);
         System.out.println("LEGACY: " + org.wpsim.WellProdSim.Util.Legacy.describe());
+        PhysicalIrrigationPlan irrigationPlan = PhysicalIrrigationPlan.active();
+        if (irrigationPlan != null) {
+            System.out.println("PHYSICAL_WATER: plots=" + irrigationPlan.plannedPlotCount()
+                    + " source_m3=" + irrigationPlan.initialM3()
+                    + " allocated_m3=" + (irrigationPlan.initialM3() - irrigationPlan.remainingM3()));
+        }
         if (params.startYear > 0) {
             config.setStartSimulationDate("01/01/" + params.startYear);
         }

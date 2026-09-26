@@ -6,6 +6,8 @@
 
 Use one rice season and the **same** eligible plots, weather sequence, water budget, uncertain-parameter vector and random seed for all allocation rules. Compare `PROPORTIONAL_DEMAND`, `EQUAL_PER_HECTARE`, and `SMALL_PLOT_FLOOR`. The full-water run is a reference for each plot, not a competing allocation policy.
 
+In the opt-in simulator path, construct the complete daily request CSV **before** comparing rules. The request schedule is exogenous and must be held fixed across rules; it is not inferred from asynchronous irrigation messages. Verify that every scheduled unique land/world alias corresponds to one planted rice world and that area matches. Report planned gross withdrawals, delivered net depth and any unserved or absent plots before production comparisons. No such integrated scenario has yet been run.
+
 Before running, register two contrasting weather sequences using the acquired NASA POWER data as a **gridded proxy**, not station observations. Select three source-budget/demand ratios including an unconstrained diagnostic and at least two scarce levels. Define plausible `Ky`, potential yield, delivery efficiency and area-composition ranges from sources or transparent assumptions. Do not select ranges after viewing rule rankings. Ten paired seeds are an initial precision check, not a guarantee of adequate Monte Carlo precision; increase them if contrasts remain noisy.
 
 ## Per-plot output contract

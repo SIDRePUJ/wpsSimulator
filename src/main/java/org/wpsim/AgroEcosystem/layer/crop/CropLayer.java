@@ -18,6 +18,7 @@ import org.wpsim.AgroEcosystem.layer.rainfall.RainfallLayer;
 import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationLayer;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureCellState;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureLayer;
+import org.wpsim.research.water.PhysicalIrrigationPlan;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +37,25 @@ public class CropLayer extends GenericWorldLayer {
     //private static final Logger logger = LogManager.getLogger(CropLayer.class);
     private HashMap<String, CropCell> cropCellMap = new HashMap<>();
     private WorldConfiguration config = WorldConfiguration.getPropsInstance();
+    private PhysicalIrrigationPlan physicalPlan;
+    private String physicalPlotId;
+
+    public void enablePhysicalIrrigation(String plotId) {
+        if (plotId == null || plotId.isBlank()) {
+            throw new IllegalArgumentException("Unique plot ID is required for physical irrigation");
+        }
+        if (!Boolean.parseBoolean(config.getProperty("waterStress.enabled"))) {
+            throw new IllegalStateException("Physical irrigation requires waterStress.enabled=true");
+        }
+        physicalPlan = PhysicalIrrigationPlan.active();
+        if (physicalPlan == null) {
+            throw new IllegalStateException("Physical irrigation plan is not configured");
+        }
+        physicalPlotId = plotId;
+        for (CropCell crop : cropCellMap.values()) {
+            physicalPlan.verifyPlotArea(plotId, crop.getCropArea());
+        }
+    }
 
     @Override
     public void setupLayer() {
@@ -59,6 +79,9 @@ public class CropLayer extends GenericWorldLayer {
             double diseaseDamageCropFactor = Double.parseDouble(this.config.getProperty("disease.damagesCrop"));
             // First event in the simulation, firs state calculation
             if (currentState == null) {
+                if (physicalPlan != null && physicalPlan.netMm(paramsLayer.getDate(), physicalPlotId) > 0.0) {
+                    throw new IllegalStateException("Irrigation on crop initialization date is not supported: " + physicalPlotId);
+                }
                 CropCellState newCellState = new CropCellState();
                 double evapotranspiration = currentCell.getCropFactor_ini() * (evapotranspirationLayer.getCell().getCellStateByDate(paramsLayer.getDate())).getEvapotranspirationReference();
                 newCellState.setEvapotranspiration(evapotranspiration);
@@ -112,6 +135,9 @@ public class CropLayer extends GenericWorldLayer {
                     } else {
                         //------------------------------------ alert peasant crop is ready to collect ---------------------------------------------------
                         if (newCellState.getGrowingDegreeDays() > currentCell.getDegreeDays_end()) {
+                            if (physicalPlan != null && physicalPlan.netMm(newDate, physicalPlotId) > 0.0) {
+                                throw new IllegalStateException("Irrigation after harvest is not supported: " + physicalPlotId);
+                            }
                             currentCell.setCellState(newDate, previousState);
                             currentCell.setHarvestReady(true);
                         } else {
@@ -148,6 +174,13 @@ public class CropLayer extends GenericWorldLayer {
         boolean isEnabledWaterStress = Boolean.parseBoolean(this.config.getProperty("waterStress.enabled"));
         double depletionFractionAdjusted = this.calculateDepletionFractionAdjusted(currentCell.getDepletionFraction(), cropEvapotranspirationStandard);
         newCellState.setDepletionFractionAdjusted(depletionFractionAdjusted);
+
+        if (physicalPlan != null) {
+            double netMm = physicalPlan.netMm(newDate, physicalPlotId);
+            if (netMm > 0.0) {
+                addIrrigationEventToCrop(currentCell.getId(), netMm, newDate);
+            }
+        }
 
         double cropEvapotranspirationAndWaterStress = isEnabledWaterStress ? this.calculateWaterStressEvapotranspiration(previousState, newCellState, currentCell, depletionFractionAdjusted, rainfallForDate, cropEvapotranspirationStandard) : cropEvapotranspirationStandard;
         if (currentCell.getDiseaseCell().getCellStateByDate(newDate).isInfected()) {
@@ -254,6 +287,21 @@ public class CropLayer extends GenericWorldLayer {
         });
         //CropCell cropCell = this.cropCellMap.get(cropId);
         //cropCell.addCellAction(cropCellAction);
+    }
+
+    /** Apply a net water depth only to the selected crop cell. */
+    public void addIrrigationEventToCrop(String cropId, double netMm, String date) {
+        if (!Double.isFinite(netMm) || netMm < 0.0) {
+            throw new IllegalArgumentException("netMm must be finite and non-negative");
+        }
+        CropCell crop = cropCellMap.get(cropId);
+        if (crop == null) {
+            throw new IllegalArgumentException("Unknown crop ID: " + cropId);
+        }
+        if (netMm > 0.0) {
+            crop.addCellAction(new CropCellAction(CropCellActionType.IRRIGATION,
+                    Double.toString(netMm), date));
+        }
     }
 
     /**
