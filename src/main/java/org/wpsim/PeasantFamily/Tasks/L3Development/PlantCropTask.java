@@ -190,6 +190,12 @@ public class PlantCropTask extends wpsLandTask {
                 peasantAlias,
                 believes.getInternalCurrentDate()
         );
+        if (Boolean.getBoolean("wps.water.discoverPlots")) {
+            System.out.println("WATER_PLANT: plot_id=" + currentLandInfo.getLandName()
+                    + " family_alias=" + peasantAlias
+                    + " planting_date=" + believes.getInternalCurrentDate()
+                    + " area_ha=" + cropSize);
+        }
         landAgent.start();
         return !checkLand(currentLandInfo, peasantAlias).isBlank();
     }
