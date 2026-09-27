@@ -45,3 +45,20 @@ The corrected research path keeps all four plot aliases in the water-registratio
 | Retrieval integrity | Water audit SHA-256 `ac4cfe9fc4f4e6b9a7d92575869f5ff75c71f33188954cc938238a14b28374e6`; yield CSV SHA-256 `70318c242cdc93bfc082633be5a7fe4a9b291202e5d93fdba6d5dd18e2b38253`, both matching server copies |
 
 Full logs and CSV are under project-level `results/water-allocation-server-20260927/yield-may-679fbc5-seed12345/`. The two eligible plots are equal-area synthetic fixtures; their conditional t/ha values verify the wiring only. They do **not** estimate historical rice production, validate `Ym` or `Ky`, or provide an equity–efficiency comparison. Stderr still contains viewer/agent-alias logging warnings despite exit 0; the three explicit research audits pass. The next gate remains a reproducible heterogeneous one-season population and paired-rule comparison.
+
+## Heterogeneous three-family pilot and reproducibility gate (commit `d36f56e`)
+
+The synthetic `pilot_three_family_manifest.csv` pins three families to farms and specifies 1, 4 and 8 ha **per planted crop world**. Two independent full-year discovery runs (seed `12345`, 2022, three families, world 20, `-perturbation none`) exited 0 and had the same sorted `WATER_PLOT`/`WATER_PLANT` SHA-256: `bf9a8e8390fe9fa664e2840a3648a93ede043aba83cac417fabbd586dfc10774`. Six first-season rice plots were planted on 1 February or 13 April; the eligible family areas are 2, 8 and 16 ha. Six second-season versions were registered for reconciliation only.
+
+`pilot_three_family_requests_may.csv` is an **invented technical fixture**, not observed farm demand: on 1 May the first-season plots request 20, 30 or 40 net mm by area class, with delivery efficiency 1. The six positive requests total 9,200 gross m3; the shared source holds 4,600 m3 (scarcity ratio 0.5). The six second-season rows have zero demand. All three allocation rules used the same fixture, manifest, seed, `Ym=6 t/ha` and `Ky=1.1`. These yield parameters are uncalibrated fixture values.
+
+| Rule/run | Exit | Farm audit | Water audit | Eligible yield audit | Gross withdrawal |
+| --- | ---: | --- | --- | --- | ---: |
+| Proportional | 0 | 3/3 | 12/12, six deliveries | 6/6 | 4,600 m3 |
+| Equal per hectare | 0 | 3/3 | 12/12, six deliveries | 6/6 | 4,600 m3 |
+| Small-plot floor | 0 | 3/3 | 12/12, six deliveries | 6/6 | 4,600 m3 |
+| Exact proportional repeat | 0 | 3/3 | 12/12, six deliveries | 6/6 | 4,600 m3 |
+
+The water audits show distinct allocations and conserve the source. The proportional run and its exact repeat have **identical water-audit bytes** (SHA-256 `2bfc32f4527aa0d2a65152aef73eaf2ea454f2eb6eea072a9ee064b89b6d6b33`) but **different yield ledgers** (SHA-256 `4613ed47694424cf667b029bcf33040ef10a6b1348d2536f87adcabf70a199a9` versus `6779272ebaa44bab7ba59a587980db2c0becf177e0aa7448f389d06ec8aae8fe`). For example, the same `land_9_2` plot produced 35.895 versus 27.359 t under the same proportional rule and applied water. The code's shared `SimRandom` explicitly notes that threaded agents are not bitwise reproducible with a fixed seed; climate layers consume that shared RNG. This is a plausible mechanism, **not a proven complete root cause**.
+
+Therefore the three-rule **water allocation wiring** passes its technical audit, but the apparent tonnes or inequality contrasts are **not interpretable as policy effects**. They must not enter the paper's results table. The next gate is to make exogenous daily weather and other yield-relevant randomness stable by plot/scenario, then repeat the within-rule and cross-rule checks before UPA aggregation or sensitivity analysis. Server runs and retrieved outputs are isolated under `results/water-allocation-server-20260927/pilot-three-family-*-d36f56e/`; no raw CNA data were transferred.
