@@ -78,3 +78,20 @@ An opt-in `climate.csv` now records the rainfall, reference ET, temperature and 
 Six full-year runs at commit `3a80efa` exited 0: proportional twice each at seeds `12345` and `24680`, plus equal-per-hectare and small-floor at seed `12345`. Every run passed farm 3/3, water 12/12, yield 6/6 and climate 6/6 audits; each climate file has **726 unique plot/date rows**, no missing plots, gaps or duplicates. Both exact repeats at a given seed had byte-identical water, climate and yield CSVs. At seed `12345`, all three allocation rules shared the same climate CSV SHA-256 `c02207b19fddbbbe645a517f2a2ffb57ad5cdfde8e559df750e90af2b86da1c6` while their water audits differed as expected. At seed `24680`, the two proportional repeats shared climate SHA-256 `6ac2a40aea7ec25a6b929aac0823154df442ef4da7d7db25792bc056a967ce07` and yield SHA-256 `17b1aa0a553808cce3578fa33ea4a806fcca843ed095d72ef4f98def85cf6186`. Independent local parsing confirmed the same six plot IDs, owners, areas and planting dates in all six runs; the two seeds produced distinct climate files.
 
 This closes the **technical common-forcing/repeatability gate for the tested population and two seeds**, not a statistical convergence study. The one-event synthetic budget and uncalibrated yield parameters still do not support a publishable drought-policy ranking. Retrieved files are under the project-level `results/water-allocation-server-20260927/forcing-3a80efa-*/` directories; no raw CNA records were transferred.
+
+## Preselected rainfall-proxy matrix (commit `33e582f`)
+
+The public NASA POWER 2014 lower-tail and 2019 near-median daily rainfall sequences were mapped to the same 2022 calendar **before** viewing rule outcomes. A new isolated compiled build and only the two derived rainfall CSVs were transferred; raw CNA data were not transferred. Six full-year runs used the same three synthetic families, 1 May request schedule, 4,600-m3 shared source, seed `12345`, `Ym=6 t/ha`, `Ky=1.1` and `-perturbation none`.
+
+| Rainfall proxy | Rule | Modeled production (t) | Climate SHA-256 prefix |
+| --- | --- | ---: | --- |
+| 2014 | Proportional demand | 36.279998 | `728bfd68d86014ee` |
+| 2014 | Equal per hectare | 36.279540 | `728bfd68d86014ee` |
+| 2014 | Small-plot floor | 36.279818 | `728bfd68d86014ee` |
+| 2019 | Proportional demand | 97.659074 | `492cbd2145916322` |
+| 2019 | Equal per hectare | 97.670653 | `492cbd2145916322` |
+| 2019 | Small-plot floor | 97.663720 | `492cbd2145916322` |
+
+All six processes exited 0 and reported farm 3/3, water registration 12/12, six applied deliveries, eligible harvests 6/6 and daily-climate plots 6/6 (726 rows, zero gaps/duplicates). Each rule withdrew exactly 4,600 gross m3. Independent local parsing confirmed identical plot IDs, owners, areas, planting/harvest dates and full-tonne references within each rainfall case. The three rules' climate CSVs are byte-identical within each case, while water-audit files differ by rule. For the two proportional runs, all 726 recorded rainfall values matched their respective derived daily fixture, and non-rainfall climate variables matched across common plot/date rows. Retrieved logs and CSVs are under project-level `results/water-allocation-server-20260927/power-rain-33e582f-*/`.
+
+**Interpretation:** rainfall forcing changes modeled production markedly in this synthetic setup, but the policy-production differences are only −0.00046/−0.00018 t for equal/floor versus proportional in 2014 and +0.01158/+0.00465 t in 2019. That scale and sign change show why this one-day demand fixture cannot support a rule ranking. POWER precipitation is a gridded proxy, non-rainfall weather is simulated, and the source budget, crop response and three-family composition are uncalibrated. No historical district drought or allocation effect has been validated.
