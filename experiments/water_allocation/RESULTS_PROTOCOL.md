@@ -1,12 +1,12 @@
 # Physical allocation experiment protocol
 
-**Status:** analysis interface and synthetic tests are ready; no integrated WellProdSim scenario has been run. The calculations below cannot turn an uncalibrated source budget into historical evidence.
+**Status:** analysis interface and synthetic tests are ready. Integrated technical smoke runs have executed, but all physical one-year runs so far failed the research audit because eligible crop-world identities did not match the request file. There is no valid policy comparison. The calculations below cannot turn an uncalibrated source budget into historical evidence.
 
 ## Minimum comparison
 
 Use one rice season and the **same** eligible plots, weather sequence, water budget, uncertain-parameter vector and random seed for all allocation rules. Compare `PROPORTIONAL_DEMAND`, `EQUAL_PER_HECTARE`, and `SMALL_PLOT_FLOOR`. The full-water run is a reference for each plot, not a competing allocation policy.
 
-In the opt-in simulator path, construct the complete daily request CSV **before** comparing rules. The request schedule is exogenous and must be held fixed across rules; it is not inferred from asynchronous irrigation messages. Verify that every scheduled unique land/world alias corresponds to one planted rice world and that area matches. Report planned gross withdrawals, delivered net depth and any unserved or absent plots before production comparisons. No such integrated scenario has yet been run.
+In the opt-in simulator path, pin each research household to a farm with a shared manifest, then construct the complete daily request CSV **before** comparing rules. The request schedule is exogenous and must be held fixed across rules; it is not inferred from asynchronous irrigation messages. Verify that every scheduled unique land/world alias corresponds to one planted rice world and that area matches. Require exit 0, `PHYSICAL_FARM_AUDIT.valid`, and `PHYSICAL_WATER_AUDIT.valid` for every paired run. Report planned gross withdrawals, delivered net depth and any unserved or absent plots before production comparisons. Repeated discovery with the manifest must confirm that plot identities remain stable; the manifest alone is not proof.
 
 Before running, register two contrasting weather sequences using the acquired NASA POWER data as a **gridded proxy**, not station observations. Select three source-budget/demand ratios including an unconstrained diagnostic and at least two scarce levels. Define plausible `Ky`, potential yield, delivery efficiency and area-composition ranges from sources or transparent assumptions. Do not select ranges after viewing rule rankings. Ten paired seeds are an initial precision check, not a guarantee of adequate Monte Carlo precision; increase them if contrasts remain noisy.
 

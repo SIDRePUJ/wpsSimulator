@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.WellProdSim.wpsStart;
+import org.wpsim.research.water.FarmAssignmentPlan;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -191,8 +192,14 @@ public class CivicAuthorityState extends StateBESA implements Serializable {
             return null;
         }
 
-        Random rand = org.wpsim.WellProdSim.Util.SimRandom.get();
-        String selectedFarm = availableFarms.get(rand.nextInt(availableFarms.size()));
+        FarmAssignmentPlan researchAssignments = FarmAssignmentPlan.active();
+        String selectedFarm;
+        if (researchAssignments == null) {
+            Random rand = org.wpsim.WellProdSim.Util.SimRandom.get();
+            selectedFarm = availableFarms.get(rand.nextInt(availableFarms.size()));
+        } else {
+            selectedFarm = researchAssignments.selectFarm(familyName, availableFarms);
+        }
 
         List<String> landsOfSelectedFarm = farms.get(selectedFarm);
         Map<String, String> landsWithKind = new HashMap<>();

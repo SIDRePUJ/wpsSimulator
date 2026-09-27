@@ -30,6 +30,7 @@ import org.wpsim.ViewerLens.Agent.ViewerLens;
 import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.research.water.PhysicalIrrigationPlan;
+import org.wpsim.research.water.FarmAssignmentPlan;
 
 import java.util.Enumeration;
 import java.nio.file.Path;
@@ -73,6 +74,9 @@ public class wpsStart {
         if (irrigationPlan != null) {
             if (System.getProperty("wps.water.auditCsv", "").isBlank()) {
                 throw new IllegalArgumentException("Research irrigation requires wps.water.auditCsv");
+            }
+            if (FarmAssignmentPlan.active() == null) {
+                throw new IllegalArgumentException("Research irrigation requires wps.water.farmAssignments");
             }
             System.out.println("PHYSICAL_WATER: plots=" + irrigationPlan.plannedPlotCount()
                     + " source_m3=" + irrigationPlan.initialM3()
@@ -337,6 +341,11 @@ public class wpsStart {
                 }
             } catch (IOException | RuntimeException e) {
                 System.err.println("PHYSICAL_WATER_AUDIT_FAILED: " + e.getMessage());
+                exitCode = 2;
+            }
+            FarmAssignmentPlan.Status farmStatus = FarmAssignmentPlan.active().status();
+            System.out.println("PHYSICAL_FARM_AUDIT: " + farmStatus);
+            if (!farmStatus.valid()) {
                 exitCode = 2;
             }
         }
