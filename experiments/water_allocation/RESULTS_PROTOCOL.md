@@ -10,6 +10,8 @@ In the opt-in simulator path, pin each research household to a farm with a share
 
 Before running, register two contrasting weather sequences using the acquired NASA POWER data as a **gridded proxy**, not station observations. Select three source-budget/demand ratios including an unconstrained diagnostic and at least two scarce levels. Define plausible `Ky`, potential yield, delivery efficiency and area-composition ranges from sources or transparent assumptions. Do not select ranges after viewing rule rankings. Ten paired seeds are an initial precision check, not a guarantee of adequate Monte Carlo precision; increase them if contrasts remain noisy.
 
+For the minimum heterogeneous population, use the identifier-free CNA rice-area [aggregate](data/derived/rice_area_distribution.json) as a **composition constraint**: the district-source positive-area subset has 13, 17 and 9 UPA in (0,5], (5,10] and >10 harvested-ha classes. If computational limits require a smaller population, preserve approximate class proportions and state the integer rounding, rather than calling it a representative sample. Because the 39 UPA are a selected subset and harvested area is not physical farm geometry, treat the resulting plots as synthetic scenario analogues. Never export source UPA identifiers or transfer raw CNA data to the server.
+
 ## Per-plot output contract
 
 The integrated simulator must export one row per plot/rule/weather/scarcity/seed/parameter set:

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "file": "dane_cna2014_bolivar_csv.zip",
+    "sha256": "de646ba96b08a819bc5b4d06b5d23c991231231688dad4ff4fe267531c50d608",
+    "municipality_code": "13442",
+    "crop_code": "00113202001",
+    "area_field": "AREA_COSECHADA",
+    "district_source_field": "P_S11P124_SP10"
+  },
+  "selection": "Rice crop rows in municipality with positive finite harvested area; aggregate by CNA UPA composite key. District-source means self-report of one water source, not verified district membership.",
+  "counts": {
+    "rice_crop_rows": 295,
+    "rice_rows_reporting_district_source": 109,
+    "positive_area_rice_rows": 49,
+    "positive_area_rice_rows_reporting_district_source": 39,
+    "unmatched_rice_rows": 0
+  },
+  "all_positive_area_rice_upa": {
+    "upa_count": 49,
+    "positive_harvested_area_ha": 355.556003,
+    "upa_count_by_harvested_area_ha": {
+      "(0,5]": 19,
+      "(5,10]": 19,
+      "(10,+inf)": 11
+    }
+  },
+  "positive_area_rice_upa_reporting_district_source": {
+    "upa_count": 39,
+    "positive_harvested_area_ha": 293.184352,
+    "upa_count_by_harvested_area_ha": {
+      "(0,5]": 13,
+      "(5,10]": 17,
+      "(10,+inf)": 9
+    }
+  },
+  "limitations": "Harvested area is not owned area, physical plot geometry or water entitlement. Zero-area records are excluded, not imputed. The district-source subsample is selected and small. No UPA identifiers or record-level rows are exported."
+}

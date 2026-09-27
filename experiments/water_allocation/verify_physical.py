@@ -27,6 +27,8 @@ def main():
             run(["java", "-ea", "-cp", output, f"org.wpsim.research.water.{test}"])
     run([sys.executable, "-m", "unittest", "discover", "-s",
          str(Path(__file__).resolve().parent), "-p", "test_analyze_physical_results.py", "-v"])
+    run([sys.executable, "-m", "unittest", "discover", "-s",
+         str(Path(__file__).resolve().parent), "-p", "test_derive_rice_area.py", "-v"])
     print("Physical research checks PASS; full WellProdSim integration not checked")
 
 
