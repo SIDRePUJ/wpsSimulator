@@ -22,6 +22,7 @@ import org.wpsim.CivicAuthority.Agent.CivicAuthority;
 import org.wpsim.CommunityDynamics.Agent.CommunityDynamics;
 import org.wpsim.MarketPlace.Agent.MarketPlace;
 import org.wpsim.PeasantFamily.Agent.PeasantFamily;
+import org.wpsim.PeasantFamily.Data.PeasantFamilyProfile;
 import org.wpsim.PerturbationGenerator.Agent.PerturbationGenerator;
 import org.wpsim.SimulationControl.Agent.SimulationControl;
 import org.wpsim.SimulationControl.Util.ControlCurrentDate;
@@ -285,10 +286,16 @@ public class wpsStart {
         //wpsReport.info("Creando agentes, desde " + min + ", hasta " + max, AdmBESA.getInstance().getConfigBESA().getAliasContainer());
         try {
             for (int i = min; i <= max; i++) {
-                PeasantFamily peasantFamily = new PeasantFamily(
-                        config.getUniqueFarmerName(),
-                        config.getFarmerProfile()
-                );
+                String familyAlias = config.getUniqueFarmerName();
+                PeasantFamilyProfile profile = config.getFarmerProfile();
+                FarmAssignmentPlan farmPlan = FarmAssignmentPlan.active();
+                if (farmPlan != null) {
+                    Integer cropAreaHaPerPlot = farmPlan.cropAreaHaPerPlot(familyAlias);
+                    if (cropAreaHaPerPlot != null) {
+                        profile.setCropSize(cropAreaHaPerPlot);
+                    }
+                }
+                PeasantFamily peasantFamily = new PeasantFamily(familyAlias, profile);
                 CREATED_AGENTS++;
                 peasantFamily.start();
             }

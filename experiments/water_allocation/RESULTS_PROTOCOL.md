@@ -29,6 +29,8 @@ Run `python analyze_physical_results.py path/to/results.csv --output path/to/sum
 
 The opt-in physical harvest ledger produces an **intermediate** CSV keyed by the unique plot ID. Before analysis, join it to the same run's water audit and add explicit weather, rule, seed, parameter-set and scarcity-ratio metadata; reject duplicate/missing plot joins. Do not enter any run with `NOT_HARVESTED`, a nonzero exit, or a failed farm/water/yield audit in the paired table. `Ym` and `Ky` are scenario parameters until calibrated or sensitivity-bounded, not estimates inferred from the legacy biomass output.
 
+The harvest ledger now carries `family_alias`; aggregate eligible plot areas and production by this alias **before** computing any UPA inequality. The current analyzer still operates at plot level, so its inequality output is not yet a UPA-level result. A subsequent aggregation/paired-cohort check is required before paper claims. An optional farm-manifest `crop_area_ha_per_plot` sets an integer scenario area for each planted world; it does not directly specify a UPA's harvested area. Use CNA's three observed area classes only as composition constraints, and audit the simulated sum of eligible areas per family against the intended class.
+
 The yield cohort is the set of plots with at least one positive scheduled net irrigation demand. Zero-demand registration rows do not enter the production inequality denominator, although their plot identities still must reconcile in the water audit. Report the eligible cohort count and verify each fixed request date is after the recorded planting date and before harvest; a stable alias alone does not establish temporal eligibility.
 
 ## Evidence and publication gates

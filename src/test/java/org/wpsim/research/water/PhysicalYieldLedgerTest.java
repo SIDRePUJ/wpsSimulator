@@ -9,18 +9,19 @@ import java.util.Map;
 public final class PhysicalYieldLedgerTest {
     public static void main(String[] args) throws IOException {
         PhysicalYieldLedger ledger = new PhysicalYieldLedger(Map.of("small", 2.0, "large", 8.0), 6.0, 1.0);
-        ledger.recordHarvest("small", 2.0, "01/01/2020", "10/04/2020", 80.0, 100.0);
+        ledger.recordHarvest("small", "family-1", 2.0, "01/01/2020", "10/04/2020", 80.0, 100.0);
         close(9.6, RiceYieldResponse.estimate(6.0, 80.0, 100.0, 1.0, 2.0).tonnes());
-        expectFailure(() -> ledger.recordHarvest("unknown", 2.0, "01/01/2020", "10/04/2020", 80.0, 100.0));
-        expectFailure(() -> ledger.recordHarvest("large", 7.0, "01/01/2020", "10/04/2020", 80.0, 100.0));
-        expectStateFailure(() -> ledger.recordHarvest("small", 2.0, "01/01/2020", "10/04/2020", 80.0, 100.0));
+        expectFailure(() -> ledger.recordHarvest("unknown", "family-1", 2.0, "01/01/2020", "10/04/2020", 80.0, 100.0));
+        expectFailure(() -> ledger.recordHarvest("large", "family-2", 7.0, "01/01/2020", "10/04/2020", 80.0, 100.0));
+        expectFailure(() -> ledger.recordHarvest("large", "", 8.0, "01/01/2020", "10/04/2020", 80.0, 100.0));
+        expectStateFailure(() -> ledger.recordHarvest("small", "family-1", 2.0, "01/01/2020", "10/04/2020", 80.0, 100.0));
 
         Path output = Files.createTempFile("physical-yield-", ".csv");
         Files.delete(output);
         try {
             PhysicalYieldLedger.Summary incomplete = ledger.writeCsv(output);
             if (incomplete.valid() || incomplete.missingHarvests() != 1 ||
-                    !Files.readString(output).contains("large,8.0,,,,,,,,NOT_HARVESTED")) {
+                    !Files.readString(output).contains("large,8.0,,,,,,,,,NOT_HARVESTED")) {
                 throw new AssertionError("missing harvest was not audited");
             }
             expectIoFailure(() -> ledger.writeCsv(output));
@@ -28,7 +29,7 @@ public final class PhysicalYieldLedgerTest {
             Files.deleteIfExists(output);
         }
 
-        ledger.recordHarvest("large", 8.0, "01/02/2020", "11/04/2020", 100.0, 100.0);
+        ledger.recordHarvest("large", "family-2", 8.0, "01/02/2020", "11/04/2020", 100.0, 100.0);
         Path completeOutput = Files.createTempFile("physical-yield-complete-", ".csv");
         Files.delete(completeOutput);
         try {
@@ -36,13 +37,14 @@ public final class PhysicalYieldLedgerTest {
             String csv = Files.readString(completeOutput);
             String small = csv.lines().filter(line -> line.startsWith("small,")).findFirst().orElseThrow();
             String[] values = small.split(",", -1);
-            if (!complete.valid() || complete.harvestedPlots() != 2 || values.length != 10 ||
-                    !"01/01/2020".equals(values[2]) || !"HARVESTED".equals(values[9])) {
+            if (!complete.valid() || complete.harvestedPlots() != 2 || values.length != 11 ||
+                    !"family-1".equals(values[2]) || !"01/01/2020".equals(values[3])
+                    || !"HARVESTED".equals(values[10])) {
                 throw new AssertionError("physical yield output did not reconcile: " + csv);
             }
-            close(4.8, Double.parseDouble(values[6]));
-            close(9.6, Double.parseDouble(values[7]));
-            close(12.0, Double.parseDouble(values[8]));
+            close(4.8, Double.parseDouble(values[7]));
+            close(9.6, Double.parseDouble(values[8]));
+            close(12.0, Double.parseDouble(values[9]));
         } finally {
             Files.deleteIfExists(completeOutput);
         }

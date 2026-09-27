@@ -328,7 +328,7 @@ public class CropLayer extends GenericWorldLayer {
         for (CropCell cropCell : this.cropCellMap.values()) {
             if (yieldLedger != null && yieldLedger.isEligible(physicalPlotId)) {
                 CropCellState state = (CropCellState) cropCell.getCellState();
-                yieldLedger.recordHarvest(physicalPlotId, cropCell.getCropArea(),
+                yieldLedger.recordHarvest(physicalPlotId, cropCell.getAgentPeasantId(), cropCell.getCropArea(),
                         String.valueOf(cropCell.getHistoricalData().firstKey()), cropCell.getDate(),
                         state.getCumulatedEvapotranspiration(),
                         state.getCumulatedPotentialEvapotranspiration());

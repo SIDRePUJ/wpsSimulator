@@ -12,6 +12,9 @@ public final class FarmAssignmentPlanTest {
         try {
             Files.writeString(file, "family_alias,farm_name\nfamily-1,farm-2\nfamily-2,farm-1\n");
             FarmAssignmentPlan plan = FarmAssignmentPlan.load(file);
+            if (plan.cropAreaHaPerPlot("family-1") != null) {
+                throw new AssertionError("two-column legacy fixture changed crop area");
+            }
             if (plan.status().valid() || !"farm-1".equals(plan.selectFarm("family-2", List.of("farm-2", "farm-1")))
                     || !"farm-2".equals(plan.selectFarm("family-1", List.of("farm-2")))
                     || !plan.status().valid()) {
@@ -28,6 +31,18 @@ public final class FarmAssignmentPlanTest {
                 throw new AssertionError("unavailable or unmapped farm did not invalidate the plan");
             }
             Files.writeString(file, "family_alias,farm_name\nfamily-1,farm-1\nfamily-2,farm-1\n");
+            expectFailure(() -> loadUnchecked(file));
+            Files.writeString(file, "family_alias,farm_name,crop_area_ha_per_plot\n"
+                    + "family-1,farm-2,1\nfamily-2,farm-1,8\n");
+            FarmAssignmentPlan heterogeneous = FarmAssignmentPlan.load(file);
+            if (heterogeneous.cropAreaHaPerPlot("family-1") != 1
+                    || heterogeneous.cropAreaHaPerPlot("family-2") != 8
+                    || !"farm-1".equals(heterogeneous.selectFarm("family-2", List.of("farm-1")))) {
+                throw new AssertionError("heterogeneous crop area/farm assignment was not parsed");
+            }
+            Files.writeString(file, "family_alias,farm_name,crop_area_ha_per_plot\nfamily-1,farm-1,0\n");
+            expectFailure(() -> loadUnchecked(file));
+            Files.writeString(file, "family_alias,farm_name,crop_area_ha_per_plot\nfamily-1,farm-1,1.5\n");
             expectFailure(() -> loadUnchecked(file));
         } finally {
             Files.deleteIfExists(file);

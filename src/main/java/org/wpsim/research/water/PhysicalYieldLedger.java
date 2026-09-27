@@ -16,7 +16,8 @@ public final class PhysicalYieldLedger {
     private final double ky;
     private final ConcurrentMap<String, Harvest> harvested = new ConcurrentHashMap<>();
 
-    private record Harvest(String plantingDate, String harvestDate, double actualEtMm, double potentialEtMm,
+    private record Harvest(String familyAlias, String plantingDate, String harvestDate,
+                           double actualEtMm, double potentialEtMm,
                            RiceYieldResponse.RiceOutcome outcome) {
     }
 
@@ -72,18 +73,22 @@ public final class PhysicalYieldLedger {
         return plannedAreas.containsKey(plotId);
     }
 
-    public void recordHarvest(String plotId, double areaHa, String plantingDate, String harvestDate,
+    public void recordHarvest(String plotId, String familyAlias, double areaHa,
+                              String plantingDate, String harvestDate,
                               double actualEtMm, double potentialEtMm) {
         Double plannedArea = plannedAreas.get(plotId);
         if (plannedArea == null || Math.abs(plannedArea - areaHa) > 1e-9) {
             throw new IllegalArgumentException("Harvest plot or area differs from plan: " + plotId);
+        }
+        if (familyAlias == null || familyAlias.isBlank() || familyAlias.contains(",")) {
+            throw new IllegalArgumentException("Harvest requires a valid family alias");
         }
         if (plantingDate == null || plantingDate.isBlank() || harvestDate == null || harvestDate.isBlank()) {
             throw new IllegalArgumentException("Planting and harvest dates are required");
         }
         RiceYieldResponse.RiceOutcome outcome = RiceYieldResponse.estimate(
                 potentialYieldTpha, actualEtMm, potentialEtMm, ky, areaHa);
-        if (harvested.putIfAbsent(plotId, new Harvest(plantingDate, harvestDate,
+        if (harvested.putIfAbsent(plotId, new Harvest(familyAlias, plantingDate, harvestDate,
                 actualEtMm, potentialEtMm, outcome)) != null) {
             throw new IllegalStateException("Duplicate physical harvest: " + plotId);
         }
@@ -95,7 +100,7 @@ public final class PhysicalYieldLedger {
             throw new IllegalArgumentException("Yield output path is required");
         }
         StringBuilder csv = new StringBuilder(
-                "plot_id,area_ha,planting_date,harvest_date,actual_et_mm,potential_et_mm,actual_t_ha,actual_t,full_t,status\n");
+                "plot_id,area_ha,family_alias,planting_date,harvest_date,actual_et_mm,potential_et_mm,actual_t_ha,actual_t,full_t,status\n");
         int missing = 0;
         for (Map.Entry<String, Double> entry : new TreeMap<>(plannedAreas).entrySet()) {
             String plotId = entry.getKey();
@@ -103,10 +108,11 @@ public final class PhysicalYieldLedger {
             Harvest harvest = harvested.get(plotId);
             csv.append(plotId).append(',').append(area).append(',');
             if (harvest == null) {
-                csv.append(",,,,,,,NOT_HARVESTED\n");
+                csv.append(",,,,,,,,NOT_HARVESTED\n");
                 missing++;
             } else {
-                csv.append(harvest.plantingDate()).append(',').append(harvest.harvestDate()).append(',')
+                csv.append(harvest.familyAlias()).append(',').append(harvest.plantingDate()).append(',')
+                        .append(harvest.harvestDate()).append(',')
                         .append(harvest.actualEtMm()).append(',')
                         .append(harvest.potentialEtMm()).append(',')
                         .append(harvest.outcome().tonnesPerHa()).append(',')
