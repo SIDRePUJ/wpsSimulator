@@ -138,6 +138,14 @@ def admit_run(spec, root):
     farm_path = (root / spec["farm_csv"]).resolve()
     rain_path = (root / spec["rain_csv"]).resolve()
     counts = audited_counts(directory)
+    horizon = spec.get("horizon")
+    if horizon is not None:
+        if horizon not in ("ROUND_CHRONOLOGICAL", "SEASONAL_ENTITLEMENT"):
+            raise ValueError(f"invalid allocation horizon: {horizon}")
+        log = (directory / "stdout.txt").read_text(encoding="utf-8", errors="replace")
+        markers = [line for line in log.splitlines() if line.startswith("PHYSICAL_WATER_HORIZON:")]
+        if markers != [f"PHYSICAL_WATER_HORIZON: {horizon}"]:
+            raise ValueError("declared allocation horizon differs from run marker")
     requests = index_requests(request_path)
     families = read_families(farm_path)
     rain = index_rain(rain_path)
@@ -249,7 +257,7 @@ def admit_run(spec, root):
                        "gross_m3": sum(gross for (day, name), gross in water.items() if name == plot)})
     pair = (metadata["weather"], scarcity, metadata["seed"], metadata["parameter_set"])
     fingerprints = (digest(request_path), digest(farm_path), digest(rain_path),
-                    digest(directory / "climate.csv"), source)
+                    digest(directory / "climate.csv"), source, horizon)
     return joined, pair, fingerprints
 
 

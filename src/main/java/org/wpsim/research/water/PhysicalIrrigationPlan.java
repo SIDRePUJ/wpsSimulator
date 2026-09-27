@@ -21,6 +21,11 @@ import java.util.Set;
  * This avoids arrival-order bias from asynchronous farm decisions.
  */
 public final class PhysicalIrrigationPlan {
+    public enum AllocationHorizon {
+        ROUND_CHRONOLOGICAL,
+        SEASONAL_ENTITLEMENT
+    }
+
     private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("dd/MM/uuuu")
             .withResolverStyle(ResolverStyle.STRICT);
     private final Map<LocalDate, Map<String, WaterAllocation>> allocations;
@@ -76,8 +81,12 @@ public final class PhysicalIrrigationPlan {
             throw new IllegalArgumentException("Research irrigation requires wps.water.sourceM3 and wps.water.rule");
         }
         try {
-            return load(Path.of(System.getProperty("wps.water.requests")), Double.parseDouble(stock),
-                    AllocationRule.valueOf(selectedRule));
+            AllocationHorizon horizon = AllocationHorizon.valueOf(
+                    System.getProperty("wps.water.horizon", "ROUND_CHRONOLOGICAL"));
+            PhysicalIrrigationPlan plan = load(Path.of(System.getProperty("wps.water.requests")),
+                    Double.parseDouble(stock), AllocationRule.valueOf(selectedRule), horizon);
+            System.out.println("PHYSICAL_WATER_HORIZON: " + horizon);
+            return plan;
         } catch (IOException e) {
             throw new IllegalArgumentException("Cannot read research irrigation requests", e);
         }
@@ -85,9 +94,14 @@ public final class PhysicalIrrigationPlan {
 
     /** CSV columns: date,plot_id,area_ha,net_demand_mm,delivery_efficiency. */
     public static PhysicalIrrigationPlan load(Path file, double sourceM3, AllocationRule rule) throws IOException {
+        return load(file, sourceM3, rule, AllocationHorizon.ROUND_CHRONOLOGICAL);
+    }
+
+    public static PhysicalIrrigationPlan load(Path file, double sourceM3, AllocationRule rule,
+                                              AllocationHorizon horizon) throws IOException {
         WaterUnits.requireNonNegativeFinite(sourceM3, "sourceM3");
-        if (file == null || rule == null) {
-            throw new IllegalArgumentException("file and rule are required");
+        if (file == null || rule == null || horizon == null) {
+            throw new IllegalArgumentException("file, rule and horizon are required");
         }
         List<String> lines = Files.readAllLines(file);
         if (lines.isEmpty() || !lines.get(0).replace("\uFEFF", "").equals(
@@ -124,6 +138,13 @@ public final class PhysicalIrrigationPlan {
             }
         }
         SharedWaterSource source = new SharedWaterSource(sourceM3);
+        Map<LocalDate, Map<String, WaterAllocation>> allocated = horizon == AllocationHorizon.SEASONAL_ENTITLEMENT
+                ? allocateSeasonally(rounds, source, rule) : allocateChronologically(rounds, source, rule);
+        return new PhysicalIrrigationPlan(allocated, areas, positiveAreas, sourceM3, source.remainingM3());
+    }
+
+    private static Map<LocalDate, Map<String, WaterAllocation>> allocateChronologically(
+            Map<LocalDate, List<WaterRequest>> rounds, SharedWaterSource source, AllocationRule rule) {
         Map<LocalDate, Map<String, WaterAllocation>> allocated = new HashMap<>();
         for (Map.Entry<LocalDate, List<WaterRequest>> round : rounds.entrySet()) {
             Map<String, WaterAllocation> plots = new HashMap<>();
@@ -132,7 +153,56 @@ public final class PhysicalIrrigationPlan {
             }
             allocated.put(round.getKey(), Map.copyOf(plots));
         }
-        return new PhysicalIrrigationPlan(allocated, areas, positiveAreas, sourceM3, source.remainingM3());
+        return allocated;
+    }
+
+    /** Reserve seasonal plot entitlements before spreading them across dated requests. */
+    private static Map<LocalDate, Map<String, WaterAllocation>> allocateSeasonally(
+            Map<LocalDate, List<WaterRequest>> rounds, SharedWaterSource source, AllocationRule rule) {
+        Map<String, Double> areaByPlot = new TreeMap<>();
+        Map<String, Double> efficiencyByPlot = new HashMap<>();
+        Map<String, Double> totalDepthByPlot = new HashMap<>();
+        for (List<WaterRequest> requests : rounds.values()) {
+            Set<String> seenToday = new java.util.HashSet<>();
+            for (WaterRequest request : requests) {
+                if (!seenToday.add(request.plotId())) {
+                    throw new IllegalArgumentException("Duplicate plot request in one day: " + request.plotId());
+                }
+                Double oldArea = areaByPlot.putIfAbsent(request.plotId(), request.areaHa());
+                Double oldEfficiency = efficiencyByPlot.putIfAbsent(request.plotId(), request.deliveryEfficiency());
+                if ((oldArea != null && Double.compare(oldArea, request.areaHa()) != 0)
+                        || (oldEfficiency != null
+                        && Double.compare(oldEfficiency, request.deliveryEfficiency()) != 0)) {
+                    throw new IllegalArgumentException("Seasonal plot area/efficiency changes: " + request.plotId());
+                }
+                totalDepthByPlot.merge(request.plotId(), request.netDemandMm(), Double::sum);
+            }
+        }
+        List<WaterRequest> seasonal = new ArrayList<>();
+        for (Map.Entry<String, Double> entry : areaByPlot.entrySet()) {
+            String plot = entry.getKey();
+            seasonal.add(new WaterRequest(plot, entry.getValue(), totalDepthByPlot.get(plot),
+                    efficiencyByPlot.get(plot)));
+        }
+        Map<String, Double> seasonalGrossByPlot = new HashMap<>();
+        for (WaterAllocation allocation : source.allocateRound(seasonal, rule)) {
+            seasonalGrossByPlot.put(allocation.plotId(), allocation.grossM3());
+        }
+        Map<LocalDate, Map<String, WaterAllocation>> allocated = new HashMap<>();
+        for (Map.Entry<LocalDate, List<WaterRequest>> round : rounds.entrySet()) {
+            Map<String, WaterAllocation> plots = new HashMap<>();
+            for (WaterRequest request : round.getValue()) {
+                double totalGross = new WaterRequest(request.plotId(), request.areaHa(),
+                        totalDepthByPlot.get(request.plotId()), request.deliveryEfficiency()).grossDemandM3();
+                double fraction = totalGross == 0.0 ? 0.0
+                        : seasonalGrossByPlot.get(request.plotId()) / totalGross;
+                double gross = request.grossDemandM3() * fraction;
+                plots.put(request.plotId(), new WaterAllocation(request.plotId(), gross,
+                        request.netDemandMm() * fraction));
+            }
+            allocated.put(round.getKey(), Map.copyOf(plots));
+        }
+        return allocated;
     }
 
     public double netMm(String date, String plotId) {

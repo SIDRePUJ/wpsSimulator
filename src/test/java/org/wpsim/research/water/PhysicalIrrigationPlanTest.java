@@ -7,6 +7,7 @@ import java.nio.file.Path;
 /** Dependency-free complete-round and chronology checks. */
 public final class PhysicalIrrigationPlanTest {
     public static void main(String[] args) throws IOException {
+        testSeasonalEntitlement();
         Path requests = Files.createTempFile("water-requests-", ".csv");
         try {
             Files.writeString(requests, "date,plot_id,area_ha,net_demand_mm,delivery_efficiency\n"
@@ -87,6 +88,56 @@ public final class PhysicalIrrigationPlanTest {
             Files.deleteIfExists(requests);
         }
         System.out.println("PhysicalIrrigationPlanTest PASS");
+    }
+
+    private static void testSeasonalEntitlement() throws IOException {
+        Path requests = Files.createTempFile("seasonal-water-", ".csv");
+        try {
+            Files.writeString(requests, "date,plot_id,area_ha,net_demand_mm,delivery_efficiency\n"
+                    + "01/01/2020,small,1,20,1\n"
+                    + "01/01/2020,large,2,20,1\n"
+                    + "08/01/2020,small,1,20,1\n");
+            PhysicalIrrigationPlan chronological = PhysicalIrrigationPlan.load(
+                    requests, 400, AllocationRule.PROPORTIONAL_DEMAND);
+            close(0, chronological.netMm("08/01/2020", "small"));
+            for (AllocationRule rule : AllocationRule.values()) {
+                PhysicalIrrigationPlan seasonal = PhysicalIrrigationPlan.load(requests, 400, rule,
+                        PhysicalIrrigationPlan.AllocationHorizon.SEASONAL_ENTITLEMENT);
+                if (seasonal.netMm("08/01/2020", "small") <= 0.0) {
+                    throw new AssertionError("seasonal entitlement did not reserve later-date water: " + rule);
+                }
+                close(400, 10 * seasonal.netMm("01/01/2020", "small")
+                        + 20 * seasonal.netMm("01/01/2020", "large")
+                        + 10 * seasonal.netMm("08/01/2020", "small"));
+                close(0, seasonal.remainingM3());
+            }
+            PhysicalIrrigationPlan proportional = PhysicalIrrigationPlan.load(requests, 400,
+                    AllocationRule.PROPORTIONAL_DEMAND,
+                    PhysicalIrrigationPlan.AllocationHorizon.SEASONAL_ENTITLEMENT);
+            close(10, proportional.netMm("01/01/2020", "small"));
+            close(10, proportional.netMm("08/01/2020", "small"));
+            close(10, proportional.netMm("01/01/2020", "large"));
+
+            Files.writeString(requests, "date,plot_id,area_ha,net_demand_mm,delivery_efficiency\n"
+                    + "01/01/2020,small,1,20,1\n"
+                    + "08/01/2020,small,1,20,0.8\n");
+            expectFailure(() -> loadSeasonalUnchecked(requests));
+            Files.writeString(requests, "date,plot_id,area_ha,net_demand_mm,delivery_efficiency\n"
+                    + "01/01/2020,small,1,20,1\n"
+                    + "01/01/2020,small,1,20,1\n");
+            expectFailure(() -> loadSeasonalUnchecked(requests));
+        } finally {
+            Files.deleteIfExists(requests);
+        }
+    }
+
+    private static void loadSeasonalUnchecked(Path file) {
+        try {
+            PhysicalIrrigationPlan.load(file, 400, AllocationRule.PROPORTIONAL_DEMAND,
+                    PhysicalIrrigationPlan.AllocationHorizon.SEASONAL_ENTITLEMENT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void loadUnchecked(Path file, double sourceM3) {

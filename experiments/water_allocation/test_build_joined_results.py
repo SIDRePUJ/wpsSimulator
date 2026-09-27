@@ -133,6 +133,16 @@ class JoinedResultsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "shared-source withdrawal mismatch"):
             build(self.manifest, self.output)
 
+    def test_requires_declared_new_horizon_marker(self):
+        self.spec["horizon"] = "SEASONAL_ENTITLEMENT"
+        self.write_run()
+        with self.assertRaisesRegex(ValueError, "declared allocation horizon differs"):
+            build(self.manifest, self.output)
+        log = self.run / "stdout.txt"
+        log.write_text("PHYSICAL_WATER_HORIZON: SEASONAL_ENTITLEMENT\n"
+                       + log.read_text(encoding="utf-8"), encoding="utf-8")
+        self.assertEqual(1, build(self.manifest, self.output))
+
 
 if __name__ == "__main__":
     unittest.main()
