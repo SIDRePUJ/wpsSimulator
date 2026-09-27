@@ -31,6 +31,7 @@ import org.wpsim.ViewerLens.Agent.ViewerLens;
 import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.research.water.PhysicalIrrigationPlan;
+import org.wpsim.research.water.PhysicalClimateLedger;
 import org.wpsim.research.water.PhysicalYieldLedger;
 import org.wpsim.research.water.FarmAssignmentPlan;
 
@@ -74,6 +75,7 @@ public class wpsStart {
         System.out.println("LEGACY: " + org.wpsim.WellProdSim.Util.Legacy.describe());
         PhysicalIrrigationPlan irrigationPlan = PhysicalIrrigationPlan.active();
         PhysicalYieldLedger yieldLedger = PhysicalYieldLedger.active();
+        PhysicalClimateLedger.active();
         if (yieldLedger != null && !"none".equals(perturbation)) {
             throw new IllegalArgumentException("Physical water-yield response requires -perturbation none");
         }
@@ -371,6 +373,20 @@ public class wpsStart {
                     }
                 } catch (IOException | RuntimeException e) {
                     System.err.println("PHYSICAL_YIELD_AUDIT_FAILED: " + e.getMessage());
+                    exitCode = 2;
+                }
+            }
+            PhysicalClimateLedger climateLedger = PhysicalClimateLedger.active();
+            if (climateLedger != null) {
+                try {
+                    Path climateFile = Path.of(System.getProperty("wps.water.climateCsv"));
+                    PhysicalClimateLedger.Summary summary = climateLedger.writeCsv(climateFile);
+                    System.out.println("PHYSICAL_CLIMATE_AUDIT: " + summary + " file=" + climateFile);
+                    if (!summary.valid()) {
+                        exitCode = 2;
+                    }
+                } catch (IOException | RuntimeException e) {
+                    System.err.println("PHYSICAL_CLIMATE_AUDIT_FAILED: " + e.getMessage());
                     exitCode = 2;
                 }
             }

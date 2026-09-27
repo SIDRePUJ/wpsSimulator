@@ -19,6 +19,7 @@ import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationLayer;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureCellState;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureLayer;
 import org.wpsim.research.water.PhysicalIrrigationPlan;
+import org.wpsim.research.water.PhysicalClimateLedger;
 import org.wpsim.research.water.PhysicalYieldLedger;
 
 import java.io.File;
@@ -78,6 +79,7 @@ public class CropLayer extends GenericWorldLayer {
         EvapotranspirationLayer evapotranspirationLayer = (EvapotranspirationLayer) this.dependantLayers.get("evapotranspiration");
         ShortWaveRadiationLayer shortWaveRadiationLayer = (ShortWaveRadiationLayer) this.dependantLayers.get("radiation");
         RainfallLayer rainfallLayer = (RainfallLayer) this.dependantLayers.get("rainfall");
+        PhysicalClimateLedger climateLedger = physicalPlan == null ? null : PhysicalClimateLedger.active();
         this.cropCellMap.values().parallelStream().filter(CropCell::isActive).forEach(currentCell -> {
             CropCellState currentState = (CropCellState) currentCell.getCellState();
             double diseaseDamageCropFactor = Double.parseDouble(this.config.getProperty("disease.damagesCrop"));
@@ -97,6 +99,8 @@ public class CropLayer extends GenericWorldLayer {
                 }
                 newCellState.setRootZoneDepletionAtTheEndOfDay(currentCell.getReadilyAvailableWater());
                 currentCell.setCellState(paramsLayer.getDate(), newCellState);
+                recordClimate(climateLedger, paramsLayer.getDate(), temperatureLayer,
+                        evapotranspirationLayer, shortWaveRadiationLayer, rainfallLayer);
             }
             // Rest of the events for the simulation
             else {
@@ -113,6 +117,8 @@ public class CropLayer extends GenericWorldLayer {
                     double getShortWaveRadiationForDate = shortWaveRadiationLayer.getCell().getCellStateByDate(newDate).getShortWaveRadiation();
                     double evapotranspirationForDate = evapotranspirationLayer.getCell().getCellStateByDate(newDate).getEvapotranspirationReference();
                     double rainfallForDate = rainfallLayer.getCell().getCellStateByDate(newDate).getRainfall();
+                    recordClimate(climateLedger, newDate, temperatureLayer,
+                            evapotranspirationLayer, shortWaveRadiationLayer, rainfallLayer);
                     if (newCellState.getGrowingDegreeDays() < currentCell.getDegreeDays_mid()) {
                         double cropEvapotranspirationStandard = currentCell.getCropFactor_ini() * evapotranspirationForDate;
                         setCropEvapotranspiration(
@@ -302,6 +308,19 @@ public class CropLayer extends GenericWorldLayer {
         });
         //CropCell cropCell = this.cropCellMap.get(cropId);
         //cropCell.addCellAction(cropCellAction);
+    }
+
+    private void recordClimate(PhysicalClimateLedger ledger, String date,
+                               TemperatureLayer temperatureLayer,
+                               EvapotranspirationLayer evapotranspirationLayer,
+                               ShortWaveRadiationLayer radiationLayer, RainfallLayer rainfallLayer) {
+        if (ledger != null && ledger.isEligible(physicalPlotId)) {
+            ledger.record(physicalPlotId, date,
+                    rainfallLayer.getCell().getCellStateByDate(date).getRainfall(),
+                    evapotranspirationLayer.getCell().getCellStateByDate(date).getEvapotranspirationReference(),
+                    ((TemperatureCellState) temperatureLayer.getCell().getCellStateByDate(date)).getTemperature(),
+                    radiationLayer.getCell().getCellStateByDate(date).getShortWaveRadiation());
+        }
     }
 
     /** Apply a net water depth only to the selected crop cell. */
