@@ -31,6 +31,8 @@ def main():
     run([sys.executable, "-m", "unittest", "discover", "-s",
          str(Path(__file__).resolve().parent), "-p", "test_analyze_upa_results.py", "-v"])
     run([sys.executable, "-m", "unittest", "discover", "-s",
+         str(Path(__file__).resolve().parent), "-p", "test_build_joined_results.py", "-v"])
+    run([sys.executable, "-m", "unittest", "discover", "-s",
          str(Path(__file__).resolve().parent), "-p", "test_derive_rice_area.py", "-v"])
     run([sys.executable, "-m", "unittest", "discover", "-s",
          str(Path(__file__).resolve().parent), "-p", "test_prepare_power_rainfall.py", "-v"])
