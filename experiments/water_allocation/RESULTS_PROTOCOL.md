@@ -1,6 +1,6 @@
 # Physical allocation experiment protocol
 
-**Status:** analysis interface and synthetic tests are ready. Integrated technical smoke runs have executed, but all physical one-year runs so far failed the research audit because eligible crop-world identities did not match the request file. There is no valid policy comparison. The calculations below cannot turn an uncalibrated source budget into historical evidence.
+**Status:** analysis interface and synthetic tests are ready. One full-year, one-household physical **technical smoke** passed both the farm and water audits after pinning a farm manifest; see [REMOTE_SMOKE.md](REMOTE_SMOKE.md). There is no valid equity–efficiency comparison or calibrated physical production output yet. The calculations below cannot turn an uncalibrated source budget into historical evidence.
 
 ## Minimum comparison
 
