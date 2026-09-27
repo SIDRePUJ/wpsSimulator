@@ -7,11 +7,13 @@ import org.wpsim.SimulationControl.Data.DateHelper;
 import org.wpsim.AgroEcosystem.Automata.layer.LayerExecutionParams;
 import org.wpsim.AgroEcosystem.layer.LayerFunctionParams;
 import org.wpsim.AgroEcosystem.layer.SimWorldSimpleLayer;
+import org.wpsim.research.water.DailyRainfallSeries;
 
 /**
  * Rainfall layer concrete implementation
  */
 public class RainfallLayer extends SimWorldSimpleLayer<RainfallCell> {
+    private final DailyRainfallSeries researchDailyRain;
 
     //private static final Logger logger = LogManager.getLogger(RainfallLayer.class);
 
@@ -22,6 +24,7 @@ public class RainfallLayer extends SimWorldSimpleLayer<RainfallCell> {
     public RainfallLayer(String dataFile) {
         super(dataFile);
         this.cell = new RainfallCell("rainCell");
+        this.researchDailyRain = DailyRainfallSeries.active();
     }
 
 
@@ -62,6 +65,12 @@ public class RainfallLayer extends SimWorldSimpleLayer<RainfallCell> {
         return -meanWetDay * Math.log(1.0 - this.random.nextDouble());
     }
 
+    private double rainfallOn(String date, int month, double rainfallThresholdPercentage) {
+        return researchDailyRain == null
+                ? dailyRainfall(month, rainfallThresholdPercentage)
+                : researchDailyRain.rainMm(date);
+    }
+
     @Override
     public void executeLayer() {
         throw new RuntimeException("Method not implemented");
@@ -73,7 +82,7 @@ public class RainfallLayer extends SimWorldSimpleLayer<RainfallCell> {
         double rainfallThresholdPercentage = Double.parseDouble(this.worldConfig.getProperty("rainfall.thresholdPercentage"));
         if (this.cell.getCellState() == null) {
             int monthFromDate = DateHelper.getMonthFromStringDate(params1.getDate());
-            double verifyRainfall = this.dailyRainfall(monthFromDate, rainfallThresholdPercentage);
+            double verifyRainfall = this.rainfallOn(params1.getDate(), monthFromDate, rainfallThresholdPercentage);
             this.cell.setCellState(params1.getDate(), new RainfallCellState(verifyRainfall));
         } else {
             DateTimeFormatter dtfOut = DateTimeFormat.forPattern(this.worldConfig.getProperty("date.format"));
@@ -83,7 +92,7 @@ public class RainfallLayer extends SimWorldSimpleLayer<RainfallCell> {
                 DateTime previousStateDatePlusOneDay = previousStateDate.plusDays(1);
                 int month = previousStateDatePlusOneDay.getMonthOfYear() - 1;
                 String newDate = dtfOut.print(previousStateDatePlusOneDay);
-                double verifyRainfall = this.dailyRainfall(month, rainfallThresholdPercentage);
+                double verifyRainfall = this.rainfallOn(newDate, month, rainfallThresholdPercentage);
                 this.cell.setCellState(newDate, new RainfallCellState(verifyRainfall));
             }
         }

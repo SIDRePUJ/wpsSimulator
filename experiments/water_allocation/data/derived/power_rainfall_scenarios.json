@@ -1,0 +1,81 @@
+{
+  "limits": "Rainfall only; other meteorological drivers remain the simulator's seeded monthly generator. Water-source volume is an independent scenario parameter.",
+  "ranking_ascending_by_window_mm": [
+    {
+      "window_mm": 114.0,
+      "year": 2014
+    },
+    {
+      "window_mm": 144.18,
+      "year": 2021
+    },
+    {
+      "window_mm": 242.68,
+      "year": 2020
+    },
+    {
+      "window_mm": 306.21,
+      "year": 2015
+    },
+    {
+      "window_mm": 314.08,
+      "year": 2013
+    },
+    {
+      "window_mm": 403.56,
+      "year": 2016
+    },
+    {
+      "window_mm": 479.57,
+      "year": 2019
+    },
+    {
+      "window_mm": 553.82,
+      "year": 2023
+    },
+    {
+      "window_mm": 568.39,
+      "year": 2018
+    },
+    {
+      "window_mm": 570.61,
+      "year": 2024
+    },
+    {
+      "window_mm": 771.1,
+      "year": 2022
+    },
+    {
+      "window_mm": 984.85,
+      "year": 2017
+    }
+  ],
+  "scenarios": {
+    "dry_proxy": {
+      "day_count": 365,
+      "mapping": "same month/day mapped to the common 2022 simulation calendar",
+      "output_file": "power_rainfall_2014_as_2022.csv",
+      "output_sha256": "50f519e3835b26f189a402ef372c437f00721454ba7676b78be34e43a01aaab3",
+      "source_year": 2014,
+      "window_mm": 114.0
+    },
+    "near_median_proxy": {
+      "day_count": 365,
+      "mapping": "same month/day mapped to the common 2022 simulation calendar",
+      "output_file": "power_rainfall_2019_as_2022.csv",
+      "output_sha256": "cde46adb7e79763b2bc716359395a05e66993fe6be8fbf99200cc7b20f6f6923",
+      "source_year": 2019,
+      "window_mm": 479.57
+    }
+  },
+  "selection_window_month_day": [
+    "02-01",
+    "08-11"
+  ],
+  "simulation_year": 2022,
+  "source": "nasa_power_maria_la_baja_2013_2024_daily.csv",
+  "source_parameter": "PRECTOTCORR",
+  "source_sha256": "93118ab56cdba3f3847108f782802d46d74f41f11fbe3d75d6f34089d722b8bd",
+  "source_type": "NASA POWER gridded MERRA-2 precipitation proxy; not IDEAM station observation",
+  "source_unit": "mm/day"
+}

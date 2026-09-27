@@ -32,6 +32,7 @@ import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.research.water.PhysicalIrrigationPlan;
 import org.wpsim.research.water.PhysicalClimateLedger;
+import org.wpsim.research.water.DailyRainfallSeries;
 import org.wpsim.research.water.PhysicalYieldLedger;
 import org.wpsim.research.water.FarmAssignmentPlan;
 
@@ -76,6 +77,7 @@ public class wpsStart {
         PhysicalIrrigationPlan irrigationPlan = PhysicalIrrigationPlan.active();
         PhysicalYieldLedger yieldLedger = PhysicalYieldLedger.active();
         PhysicalClimateLedger.active();
+        DailyRainfallSeries.active();
         if (yieldLedger != null && !"none".equals(perturbation)) {
             throw new IllegalArgumentException("Physical water-yield response requires -perturbation none");
         }
