@@ -23,7 +23,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix="wps-water-check-") as output:
         run(["javac", "-d", output, *(str(path) for path in sources)])
         for test in ("SharedWaterSourceTest", "RiceYieldResponseTest", "PhysicalIrrigationPlanTest",
-                     "FarmAssignmentPlanTest", "PhysicalYieldLedgerTest"):
+                     "FarmAssignmentPlanTest", "PhysicalYieldLedgerTest", "ResearchClimateRandomTest"):
             run(["java", "-ea", "-cp", output, f"org.wpsim.research.water.{test}"])
     run([sys.executable, "-m", "unittest", "discover", "-s",
          str(Path(__file__).resolve().parent), "-p", "test_analyze_physical_results.py", "-v"])

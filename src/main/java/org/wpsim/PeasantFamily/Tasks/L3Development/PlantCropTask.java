@@ -226,6 +226,13 @@ public class PlantCropTask extends wpsLandTask {
         EvapotranspirationLayer evapotranspirationLayer = new EvapotranspirationLayer(
                 worldConfiguration.getProperty("data.evapotranspiration"));
         RainfallLayer rainfallLayer = new RainfallLayer(rainfallFile);
+        if (PhysicalIrrigationPlan.enabled()) {
+            long scenarioSeed = org.wpsim.WellProdSim.Util.SimRandom.getSeed();
+            radiationLayer.useResearchRandom(scenarioSeed, plotId);
+            temperatureLayer.useResearchRandom(scenarioSeed, plotId);
+            evapotranspirationLayer.useResearchRandom(scenarioSeed, plotId);
+            rainfallLayer.useResearchRandom(scenarioSeed, plotId);
+        }
         DiseaseLayer diseaseLayer = new DiseaseLayer();
         DiseaseCell diseaseCellRoots = new DiseaseCell("roots1DiseaseCell");
         diseaseLayer.addVertex(diseaseCellRoots);
