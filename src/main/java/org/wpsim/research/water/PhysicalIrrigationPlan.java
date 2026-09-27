@@ -223,4 +223,8 @@ public final class PhysicalIrrigationPlan {
     public int plannedPlotCount() {
         return areaHaByPlot.size();
     }
+
+    public Map<String, Double> plannedAreas() {
+        return areaHaByPlot;
+    }
 }

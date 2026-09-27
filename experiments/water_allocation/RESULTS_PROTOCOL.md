@@ -21,11 +21,13 @@ The integrated simulator must export one row per plot/rule/weather/scarcity/seed
 | `weather`, `rule`, `seed`, `parameter_set`, `plot_id` | Exact paired-scenario identifiers; plot ID must not be a DANE microdata identifier in a shared artifact. |
 | `scarcity_ratio` | Available gross source volume divided by total gross demand; fraction in `[0,1]`. |
 | `area_ha` | Harvested/irrigated plot area in ha. |
-| `full_t` | The plot's physical rice production in t under a full-water **matched** reference. |
+| `full_t` | The plot's analytical full-ET reference `Ym × area_ha` in t under the same assumed potential yield; not a separate observed or agent-replayed harvest. |
 | `actual_t` | Production in t under the rule; may not exceed `full_t` for this simplified one-factor response. |
 | `gross_m3` | Gross source withdrawal attributable to the plot in m3. |
 
 Run `python analyze_physical_results.py path/to/results.csv --output path/to/summary.json`. The analyzer rejects duplicate plots, nonphysical values, missing proportional baselines, or unpaired plot areas/full-water references. It reports production tonnes and ratio, worst-decile relative production loss, worst loss among the smallest quarter of plots, paired differences versus proportional allocation, and the range/sign stability of differences across parameter sets. It also reports unweighted Gini coefficients of **relative** and **absolute-tonne** production losses across plot/UPA analogues. The ratio of mean relative loss in the smallest versus largest area quartile uses ascending area with plot ID as tie-breaker and returns `null` if the largest quartile has zero mean loss; it must not be interpreted as a welfare ratio. Each quartile contains `ceil(N/4)` plots, so use a sufficiently large population before interpreting tail statistics. Its tests use **synthetic arithmetic fixtures only**; there are no claimed empirical outcomes.
+
+The opt-in physical harvest ledger produces an **intermediate** CSV keyed by the unique plot ID. Before analysis, join it to the same run's water audit and add explicit weather, rule, seed, parameter-set and scarcity-ratio metadata; reject duplicate/missing plot joins. Do not enter any run with `NOT_HARVESTED`, a nonzero exit, or a failed farm/water/yield audit in the paired table. `Ym` and `Ky` are scenario parameters until calibrated or sensitivity-bounded, not estimates inferred from the legacy biomass output.
 
 ## Evidence and publication gates
 

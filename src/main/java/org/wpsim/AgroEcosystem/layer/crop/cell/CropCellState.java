@@ -27,6 +27,9 @@ public class CropCellState implements LayerCellState {
      */
     protected double cumulatedEvapotranspiration;
 
+    /** Seasonal standard crop ET (ETm), recorded for research yield accounting. */
+    protected double cumulatedPotentialEvapotranspiration;
+
     /**
      *
      */
@@ -138,6 +141,14 @@ public class CropCellState implements LayerCellState {
      */
     public void setCumulatedEvapotranspiration(double cumulatedEvapotranspiration) {
         this.cumulatedEvapotranspiration = cumulatedEvapotranspiration;
+    }
+
+    public double getCumulatedPotentialEvapotranspiration() {
+        return cumulatedPotentialEvapotranspiration;
+    }
+
+    public void setCumulatedPotentialEvapotranspiration(double value) {
+        this.cumulatedPotentialEvapotranspiration = value;
     }
 
     /**

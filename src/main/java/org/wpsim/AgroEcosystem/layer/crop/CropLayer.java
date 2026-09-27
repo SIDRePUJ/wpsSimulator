@@ -19,6 +19,7 @@ import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationLayer;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureCellState;
 import org.wpsim.AgroEcosystem.layer.temperature.TemperatureLayer;
 import org.wpsim.research.water.PhysicalIrrigationPlan;
+import org.wpsim.research.water.PhysicalYieldLedger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -91,6 +92,9 @@ public class CropLayer extends GenericWorldLayer {
                 newCellState.setAboveGroundBiomass(0);
                 newCellState.setGrowingDegreeDays(((TemperatureCellState) temperatureLayer.getCell().getCellStateByDate(paramsLayer.getDate())).getTemperature());
                 newCellState.setCumulatedEvapotranspiration(evapotranspiration);
+                if (physicalPlan != null) {
+                    newCellState.setCumulatedPotentialEvapotranspiration(evapotranspiration);
+                }
                 newCellState.setRootZoneDepletionAtTheEndOfDay(currentCell.getReadilyAvailableWater());
                 currentCell.setCellState(paramsLayer.getDate(), newCellState);
             }
@@ -194,6 +198,10 @@ public class CropLayer extends GenericWorldLayer {
                 cropEvapotranspirationAndWaterStress
         );
         newCellState.setCumulatedEvapotranspiration(previousState.getCumulatedEvapotranspiration() + cropEvapotranspirationAndWaterStress);
+        if (physicalPlan != null) {
+            newCellState.setCumulatedPotentialEvapotranspiration(
+                    previousState.getCumulatedPotentialEvapotranspiration() + cropEvapotranspirationStandard);
+        }
 
         newCellState.setAboveGroundBiomass(
                 previousState.getAboveGroundBiomass() +
@@ -316,7 +324,14 @@ public class CropLayer extends GenericWorldLayer {
      */
     public void writeCropData() {
         String fileDirection = this.config.getProperty("crop.dataFiles");
+        PhysicalYieldLedger yieldLedger = physicalPlan == null ? null : PhysicalYieldLedger.active();
         for (CropCell cropCell : this.cropCellMap.values()) {
+            if (yieldLedger != null) {
+                CropCellState state = (CropCellState) cropCell.getCellState();
+                yieldLedger.recordHarvest(physicalPlotId, cropCell.getCropArea(), cropCell.getDate(),
+                        state.getCumulatedEvapotranspiration(),
+                        state.getCumulatedPotentialEvapotranspiration());
+            }
             String diseaseEnabled = this.config.isDiseasePerturbation() ? "_disease_" : "";
             String waterStressEnabled = Boolean.parseBoolean(this.config.getProperty("waterStress.enabled")) ? "_water_stress_" : "";
             String filename = fileDirection + cropCell.getId() + diseaseEnabled + waterStressEnabled + ".csv";

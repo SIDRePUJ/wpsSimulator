@@ -79,6 +79,9 @@ public final class CropLayerIrrigationTest {
                 throw new AssertionError("scheduled net depth did not enter the crop water balance: "
                         + controlDepletion + " versus " + scheduledDepletion);
             }
+            if (Math.abs(scheduled.getCropState().getCumulatedPotentialEvapotranspiration() - 10.5) > 1e-8) {
+                throw new AssertionError("seasonal potential ET was not accumulated from standard crop ET");
+            }
             Path audit = requests.resolveSibling(requests.getFileName() + ".audit.csv");
             try {
                 PhysicalIrrigationPlan.AuditSummary summary = PhysicalIrrigationPlan.active().writeAudit(audit);

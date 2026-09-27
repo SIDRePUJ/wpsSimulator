@@ -30,6 +30,7 @@ import org.wpsim.ViewerLens.Agent.ViewerLens;
 import org.wpsim.ViewerLens.Util.wpsReport;
 import org.wpsim.WellProdSim.Config.wpsConfig;
 import org.wpsim.research.water.PhysicalIrrigationPlan;
+import org.wpsim.research.water.PhysicalYieldLedger;
 import org.wpsim.research.water.FarmAssignmentPlan;
 
 import java.util.Enumeration;
@@ -71,6 +72,10 @@ public class wpsStart {
         System.out.println("PERTURBATION: " + perturbation);
         System.out.println("LEGACY: " + org.wpsim.WellProdSim.Util.Legacy.describe());
         PhysicalIrrigationPlan irrigationPlan = PhysicalIrrigationPlan.active();
+        PhysicalYieldLedger yieldLedger = PhysicalYieldLedger.active();
+        if (yieldLedger != null && !"none".equals(perturbation)) {
+            throw new IllegalArgumentException("Physical water-yield response requires -perturbation none");
+        }
         if (irrigationPlan != null) {
             if (System.getProperty("wps.water.auditCsv", "").isBlank()) {
                 throw new IllegalArgumentException("Research irrigation requires wps.water.auditCsv");
@@ -347,6 +352,20 @@ public class wpsStart {
             System.out.println("PHYSICAL_FARM_AUDIT: " + farmStatus);
             if (!farmStatus.valid()) {
                 exitCode = 2;
+            }
+            PhysicalYieldLedger yieldLedger = PhysicalYieldLedger.active();
+            if (yieldLedger != null) {
+                try {
+                    Path yieldFile = Path.of(System.getProperty("wps.water.yieldCsv"));
+                    PhysicalYieldLedger.Summary summary = yieldLedger.writeCsv(yieldFile);
+                    System.out.println("PHYSICAL_YIELD_AUDIT: " + summary + " file=" + yieldFile);
+                    if (!summary.valid()) {
+                        exitCode = 2;
+                    }
+                } catch (IOException | RuntimeException e) {
+                    System.err.println("PHYSICAL_YIELD_AUDIT_FAILED: " + e.getMessage());
+                    exitCode = 2;
+                }
             }
         }
         System.exit(exitCode);
