@@ -27,4 +27,21 @@ The stderr contains viewer/agent-alias logging warnings despite the zero exit co
 
 ## Not yet a paper experiment
 
-All plots in this fixture have equal area and the positive requests are equal; the allocation rules cannot yield an informative equity contrast. The 200-m3 budget and 20-mm demands are synthetic fixtures, not measured district supply or UPA demand. No `t/ha` production export is wired to the full agent model, and no external water-deficit/yield validation has been performed. The next gate is a heterogeneous, empirically anchored UPA population with stable IDs and physical crop-output traces, followed by paired institutional-rule runs and sensitivity analysis.
+All plots in this fixture have equal area and the positive requests are equal; the allocation rules cannot yield an informative equity contrast. The 200-m3 budget and 20-mm demands are synthetic fixtures, not measured district supply or UPA demand. At the time of this first smoke, no `t/ha` production export was wired to the full agent model; that integration is described below. No external water-deficit/yield validation has been performed. The next gate is a heterogeneous, empirically anchored UPA population, followed by paired institutional-rule runs and sensitivity analysis.
+
+## Follow-up: physical yield integration (commit `679fbc5`)
+
+The first yield-enabled full-year run reused the March request fixture, set `-perturbation none`, and used **fixture** values `Ym = 6 t/ha` and `Ky = 1.1`. It exited **2**, correctly rejecting one positive delivery that was not applied and one zero-demand second-season plot that had not harvested. Its logs and audits are retained under the project-level `results/water-allocation-server-20260927/yield-smoke-27c41cc-seed12345/`; they are invalid as study results.
+
+The corrected research path keeps all four plot aliases in the water-registration audit but limits the one-season production cohort to plots with positive scheduled demand. Using the committed synthetic `smoke_requests_yield_may_seed12345.csv`, a second isolated Ubuntu run exited **0**:
+
+| Gate | Observed result |
+| --- | --- |
+| Source and execution | Commit `679fbc5`; same one household, world 20, year 2022, seed `12345`; `-perturbation none` |
+| Farm audit | One planned and one assigned family; no failures |
+| Water audit | Four planned and four registered plots; two 10-mm deliveries on 1 May; 200 gross m3 total, zero missing deliveries |
+| Yield audit | Two positive-demand eligible plots, both harvested; planting dates 1 February and 13 April, both before 1 May delivery |
+| Physical arithmetic | Independent local recalculation from ETa/ETm matched `Ym × max(0, 1 − Ky(1 − ETa/ETm))`; actual tonnes matched yield times area |
+| Retrieval integrity | Water audit SHA-256 `ac4cfe9fc4f4e6b9a7d92575869f5ff75c71f33188954cc938238a14b28374e6`; yield CSV SHA-256 `70318c242cdc93bfc082633be5a7fe4a9b291202e5d93fdba6d5dd18e2b38253`, both matching server copies |
+
+Full logs and CSV are under project-level `results/water-allocation-server-20260927/yield-may-679fbc5-seed12345/`. The two eligible plots are equal-area synthetic fixtures; their conditional t/ha values verify the wiring only. They do **not** estimate historical rice production, validate `Ym` or `Ky`, or provide an equity–efficiency comparison. Stderr still contains viewer/agent-alias logging warnings despite exit 0; the three explicit research audits pass. The next gate remains a reproducible heterogeneous one-season population and paired-rule comparison.

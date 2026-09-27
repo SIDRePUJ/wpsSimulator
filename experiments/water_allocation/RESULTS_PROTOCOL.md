@@ -1,6 +1,6 @@
 # Physical allocation experiment protocol
 
-**Status:** analysis interface and synthetic tests are ready. One full-year, one-household physical **technical smoke** passed both the farm and water audits after pinning a farm manifest; see [REMOTE_SMOKE.md](REMOTE_SMOKE.md). There is no valid equity–efficiency comparison or calibrated physical production output yet. The calculations below cannot turn an uncalibrated source budget into historical evidence.
+**Status:** analysis interface and synthetic tests are ready. A full-year, one-household **technical smoke** passed farm, water and eligible-yield audits after pinning a farm manifest and selecting a valid request date; see [REMOTE_SMOKE.md](REMOTE_SMOKE.md). There is no valid equity–efficiency comparison or calibrated physical production output yet. The calculations below cannot turn fixture crop-response parameters or an uncalibrated source budget into historical evidence.
 
 ## Minimum comparison
 
