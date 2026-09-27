@@ -25,6 +25,7 @@ public final class PhysicalIrrigationPlan {
             .withResolverStyle(ResolverStyle.STRICT);
     private final Map<LocalDate, Map<String, WaterAllocation>> allocations;
     private final Map<String, Double> areaHaByPlot;
+    private final Map<String, Double> positiveDemandAreas;
     private final double initialM3;
     private final double remainingM3;
     private final ConcurrentMap<String, Double> registeredPlots = new ConcurrentHashMap<>();
@@ -42,9 +43,11 @@ public final class PhysicalIrrigationPlan {
     }
 
     private PhysicalIrrigationPlan(Map<LocalDate, Map<String, WaterAllocation>> allocations,
-                                   Map<String, Double> areaHaByPlot, double initialM3, double remainingM3) {
+                                   Map<String, Double> areaHaByPlot, Map<String, Double> positiveDemandAreas,
+                                   double initialM3, double remainingM3) {
         this.allocations = Map.copyOf(allocations);
         this.areaHaByPlot = Map.copyOf(areaHaByPlot);
+        this.positiveDemandAreas = Map.copyOf(positiveDemandAreas);
         this.initialM3 = initialM3;
         this.remainingM3 = remainingM3;
     }
@@ -93,6 +96,7 @@ public final class PhysicalIrrigationPlan {
         }
         Map<LocalDate, List<WaterRequest>> rounds = new TreeMap<>();
         Map<String, Double> areas = new HashMap<>();
+        Map<String, Double> positiveAreas = new HashMap<>();
         for (int lineNumber = 1; lineNumber < lines.size(); lineNumber++) {
             String line = lines.get(lineNumber);
             if (line.isBlank()) {
@@ -111,6 +115,9 @@ public final class PhysicalIrrigationPlan {
                 if (previousArea != null && Double.compare(previousArea, request.areaHa()) != 0) {
                     throw new IllegalArgumentException("Plot area changes across rounds: " + request.plotId());
                 }
+                if (request.netDemandMm() > 0.0) {
+                    positiveAreas.put(request.plotId(), request.areaHa());
+                }
                 rounds.computeIfAbsent(date, ignored -> new ArrayList<>()).add(request);
             } catch (RuntimeException e) {
                 throw new IllegalArgumentException("Invalid irrigation request at line " + (lineNumber + 1), e);
@@ -125,7 +132,7 @@ public final class PhysicalIrrigationPlan {
             }
             allocated.put(round.getKey(), Map.copyOf(plots));
         }
-        return new PhysicalIrrigationPlan(allocated, areas, sourceM3, source.remainingM3());
+        return new PhysicalIrrigationPlan(allocated, areas, positiveAreas, sourceM3, source.remainingM3());
     }
 
     public double netMm(String date, String plotId) {
@@ -226,5 +233,10 @@ public final class PhysicalIrrigationPlan {
 
     public Map<String, Double> plannedAreas() {
         return areaHaByPlot;
+    }
+
+    /** Plots exposed to the rationing rule; zero-demand registration rows are excluded. */
+    public Map<String, Double> positiveDemandAreas() {
+        return positiveDemandAreas;
     }
 }

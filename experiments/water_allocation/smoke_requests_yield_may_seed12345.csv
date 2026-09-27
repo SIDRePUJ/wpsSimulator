@@ -1,0 +1,5 @@
+date,plot_id,area_ha,net_demand_mm,delivery_efficiency
+01/05/2022,land_5_2,1,20,1
+01/05/2022,land_6_2,1,20,1
+01/05/2022,land_5_2_3,1,0,1
+01/05/2022,land_6_2_3,1,0,1

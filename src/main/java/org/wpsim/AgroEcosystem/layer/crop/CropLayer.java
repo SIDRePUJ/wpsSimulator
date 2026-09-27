@@ -326,9 +326,10 @@ public class CropLayer extends GenericWorldLayer {
         String fileDirection = this.config.getProperty("crop.dataFiles");
         PhysicalYieldLedger yieldLedger = physicalPlan == null ? null : PhysicalYieldLedger.active();
         for (CropCell cropCell : this.cropCellMap.values()) {
-            if (yieldLedger != null) {
+            if (yieldLedger != null && yieldLedger.isEligible(physicalPlotId)) {
                 CropCellState state = (CropCellState) cropCell.getCellState();
-                yieldLedger.recordHarvest(physicalPlotId, cropCell.getCropArea(), cropCell.getDate(),
+                yieldLedger.recordHarvest(physicalPlotId, cropCell.getCropArea(),
+                        String.valueOf(cropCell.getHistoricalData().firstKey()), cropCell.getDate(),
                         state.getCumulatedEvapotranspiration(),
                         state.getCumulatedPotentialEvapotranspiration());
             }

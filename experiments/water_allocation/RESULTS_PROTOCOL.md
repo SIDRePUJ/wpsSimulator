@@ -29,6 +29,8 @@ Run `python analyze_physical_results.py path/to/results.csv --output path/to/sum
 
 The opt-in physical harvest ledger produces an **intermediate** CSV keyed by the unique plot ID. Before analysis, join it to the same run's water audit and add explicit weather, rule, seed, parameter-set and scarcity-ratio metadata; reject duplicate/missing plot joins. Do not enter any run with `NOT_HARVESTED`, a nonzero exit, or a failed farm/water/yield audit in the paired table. `Ym` and `Ky` are scenario parameters until calibrated or sensitivity-bounded, not estimates inferred from the legacy biomass output.
 
+The yield cohort is the set of plots with at least one positive scheduled net irrigation demand. Zero-demand registration rows do not enter the production inequality denominator, although their plot identities still must reconcile in the water audit. Report the eligible cohort count and verify each fixed request date is after the recorded planting date and before harvest; a stable alias alone does not establish temporal eligibility.
+
 ## Evidence and publication gates
 
 | Claim | Evidence required | Current status |

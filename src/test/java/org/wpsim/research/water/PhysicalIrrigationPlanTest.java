@@ -21,6 +21,9 @@ public final class PhysicalIrrigationPlanTest {
             close(0, plan.remainingM3());
             close(0, plan.netMm("03/01/2020", "small"));
             plan.verifyPlotArea("small", 1);
+            if (plan.positiveDemandAreas().size() != 2 || !plan.positiveDemandAreas().containsKey("large")) {
+                throw new AssertionError("positive-demand rice cohort was not retained");
+            }
             expectFailure(() -> plan.verifyPlotArea("small", 2));
             expectFailure(() -> plan.verifyPlotArea("absent", 1));
             Path auditDir = Files.createTempDirectory("water-audit-");
@@ -72,6 +75,14 @@ public final class PhysicalIrrigationPlanTest {
                     + "01/01/2020,small,1,20,1\n"
                     + "01/01/2020,small,1,20,1\n");
             expectFailure(() -> loadUnchecked(requests, 300));
+            Files.writeString(requests, "date,plot_id,area_ha,net_demand_mm,delivery_efficiency\n"
+                    + "01/01/2020,eligible,1,20,1\n"
+                    + "01/01/2020,registration-only,1,0,1\n");
+            PhysicalIrrigationPlan cohort = loadUncheckedPlan(requests, 200);
+            if (cohort.plannedPlotCount() != 2 || cohort.positiveDemandAreas().size() != 1
+                    || !cohort.positiveDemandAreas().containsKey("eligible")) {
+                throw new AssertionError("zero-demand registration plot entered the yield cohort");
+            }
         } finally {
             Files.deleteIfExists(requests);
         }
@@ -79,8 +90,12 @@ public final class PhysicalIrrigationPlanTest {
     }
 
     private static void loadUnchecked(Path file, double sourceM3) {
+        loadUncheckedPlan(file, sourceM3);
+    }
+
+    private static PhysicalIrrigationPlan loadUncheckedPlan(Path file, double sourceM3) {
         try {
-            PhysicalIrrigationPlan.load(file, sourceM3, AllocationRule.PROPORTIONAL_DEMAND);
+            return PhysicalIrrigationPlan.load(file, sourceM3, AllocationRule.PROPORTIONAL_DEMAND);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
