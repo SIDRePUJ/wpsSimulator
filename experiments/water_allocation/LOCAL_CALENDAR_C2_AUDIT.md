@@ -1,6 +1,6 @@
-# Local C2 cohort audit: no admissible trace yet
+# Local C2 cohort audit: technical cohort observed
 
-**Status:** blocked at full-agent execution, not failed or passed crop-calendar validation. No observed plot planting, crop startup, harvest, or allocation-policy outcome can be inferred from these attempts. The raw local diagnostics are retained under ignored `experiments/water_allocation/reports/raw/calendar-c2-local-20260928*` directories.
+**Status:** the fourth, corrected local full-agent diagnostic exited **0** and verified the synthetic cohort's planting, crop startup, ownership, area and harvest trace. This is a **technical cohort gate**, not empirical validation of actual district planting dates, irrigation demand, reservoir stock, crop response, or any allocation rule. The raw diagnostics are retained under ignored `experiments/water_allocation/reports/raw/calendar-c2-local-20260928*` directories.
 
 ## Frozen diagnostic setup
 
@@ -15,18 +15,21 @@
 | `calendar-c2-local-20260928` | Initial command lacked `-env local`. | Natural Java exit **1** before simulation: missing `server_null_single.xml`. | Setup failure; no cohort trace. |
 | `calendar-c2-local-20260928-setup-corrected` | Added only `-env local`; still lacked `-land 2`. | Startup reported **0 farms, 0 lands**; process then remained idle for about five minutes, with BESA threads waiting. Interrupted; wrapper exit **1**, not a natural model audit verdict. | Setup failure; `CivicAuthorityState.createFarms()` requires `params.land == 2` for two-cell small farms. |
 | `calendar-c2-local-20260928-land-corrected` | Added only `-land 2`; fixture unchanged. | Startup reported **12 small farms, 24 lands**, then remained idle for about four minutes. A local thread dump showed the main thread gone and BESA threads waiting. Interrupted; wrapper exit **1**, not a natural model audit verdict. No year-end water, yield, or climate CSV was written. | Full-agent harness did not complete. Do not interpret startup topology as crop-world verification. |
+| `calendar-c2-local-20260928-web-osredirect` | Changed only `-mode single` to `-mode web`; same frozen fixture, seed, world and model. Used direct OS stdout/stderr file redirection and a 240-second timeout. | Natural Java exit **0** in 209 seconds. All four year-end audits valid. Full output is 19,227 bytes rather than a 4,096-byte mid-line truncation. | Synthetic calendar cohort trace **passes** the checks below. |
 
-The corrected invocation's essential arguments were `-env local -mode single -agents 12 -world 24 -land 2 -years 1 -startyear 2022 -seed 12345 -perturbation none`, with the research switches and diagnostic paths recorded above. It used the already compiled isolated build; no code or model parameter was altered after observing outcomes. The two corrections addressed pre-outcome startup errors only.
+The successful invocation's essential arguments were `-env local -mode web -agents 12 -world 24 -land 2 -years 1 -startyear 2022 -seed 12345 -perturbation none`, plus `-Dwps.water.districtRiceCalendar=true`, `-Dwps.water.riceOnlyCohort=true`, `-Dwps.water.discoverPlots=true` and the physical-plan/ledger paths recorded above. The exact Java executable, classpath, and complete argument line are in its ignored `command.txt`. It used the previously compiled isolated build; no code, planting date, or diagnostic-demand value was altered after observing outcomes. The first two corrections addressed pre-outcome startup omissions. The third correction fixed a **launcher/manifest identity mismatch**: `-mode single` creates `MAS_500_`-prefixed family aliases, whereas the frozen manifest assigns `MAS_PeasantFamily1` through `MAS_PeasantFamily12`; `-mode web` follows the previously used cohort launch path. The first two PowerShell-captured outputs ended at exactly 4,096 bytes, whereas direct OS redirection captured the complete successful output. Because mode and capture changed together, the exact causal role of the capture method in the earlier stalls is **unproven**.
 
 ## C2 acceptance accounting
 
 | Required observation | Result |
 | --- | --- |
-| Farm topology | 12 small farms / 24 lands reported at startup in the final attempt; no completed farm-assignment audit. |
-| 24 first-version plot IDs, 96 rice ha, 4/5/3 UPA area classes | **Unverified**; these are expected from the frozen manifest/roster, not observed in this run. |
-| January–March planting date minimum/maximum | **Unavailable**; no completed `WATER_PLANT` trace. |
-| 48 annual crop worlds, crop type, plot-owner links | **Unverified**; no completed registration/owner audit. |
-| Harvests and crop-response ledger | **Unavailable**; no year-end yield ledger. |
-| Rainfall and water consistency | **Unavailable**; no year-end climate or water audit. |
+| Farm topology | **12/12 assigned families**, zero failed; 12 small farms / 24 lands reported at startup. |
+| 24 first-version plot IDs, 96 rice ha, 4/5/3 UPA area classes | **24 distinct first-version plots / 96 ha**, IDs and areas match the frozen roster; 12 distinct owners with 4 UPA at 2 ha, 5 at 8 ha, and 3 at 16 ha. |
+| January–March planting date minimum/maximum | **1–14 February 2022** across the 24 first-version plots; zero out-of-window starts. These dates are generated by the agent model, **not observed district dates**. |
+| 48 annual crop worlds, crop type, plot-owner links | **48 distinct `WATER_PLOT`/`WATER_PLANT` IDs**, all rice, all roster areas matched; 48/48 registered and zero failed registrations. The 24 later-version worlds planted on 4 August (12) or 26 September (12), outside the first-planting gate by design. |
+| Harvests and crop-response ledger | **24/24 first-version plots harvested**, zero missing; yield rows match first-version IDs, owner aliases and planting dates. Technical `Ym=5 t/ha, Ky=1` do not validate yield levels. |
+| Rainfall and water consistency | Water audit: 48 planned/registered, zero absent/failed/missing deliveries, 24 applied diagnostic deliveries. Climate audit: 24/24 eligible plots, 2,904 daily rows, zero missing/gap/duplicate days. |
 
-**Next gate:** diagnose the local full-agent startup/shutdown problem without changing planting dates or diagnostic demand based on policy outcomes. Then rerun a fresh, immutable diagnostic invocation and require natural exit 0, complete year-end audits, and first-version crop startup/harvest before generating new IDEAM-conditioned schedules. The old February/April technical cohort and requests remain unsuitable as a district-calendar validation claim.
+For the successful run, the diagnostic fixture SHA-256 remained `7349e3ca1c2b591de3cc3afdd751a7c73d08450dddce8296b3d10b546b9eeff4`. Audit hashes: water `45f55a56f9d779c33dc2ab0a98c9541a63f269324b86c06dc168c4b104b1ce72`, yield `dadfaccc05c7eb143fb4061efa87c34323449a54ac022facf304fa1974c1437b`, climate `ae9a9d6dccdffe81d65c9180189b70c51fd14cfa31339b9d1ddc461d7667f4aa`. A shutdown stack trace in stderr begins `Runtime.exit(0)`; process exit and all audit summaries still report success. Retain it as an execution diagnostic rather than silently dropping stderr.
+
+**Next gate:** freeze the now-observed first-version dates and harvest windows, regenerate matched IDEAM-conditioned weekly requests and finite-source stocks **before** any rule matrix. Check request dates against actual crop windows and confirm repeated identical discovery/forcing as a separate reproducibility gate. The old February/April technical cohort and its requests remain unsuitable as a district-calendar validation claim.
