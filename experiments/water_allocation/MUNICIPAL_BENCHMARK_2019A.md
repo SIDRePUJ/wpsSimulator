@@ -26,4 +26,16 @@ Values are the municipality/crop/period row in the locally audited [UPRA EVA 201
 
 After the 2019 three-rule technical cells pass the existing strict raw-output join, report each scenario's modeled `sum(actual_t) / sum(area_ha)` beside the **3.13 t/ha observed EVA benchmark**, with its 96-ha model support, rule, stock ratio, seed, weather source and uncertain parameters. Treat the signed numerical difference as a **descriptive gap**, not a prediction error or goodness-of-fit statistic, while any alignment gate above remains open. Never report `sum(actual_t)` as municipal production. Preserve the 2019B row as a separate period, not an opportunistic alternative target.
 
+### First guarded 2019 technical result (added after benchmark lock)
+
+The 2019 POWER/r0.35/seed12345 runs were executed after this benchmark was committed as `d57d8ef`. All three rules exited 0, conserved the **206,164-m3 synthetic source**, and passed farm 12/12, water 48/48 with 324 positive deliveries and no missing delivery, yield 24/24, and climate 24/24 with 2,904 gap-free rows. All three climate files have the same SHA-256, `dc0c3596852446f151a0e3b32a9a990066214559f9f1457ec24b9170642afeac`. The strict manifest `world24-weekly-2019-r035-three-run-manifest.json` under the project-level `results/water-allocation-server-20260927/` directory admitted 72 eligible plot rows and 12 synthetic UPA per rule. This is **12 of 24 technical runs** across the full register, not a completed sensitivity study.
+
+| Rule | Modeled production on 96 ha | Modeled t/ha | Difference from EVA 2019A's 3.13 t/ha |
+| --- | ---: | ---: | ---: |
+| Proportional demand | 523.605 t | 5.454 | +2.324 t/ha |
+| Equal per hectare | 518.755 t | 5.404 | +2.274 t/ha |
+| Small-plot floor | 523.228 t | 5.450 | +2.320 t/ha |
+
+**Interpretation:** the modeled yield is substantially above the municipal EVA 2019A figure under every rule, so this is an **unresolved external-plausibility warning**, not evidence that one rule was used historically. The numerical difference is *not* a validation error: the municipality has 1,147.5 observed harvested ha versus the synthetic 96 ha; actual 2019 source deliveries, non-rainfall weather, management, soil and paddy-water processes are not matched, and period-A crop-calendar alignment remains provisional. Do not tune `Ym`, `Ky` or source ratio to erase this gap and then report EVA 2019A as independent validation. Preserve both the gap and the model-version/assumption ledger for the paper.
+
 For a stronger municipal production claim, first obtain an independently documented 2019 irrigated-rice area/UPA distribution and local crop calendar, then construct a representative or explicitly weighted municipal cohort with weights fixed *before* viewing rule outcomes. To validate the finite-source institution itself also requires the water-command boundary and observed source releases/deliveries; municipal EVA alone cannot supply them. If those data remain unavailable, publish the allocation contrast as a **conditional simulation for synthetic water users**, with municipal yield as a limited external plausibility reference.

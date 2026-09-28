@@ -1,6 +1,6 @@
 # Evidence audit and minimum viable study
 
-**Status (2026-09-28): technical simulation in progress, empirical validation incomplete.** The public data support a constrained *counterfactual* design, but not an empirical claim about which allocation rule actually operated or improved household welfare in María La Baja. The guarded technical screen has admitted nine of 24 planned runs; see [run evidence](REMOTE_SMOKE.md) and the [scenario register](SCENARIO_REGISTER.md).
+**Status (2026-09-28): technical simulation in progress, empirical validation incomplete.** The public data support a constrained *counterfactual* design, but not an empirical claim about which allocation rule actually operated or improved household welfare in María La Baja. The guarded technical screen has admitted 12 of 24 planned runs. The pre-outcome [2019A municipal benchmark](MUNICIPAL_BENCHMARK_2019A.md) reveals a large descriptive modeled-yield gap, not a validated prediction error; see [run evidence](REMOTE_SMOKE.md) and the [scenario register](SCENARIO_REGISTER.md).
 
 ## Measured coverage
 

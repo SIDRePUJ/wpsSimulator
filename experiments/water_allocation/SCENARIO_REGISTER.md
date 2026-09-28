@@ -1,6 +1,6 @@
 # Prospective post-pilot scenario register
 
-**Status:** post-pilot design lock, not a claim of preregistration before all evidence. The three-family, single-day, 50%-budget technical pilot and its tiny rule contrasts were already inspected; do not reuse them as confirmatory findings. The 2014/0.35 multi-date three-rule cell has been inspected at two paired seeds, and 2014/0.65 at one seed (nine of 24 registered technical runs). These remain technical diagnostics, not confirmatory effects; see [remote evidence](REMOTE_SMOKE.md) and the [observed-data comparison boundary](EVIDENCE.md#what-the-observed-data-can-check-now).
+**Status:** post-pilot design lock, not a claim of preregistration before all evidence. The three-family, single-day, 50%-budget technical pilot and its tiny rule contrasts were already inspected; do not reuse them as confirmatory findings. The 2014/0.35 multi-date three-rule cell has been inspected at two paired seeds, and 2014/0.65 and 2019/0.35 at one seed each (**12 of 24** registered technical runs). The [EVA 2019A municipal benchmark](MUNICIPAL_BENCHMARK_2019A.md) was committed before the 2019 guarded runs; their observed–modeled gap is a diagnostic, not a validated prediction error. These remain technical diagnostics, not confirmatory effects; see [remote evidence](REMOTE_SMOKE.md) and the [observed-data comparison boundary](EVIDENCE.md#what-the-observed-data-can-check-now).
 
 ## Estimand and model boundary
 
