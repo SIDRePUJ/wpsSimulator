@@ -1,0 +1,24 @@
+{
+  "eligible_area_ha": "96",
+  "eligible_plots": 24,
+  "limitations": "One synthetic seed and calendar mode; neither dates nor water supply are historical observations.",
+  "roster_sha256": "c85255d95a7ea639debe91470fb4ac4990de26019992377fbf8b6e526a8d14ce",
+  "runs": {
+    "calendar-c2-local-20260928-web-osredirect": {
+      "canonical_plant_sha256": "79d5bf6f5642c97e5058e1e94372020e18808cb21ee6dddedf87f50c88fd54c5",
+      "harvest_records": 24,
+      "plant_records": 48,
+      "stdout_sha256": "eb9205c5a5a77e34ceb840e8f5fa61bcd902511c6d742fc3563e3970cb7c9b6b",
+      "yield_audit_sha256": "dadfaccc05c7eb143fb4061efa87c34323449a54ac022facf304fa1974c1437b"
+    },
+    "calendar-c2-local-20260928-web-repeat": {
+      "canonical_plant_sha256": "79d5bf6f5642c97e5058e1e94372020e18808cb21ee6dddedf87f50c88fd54c5",
+      "harvest_records": 24,
+      "plant_records": 48,
+      "stdout_sha256": "0c5273f0bfb42c6d507fb62dd19210c239c2da2d149fd3f22c836c2355241465",
+      "yield_audit_sha256": "dadfaccc05c7eb143fb4061efa87c34323449a54ac022facf304fa1974c1437b"
+    }
+  },
+  "status": "repeat_verified_synthetic_crop_windows_not_observed_planting_dates",
+  "windows_sha256": "28c15b179ca5cb8bfd8de1195a3f065bd30dbb4b0e78638608dc4a1c5538f4f7"
+}
