@@ -75,6 +75,10 @@ public class wpsStart {
         System.out.println("PERTURBATION: " + perturbation);
         System.out.println("LEGACY: " + org.wpsim.WellProdSim.Util.Legacy.describe());
         PhysicalIrrigationPlan irrigationPlan = PhysicalIrrigationPlan.active();
+        org.wpsim.research.water.ResearchCropPolicy.validate(irrigationPlan != null);
+        if (org.wpsim.research.water.ResearchCropPolicy.riceOnlyCohort()) {
+            System.out.println("PHYSICAL_CROP_COHORT: RICE_ONLY");
+        }
         PhysicalYieldLedger yieldLedger = PhysicalYieldLedger.active();
         PhysicalClimateLedger.active();
         DailyRainfallSeries.active();

@@ -143,6 +143,28 @@ class JoinedResultsTest(unittest.TestCase):
                        + log.read_text(encoding="utf-8"), encoding="utf-8")
         self.assertEqual(1, build(self.manifest, self.output))
 
+    def test_requires_declared_rice_cohort_marker(self):
+        self.spec["crop_cohort"] = "RICE_ONLY"
+        self.write_run()
+        with self.assertRaisesRegex(ValueError, "declared crop cohort differs"):
+            build(self.manifest, self.output)
+        log = self.run / "stdout.txt"
+        log.write_text("PHYSICAL_CROP_COHORT: RICE_ONLY\n"
+                       + log.read_text(encoding="utf-8"), encoding="utf-8")
+        self.assertEqual(1, build(self.manifest, self.output))
+
+    def test_rejects_different_world_fingerprints_for_paired_rules(self):
+        (self.root / "world-a.json").write_text("[]\n", encoding="utf-8")
+        (self.root / "world-b.json").write_text("[{}]\n", encoding="utf-8")
+        self.spec["world_json"] = "world-a.json"
+        second = self.root / "other"
+        shutil.copytree(self.run, second)
+        alternate = {**self.spec, "directory": "other", "rule": "SMALL_PLOT_FLOOR",
+                     "world_json": "world-b.json"}
+        self.manifest.write_text(json.dumps({"runs": [self.spec, alternate]}), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "paired runs differ"):
+            build(self.manifest, self.output)
+
 
 if __name__ == "__main__":
     unittest.main()

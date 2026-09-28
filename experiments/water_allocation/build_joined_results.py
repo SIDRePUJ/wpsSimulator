@@ -137,6 +137,7 @@ def admit_run(spec, root):
     request_path = (root / spec["requests_csv"]).resolve()
     farm_path = (root / spec["farm_csv"]).resolve()
     rain_path = (root / spec["rain_csv"]).resolve()
+    world_path = (root / spec["world_json"]).resolve() if "world_json" in spec else None
     counts = audited_counts(directory)
     horizon = spec.get("horizon")
     if horizon is not None:
@@ -146,6 +147,14 @@ def admit_run(spec, root):
         markers = [line for line in log.splitlines() if line.startswith("PHYSICAL_WATER_HORIZON:")]
         if markers != [f"PHYSICAL_WATER_HORIZON: {horizon}"]:
             raise ValueError("declared allocation horizon differs from run marker")
+    crop_cohort = spec.get("crop_cohort")
+    if crop_cohort is not None:
+        if crop_cohort != "RICE_ONLY":
+            raise ValueError(f"invalid crop cohort: {crop_cohort}")
+        log = (directory / "stdout.txt").read_text(encoding="utf-8", errors="replace")
+        markers = [line for line in log.splitlines() if line.startswith("PHYSICAL_CROP_COHORT:")]
+        if markers != ["PHYSICAL_CROP_COHORT: RICE_ONLY"]:
+            raise ValueError("declared crop cohort differs from run marker")
     requests = index_requests(request_path)
     families = read_families(farm_path)
     rain = index_rain(rain_path)
@@ -257,7 +266,8 @@ def admit_run(spec, root):
                        "gross_m3": sum(gross for (day, name), gross in water.items() if name == plot)})
     pair = (metadata["weather"], scarcity, metadata["seed"], metadata["parameter_set"])
     fingerprints = (digest(request_path), digest(farm_path), digest(rain_path),
-                    digest(directory / "climate.csv"), source, horizon)
+                    digest(directory / "climate.csv"), source, horizon, crop_cohort,
+                    digest(world_path) if world_path is not None else None)
     return joined, pair, fingerprints
 
 

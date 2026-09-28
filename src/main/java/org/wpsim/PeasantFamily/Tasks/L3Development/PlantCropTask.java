@@ -43,6 +43,7 @@ import org.wpsim.AgroEcosystem.layer.crop.cell.roots.RootsCell;
 import org.wpsim.AgroEcosystem.layer.disease.DiseaseCell;
 import org.wpsim.AgroEcosystem.layer.disease.DiseaseLayer;
 import org.wpsim.research.water.PhysicalIrrigationPlan;
+import org.wpsim.research.water.ResearchCropPolicy;
 import org.wpsim.AgroEcosystem.layer.evapotranspiration.EvapotranspirationLayer;
 import org.wpsim.AgroEcosystem.layer.rainfall.RainfallLayer;
 import org.wpsim.AgroEcosystem.layer.shortWaveRadiation.ShortWaveRadiationLayer;
@@ -82,7 +83,8 @@ public class PlantCropTask extends wpsLandTask {
                 "data.rainfall." + ControlCurrentDate.getInstance().getCurrentYear());
         String peasantAlias = profile.getPeasantFamilyAlias();
         int cropSize = profile.getCropSize();
-        String currentCropName = believes.getCurrentCropName();
+        String currentCropName = ResearchCropPolicy.select(believes.getCurrentCropName(),
+                PhysicalIrrigationPlan.enabled(), ResearchCropPolicy.riceOnlyCohort());
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING)) {
                 if (currentLandInfo.getCropName().isEmpty()) {
