@@ -27,5 +27,5 @@ Prepare auditable, station-specific weekly irrigation requests for every locked 
 ## Progress
 
 - 2026-09-28: Tracker created before source changes.
-- 2026-09-28: Completed IR-01/IR-02. Across all date mappings, synthetic gross demand spans 430,320–563,120 m³ (2019) and 50,000–325,600 m³ (2022); these are model-derived demands, **not** observed source water. Final work-unit commit recorded after commit creation.
+- 2026-09-28: Completed IR-01/IR-02 in work-unit commit `6757082`. Across all date mappings, synthetic gross demand spans 430,320–563,120 m³ (2019) and 50,000–325,600 m³ (2022); these are model-derived demands, **not** observed source water. All 39 water-allocation Python tests passed.
 - Next: resolve or bracket station quality and ZIP date labeling, freeze paired-rule matrix, then run simulator. Do not call these schedules empirical delivery or validation data.
