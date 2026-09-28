@@ -8,7 +8,7 @@ Add an opt-in research calendar guard so first rice plantings can occur only in 
 
 - Authorized branch: `research/water-allocation-evidence`; local worktree only.
 - Keep the 12-family/24 first-planting-eligible-plot, 96-ha research cohort and its 48 annual world trace contract as audit expectations, not assumed outcomes.
-- No full simulation, remote execution, data downloads, push, PR, merge, manuscript edit, or historical relabeling.
+- Local diagnostic full-agent runs are allowed for cohort verification; no policy matrix, remote execution, data downloads, push, PR, merge, manuscript edit, or historical relabeling.
 - Route: delegated direct. Trigger: coordinated edits across policy, agent gates, tests, and documentation.
 - TDD: off; no explicit strict-TDD setting for this ODD feature. Focused Java main-method tests plus isolated source build are the available runner. Applicable build: `experiments/water_allocation/verify_source_build.ps1`.
 - Delivery: `ask-on-risk`; forecast approximately 120–220 authored lines for this work unit, below the 400-line delivery heuristic. No PR authorized.
@@ -22,3 +22,4 @@ Add an opt-in research calendar guard so first rice plantings can occur only in 
 
 - C1 verified: standalone `ResearchCropPolicyTest PASS`; `verify_source_build.ps1` compiled 245 WellProdSim files and `CropLayerIrrigationTest PASS`; `git diff --check` passed. Tests cover opt-in and legacy policy boundaries. No end-to-end crop trace was run. Work-unit commit: `d560fe7` (`feat(water): guard district rice planting window`).
 - C2 pending; no claim that planting dates, 48 annual worlds, or empirical crop response are verified.
+- C2 local attempt blocked before cohort tracing; see `experiments/water_allocation/LOCAL_CALENDAR_C2_AUDIT.md`. A frozen diagnostic fixture was tried three times; two pre-outcome CLI setup omissions were corrected, and the final invocation reported 12 farms/24 lands but did not complete or write year-end audits. No dates, crop worlds, harvests, or area-class composition were observed. Do not generate IDEAM-conditioned requests or run the policy matrix until a natural exit-0 cohort audit passes.
