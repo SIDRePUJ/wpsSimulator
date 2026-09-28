@@ -35,6 +35,17 @@ The [IDEAM response identifying the national daily precipitation download](https
 
 The 2014 POWER total is far below all three complete local stations. Station ordering between 2014 and 2019 is not uniform, so **2014 is a lower-tail year only in the selected POWER series**, not an established municipality-wide drought year. Shifting the station window by one date does not remove the gross 2014 discrepancy. Daily record timestamps are 07:00; the archive does not state whether the labelled date is the beginning or end of the accumulation period. No station-level quality flag is present in these downloaded two-column files. Confirm the observation convention and obtain station quality metadata before using any one station or spatial composite as historical forcing; pre-register spatial selection and rerun paired rules as a sensitivity analysis. The current POWER runs remain technical counterfactuals.
 
+**2019/2022 timing check for the proposed replacement.** All four station files have 365/365 dates in each complete year. In the 192-day study window:
+
+| Station | Days ≥1 mm, 2019→2022 | Maximum daily mm, 2019/2022 | Daily correlation with Puerto Santander, 2019/2022 |
+| --- | ---: | ---: | ---: |
+| Puerto Santander | 48→81 | 85.0/87.8 | Reference |
+| Flamenco | 36→55 | 42.0/82.0 | 0.19/0.15 |
+| Mampuján | 38→91 | 43.0/29.0 | 0.02/0.06 |
+| Nueva Florida | 53→77 | 79.3/55.6 | 0.32/0.27 |
+
+The simple range checks find no negative values or isolated >100 mm day in these windows; they do **not** certify station quality. Seven-day nonoverlapping rainfall-block correlation between Puerto Santander and Mampuján remains only 0.06/0.02 (2019/2022); shifting dates by ±1 day does not yield strong daily agreement. This may reflect spatially localized rain, timing differences or data quality; the archive alone cannot distinguish them. **Do not average the four daily series into a supposedly observed municipal rainfall field or select one gauge by model fit.** Treat station choice and daily timing as input uncertainty until geospatial representativeness and quality are assessed.
+
 ## What the observed data can check now
 
 Keep **verification** (the program implements its equations and conserves water), **input anchoring** (scenario composition resembles a defined observed subset), **plausibility** (modeled outputs have a credible scale) and **external validation** (independent matched observations predictably reproduced) as separate claims. Passing one does not imply the next.
