@@ -1,0 +1,176 @@
+{
+  "limitations": "Date-label semantics and station quality are unverified. No daily values are committed. These inputs do not validate historical water delivery or allocation rules.",
+  "mapping_definitions": {
+    "label_date": "source value stamped at 07:00 on D is assigned to D",
+    "previous_day": "source value stamped at 07:00 on D+1 is assigned to D"
+  },
+  "scenarios": {
+    "29030080/2019/label_date": {
+      "date_mapping": "label_date",
+      "day_count": 365,
+      "output_file": "ideam_29030080_2019_label_date_as_2022.csv",
+      "output_sha256": "62ccee0ee53cd62e0a4c61d792ed46bd764b3b0b578744a2ac3b698bb1835a91",
+      "source_year": 2019,
+      "station": "Puerto Santander",
+      "station_code": "29030080",
+      "window_02_01_to_08_11_mm": "740.2"
+    },
+    "29030080/2019/previous_day": {
+      "date_mapping": "previous_day",
+      "day_count": 365,
+      "output_file": "ideam_29030080_2019_previous_day_as_2022.csv",
+      "output_sha256": "5e075788ee9dc11de44d33a2bc0bdeafa63081ebc8308e806ee77db95725a0ce",
+      "source_year": 2019,
+      "station": "Puerto Santander",
+      "station_code": "29030080",
+      "window_02_01_to_08_11_mm": "745.4"
+    },
+    "29030080/2022/label_date": {
+      "date_mapping": "label_date",
+      "day_count": 365,
+      "output_file": "ideam_29030080_2022_label_date_as_2022.csv",
+      "output_sha256": "a1ff166a774eb6906a0804bd34bbb64de6d4d9914eb25c57be592c0969b3fa9d",
+      "source_year": 2022,
+      "station": "Puerto Santander",
+      "station_code": "29030080",
+      "window_02_01_to_08_11_mm": "1103.3"
+    },
+    "29030080/2022/previous_day": {
+      "date_mapping": "previous_day",
+      "day_count": 365,
+      "output_file": "ideam_29030080_2022_previous_day_as_2022.csv",
+      "output_sha256": "77aad062ec0e4d0ffa612b1e82312cef7aab848227aab2facc732dc2cc2bcd0f",
+      "source_year": 2022,
+      "station": "Puerto Santander",
+      "station_code": "29030080",
+      "window_02_01_to_08_11_mm": "1103.3"
+    },
+    "29030160/2019/label_date": {
+      "date_mapping": "label_date",
+      "day_count": 365,
+      "output_file": "ideam_29030160_2019_label_date_as_2022.csv",
+      "output_sha256": "1e26b68f72c3f824148454c166d21beae2336ff36b78ed618618aa41fe411449",
+      "source_year": 2019,
+      "station": "Flamenco",
+      "station_code": "29030160",
+      "window_02_01_to_08_11_mm": "539.0"
+    },
+    "29030160/2019/previous_day": {
+      "date_mapping": "previous_day",
+      "day_count": 365,
+      "output_file": "ideam_29030160_2019_previous_day_as_2022.csv",
+      "output_sha256": "024c2e84749d9899e66e761c8191c81bef11d117283e3763f202b6a236619b5a",
+      "source_year": 2019,
+      "station": "Flamenco",
+      "station_code": "29030160",
+      "window_02_01_to_08_11_mm": "539.0"
+    },
+    "29030160/2022/label_date": {
+      "date_mapping": "label_date",
+      "day_count": 365,
+      "output_file": "ideam_29030160_2022_label_date_as_2022.csv",
+      "output_sha256": "9c8f5ca952390d08d7a6bb2bdadde656c81c78d0ec9f02eb813b738064f46402",
+      "source_year": 2022,
+      "station": "Flamenco",
+      "station_code": "29030160",
+      "window_02_01_to_08_11_mm": "1121.0"
+    },
+    "29030160/2022/previous_day": {
+      "date_mapping": "previous_day",
+      "day_count": 365,
+      "output_file": "ideam_29030160_2022_previous_day_as_2022.csv",
+      "output_sha256": "6a634a73428131370c8b2b230372ac62c75ab05befa1b7762f4d6ce0ffa75e2b",
+      "source_year": 2022,
+      "station": "Flamenco",
+      "station_code": "29030160",
+      "window_02_01_to_08_11_mm": "1134.0"
+    },
+    "29030780/2019/label_date": {
+      "date_mapping": "label_date",
+      "day_count": 365,
+      "output_file": "ideam_29030780_2019_label_date_as_2022.csv",
+      "output_sha256": "aa81524a779fb727156bd9001a887d11959815a63a6b8b927d4dcce6bbddf2b5",
+      "source_year": 2019,
+      "station": "Mampujan",
+      "station_code": "29030780",
+      "window_02_01_to_08_11_mm": "527.0"
+    },
+    "29030780/2019/previous_day": {
+      "date_mapping": "previous_day",
+      "day_count": 365,
+      "output_file": "ideam_29030780_2019_previous_day_as_2022.csv",
+      "output_sha256": "677ac67bc147a72791b478c9f83ca74fe89c233f69db66f2119075503194a456",
+      "source_year": 2019,
+      "station": "Mampujan",
+      "station_code": "29030780",
+      "window_02_01_to_08_11_mm": "529.0"
+    },
+    "29030780/2022/label_date": {
+      "date_mapping": "label_date",
+      "day_count": 365,
+      "output_file": "ideam_29030780_2022_label_date_as_2022.csv",
+      "output_sha256": "7fcf4c7d2a290b7db7fd48b641d45d79eade0b63d077826a6b6d4061bf945681",
+      "source_year": 2022,
+      "station": "Mampujan",
+      "station_code": "29030780",
+      "window_02_01_to_08_11_mm": "1382.0"
+    },
+    "29030780/2022/previous_day": {
+      "date_mapping": "previous_day",
+      "day_count": 365,
+      "output_file": "ideam_29030780_2022_previous_day_as_2022.csv",
+      "output_sha256": "7fd1a7d4cd8033b0aa7327a57d3d8935f39d621c17838f9fab228fb0add93b5f",
+      "source_year": 2022,
+      "station": "Mampujan",
+      "station_code": "29030780",
+      "window_02_01_to_08_11_mm": "1382.0"
+    },
+    "29035040/2019/label_date": {
+      "date_mapping": "label_date",
+      "day_count": 365,
+      "output_file": "ideam_29035040_2019_label_date_as_2022.csv",
+      "output_sha256": "20af5e9f189f6d251f71cc96237be9b4c9373ef2d546f5cf8398374f09d242dd",
+      "source_year": 2019,
+      "station": "Nueva Florida",
+      "station_code": "29035040",
+      "window_02_01_to_08_11_mm": "750.5"
+    },
+    "29035040/2019/previous_day": {
+      "date_mapping": "previous_day",
+      "day_count": 365,
+      "output_file": "ideam_29035040_2019_previous_day_as_2022.csv",
+      "output_sha256": "481dcb9733f41542b5002c9523dc921f9ffda71943203d3cd0e884d2dc193cfa",
+      "source_year": 2019,
+      "station": "Nueva Florida",
+      "station_code": "29035040",
+      "window_02_01_to_08_11_mm": "750.5"
+    },
+    "29035040/2022/label_date": {
+      "date_mapping": "label_date",
+      "day_count": 365,
+      "output_file": "ideam_29035040_2022_label_date_as_2022.csv",
+      "output_sha256": "13ecb5f6b3bac0c0a7d4d9aa860aaa8204d067fb2ffee6306dcf857dc3320aac",
+      "source_year": 2022,
+      "station": "Nueva Florida",
+      "station_code": "29035040",
+      "window_02_01_to_08_11_mm": "1227.9"
+    },
+    "29035040/2022/previous_day": {
+      "date_mapping": "previous_day",
+      "day_count": 365,
+      "output_file": "ideam_29035040_2022_previous_day_as_2022.csv",
+      "output_sha256": "fd2d822a098f43bc5db03df397b69d241b687fc08967fb74d5266347b95e062a",
+      "source_year": 2022,
+      "station": "Nueva Florida",
+      "station_code": "29035040",
+      "window_02_01_to_08_11_mm": "1259.7"
+    }
+  },
+  "simulation_year": 2022,
+  "source_daily_unit": "mm",
+  "source_file": "ideam_precipitacion_nacional_diaria.zip",
+  "source_label": "PTPM_CON_INTER",
+  "source_sha256": "fa695160a154a7ce9c95dee736535a5a8cd9bbcfafe5a6aa3dace13a9bd03e1b",
+  "source_url": "https://bart.ideam.gov.co/PQRS/AQTSUtils/PrecipitacionNacionalDiaria.zip",
+  "status": "unvalidated_station_observations_not_municipal_rainfall"
+}
