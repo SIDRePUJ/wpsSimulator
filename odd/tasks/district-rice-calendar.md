@@ -20,5 +20,5 @@ Add an opt-in research calendar guard so first rice plantings can occur only in 
 
 ## Progress
 
-- C1 verified: standalone `ResearchCropPolicyTest PASS`; `verify_source_build.ps1` compiled 245 WellProdSim files and `CropLayerIrrigationTest PASS`; `git diff --check` passed. Tests cover opt-in and legacy policy boundaries. No end-to-end crop trace was run. Work-unit commit: pending creation.
+- C1 verified: standalone `ResearchCropPolicyTest PASS`; `verify_source_build.ps1` compiled 245 WellProdSim files and `CropLayerIrrigationTest PASS`; `git diff --check` passed. Tests cover opt-in and legacy policy boundaries. No end-to-end crop trace was run. Work-unit commit: `d560fe7` (`feat(water): guard district rice planting window`).
 - C2 pending; no claim that planting dates, 48 annual worlds, or empirical crop response are verified.
