@@ -46,6 +46,17 @@ The 2014 POWER total is far below all three complete local stations. Station ord
 
 The simple range checks find no negative values or isolated >100 mm day in these windows; they do **not** certify station quality. Seven-day nonoverlapping rainfall-block correlation between Puerto Santander and Mampuján remains only 0.06/0.02 (2019/2022); shifting dates by ±1 day does not yield strong daily agreement. This may reflect spatially localized rain, timing differences or data quality; the archive alone cannot distinguish them. **Do not average the four daily series into a supposedly observed municipal rainfall field or select one gauge by model fit.** Treat station choice and daily timing as input uncertainty until geospatial representativeness and quality are assessed.
 
+**Spatial metadata check (2026-09-28).** The downloaded [IDEAM national station catalog](https://www.ideam.gov.co/transparencia/datos-abiertos/seccion-de-datos-abiertos/catalogo-nacional-de-estaciones-del-ideam) has locked SHA-256 `2ad7c7613ccc2596bd15989e8a141ff0766a5e65bd6e7eb3d2efbdacc488a7b5` in `data/derived/source_profile.json`. It lists all four as active conventional pluviometric stations in María La Baja. Great-circle distances below use catalog coordinates and the **NASA POWER query point** (9.984454° N, 75.3021802° W), not a measured farm, command-area centroid or municipal centroid:
+
+| Station | Latitude (° N) | Longitude (° E) | Altitude (m) | Distance to POWER point (km) |
+| --- | ---: | ---: | ---: | ---: |
+| Puerto Santander (`29030080`) | 10.003740 | -75.316291 | 5 | 2.64 |
+| Flamenco (`29030160`) | 9.986669 | -75.398285 | 12 | 10.53 |
+| Mampuján (`29030780`) | 9.987741 | -75.229856 | 60 | 7.93 |
+| Nueva Florida (`29035040`) | 9.944806 | -75.351561 | 13 | 6.98 |
+
+Station separation spans 6.92–18.45 km. Puerto Santander is nearest **only to the previously selected POWER point**; proximity does not establish that it represents the 24 synthetic plots, whose grid identifiers are not georeferenced, or the irrigation command area. Catalog operational status is not a 2019/2022 observation-quality flag. Consequently, do not derive plot-specific rainfall weights or a municipal areal mean from these metadata. Use each station separately as a forcing-sensitivity branch; if Puerto Santander is used as a point-reference illustration, label it as such and show all other stations' results alongside it. The [IDEAM observer manual](https://ideam.gov.co/sites/default/files/mapa-de-procesos/gdi-m003_manual_del_observador_meteorologico_0.pdf) confirms the 07:00-to-07:00 pluviometric interval but does not establish whether this ZIP's `Fecha` labels the interval start or end. Retain both prepared date mappings until ZIP-specific documentation resolves the question.
+
 ## What the observed data can check now
 
 Keep **verification** (the program implements its equations and conserves water), **input anchoring** (scenario composition resembles a defined observed subset), **plausibility** (modeled outputs have a credible scale) and **external validation** (independent matched observations predictably reproduced) as separate claims. Passing one does not imply the next.
