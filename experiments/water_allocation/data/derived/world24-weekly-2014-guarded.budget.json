@@ -1,0 +1,19 @@
+{
+  "efficiency": "0.48",
+  "eligible_plots": 24,
+  "rain_factor": "0.8",
+  "rain_sha256": "50f519e3835b26f189a402ef372c437f00721454ba7676b78be34e43a01aaab3",
+  "registration_plots": 24,
+  "request_rows": 408,
+  "request_sha256": "d1df8e0257a4905aa1859fd53eeba67e9417fb3996f286fe696aa6114dca3006",
+  "roster_sha256": "c85255d95a7ea639debe91470fb4ac4990de26019992377fbf8b6e526a8d14ce",
+  "source_m3_by_ratio": {
+    "0.35": "297626.000000",
+    "0.65": "552734.000000",
+    "1.00": "850360.000000"
+  },
+  "status": "synthetic_root_zone_scenario_not_observed_water_supply",
+  "target_mm": "30",
+  "unconstrained_gross_m3": "850360.000000",
+  "windows_sha256": "306436939e1d8dea4f0b2fe267f08db1f83eaf504db0956b294bc662db49525e"
+}
