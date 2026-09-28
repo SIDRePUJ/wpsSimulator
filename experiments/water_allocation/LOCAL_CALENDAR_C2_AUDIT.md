@@ -32,4 +32,18 @@ The successful invocation's essential arguments were `-env local -mode web -agen
 
 For the successful run, the diagnostic fixture SHA-256 remained `7349e3ca1c2b591de3cc3afdd751a7c73d08450dddce8296b3d10b546b9eeff4`. Audit hashes: water `45f55a56f9d779c33dc2ab0a98c9541a63f269324b86c06dc168c4b104b1ce72`, yield `dadfaccc05c7eb143fb4061efa87c34323449a54ac022facf304fa1974c1437b`, climate `ae9a9d6dccdffe81d65c9180189b70c51fd14cfa31339b9d1ddc461d7667f4aa`. A shutdown stack trace in stderr begins `Runtime.exit(0)`; process exit and all audit summaries still report success. Retain it as an execution diagnostic rather than silently dropping stderr.
 
-**Next gate:** freeze the now-observed first-version dates and harvest windows, regenerate matched IDEAM-conditioned weekly requests and finite-source stocks **before** any rule matrix. Check request dates against actual crop windows and confirm repeated identical discovery/forcing as a separate reproducibility gate. The old February/April technical cohort and its requests remain unsuitable as a district-calendar validation claim.
+**Next gate:** freeze the now-observed first-version dates and harvest windows, regenerate matched IDEAM-conditioned weekly requests and finite-source stocks **before** any rule matrix, and check request dates against actual crop windows. The old February/April technical cohort and its requests remain unsuitable as a district-calendar validation claim.
+
+## Identical-repeat gate
+
+One separately launched local repeat, `reports/raw/calendar-c2-local-20260928-web-repeat`, used the **same compiled classpath**, seed, 12-family manifest, `world.24.json`, model switches, 240-second bound and diagnostic fixture SHA-256 `7349e3ca1c2b591de3cc3afdd751a7c73d08450dddce8296b3d10b546b9eeff4`. Only the ignored output directory paths changed; its complete Java command is preserved in that directory's `command.txt`. The compiled `ResearchCropPolicy.class` SHA-256 was `671aa78c79a4ac9dfe0f27068f0648aca8edbe7a9003cc3d7c93b5a29bd79f7a`. **Natural Java exit 0** occurred after 208 seconds.
+
+The sorted, canonical 48-row `WATER_PLANT` plot/owner/area/date roster matched the first run byte-for-byte after canonicalization (SHA-256 `f126d32bba6a5f9372377a8cc496f8b48846e4dc913dc2b031ab8fbfec3cc6ed`). The 48-row `WATER_PLOT` plot/crop/area roster also matched (`aef5c91a8837bc21bf7f73e06e10a59d44b5c0613ddd6486c74387cd576c3b39`). Both runs had the same 24 first-version plantings (12 on 1 February, 12 on 14 February), 12 owners, 96 ha and 4/5/3 area classes. Water, yield and climate CSVs were **byte-identical** between runs:
+
+| Audit | SHA-256 in both runs | Completeness |
+| --- | --- | --- |
+| Water | `45f55a56f9d779c33dc2ab0a98c9541a63f269324b86c06dc168c4b104b1ce72` | 48/48 registered; 24 applied, zero missing. |
+| Yield | `dadfaccc05c7eb143fb4061efa87c34323449a54ac022facf304fa1974c1437b` | 24/24 first-version harvests. |
+| Climate | `ae9a9d6dccdffe81d65c9180189b70c51fd14cfa31339b9d1ddc461d7667f4aa` | 24 plots, 2,904 rows, zero gaps. |
+
+Raw stdout and stderr files differ across runs because they include run-specific output paths, wall-clock logs/runtime and asynchronous print order; they are **not** used as the reproducibility identity. The canonical planting/crop rosters and persisted audit CSVs are the identity checks. This verifies exact repeatability for **one synthetic diagnostic configuration and one seed**, not cross-seed robustness, historical crop-calendar accuracy, or IDEAM-conditioned scarcity outcomes. No allocation-rule matrix or new request schedule was run.
