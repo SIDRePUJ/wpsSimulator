@@ -35,6 +35,18 @@ All three climate CSVs are byte-identical (SHA-256 `1cfe24a2bd2bd1381af59ef6b646
 
 Against proportional demand, equal-per-hectare changes production by **−0.550 t** and relative-loss Gini by **−0.000094**; the plot-floor rule changes production by **−0.132 t**, relative-loss Gini by **+0.09784**, but smallest-area-UPA P90 relative loss by **−0.07308**. This is a real distributional tension *inside this synthetic cell*, not a general equity-efficiency frontier or a statistical result. The floor is awarded by **plot area**, not verified UPA entitlement; its label must not imply an observed district allocation practice. Gini of losses and smallest-UPA tail loss answer different questions and may move in opposite directions. A single seed and one weather/date interpretation provide no uncertainty interval.
 
+## External plausibility check, not validation
+
+The independently recorded [UPRA EVA 2019A municipal benchmark](MUNICIPAL_BENCHMARK_2019A.md) is **3.13 t/ha** for María La Baja irrigated rice on **1,147.5 harvested ha**. Dividing each strict UPA report's 24-plot production total by its **96 simulated eligible ha** gives:
+
+| C3 rule | Modeled production on 96 ha (t) | Modeled yield (t/ha) | Signed gap from rounded EVA 2019A (t/ha) |
+| --- | ---: | ---: | ---: |
+| `PROPORTIONAL_DEMAND` | 402.203693 | 4.189622 | +1.059622 |
+| `EQUAL_PER_HECTARE` | 401.653285 | 4.183888 | +1.053888 |
+| `SMALL_PLOT_FLOOR` | 402.071556 | 4.188245 | +1.058245 |
+
+These positive gaps are an **unresolved external-plausibility warning**, not prediction errors or a goodness-of-fit score. The modeled plots are an invented 96-ha district-water-user subset, not a sample or expansion of all 1,147.5 municipal irrigated-rice hectares; actual 2019 plot dates, areas, management and water deliveries are not matched. IDEAM 2019 rainfall was mapped onto a **2022 simulation calendar**, while other climate drivers remain synthetic. The finite source, request depth, `Ym=5 t/ha`, `Ky=1`, soil/paddy-water processes and farm management have not been calibrated to those EVA observations. Do not tune `Ym`, `Ky` or the stock to erase this gap and then reuse EVA 2019A as independent validation. Nor should modeled tonnes be read as municipal production.
+
 ## What still blocks paper claims
 
 - IDEAM rain forcing is observed at a station, but its date-label interpretation and spatial representativeness remain uncertain. Only rainfall was forced; ET, temperature and radiation remain simulator-generated, seeded inputs.
