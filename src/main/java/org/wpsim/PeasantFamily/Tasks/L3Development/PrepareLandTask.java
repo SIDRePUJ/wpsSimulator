@@ -20,6 +20,8 @@ import rational.mapping.Believes;
 import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
+import org.wpsim.SimulationControl.Data.DateHelper;
+import org.wpsim.research.water.ResearchCropPolicy;
 
 /**
  *
@@ -47,7 +49,10 @@ public class PrepareLandTask extends wpsLandTask {
 
         for (LandInfo currentLandInfo : believes.getAssignedLands()) {
             if (currentLandInfo.getKind().equals("land")) {
-                if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)) {
+                if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE)
+                        && (!ResearchCropPolicy.districtRiceCalendar()
+                        || ResearchCropPolicy.mayPrepare(DateHelper.getMonthFromStringDate(
+                                believes.getInternalCurrentDate()), currentLandInfo.getVersion()))) {
                     //System.out.println("Preparing Planting season for " + currentLandInfo.getLandName());
                     this.increaseWorkDone(believes, currentLandInfo.getLandName(), TimeConsumedBy.PrepareLandTask.getTime() * factor);
                     believes.useTime(TimeConsumedBy.PrepareLandTask.getTime());

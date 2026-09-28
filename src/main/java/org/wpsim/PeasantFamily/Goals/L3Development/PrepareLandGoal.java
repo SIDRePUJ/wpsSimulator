@@ -24,6 +24,8 @@ import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L3Development.PrepareLandTask;
+import org.wpsim.SimulationControl.Data.DateHelper;
+import org.wpsim.research.water.ResearchCropPolicy;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -77,10 +79,12 @@ public class PrepareLandGoal extends wpsGoalBDI {
             return 0;
         }
 
-        if (believes.isPlantingSeason()) {
+        if (believes.isPlantingSeason() || ResearchCropPolicy.districtRiceCalendar()) {
             for (LandInfo currentLandInfo : believes.getAssignedLands()) {
                 if (currentLandInfo.getKind().equals("land")) {
                     if (currentLandInfo.getCurrentSeason().equals(SeasonType.NONE) &&
+                            ResearchCropPolicy.mayPrepare(DateHelper.getMonthFromStringDate(
+                                    believes.getInternalCurrentDate()), currentLandInfo.getVersion()) &&
                             believes.haveTimeAvailable(TimeConsumedBy.PrepareLandTask)) {
                         return 1;
                     }

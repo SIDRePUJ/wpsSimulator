@@ -24,6 +24,8 @@ import org.wpsim.PeasantFamily.Data.PeasantFamilyBelieves;
 import org.wpsim.PeasantFamily.Data.Utils.SeasonType;
 import org.wpsim.PeasantFamily.Data.Utils.TimeConsumedBy;
 import org.wpsim.PeasantFamily.Tasks.L3Development.PlantCropTask;
+import org.wpsim.SimulationControl.Data.DateHelper;
+import org.wpsim.research.water.ResearchCropPolicy;
 import rational.RationalRole;
 import rational.mapping.Believes;
 import rational.mapping.Plan;
@@ -78,6 +80,8 @@ public class PlantCropGoal extends wpsGoalBDI {
         List<LandInfo> landInfos = believes.getAssignedLands();
         for (LandInfo currentLandInfo : landInfos) {
             if (currentLandInfo.getCurrentSeason().equals(SeasonType.PLANTING) &&
+                    ResearchCropPolicy.mayPlant(DateHelper.getMonthFromStringDate(
+                            believes.getInternalCurrentDate()), currentLandInfo.getVersion()) &&
                     believes.haveTimeAvailable(TimeConsumedBy.PlantCropTask)) {
                 if (believes.getPeasantProfile().getSeeds() >= believes.getPeasantProfile().getSeedsNeeded()
                         && believes.getPeasantProfile().getTools() >= believes.getPeasantProfile().getToolsNeeded()) {
