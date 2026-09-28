@@ -1,0 +1,255 @@
+{
+  "ideam_source_sha256": "FA695160A154A7CE9C95DEE736535A5A8CD9BBCFAFE5A6AA3DACE13A9BD03E1B",
+  "limitations": "Station quality, ZIP date-label semantics and spatial representativeness remain unresolved. Stocks are fractions of synthetic gross demand, not measured source volumes. No allocation rules were run. Request CSVs remain ignored because they contain station-derived daily information.",
+  "parameters": {
+    "delivery_efficiency": "0.48",
+    "rain_factor": "0.8",
+    "target_mm": "30"
+  },
+  "rainfall_manifest_sha256": "fa937f9486d9f8bb9ee1ab944b8f205449863ced71769006a55840454a9194d6",
+  "roster_sha256": "c85255d95a7ea639debe91470fb4ac4990de26019992377fbf8b6e526a8d14ce",
+  "scenarios": {
+    "29030080/2019/label_date": {
+      "date_mapping": "label_date",
+      "rain_sha256": "62ccee0ee53cd62e0a4c61d792ed46bd764b3b0b578744a2ac3b698bb1835a91",
+      "request_file": "ideam_requests_29030080_2019_label_date.csv",
+      "request_rows": 408,
+      "request_sha256": "8f5e252e048f177920f9c9a951e4dec55eb4cb9c0ba44d7c7f53f99a72c6c917",
+      "source_m3_by_ratio": {
+        "0.35": "197092.000000",
+        "0.65": "366028.000000",
+        "1.00": "563120.000000"
+      },
+      "source_year": 2019,
+      "station_code": "29030080",
+      "unconstrained_gross_m3": "563120.000000"
+    },
+    "29030080/2019/previous_day": {
+      "date_mapping": "previous_day",
+      "rain_sha256": "5e075788ee9dc11de44d33a2bc0bdeafa63081ebc8308e806ee77db95725a0ce",
+      "request_file": "ideam_requests_29030080_2019_previous_day.csv",
+      "request_rows": 408,
+      "request_sha256": "1d19294992eac35dfda7c57876a1028f8cabebbdf303a505403875f96756bede",
+      "source_m3_by_ratio": {
+        "0.35": "190848.000000",
+        "0.65": "354432.000000",
+        "1.00": "545280.000000"
+      },
+      "source_year": 2019,
+      "station_code": "29030080",
+      "unconstrained_gross_m3": "545280.000000"
+    },
+    "29030080/2022/label_date": {
+      "date_mapping": "label_date",
+      "rain_sha256": "a1ff166a774eb6906a0804bd34bbb64de6d4d9914eb25c57be592c0969b3fa9d",
+      "request_file": "ideam_requests_29030080_2022_label_date.csv",
+      "request_rows": 408,
+      "request_sha256": "6d083f4a7b5bd50d442ac7e2e6be8e64a80f9d7626fbac33a8771c15928d02a4",
+      "source_m3_by_ratio": {
+        "0.35": "91560.000000",
+        "0.65": "170040.000000",
+        "1.00": "261600.000000"
+      },
+      "source_year": 2022,
+      "station_code": "29030080",
+      "unconstrained_gross_m3": "261600.000000"
+    },
+    "29030080/2022/previous_day": {
+      "date_mapping": "previous_day",
+      "rain_sha256": "77aad062ec0e4d0ffa612b1e82312cef7aab848227aab2facc732dc2cc2bcd0f",
+      "request_file": "ideam_requests_29030080_2022_previous_day.csv",
+      "request_rows": 408,
+      "request_sha256": "68fd3c27e4d3f818f423e3502caf601d79b73e44b2b6dc215b13f4044ae1399d",
+      "source_m3_by_ratio": {
+        "0.35": "94612.000000",
+        "0.65": "175708.000000",
+        "1.00": "270320.000000"
+      },
+      "source_year": 2022,
+      "station_code": "29030080",
+      "unconstrained_gross_m3": "270320.000000"
+    },
+    "29030160/2019/label_date": {
+      "date_mapping": "label_date",
+      "rain_sha256": "1e26b68f72c3f824148454c166d21beae2336ff36b78ed618618aa41fe411449",
+      "request_file": "ideam_requests_29030160_2019_label_date.csv",
+      "request_rows": 408,
+      "request_sha256": "e0d61d16f4474db2669ce7c3278fa0650bccf4e87013cdd166fdb313c2a34907",
+      "source_m3_by_ratio": {
+        "0.35": "189840.000000",
+        "0.65": "352560.000000",
+        "1.00": "542400.000000"
+      },
+      "source_year": 2019,
+      "station_code": "29030160",
+      "unconstrained_gross_m3": "542400.000000"
+    },
+    "29030160/2019/previous_day": {
+      "date_mapping": "previous_day",
+      "rain_sha256": "024c2e84749d9899e66e761c8191c81bef11d117283e3763f202b6a236619b5a",
+      "request_file": "ideam_requests_29030160_2019_previous_day.csv",
+      "request_rows": 408,
+      "request_sha256": "d5e189775e4f24425b297a32918276c2ecc7f34d506b1bdafc33dbc0abde3f00",
+      "source_m3_by_ratio": {
+        "0.35": "181300.000000",
+        "0.65": "336700.000000",
+        "1.00": "518000.000000"
+      },
+      "source_year": 2019,
+      "station_code": "29030160",
+      "unconstrained_gross_m3": "518000.000000"
+    },
+    "29030160/2022/label_date": {
+      "date_mapping": "label_date",
+      "rain_sha256": "9c8f5ca952390d08d7a6bb2bdadde656c81c78d0ec9f02eb813b738064f46402",
+      "request_file": "ideam_requests_29030160_2022_label_date.csv",
+      "request_rows": 408,
+      "request_sha256": "fae9ea732f41ec6c5924fcdc2546c088cf02e0778ff77a2c259e38f303488485",
+      "source_m3_by_ratio": {
+        "0.35": "113960.000000",
+        "0.65": "211640.000000",
+        "1.00": "325600.000000"
+      },
+      "source_year": 2022,
+      "station_code": "29030160",
+      "unconstrained_gross_m3": "325600.000000"
+    },
+    "29030160/2022/previous_day": {
+      "date_mapping": "previous_day",
+      "rain_sha256": "6a634a73428131370c8b2b230372ac62c75ab05befa1b7762f4d6ce0ffa75e2b",
+      "request_file": "ideam_requests_29030160_2022_previous_day.csv",
+      "request_rows": 408,
+      "request_sha256": "00ec369c7a49418459be4ea8623b0ef98cfb30a23167d8804a452f4594d5af08",
+      "source_m3_by_ratio": {
+        "0.35": "111580.000000",
+        "0.65": "207220.000000",
+        "1.00": "318800.000000"
+      },
+      "source_year": 2022,
+      "station_code": "29030160",
+      "unconstrained_gross_m3": "318800.000000"
+    },
+    "29030780/2019/label_date": {
+      "date_mapping": "label_date",
+      "rain_sha256": "aa81524a779fb727156bd9001a887d11959815a63a6b8b927d4dcce6bbddf2b5",
+      "request_file": "ideam_requests_29030780_2019_label_date.csv",
+      "request_rows": 408,
+      "request_sha256": "b1fb977ca18ff1da6f45bbbed877a7281b5c733b0fec54c0288adf4612106001",
+      "source_m3_by_ratio": {
+        "0.35": "176260.000000",
+        "0.65": "327340.000000",
+        "1.00": "503600.000000"
+      },
+      "source_year": 2019,
+      "station_code": "29030780",
+      "unconstrained_gross_m3": "503600.000000"
+    },
+    "29030780/2019/previous_day": {
+      "date_mapping": "previous_day",
+      "rain_sha256": "677ac67bc147a72791b478c9f83ca74fe89c233f69db66f2119075503194a456",
+      "request_file": "ideam_requests_29030780_2019_previous_day.csv",
+      "request_rows": 408,
+      "request_sha256": "2c7df0cf6a3e2fb245c3a2f5f12133db2b6064c3b451548a0b29e0cba5fb6399",
+      "source_m3_by_ratio": {
+        "0.35": "169820.000000",
+        "0.65": "315380.000000",
+        "1.00": "485200.000000"
+      },
+      "source_year": 2019,
+      "station_code": "29030780",
+      "unconstrained_gross_m3": "485200.000000"
+    },
+    "29030780/2022/label_date": {
+      "date_mapping": "label_date",
+      "rain_sha256": "7fcf4c7d2a290b7db7fd48b641d45d79eade0b63d077826a6b6d4061bf945681",
+      "request_file": "ideam_requests_29030780_2022_label_date.csv",
+      "request_rows": 408,
+      "request_sha256": "b2ad62c5850705e5170b75f50405fef53da1b0d912d1dd5cf6dea9811d9a74a1",
+      "source_m3_by_ratio": {
+        "0.35": "18620.000000",
+        "0.65": "34580.000000",
+        "1.00": "53200.000000"
+      },
+      "source_year": 2022,
+      "station_code": "29030780",
+      "unconstrained_gross_m3": "53200.000000"
+    },
+    "29030780/2022/previous_day": {
+      "date_mapping": "previous_day",
+      "rain_sha256": "7fd1a7d4cd8033b0aa7327a57d3d8935f39d621c17838f9fab228fb0add93b5f",
+      "request_file": "ideam_requests_29030780_2022_previous_day.csv",
+      "request_rows": 408,
+      "request_sha256": "1f5d9215450ebf6d5f2b1a792e5ccde949ce37c8ba0270a2de01d4355093ecf5",
+      "source_m3_by_ratio": {
+        "0.35": "17500.000000",
+        "0.65": "32500.000000",
+        "1.00": "50000.000000"
+      },
+      "source_year": 2022,
+      "station_code": "29030780",
+      "unconstrained_gross_m3": "50000.000000"
+    },
+    "29035040/2019/label_date": {
+      "date_mapping": "label_date",
+      "rain_sha256": "20af5e9f189f6d251f71cc96237be9b4c9373ef2d546f5cf8398374f09d242dd",
+      "request_file": "ideam_requests_29035040_2019_label_date.csv",
+      "request_rows": 408,
+      "request_sha256": "dd8a61bbd3b0bc360e4ac4558d82b5250866ce365c865696c8c9c6ab99fd9e05",
+      "source_m3_by_ratio": {
+        "0.35": "157136.000000",
+        "0.65": "291824.000000",
+        "1.00": "448960.000000"
+      },
+      "source_year": 2019,
+      "station_code": "29035040",
+      "unconstrained_gross_m3": "448960.000000"
+    },
+    "29035040/2019/previous_day": {
+      "date_mapping": "previous_day",
+      "rain_sha256": "481dcb9733f41542b5002c9523dc921f9ffda71943203d3cd0e884d2dc193cfa",
+      "request_file": "ideam_requests_29035040_2019_previous_day.csv",
+      "request_rows": 408,
+      "request_sha256": "4b8a1e178aa5c93d9efbf5417ebc150bac1bad484dfc7410f6b68f6f56ded667",
+      "source_m3_by_ratio": {
+        "0.35": "150612.000000",
+        "0.65": "279708.000000",
+        "1.00": "430320.000000"
+      },
+      "source_year": 2019,
+      "station_code": "29035040",
+      "unconstrained_gross_m3": "430320.000000"
+    },
+    "29035040/2022/label_date": {
+      "date_mapping": "label_date",
+      "rain_sha256": "13ecb5f6b3bac0c0a7d4d9aa860aaa8204d067fb2ffee6306dcf857dc3320aac",
+      "request_file": "ideam_requests_29035040_2022_label_date.csv",
+      "request_rows": 408,
+      "request_sha256": "4e62d06a88f99b81bcfdcd4437e7fc9378f2e569afded2e3acedfdfc53da0047",
+      "source_m3_by_ratio": {
+        "0.35": "103404.000000",
+        "0.65": "192036.000000",
+        "1.00": "295440.000000"
+      },
+      "source_year": 2022,
+      "station_code": "29035040",
+      "unconstrained_gross_m3": "295440.000000"
+    },
+    "29035040/2022/previous_day": {
+      "date_mapping": "previous_day",
+      "rain_sha256": "fd2d822a098f43bc5db03df397b69d241b687fc08967fb74d5266347b95e062a",
+      "request_file": "ideam_requests_29035040_2022_previous_day.csv",
+      "request_rows": 408,
+      "request_sha256": "1c48d71c67831630b332db232d8c7f2b613e5961db2495ef41c984bcf8fae0f3",
+      "source_m3_by_ratio": {
+        "0.35": "109368.000000",
+        "0.65": "203112.000000",
+        "1.00": "312480.000000"
+      },
+      "source_year": 2022,
+      "station_code": "29035040",
+      "unconstrained_gross_m3": "312480.000000"
+    }
+  },
+  "status": "synthetic_requests_and_scenario_stocks_not_observed_deliveries",
+  "windows_sha256": "306436939e1d8dea4f0b2fe267f08db1f83eaf504db0956b294bc662db49525e"
+}
