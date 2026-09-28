@@ -15,8 +15,8 @@ Prepare reproducible, station-specific 2019 and 2022 daily rainfall inputs for t
 
 ## Tasks
 
-- [ ] **IF-01 — Validate and transform station dates.** Parse the locked IDEAM ZIP, reject duplicate/missing/negative/non-finite daily values and unexpected timestamps, map 2019/2022 to the common 2022 simulation calendar under both date-label interpretations, and refuse to overwrite different output bytes. Check: focused synthetic failure/boundary tests plus 365-day completeness and source hash.
-- [ ] **IF-02 — Preserve audit and claim boundary.** Generate ignored station-specific CSVs and a committed aggregate/hash manifest, verify independent 2019/2022 window sums and idempotent regeneration, and document the unresolved station quality/spatial representativeness and day-label status. Check: test suite, `git diff --check`, no raw daily station values tracked. No agent simulation.
+- [x] **IF-01 — Validate and transform station dates.** The locked ZIP parser rejects duplicate/missing/negative/non-finite records and unexpected 07:00 timestamps; both mappings produce complete 365-day 2022-calendar inputs and reject changed output bytes. Check: three new synthetic tests and two existing POWER tests pass; actual source SHA-256 matches. Work-unit commit: `11ef9a1`.
+- [x] **IF-02 — Preserve audit and claim boundary.** Generated 16 ignored station CSVs and committed the aggregate/hash manifest; independent readback verified 16 × 365 rows, dates, all output SHA-256 values and the previously audited 2019/2022 label-date seasonal totals. Two regeneration runs were byte-identical. The protocol retains quality, spatial and day-label caveats. Check: three new and five related Python tests pass, `git diff --check` passes, and `git ls-files experiments/water_allocation/data/raw` is empty. Runtime harness: N/A, data preparation only; no agent simulation. Rollback: remove the generator, its test, aggregate manifest and the preparation-status paragraph without touching historical POWER fixtures. Work-unit commit: `11ef9a1`.
 
 ## Acceptance criteria
 
@@ -27,4 +27,5 @@ Prepare reproducible, station-specific 2019 and 2022 daily rainfall inputs for t
 ## Progress
 
 - 2026-09-28: Created the tracker before generator changes. Existing four-station 2019/2022 annual coverage is 365/365; source SHA-256 is `FA695160A154A7CE9C95DEE736535A5A8CD9BBCFAFE5A6AA3DACE13A9BD03E1B`.
-- Next: implement IF-01, then IF-02; commit the complete bounded work unit after observed checks.
+- 2026-09-28: Completed IF-01/IF-02 in `11ef9a1`, with 16 ignored local CSVs, committed aggregate/hash manifest, passing focused and adjacent tests, independent fixture hash/count readback, and no tracked daily station data.
+- Next: obtain station quality/date-label clarification, choose a defensible spatial forcing protocol, generate paired weekly requests and source stocks, then run rule experiments. This task does not authorize or report policy outcomes.
