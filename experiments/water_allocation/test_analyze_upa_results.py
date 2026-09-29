@@ -69,6 +69,31 @@ class UpaAnalysisTest(unittest.TestCase):
         self.assertAlmostEqual(0.5, summary["smallest_quartile_p90_loss"])
         self.assertAlmostEqual(5, summary["smallest_to_largest_quartile_mean_relative_loss_ratio"])
 
+    def test_smallest_area_upa_metrics_include_all_four_tied_families(self):
+        baseline = "PROPORTIONAL_DEMAND"
+        other = "SMALL_PLOT_FLOOR"
+        rows = []
+        for rule, actuals in ((baseline, (9, 8, 7, 6)),
+                              (other, (9.5, 9, 8.5, 4))):
+            for family, actual in zip("abcd", actuals):
+                rows.append(self.row(rule, family, family, actual, area=2))
+            rows.append(self.row(rule, "large", "large", 36, area=8, full=40))
+
+        result = report(self.table(rows))
+        summaries = {row["rule"]: row for row in result["scenario_summaries"]}
+        base = summaries[baseline]
+        floor = summaries[other]
+        self.assertEqual(4, base["smallest_area_upa_count"])
+        self.assertEqual(4, floor["smallest_area_upa_count"])
+        self.assertAlmostEqual(0.25, base["smallest_area_upa_mean_relative_loss"])
+        self.assertAlmostEqual(0.4, base["smallest_area_upa_max_relative_loss"])
+        self.assertAlmostEqual(0.225, floor["smallest_area_upa_mean_relative_loss"])
+        self.assertAlmostEqual(0.6, floor["smallest_area_upa_max_relative_loss"])
+        self.assertAlmostEqual(0.2, base["smallest_quartile_p90_loss"])
+        contrast = result["paired_rule_contrasts"][0]
+        self.assertAlmostEqual(-0.025, contrast["delta_smallest_area_upa_mean_relative_loss"])
+        self.assertAlmostEqual(0.2, contrast["delta_smallest_area_upa_max_relative_loss"])
+
     def test_rejects_missing_plot(self):
         with self.assertRaisesRegex(ValueError, "missing matched proportional baseline or plot IDs"):
             report(self.table(self.sample()[:-1]))

@@ -20,20 +20,33 @@ Input identities: rainfall SHA-256 `62ccee0ee53cd62e0a4c61d792ed46bd764b3b0b5787
 ## Admission gates
 
 1. `python experiments/water_allocation/build_joined_results.py experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/run_manifest.json --output experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/joined.csv` admitted **72 plot rows** (24 per rule). Its unchanged contract rejects nonzero exits, missing/duplicate farm-water-yield-climate audits, request/water/crop/rain mismatches, over-delivery, source imbalance, unpaired inputs or forcing, and plot/owner/area/full-yield mismatches. Manifest SHA-256 `6aec90ea1bf32061f7ef312b6371a2c38da975ef067343252aef27ec7b426a3a`; joined CSV SHA-256 `b0e6d915836578b2a3e6194f996642917a4012cc8e35501bcff0beed64f525f3`.
-2. `python experiments/water_allocation/analyze_upa_results.py experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/joined.csv --output experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/upa_report.json` produced 12 UPA rows per rule (report SHA-256 `462d42ccf40c9c928bad0f8acd72d20fec3d27e9d053f3ac2f8e7627309ba974`). Its inequality unit is **UPA**, not plot.
+2. `python experiments/water_allocation/analyze_upa_results.py experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/joined.csv --output experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/upa_report.json` produced 12 UPA rows per rule (historical report SHA-256 `462d42ccf40c9c928bad0f8acd72d20fec3d27e9d053f3ac2f8e7627309ba974`). Its inequality unit is **UPA**, not plot. The report is preserved, including its historical three-of-four smallest-quartile P90.
+   After identifying that the identifier tie-break omitted one of four equally small UPA, the admitted `joined.csv` was reanalyzed without another simulator run: `python experiments/water_allocation/analyze_upa_results.py experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/joined.csv --output experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/upa_report_all_smallest.json`. The new ignored report SHA-256 is `775b72d7f40f3d61d8c012d1ecfa0ea4987c33eab81ac228e3a0a428da951d8a`; the joined CSV and historical report hashes remain unchanged. An independent CSV-to-UPA check confirmed four 2-ha UPA under each rule, the means, maxima, paired contrasts, and unchanged legacy fields.
 3. `python experiments/water_allocation/reports/raw/pilot-c3-29030080-2019-label-065/independent_audit.py` passed: all three natural exits 0; 48 plant records/24 first-version eligible plots/96 ha/12 UPA/24 harvests per rule; canonical plot-owner-area-plant-harvest roster unchanged from C2 and across rules; 4/5/3 UPA classes; exactly paired climate bytes; 408 water/request rows; withdrawal 452,764 m³ per rule within `10^-6` m³ numeric tolerance. Independent audit JSON SHA-256 `665659947d4cf4d409698b7c324dcedda7c2bfba122e4e463ff1e5f67b0f3115`. Initial audit-script failures compared `1` with `1.0` text and a floating sum of `452763.99999999994` against integer stock; only the independent check was corrected to compare numeric area and allow `10^-6` m³. No simulation, input, or result was changed or rerun in response.
 
 All three climate CSVs are byte-identical (SHA-256 `1cfe24a2bd2bd1381af59ef6b6461814793b8561ee5fd9b22c9876054a5f3e69`), with **2,904 daily rows**, 24/24 observed eligible plots and zero gaps/duplicates. Farm audits assign 12/12; water audits register 48/48 with zero missing; yield audits harvest 24/24. Water and yield CSVs differ by rule as expected. Full per-rule hashes and observed decimal withdrawal totals are in ignored `independent_audit.json`.
 
 ## Descriptive contrast only
 
-| Rule | Rice production (t) | Gini of UPA relative loss | Gini of UPA absolute loss (t) | P90 loss among smallest-area UPA |
+The corrected small-UPA group includes **all four UPA tied at the minimum eligible area of 2 ha**, not just the first three by identifier. These are unweighted UPA relative production losses. The fourth small UPA has the highest `SMALL_PLOT_FLOOR` loss, so the maximum tells a different story from the mean.
+
+| Rule | Rice production (t) | Gini of UPA relative loss | Mean loss, all four 2-ha UPA | Maximum loss, all four 2-ha UPA |
+| --- | ---: | ---: | ---: | ---: |
+| `PROPORTIONAL_DEMAND` | 402.204 | 0.0054 | 0.162213 | 0.163347 |
+| `EQUAL_PER_HECTARE` | 401.653 | 0.0053 | 0.163322 | 0.164485 |
+| `SMALL_PLOT_FLOOR` | 402.072 | 0.1032 | 0.108828 | 0.168504 |
+
+Against proportional demand, equal-per-hectare changes the small-UPA mean by **+0.001109** and maximum by **+0.001138**; the plot-floor rule changes the mean by **−0.053385** but the maximum by **+0.005157**. Thus the floor improves the average across the four tied-smallest UPA while leaving the worst of those four worse off in this single cell. This is a within-model diagnostic, not a robust equity–efficiency frontier or institutional recommendation.
+
+For provenance, the preserved historical report used the first three of four tied 2-ha UPA for its `smallest_quartile_p90_loss` (nearest-rank P90). This metric is **not** the all-four maximum:
+
+| Rule | Rice production (t) | Gini of UPA relative loss | Gini of UPA absolute loss (t) | Historical P90, first three 2-ha UPA |
 | --- | ---: | ---: | ---: | ---: |
 | `PROPORTIONAL_DEMAND` | 402.204 | 0.0054 | 0.3572 | 0.1627 |
 | `EQUAL_PER_HECTARE` | 401.653 | 0.0053 | 0.3572 | 0.1638 |
 | `SMALL_PLOT_FLOOR` | 402.072 | 0.1032 | 0.3904 | 0.0896 |
 
-Against proportional demand, equal-per-hectare changes production by **−0.550 t** and relative-loss Gini by **−0.000094**; the plot-floor rule changes production by **−0.132 t**, relative-loss Gini by **+0.09784**, but smallest-area-UPA P90 relative loss by **−0.07308**. This is a real distributional tension *inside this synthetic cell*, not a general equity-efficiency frontier or a statistical result. The floor is awarded by **plot area**, not verified UPA entitlement; its label must not imply an observed district allocation practice. Gini of losses and smallest-UPA tail loss answer different questions and may move in opposite directions. A single seed and one weather/date interpretation provide no uncertainty interval.
+Against proportional demand, equal-per-hectare changes production by **−0.550 t** and relative-loss Gini by **−0.000094**; the plot-floor rule changes production by **−0.132 t** and relative-loss Gini by **+0.09784**. The legacy P90 changes by **−0.07308** for the floor, but it excludes the fourth tied-smallest UPA and must not be substituted for the all-four maximum. The floor is awarded by **plot area**, not verified UPA entitlement; its label must not imply an observed district allocation practice. A single seed and one weather/date interpretation provide no uncertainty interval.
 
 ## External plausibility check, not validation
 

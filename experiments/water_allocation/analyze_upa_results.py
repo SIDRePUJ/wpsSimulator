@@ -7,6 +7,7 @@ creation and the run-status/audit checks remain a separate mandatory gate.
 import argparse
 import csv
 import json
+import math
 from collections import defaultdict
 from pathlib import Path
 
@@ -77,9 +78,31 @@ def aggregate(path):
 def report(path):
     upas, membership = aggregate(path)
     summaries = summarize(upas)
-    differences = contrasts(upas, summaries)
     for row in summaries:
         row["upa_count"] = row.pop("plot_count")
+        key = (row["weather"], row["scarcity_ratio"], row["rule"],
+               row["seed"], row["parameter_set"])
+        families = upas[key]
+        minimum_area = min(values["area_ha"] for values in families.values())
+        smallest = [values for values in families.values()
+                    if math.isclose(values["area_ha"], minimum_area, rel_tol=0, abs_tol=1e-9)]
+        losses = [max(0.0, 1 - values["actual_t"] / values["full_t"]) for values in smallest]
+        row["smallest_area_upa_count"] = len(smallest)
+        row["smallest_area_upa_mean_relative_loss"] = sum(losses) / len(losses)
+        row["smallest_area_upa_max_relative_loss"] = max(losses)
+    differences = contrasts(upas, summaries)
+    summary_by_key = {
+        (row["weather"], row["scarcity_ratio"], row["seed"], row["parameter_set"], row["rule"]): row
+        for row in summaries
+    }
+    for difference in differences:
+        pair = (difference["weather"], difference["scarcity_ratio"],
+                difference["seed"], difference["parameter_set"])
+        current = summary_by_key[pair + (difference["rule"],)]
+        baseline = summary_by_key[pair + (BASELINE_RULE,)]
+        for metric in ("mean", "max"):
+            field = f"smallest_area_upa_{metric}_relative_loss"
+            difference[f"delta_{field}"] = current[field] - baseline[field]
     detail = []
     for key, families in sorted(upas.items()):
         weather, scarcity, rule, seed, parameter_set = key
