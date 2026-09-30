@@ -15,7 +15,7 @@ Predeclare a balanced, paired technical screen for the three implemented water-a
 
 ## Task
 
-- [ ] **P1 — Freeze the post-pilot screen:** Record the 4 stations × 2 years × 2 date-label mappings × 2 binding stock ratios × 3 implemented rules × 2 fresh paired seeds = 192 *new* candidate runs, explicitly separate viewed C3 pilot seed `12345`, and predeclare input hashes, seed/cohort qualification, paired analysis units, outcomes, failure/stopping rules, limitations and conditional extension. Make the scenario register point to the protocol without implying that the study has run. Runtime harness: N/A, no simulations authorized. Rollback boundary: the new protocol/tracker and the scenario-register cross-reference only.
+- [x] **P1 — Freeze the post-pilot screen:** Record the 4 stations × 2 years × 2 date-label mappings × 2 binding stock ratios × 3 implemented rules × 2 fresh paired seeds = 192 *new* candidate runs, explicitly separate viewed C3 pilot seed `12345`, and predeclare input hashes, seed/cohort qualification, paired analysis units, outcomes, failure/stopping rules, limitations and conditional extension. Make the scenario register point to the protocol without implying that the study has run. Runtime harness: N/A, no simulations authorized. Rollback boundary: the new protocol/tracker and the scenario-register cross-reference only.
 
 ## Acceptance and checks
 
@@ -28,7 +28,10 @@ Predeclare a balanced, paired technical screen for the three implemented water-a
 
 ## Progress
 
-- Pending protocol write and verification.
+- Work-unit commit: `8560e4c2ae2c1d7edad3de6fba00a89445938003` (`docs(water-allocation): lock balanced IDEAM study design`). It adds `experiments/water_allocation/IDEAM_BALANCED_STUDY_PROTOCOL.md`, updates the current IDEAM status in `SCENARIO_REGISTER.md`, and creates this tracker.
+- Structural verification passed: 4 × 2 × 2 × 2 × 3 × 2 = 192 new candidate runs; the 16-scenario request manifest SHA-256 is `dfd0766a42a12ad0954d44c617408ba764db4dc273b4f0cbd20eb9071065db80`, rainfall manifest SHA-256 is `fa937f9486d9f8bb9ee1ab944b8f205449863ced71769006a55840454a9194d6`, and the frozen cohort/window hashes match the protocol. Eleven relative links were checked, source claims read back, and staged `git diff --check` exited 0. Test and runtime harness: N/A, documentation-only design lock; no simulation or seed qualification ran.
+- Receipt-driven development is off by the default user-owned switch. Native risk assessment of the committed work unit returned `passive` (`non_executable_only`, `review_due=false`, reason `passive`); structural readback was the applicable check. No review, PR, push or merge was performed.
+- Execution remains blocked on input-quality review, qualification of seeds `271828`/`314159` against frozen crop windows, a manifest-driven non-overwriting runner, and separate authorization for compute and any remote access.
 
 ## Next step
 
