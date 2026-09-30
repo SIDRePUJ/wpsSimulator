@@ -8,6 +8,8 @@
 2. Qualify each new seed against the frozen cohort and crop windows **without inspecting allocation-rule outcomes**. Stop on a mismatch; do not substitute a seed silently.
 3. Only after those gates and separate execution authorization, run complete three-rule triplets. Admit each triplet through the unchanged strict raw-to-plot join before UPA analysis. Do not interpret partial cells.
 
+From the repository root, `python experiments/water_allocation/check_ideam_readiness.py` performs the first gate without writing inputs or launching the simulator. It checks locked hashes, scenario and station metadata, daily rainfall and dated requests, crop-window/area consistency, synthetic gross demand and source-ratio arithmetic; its bounded extrema are descriptive flags, **not** IDEAM quality certification. A passing preflight does not qualify new seeds or authorize runs.
+
 One matched comparison is a **station × source year × date-label mapping × scarcity ratio × seed** cell. Within it, compare `EQUAL_PER_HECTARE` and `SMALL_PLOT_FLOOR` separately with `PROPORTIONAL_DEMAND`. The latter is the reference rule, not a historical district practice. All three rules use the same eligible plot/owner/area/crop-window roster, rainfall and non-rainfall climate forcing, dated requests, synthetic source stock, crop-response parameters, and seed. Use `SEASONAL_ENTITLEMENT`; `ROUND_CHRONOLOGICAL` is a different temporal institution.
 
 ## Frozen candidate factors
