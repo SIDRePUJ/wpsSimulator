@@ -12,6 +12,12 @@ From the repository root, `python experiments/water_allocation/check_ideam_readi
 
 The independent [local raw-station audit](LOCAL_IDEAM_STATION_QUALITY_AUDIT.md) checks original ZIP observations and catalog provenance without changing any candidate cell. Its structural pass and review flags do not resolve official station QC, ZIP date-label semantics, or spatial support.
 
+The [offline seed-diagnostic gate](check_ideam_seed_qualification.py) is prepared but **no fresh seed has run or qualified**. Invoke it only after separately capturing real diagnostic directories for seeds `271828` and `314159`, in that order; it never launches Java.
+
+Each directory must retain C2-style `command.txt`, `exit.txt` (`JAVA_EXIT=0`), `stdout.txt`, `stderr.txt`, `diagnostic_requests.csv`, and water/yield/climate audit CSVs, plus a new launcher-written `capture.json` (`district-seed-diagnostic/v1`). The launcher must record the **same argv array it passes to Java**, `seed`, `kind=real_seed_diagnostic`, `termination=natural`, `java_exit=0`, the locked `frozen_sha256` path/hash map, `diagnostic_requests_sha256`, and `output_sha256` for all seven output files. `command.txt` is the space-joined argv record. Capture these after natural process completion, not by reconstructing them from later shell history.
+
+Existing C2 seed-`12345` directories lack this structured capture and cannot qualify either fresh seed. Synthetic fixtures use `kind=synthetic_fixture` and `--synthetic-fixture`; the checker reports `real_seed_qualification=not_run` for them. A passing transcript is structural admission, **not independent process attestation** or permission to inspect policy outcomes; the captured model/classpath and genuine run provenance still need human review before declaring a real seed qualified.
+
 One matched comparison is a **station × source year × date-label mapping × scarcity ratio × seed** cell. Within it, compare `EQUAL_PER_HECTARE` and `SMALL_PLOT_FLOOR` separately with `PROPORTIONAL_DEMAND`. The latter is the reference rule, not a historical district practice. All three rules use the same eligible plot/owner/area/crop-window roster, rainfall and non-rainfall climate forcing, dated requests, synthetic source stock, crop-response parameters, and seed. Use `SEASONAL_ENTITLEMENT`; `ROUND_CHRONOLOGICAL` is a different temporal institution.
 
 ## Frozen candidate factors
