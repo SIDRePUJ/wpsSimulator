@@ -343,6 +343,67 @@ class SeedQualificationTests(unittest.TestCase):
         path.write_bytes(path.read_bytes() + b"extra\n")
         self.assert_rejected("captured output hash mismatch")
 
+    def test_uncaught_thread_exception_rejected_despite_natural_exit(self):
+        second = self.dirs[1]
+        (second / "stderr.txt").write_text(
+            'Exception in thread "Thread-81" java.lang.IndexOutOfBoundsException: '
+            'Index 9 out of bounds for length 9\n'
+            '\tat BESA.Kernel.Agent.ChannelBESA.purgePorts(ChannelBESA.java:208)\n',
+            encoding="utf-8")
+        self.resign(second)
+        self.assert_rejected("uncaught Java thread exception in captured stderr: seed 314159")
+
+    def test_interleaved_log_cannot_hide_uncaught_thread_banner(self):
+        second = self.dirs[1]
+        (second / "stderr.txt").write_text(
+            'Exception in thread "Thread-81" java.lang.IndexOutOfBoundsException: '
+            'Index 9 out of bounds for length 9\n'
+            'INFO: another thread is shutting down.\n'
+            '\tat BESA.Kernel.Agent.ChannelBESA.purgePorts(ChannelBESA.java:208)\n',
+            encoding="utf-8")
+        self.resign(second)
+        self.assert_rejected("uncaught Java thread exception in captured stderr: seed 314159")
+
+    def test_non_banner_exception_mention_remains_admissible(self):
+        first = self.dirs[0]
+        (first / "stderr.txt").write_text(
+            'WARNING: Exception in thread "Thread-81" was handled upstream.\n'
+            '\tat BESA.Kernel.Agent.ChannelBESA.purgePorts(ChannelBESA.java:208)\n',
+            encoding="utf-8")
+        self.resign(first)
+        self.assertEqual(gate.qualify(self.root, self.dirs, synthetic=True)["status"],
+                         "synthetic_contract_pass")
+
+    def test_benign_stderr_warning_remains_admissible(self):
+        first = self.dirs[0]
+        (first / "stderr.txt").write_text(
+            'WARNING: agent alias was not found during shutdown.\n'
+            'java.lang.Throwable: Runtime.exit(0)\n'
+            '\tat java.base/java.lang.Runtime.exit(Runtime.java:188)\n',
+            encoding="utf-8")
+        self.resign(first)
+        self.assertEqual(gate.qualify(self.root, self.dirs, synthetic=True)["status"],
+                         "synthetic_contract_pass")
+
+    def test_tampered_stderr_hash_rejected_before_exception_classification(self):
+        first = self.dirs[0]
+        (first / "stderr.txt").write_text(
+            'Exception in thread "Thread-26" java.lang.NullPointerException\n'
+            '\tat BESA.Kernel.Agent.ChannelBESA.findPort(ChannelBESA.java:143)\n',
+            encoding="utf-8")
+        self.assert_rejected("captured output hash mismatch")
+
+    def test_relocated_uncaught_thread_exception_rejected(self):
+        root, output = self.posix_capture()
+        first = self.dirs[0]
+        (first / "stderr.txt").write_text(
+            'Exception in thread "Thread-26" java.lang.NullPointerException\n'
+            '\tat BESA.Kernel.Agent.ChannelBESA.findPort(ChannelBESA.java:143)\n',
+            encoding="utf-8")
+        self.resign(first)
+        self.assert_posix_rejected("uncaught Java thread exception in captured stderr: seed 271828",
+                                   root, output)
+
     def test_duplicate_plant_rejected_even_with_updated_hash(self):
         first = self.dirs[0]
         path = first / "stdout.txt"

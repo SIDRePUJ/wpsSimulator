@@ -33,6 +33,8 @@ OUTPUTS = ("command.txt", "exit.txt", "stdout.txt", "stderr.txt", "water_audit.c
            "yield_audit.csv", "climate_audit.csv")
 PLOT = re.compile(r"^WATER_PLOT: plot_id=(\S+) crop=(\S+) area_ha=(\S+)$", re.M)
 PLANT = re.compile(r"^WATER_PLANT: plot_id=(\S+) family_alias=(\S+) planting_date=(\S+) area_ha=(\S+)$", re.M)
+UNCAUGHT_JAVA_THREAD = re.compile(
+    r'^Exception in thread "[^"\r\n]+" [A-Za-z_$][\w.$]*(?::[^\r\n]*)?\r?$', re.M)
 MARKERS = {
     "PHYSICAL_WATER_AUDIT": {"plannedPlots": 48, "registeredPlots": 48,
                              "absentPlots": 0, "failedPlotRegistrations": 0,
@@ -224,6 +226,9 @@ def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
     require(capture.get("frozen_sha256") == expected_hashes, "capture frozen identities differ")
     require(capture.get("output_sha256") == {name: sha(directory / name) for name in OUTPUTS},
             "captured output hash mismatch")
+    stderr = (directory / "stderr.txt").read_text(encoding="utf-8")
+    require(not UNCAUGHT_JAVA_THREAD.search(stderr),
+            f"uncaught Java thread exception in captured stderr: seed {seed}")
     require(capture.get("diagnostic_requests_sha256") ==
             sha(directory / "diagnostic_requests.csv") == DIAGNOSTIC_REQUEST_SHA256,
             "diagnostic request hash mismatch")
