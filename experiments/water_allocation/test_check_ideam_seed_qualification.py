@@ -135,6 +135,50 @@ class SeedQualificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, text):
             gate.qualify(self.root, self.dirs, synthetic=True)
 
+    def posix_capture(self):
+        """Represent unchanged files copied from a different, POSIX host."""
+        original_root = "/srv/study/source/experiments/water_allocation"
+        original_output = "/srv/study/seed-diagnostics"
+        for directory, seed in zip(self.dirs, gate.SEEDS):
+            origin_directory = f"{original_output}/seed-{seed}"
+            capture_path = directory / "capture.json"
+            capture = json.loads(capture_path.read_text(encoding="utf-8"))
+            identity = capture["runtime_identity"]
+            identity["java"]["path"] = "/srv/runtime/jdk/bin/java"
+            identity["classpath"][0]["path"] = "/srv/runtime/build/wps"
+            identity["classpath"][1]["path"] = "/srv/runtime/lib/fake.jar"
+            argv = capture["argv"]
+            argv[0] = identity["java"]["path"]
+            properties = {
+                "requests": f"{origin_directory}/diagnostic_requests.csv",
+                "farmAssignments": f"{original_root}/twelve_upa_manifest.csv",
+                "auditCsv": f"{origin_directory}/water_audit.csv",
+                "yieldCsv": f"{origin_directory}/yield_audit.csv",
+                "climateCsv": f"{origin_directory}/climate_audit.csv",
+            }
+            for index, argument in enumerate(argv):
+                for name, value in properties.items():
+                    if argument.startswith(f"-Dwps.water.{name}="):
+                        argv[index] = f"-Dwps.water.{name}={value}"
+                if argument == "-cp":
+                    argv[index + 1] = ":".join(entry["path"] for entry in identity["classpath"])
+            (directory / "command.txt").write_text(" ".join(argv) + "\n", encoding="utf-8")
+            (directory / "build_manifest.json").write_text(json.dumps(identity) + "\n",
+                                                            encoding="utf-8")
+            stdout = (directory / "stdout.txt").read_text(encoding="utf-8")
+            for name in ("water_audit.csv", "yield_audit.csv", "climate_audit.csv"):
+                stdout = stdout.replace(str(directory / name), f"{origin_directory}/{name}")
+            (directory / "stdout.txt").write_text(stdout, encoding="utf-8")
+            capture["build_manifest_sha256"] = gate.sha(directory / "build_manifest.json")
+            capture_path.write_text(json.dumps(capture), encoding="utf-8")
+            self.resign(directory)
+        return original_root, original_output
+
+    def assert_posix_rejected(self, text, root, output):
+        with self.assertRaisesRegex(ValueError, text):
+            gate.qualify(self.root, self.dirs, synthetic=True,
+                         captured_posix_root=root, captured_posix_output_root=output)
+
     def test_synthetic_transcripts_admitted_but_not_real_qualification(self):
         result = gate.qualify(self.root, self.dirs, synthetic=True)
         self.assertEqual(result["status"], "synthetic_contract_pass")
@@ -144,6 +188,101 @@ class SeedQualificationTests(unittest.TestCase):
                                   "--synthetic-fixture"], capture_output=True, text=True)
         self.assertEqual(process.returncode, 0, process.stderr)
         self.assertIn('"real_seed_qualification": "not_run"', process.stdout)
+
+    def test_relocated_posix_captures_admitted_without_rewriting_evidence(self):
+        root, output = self.posix_capture()
+        evidence = {(directory.name, name): gate.sha(directory / name)
+                    for directory in self.dirs
+                    for name in (*gate.OUTPUTS, "capture.json", "build_manifest.json")}
+        result = gate.qualify(self.root, self.dirs, synthetic=True,
+                              captured_posix_root=root, captured_posix_output_root=output)
+        self.assertEqual(result["status"], "synthetic_contract_pass")
+        self.assertEqual(result["real_seed_qualification"], "not_run")
+        self.assertEqual(evidence, {(directory.name, name): gate.sha(directory / name)
+                                    for directory in self.dirs
+                                    for name in (*gate.OUTPUTS, "capture.json", "build_manifest.json")})
+        process = subprocess.run([sys.executable, str(SOURCE / "check_ideam_seed_qualification.py"),
+                                  str(self.dirs[0]), str(self.dirs[1]), "--root", str(self.root),
+                                  "--synthetic-fixture", "--captured-posix-root", root,
+                                  "--captured-posix-output-root", output],
+                                 capture_output=True, text=True)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertIn('"runtime_identity_scope": "captured_only"', process.stdout)
+
+    def test_relocated_capture_requires_explicit_valid_origin_roots(self):
+        root, output = self.posix_capture()
+        with self.assertRaisesRegex(ValueError, "supplied together"):
+            gate.qualify(self.root, self.dirs, synthetic=True, captured_posix_root=root)
+        self.assert_posix_rejected("invalid captured POSIX path", "relative/root", output)
+        self.assert_posix_rejected("invalid captured POSIX path", root, "/srv/../diagnostics")
+        self.assert_posix_rejected("farm assignment path changed", "/different/study", output)
+        with self.assertRaisesRegex(ValueError, "farm assignment path changed"):
+            gate.qualify(self.root, self.dirs, synthetic=True)
+
+    def test_relocated_request_and_farm_paths_fail_closed(self):
+        root, output = self.posix_capture()
+        first = self.dirs[0]
+        path = first / "capture.json"
+        capture = json.loads(path.read_text(encoding="utf-8"))
+        old = f"{output}/seed-271828/diagnostic_requests.csv"
+        capture["argv"] = [arg.replace(old, f"{output}/other/diagnostic_requests.csv")
+                           for arg in capture["argv"]]
+        (first / "command.txt").write_text(" ".join(capture["argv"]) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.resign(first)
+        self.assert_posix_rejected("wrong requests path", root, output)
+        capture["argv"] = [arg.replace(f"{output}/other/diagnostic_requests.csv", old)
+                           .replace(f"{root}/twelve_upa_manifest.csv", "/srv/other/twelve_upa_manifest.csv")
+                           for arg in capture["argv"]]
+        (first / "command.txt").write_text(" ".join(capture["argv"]) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.resign(first)
+        self.assert_posix_rejected("farm assignment path changed", root, output)
+
+    def test_relocated_output_path_and_windows_classpath_separator_rejected(self):
+        root, output = self.posix_capture()
+        first = self.dirs[0]
+        path = first / "capture.json"
+        capture = json.loads(path.read_text(encoding="utf-8"))
+        capture["argv"] = [arg.replace(f"{output}/seed-271828/water_audit.csv",
+                                       f"{output}/other/water_audit.csv")
+                           for arg in capture["argv"]]
+        (first / "command.txt").write_text(" ".join(capture["argv"]) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.resign(first)
+        self.assert_posix_rejected("wrong auditCsv path", root, output)
+        capture["argv"] = [arg.replace(f"{output}/other/water_audit.csv",
+                                       f"{output}/seed-271828/water_audit.csv")
+                           for arg in capture["argv"]]
+        index = capture["argv"].index("-cp") + 1
+        capture["argv"][index] = ";".join(
+            entry["path"] for entry in capture["runtime_identity"]["classpath"])
+        (first / "command.txt").write_text(" ".join(capture["argv"]) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.resign(first)
+        self.assert_posix_rejected("classpath order/identity differs from argv", root, output)
+
+    def test_relocated_audit_marker_and_classpath_fail_closed(self):
+        root, output = self.posix_capture()
+        first = self.dirs[0]
+        stdout = first / "stdout.txt"
+        original = stdout.read_text(encoding="utf-8")
+        stdout.write_text(original.replace(f"{output}/seed-271828/yield_audit.csv",
+                                           f"{output}/seed-314159/yield_audit.csv"),
+                          encoding="utf-8")
+        self.resign(first)
+        self.assert_posix_rejected("PHYSICAL_YIELD_AUDIT file path", root, output)
+        stdout.write_text(original, encoding="utf-8")
+        self.resign(first)
+        path = first / "capture.json"
+        capture = json.loads(path.read_text(encoding="utf-8"))
+        index = capture["argv"].index("-cp") + 1
+        capture["argv"][index] = ":".join(reversed(
+            [entry["path"] for entry in capture["runtime_identity"]["classpath"]]))
+        (first / "command.txt").write_text(" ".join(capture["argv"]) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.resign(first)
+        self.assert_posix_rejected("classpath order/identity differs from argv", root, output)
 
     def test_real_mode_refuses_synthetic_capture(self):
         with self.assertRaisesRegex(ValueError, "provenance kind"):

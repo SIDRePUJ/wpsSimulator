@@ -12,7 +12,7 @@ from decimal import Decimal, InvalidOperation
 import hashlib
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import sys
 
@@ -115,7 +115,20 @@ def property_value(argv, name):
     return values[0]
 
 
-def check_argv(argv, directory, root, seed):
+def captured_path(value, posix=False):
+    """Compare captured paths using their origin host, not the review host."""
+    if not posix:
+        return Path(value).resolve()
+    require(isinstance(value, str) and "\\" not in value
+            and not value.startswith("//"),
+            "invalid captured POSIX path")
+    path = PurePosixPath(value)
+    require(path.is_absolute() and str(path) == value and ".." not in path.parts,
+            "invalid captured POSIX path")
+    return path
+
+
+def check_argv(argv, directory, root, seed, captured_posix=False):
     require(isinstance(argv, list) and all(isinstance(arg, str) for arg in argv), "invalid argv")
     require(option(argv, "-seed") == str(seed), "seed differs from argv")
     for name, value in {"-env": "local", "-mode": "web", "-agents": "12",
@@ -130,19 +143,21 @@ def check_argv(argv, directory, root, seed):
             "diagnostic source changed")
     require(property_value(argv, "wps.water.potentialYieldTpha") == "5"
             and property_value(argv, "wps.water.ky") == "1", "crop response changed")
-    require(Path(property_value(argv, "wps.water.farmAssignments")).resolve() ==
-            (root / "twelve_upa_manifest.csv").resolve(), "farm assignment path changed")
+    farm = root / "twelve_upa_manifest.csv"
+    require(captured_path(property_value(argv, "wps.water.farmAssignments"), captured_posix) ==
+            (farm if captured_posix else farm.resolve()), "farm assignment path changed")
     for prop, filename in (("requests", "diagnostic_requests.csv"),
                            ("auditCsv", "water_audit.csv"),
                            ("yieldCsv", "yield_audit.csv"),
                            ("climateCsv", "climate_audit.csv")):
-        require(Path(property_value(argv, f"wps.water.{prop}")).resolve() ==
-                (directory / filename).resolve(), f"wrong {prop} path")
+        expected = directory / filename
+        require(captured_path(property_value(argv, f"wps.water.{prop}"), captured_posix) ==
+                (expected if captured_posix else expected.resolve()), f"wrong {prop} path")
     require("org.wpsim.WellProdSim.wpsStart" in argv, "wrong entry point")
     require(option(argv, "-cp"), "missing classpath")
 
 
-def check_runtime_identity(capture, argv, directory):
+def check_runtime_identity(capture, argv, directory, captured_posix=False):
     """Check internal capture consistency, not independent executable attestation."""
     manifest_path = directory / "build_manifest.json"
     require(capture.get("build_manifest_sha256") == sha(manifest_path),
@@ -160,15 +175,18 @@ def check_runtime_identity(capture, argv, directory):
     for entry in components:
         require(isinstance(entry, dict) and entry.get("kind") in ("file", "tree")
                 and isinstance(entry.get("path"), str)
-                and Path(entry["path"]).is_absolute()
+                and (captured_path(entry["path"], posix=True).is_absolute()
+                     if captured_posix else Path(entry["path"]).is_absolute())
                 and isinstance(entry.get("sha256"), str)
                 and re.fullmatch(r"[0-9a-f]{64}", entry["sha256"]) is not None,
                 "invalid runtime component identity")
     paths = [entry["path"] for entry in classpath]
-    require(len(paths) == len(set(paths)) and Path(argv[0]).resolve() ==
-            Path(java["path"]).resolve(), "Java identity differs from argv")
-    require([str(Path(path).resolve()) for path in option(argv, "-cp").split(os.pathsep)] ==
-            [str(Path(path).resolve()) for path in paths],
+    require(len(paths) == len(set(paths)) and
+            captured_path(argv[0], captured_posix) ==
+            captured_path(java["path"], captured_posix), "Java identity differs from argv")
+    separator = ":" if captured_posix else os.pathsep
+    require([captured_path(path, captured_posix) for path in option(argv, "-cp").split(separator)] ==
+            [captured_path(path, captured_posix) for path in paths],
             "classpath order/identity differs from argv")
 
 
@@ -193,7 +211,7 @@ def marker_counts(stdout, directory):
 
 
 def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
-              synthetic=False):
+              synthetic=False, captured_root=None, captured_directory=None):
     capture = json.loads((directory / "capture.json").read_text(encoding="utf-8"))
     require(capture.get("schema") == "district-seed-diagnostic/v1", "wrong capture schema")
     kind = "synthetic_fixture" if synthetic else "real_seed_diagnostic"
@@ -210,13 +228,15 @@ def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
             sha(directory / "diagnostic_requests.csv") == DIAGNOSTIC_REQUEST_SHA256,
             "diagnostic request hash mismatch")
     argv = capture.get("argv")
-    check_argv(argv, directory, root, seed)
-    check_runtime_identity(capture, argv, directory)
+    captured_posix = captured_root is not None
+    check_argv(argv, captured_directory if captured_posix else directory,
+               captured_root if captured_posix else root, seed, captured_posix)
+    check_runtime_identity(capture, argv, directory, captured_posix)
     require((directory / "command.txt").read_text(encoding="utf-8").strip() ==
             " ".join(argv), "command/argv mismatch")
     stdout = (directory / "stdout.txt").read_text(encoding="utf-8")
     require(re.findall(r"^SEED: (\d+)$", stdout, re.M) == [str(seed)], "runtime seed mismatch")
-    marker_counts(stdout, directory)
+    marker_counts(stdout, captured_directory if captured_posix else directory)
     plots, plants = {}, {}
     for plot, crop, area_text in PLOT.findall(stdout):
         require(plot not in plots and plot in roster and crop == "rice" and
@@ -291,12 +311,23 @@ def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
             "assigned_upa": 12, "runtime_identity_scope": "captured_only"}
 
 
-def qualify(root, directories, expected_hashes=FROZEN, synthetic=False):
+def qualify(root, directories, expected_hashes=FROZEN, synthetic=False,
+            captured_posix_root=None, captured_posix_output_root=None):
     require(len(directories) == 2 and directories[0].resolve() != directories[1].resolve(),
             "two distinct diagnostic directories required")
+    require((captured_posix_root is None) == (captured_posix_output_root is None),
+            "captured POSIX roots must be supplied together")
+    captured_root = None
+    captured_directories = (None, None)
+    if captured_posix_root is not None:
+        captured_root = captured_path(captured_posix_root, posix=True)
+        captured_output = captured_path(captured_posix_output_root, posix=True)
+        captured_directories = tuple(captured_output / f"seed-{seed}" for seed in SEEDS)
     roster, windows = frozen_cohort(root, expected_hashes)
-    result = [check_run(path, seed, root, roster, windows, expected_hashes, synthetic)
-              for path, seed in zip(directories, SEEDS)]
+    result = [check_run(path, seed, root, roster, windows, expected_hashes, synthetic,
+                        captured_root, captured_directory)
+              for path, seed, captured_directory in
+              zip(directories, SEEDS, captured_directories)]
     return {"status": "synthetic_contract_pass" if synthetic else "diagnostic_transcripts_admitted",
             "real_seed_qualification": "not_run" if synthetic else "transcript_only",
             "runs": result}
@@ -308,10 +339,16 @@ def main():
     parser.add_argument("seed_314159_dir", type=Path)
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--synthetic-fixture", action="store_true")
+    parser.add_argument("--captured-posix-root",
+                        help="Absolute original POSIX experiments/water_allocation directory")
+    parser.add_argument("--captured-posix-output-root",
+                        help="Absolute original POSIX parent of seed-271828 and seed-314159")
     args = parser.parse_args()
     try:
         result = qualify(args.root, [args.seed_271828_dir, args.seed_314159_dir],
-                         synthetic=args.synthetic_fixture)
+                         synthetic=args.synthetic_fixture,
+                         captured_posix_root=args.captured_posix_root,
+                         captured_posix_output_root=args.captured_posix_output_root)
     except (OSError, ValueError, KeyError, json.JSONDecodeError) as error:
         print(f"seed diagnostic rejected: {error}", file=sys.stderr)
         return 1
