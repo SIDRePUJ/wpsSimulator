@@ -3,6 +3,7 @@
 import csv
 from datetime import date, timedelta
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -34,6 +35,21 @@ class SeedQualificationTests(unittest.TestCase):
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(SOURCE / name, target)
         self.roster, self.windows = gate.frozen_cohort(self.root)
+        java = self.root / "fake-java"
+        java.write_bytes(b"fake executable")
+        jar = self.root / "fake.jar"
+        jar.write_bytes(b"fake archive")
+        classes = self.root / "fake-classes"
+        classes.mkdir()
+        (classes / "Example.class").write_bytes(b"fake class")
+        self.runtime_identity = {
+            "schema": "seed-diagnostic-build/v1",
+            "java": {"path": str(java), "kind": "file", "sha256": gate.sha(java)},
+            "classpath": [
+                {"path": str(classes), "kind": "tree", "sha256": "a" * 64},
+                {"path": str(jar), "kind": "file", "sha256": gate.sha(jar)},
+            ],
+        }
         self.dirs = [self.root / f"diagnostic-{seed}" for seed in gate.SEEDS]
         for directory, seed in zip(self.dirs, gate.SEEDS):
             self.make_run(directory, seed)
@@ -42,7 +58,7 @@ class SeedQualificationTests(unittest.TestCase):
         directory.mkdir()
         shutil.copyfile(SOURCE / "reports/raw/calendar-c2-local-20260928-web-osredirect/diagnostic_requests.csv",
                         directory / "diagnostic_requests.csv")
-        argv = ["java", "-Dwps.water.districtRiceCalendar=true",
+        argv = [self.runtime_identity["java"]["path"], "-Dwps.water.districtRiceCalendar=true",
                 "-Dwps.water.riceOnlyCohort=true", "-Dwps.water.discoverPlots=true",
                 f"-Dwps.water.requests={directory / 'diagnostic_requests.csv'}",
                 "-Dwps.water.sourceM3=19200", "-Dwps.water.rule=PROPORTIONAL_DEMAND",
@@ -51,13 +67,16 @@ class SeedQualificationTests(unittest.TestCase):
                 f"-Dwps.water.yieldCsv={directory / 'yield_audit.csv'}",
                 "-Dwps.water.potentialYieldTpha=5", "-Dwps.water.ky=1",
                 f"-Dwps.water.climateCsv={directory / 'climate_audit.csv'}",
-                "-cp", "synthetic-classpath", "org.wpsim.WellProdSim.wpsStart",
+                "-cp", os.pathsep.join(entry["path"] for entry in self.runtime_identity["classpath"]),
+                "org.wpsim.WellProdSim.wpsStart",
                 "-env", "local", "-mode", "web", "-agents", "12", "-world", "24",
                 "-land", "2", "-years", "1", "-startyear", "2022", "-seed", str(seed),
                 "-perturbation", "none"]
         (directory / "command.txt").write_text(" ".join(argv) + "\n", encoding="utf-8")
         (directory / "exit.txt").write_text("JAVA_EXIT=0\n", encoding="utf-8")
         (directory / "stderr.txt").write_text("", encoding="utf-8")
+        (directory / "build_manifest.json").write_text(
+            json.dumps(self.runtime_identity) + "\n", encoding="utf-8")
         stdout = [f"SEED: {seed}", "PHYSICAL_CROP_COHORT: RICE_ONLY",
                   "PHYSICAL_WATER_HORIZON: ROUND_CHRONOLOGICAL",
                   "PHYSICAL_WATER: plots=48 source_m3=19200 allocated_m3=19200"]
@@ -100,6 +119,8 @@ class SeedQualificationTests(unittest.TestCase):
         capture = {"schema": "district-seed-diagnostic/v1", "kind": "synthetic_fixture",
                    "seed": seed, "termination": "natural", "java_exit": 0,
                    "argv": argv, "frozen_sha256": gate.FROZEN,
+                   "runtime_identity": self.runtime_identity,
+                   "build_manifest_sha256": gate.sha(directory / "build_manifest.json"),
                    "diagnostic_requests_sha256": gate.sha(directory / "diagnostic_requests.csv"),
                    "output_sha256": {name: gate.sha(directory / name) for name in gate.OUTPUTS}}
         (directory / "capture.json").write_text(json.dumps(capture), encoding="utf-8")
@@ -127,6 +148,35 @@ class SeedQualificationTests(unittest.TestCase):
     def test_real_mode_refuses_synthetic_capture(self):
         with self.assertRaisesRegex(ValueError, "provenance kind"):
             gate.qualify(self.root, self.dirs)
+
+    def test_runtime_classpath_order_must_match_argv(self):
+        first = self.dirs[0]
+        path = first / "capture.json"
+        capture = json.loads(path.read_text(encoding="utf-8"))
+        capture["argv"][capture["argv"].index("-cp") + 1] = os.pathsep.join(
+            reversed([entry["path"] for entry in self.runtime_identity["classpath"]]))
+        (first / "command.txt").write_text(" ".join(capture["argv"]) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.resign(first)
+        self.assert_rejected("classpath order/identity differs from argv")
+
+    def test_runtime_manifest_and_capture_must_match(self):
+        first = self.dirs[0]
+        path = first / "capture.json"
+        capture = json.loads(path.read_text(encoding="utf-8"))
+        capture["runtime_identity"]["java"]["sha256"] = "0" * 64
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.assert_rejected("captured runtime identity differs")
+
+    def test_java_identity_must_match_argv(self):
+        first = self.dirs[0]
+        path = first / "capture.json"
+        capture = json.loads(path.read_text(encoding="utf-8"))
+        capture["argv"][0] = str(self.root / "different-java")
+        (first / "command.txt").write_text(" ".join(capture["argv"]) + "\n", encoding="utf-8")
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.resign(first)
+        self.assert_rejected("Java identity differs from argv")
 
     def test_seed_and_argv_must_agree_with_runtime_trace(self):
         first = self.dirs[0]

@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from decimal import Decimal, InvalidOperation
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
 import sys
@@ -141,6 +142,36 @@ def check_argv(argv, directory, root, seed):
     require(option(argv, "-cp"), "missing classpath")
 
 
+def check_runtime_identity(capture, argv, directory):
+    """Check internal capture consistency, not independent executable attestation."""
+    manifest_path = directory / "build_manifest.json"
+    require(capture.get("build_manifest_sha256") == sha(manifest_path),
+            "captured build manifest hash mismatch")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    identity = capture.get("runtime_identity")
+    require(identity == manifest and isinstance(identity, dict)
+            and identity.get("schema") == "seed-diagnostic-build/v1",
+            "captured runtime identity differs from build manifest")
+    java, classpath = identity.get("java"), identity.get("classpath")
+    require(isinstance(java, dict) and java.get("kind") == "file"
+            and isinstance(classpath, list) and classpath,
+            "invalid runtime identity shape")
+    components = [java, *classpath]
+    for entry in components:
+        require(isinstance(entry, dict) and entry.get("kind") in ("file", "tree")
+                and isinstance(entry.get("path"), str)
+                and Path(entry["path"]).is_absolute()
+                and isinstance(entry.get("sha256"), str)
+                and re.fullmatch(r"[0-9a-f]{64}", entry["sha256"]) is not None,
+                "invalid runtime component identity")
+    paths = [entry["path"] for entry in classpath]
+    require(len(paths) == len(set(paths)) and Path(argv[0]).resolve() ==
+            Path(java["path"]).resolve(), "Java identity differs from argv")
+    require([str(Path(path).resolve()) for path in option(argv, "-cp").split(os.pathsep)] ==
+            [str(Path(path).resolve()) for path in paths],
+            "classpath order/identity differs from argv")
+
+
 def marker_counts(stdout, directory):
     for marker, expected in MARKERS.items():
         matches = re.findall(rf"^{marker}: ([^\n]+)$", stdout, re.M)
@@ -180,6 +211,7 @@ def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
             "diagnostic request hash mismatch")
     argv = capture.get("argv")
     check_argv(argv, directory, root, seed)
+    check_runtime_identity(capture, argv, directory)
     require((directory / "command.txt").read_text(encoding="utf-8").strip() ==
             " ".join(argv), "command/argv mismatch")
     stdout = (directory / "stdout.txt").read_text(encoding="utf-8")
@@ -256,7 +288,7 @@ def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
         require(climate_days[plot] == expected_days,
                 f"climate dates outside frozen crop window: {plot}")
     return {"seed": seed, "plots": 48, "eligible_plots": 24, "eligible_area_ha": 96,
-            "assigned_upa": 12}
+            "assigned_upa": 12, "runtime_identity_scope": "captured_only"}
 
 
 def qualify(root, directories, expected_hashes=FROZEN, synthetic=False):
