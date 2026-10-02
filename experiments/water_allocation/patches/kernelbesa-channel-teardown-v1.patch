@@ -1,0 +1,52 @@
+--- a/src/main/java/BESA/Kernel/Agent/ChannelBESA.java
++++ b/src/main/java/BESA/Kernel/Agent/ChannelBESA.java
+@@ -134,7 +134,7 @@
+      * @param guard Guard on who the port will look for.
+      * @return The found PortBESA.
+      */
+-    final protected PortBESA findPort(GuardBESA guard) {
++    final protected synchronized PortBESA findPort(GuardBESA guard) {
+         //--------------------------------------------------------------------//
+         // Looks up the associated port with the guard.                       //
+         //--------------------------------------------------------------------//
+@@ -156,7 +156,7 @@
+      * @param guard Guard to which the created port will be associated.
+      * @return The created port.
+      */
+-    final protected PortBESA addPort(GuardBESA guard) {
++    final protected synchronized PortBESA addPort(GuardBESA guard) {
+         //--------------------------------------------------------------------//
+         // Creates the associated port to the guard.                          //
+         //--------------------------------------------------------------------//
+@@ -178,7 +178,7 @@
+      * @param guard Guard associated to the port.
+      * @return true if the port is removed; false otherwise.
+      */
+-    final protected boolean removePort(GuardBESA guard) {
++    final protected synchronized boolean removePort(GuardBESA guard) {
+         //--------------------------------------------------------------------//
+         // Finds the associated port to the guard and deletes the port.       //
+         //--------------------------------------------------------------------//
+@@ -200,11 +200,11 @@
+      *
+      * @param beh The behavior to refer.
+      */
+-    final protected void purgePorts(BehaviorBESA beh) {
++    final protected synchronized void purgePorts(BehaviorBESA beh) {
+         //--------------------------------------------------------------------//
+         // Unbind the port with behaviors.                                    //
+         //--------------------------------------------------------------------//
+-        for (int i = 0; i < ports.size(); ++i) {
++        for (int i = ports.size() - 1; i >= 0; --i) {
+             PortBESA iport = (PortBESA) ports.get(i);
+             ArrayList ibehaviors = iport.getBehaviors();
+             ibehaviors.remove(beh);
+@@ -260,7 +260,7 @@
+      * @param evType Event of reference for the search..
+      * @return The found PortBESA.
+      */
+-    final protected PortBESA findPort(String evType) {
++    final protected synchronized PortBESA findPort(String evType) {
+         //--------------------------------------------------------------------//
+         // Finds the associated port to the type event.                       //
+         //--------------------------------------------------------------------//
