@@ -84,6 +84,7 @@ import static org.wpsim.WellProdSim.wpsStart.params;
 public class PeasantFamily extends AgentBDI {
 
     private static final double BDITHRESHOLD = 0;
+    private final ShutdownGate shutdownGate = new ShutdownGate();
 
     private static StructBESA createStruct(StructBESA structBESA) throws ExceptionBESA {
         // Cada comportamiento es un hilo.
@@ -249,32 +250,29 @@ public class PeasantFamily extends AgentBDI {
      */
     @Override
     public synchronized void shutdownAgentBDI() {
-        System.out.println("Shutdown " + this.getAlias());
-        // Anuncio de que el agente está muerto
-        PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) this.getState()).getBelieves();
-        wpsReport.mental(Instant.now() + "," + believes.toCSV(), this.getAlias());
-        wpsReport.ws(believes.toJson(), believes.getAlias());
-        //Eliminar el agente
         try {
-            AdmBESA.getInstance().getHandlerByAlias(
-                    config.getControlAgentName()
-            ).sendEvent(
-                    new EventBESA(
-                            DeadAgentGuard.class.getName(),
-                            new ToControlMessage(
-                                    believes.getPeasantProfile().getPeasantFamilyAlias(),
-                                    believes.getCurrentDay()
-                            )
-                    )
-            );
-            AdmBESA.getInstance().killAgent(
-                    AdmBESA.getInstance().getHandlerByAlias(
-                            this.getAlias()
-                    ).getAgId(),
+            shutdownGate.execute(() -> {
+                System.out.println("Shutdown " + this.getAlias());
+                PeasantFamilyBelieves believes = (PeasantFamilyBelieves) ((StateBDI) this.getState()).getBelieves();
+                wpsReport.mental(Instant.now() + "," + believes.toCSV(), this.getAlias());
+                wpsReport.ws(believes.toJson(), believes.getAlias());
+                AdmBESA.getInstance().getHandlerByAlias(
+                        config.getControlAgentName()
+                ).sendEvent(
+                        new EventBESA(
+                                DeadAgentGuard.class.getName(),
+                                new ToControlMessage(
+                                        believes.getPeasantProfile().getPeasantFamilyAlias(),
+                                        believes.getCurrentDay()
+                                )
+                        )
+                );
+            }, () -> AdmBESA.getInstance().killAgent(
+                    AdmBESA.getInstance().getHandlerByAlias(this.getAlias()).getAgId(),
                     config.getDoubleProperty("control.passwd")
-            );
+            ));
         } catch (Exception ex) {
-            System.err.println(ex.getMessage() + " " + believes.getAlias());
+            System.err.println(ex.getMessage() + " " + this.getAlias());
         }
     }
 
