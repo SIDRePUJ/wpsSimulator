@@ -61,6 +61,15 @@ class DiagnosticLauncherTests(unittest.TestCase):
             lines.append("time.sleep(1)")
         elif mode == "drift":
             lines.append(f"pathlib.Path({str(drift_path)!r}).write_bytes(b'drift')")
+        elif mode == "side_effects":
+            lines.extend([
+                "pathlib.Path('logs').mkdir(exist_ok=True)",
+                "with_open=pathlib.Path('logs/seed.log').open('a',encoding='utf-8')",
+                "with_open.write(seed+'\\n')",
+                "with_open.close()",
+                "pathlib.Path('rice_water_stress_.csv').write_text(seed,encoding='utf-8')",
+                "print('CWD: '+str(pathlib.Path.cwd()))",
+            ])
         return ";".join(lines)
 
     def invoke(self, *, execute=False, mode="success", timeout=3):
@@ -91,7 +100,7 @@ class DiagnosticLauncherTests(unittest.TestCase):
         self.assertEqual([run["seed"] for run in plan["runs"]], list(gate.SEEDS))
         self.assertEqual(plan["runs"][0]["capture_files"],
                          ["diagnostic_requests.csv", "build_manifest.json",
-                          *gate.OUTPUTS, "capture.json"])
+                          *gate.OUTPUTS, "side_effects/", "capture.json"])
         self.assertEqual([entry["path"] for entry in plan["runtime_identity"]["classpath"]],
                          [str(path) for path in self.classpath])
         self.assertEqual({str(path) for path in self.root.rglob("*")}, before)
@@ -114,6 +123,7 @@ class DiagnosticLauncherTests(unittest.TestCase):
             directory = self.output / f"seed-{seed}"
             capture = json.loads((directory / "capture.json").read_text(encoding="utf-8"))
             self.assertEqual(capture["kind"], "synthetic_fixture")
+            self.assertEqual(capture["schema"], launcher.CAPTURE_SCHEMA)
             self.assertEqual(capture["seed"], seed)
             self.assertEqual(capture["java_exit"], 0)
             self.assertEqual(capture["termination"], "natural")
@@ -124,6 +134,23 @@ class DiagnosticLauncherTests(unittest.TestCase):
                              gate.sha(directory / "build_manifest.json"))
             self.assertIn(f"SEED: {seed}", (directory / "stdout.txt").read_text())
             self.assertIn("fake stderr", (directory / "stderr.txt").read_text())
+
+    def test_relative_append_and_overwrite_side_effects_are_preserved_per_seed(self):
+        result = self.invoke(execute=True, mode="side_effects")
+        self.assertEqual(result["status"], "captured_transcripts_only")
+        for index, seed in enumerate(gate.SEEDS):
+            directory = self.output / f"seed-{seed}"
+            capture = json.loads((directory / "capture.json").read_text(encoding="utf-8"))
+            evidence = capture["side_effects"]
+            self.assertEqual(evidence["working_directory"], str(self.root.parents[1]))
+            self.assertIn(f"CWD: {self.root.parents[1]}",
+                          (directory / "stdout.txt").read_text(encoding="utf-8"))
+            expected_log = "".join(f"{prior}\n" for prior in gate.SEEDS[:index + 1])
+            self.assertEqual((directory / "side_effects/logs/seed.log").read_text(), expected_log)
+            self.assertEqual((directory / "side_effects/rice_water_stress_.csv").read_text(), str(seed))
+            for name, identity in evidence["changed"].items():
+                self.assertEqual(gate.sha(directory / "side_effects" / name),
+                                 identity["after_sha256"])
 
     def test_existing_output_root_is_never_overwritten(self):
         self.output.mkdir()

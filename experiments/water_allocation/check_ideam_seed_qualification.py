@@ -215,7 +215,9 @@ def marker_counts(stdout, directory):
 def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
               synthetic=False, captured_root=None, captured_directory=None):
     capture = json.loads((directory / "capture.json").read_text(encoding="utf-8"))
-    require(capture.get("schema") == "district-seed-diagnostic/v1", "wrong capture schema")
+    schema = capture.get("schema")
+    require(schema in ("district-seed-diagnostic/v1", "district-seed-diagnostic/v2"),
+            "wrong capture schema")
     kind = "synthetic_fixture" if synthetic else "real_seed_diagnostic"
     require(capture.get("kind") == kind, "capture provenance kind mismatch")
     require(capture.get("seed") == seed, "capture seed mismatch")
@@ -226,6 +228,8 @@ def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
     require(capture.get("frozen_sha256") == expected_hashes, "capture frozen identities differ")
     require(capture.get("output_sha256") == {name: sha(directory / name) for name in OUTPUTS},
             "captured output hash mismatch")
+    if schema == "district-seed-diagnostic/v2":
+        check_side_effects(capture, directory, captured_root or root)
     stderr = (directory / "stderr.txt").read_text(encoding="utf-8")
     require(not UNCAUGHT_JAVA_THREAD.search(stderr),
             f"uncaught Java thread exception in captured stderr: seed {seed}")
@@ -313,7 +317,42 @@ def check_run(directory, seed, root, roster, windows, expected_hashes=FROZEN,
         require(climate_days[plot] == expected_days,
                 f"climate dates outside frozen crop window: {plot}")
     return {"seed": seed, "plots": 48, "eligible_plots": 24, "eligible_area_ha": 96,
-            "assigned_upa": 12, "runtime_identity_scope": "captured_only"}
+            "assigned_upa": 12, "runtime_identity_scope": "captured_only",
+            "side_effect_scope": "captured_per_seed" if schema.endswith("/v2") else "not_captured"}
+
+
+def check_side_effects(capture, directory, captured_root):
+    evidence = capture.get("side_effects")
+    require(isinstance(evidence, dict), "missing side-effect evidence")
+    require(evidence.get("working_directory") == str(captured_root.parents[1]),
+            "side-effect working directory mismatch")
+    changed = evidence.get("changed")
+    require(isinstance(changed, dict), "missing side-effect inventory")
+    archive = directory / "side_effects"
+    require(archive.is_dir() and not archive.is_symlink(), "missing side-effect archive")
+    actual = set()
+    for path in archive.rglob("*"):
+        require(not path.is_symlink(), "symlink in side-effect archive")
+        if path.is_file():
+            actual.add(path.relative_to(archive).as_posix())
+        else:
+            require(path.is_dir(), "non-file in side-effect archive")
+    require(actual == set(changed), "side-effect inventory/archive mismatch")
+    for name, entry in changed.items():
+        require(isinstance(name, str), "unsafe side-effect path")
+        relative = PurePosixPath(name)
+        require(name and name == relative.as_posix()
+                and not relative.is_absolute() and all(part not in (".", "..") for part in relative.parts)
+                and "\\" not in name and ":" not in name,
+                "unsafe side-effect path")
+        require(isinstance(entry, dict) and set(entry) == {"before_sha256", "after_sha256"},
+                "malformed side-effect identity")
+        before, after = entry["before_sha256"], entry["after_sha256"]
+        require((before is None or isinstance(before, str) and re.fullmatch(r"[0-9a-f]{64}", before))
+                and isinstance(after, str) and re.fullmatch(r"[0-9a-f]{64}", after)
+                and before != after, "malformed side-effect hash")
+        require(sha(archive.joinpath(*relative.parts)) == after,
+                f"side-effect hash mismatch: {name}")
 
 
 def qualify(root, directories, expected_hashes=FROZEN, synthetic=False,

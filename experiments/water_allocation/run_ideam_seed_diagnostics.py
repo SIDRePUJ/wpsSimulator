@@ -20,6 +20,7 @@ from check_ideam_seed_qualification import (
 
 
 SCHEMA = "seed-diagnostic-build/v1"
+CAPTURE_SCHEMA = "district-seed-diagnostic/v2"
 DIAGNOSTIC_SOURCE = ROOT / "reports/raw/calendar-c2-local-20260928-web-osredirect/diagnostic_requests.csv"
 
 
@@ -88,6 +89,40 @@ def command(java, classpath, java_options, root, directory, seed):
             "-startyear", "2022", "-seed", str(seed), "-perturbation", "none"]
 
 
+def working_tree_inventory(cwd, output_root):
+    """Hash regular cwd files, excluding only the exclusive capture output tree."""
+    require(cwd != output_root and output_root not in cwd.parents,
+            "output root contains simulator working directory")
+    inventory = {}
+    for parent, dirs, files in os.walk(cwd, followlinks=False):
+        parent = Path(parent)
+        dirs[:] = sorted(directory for directory in dirs
+                         if parent / directory != output_root)
+        for name in [*dirs, *files]:
+            require(not (parent / name).is_symlink(),
+                    f"symlink in simulator working directory: {parent / name}")
+        for name in sorted(files):
+            path = parent / name
+            require(path.is_file(), f"non-file in simulator working directory: {path}")
+            inventory[path.relative_to(cwd).as_posix()] = sha(path)
+    return inventory
+
+
+def preserve_side_effects(cwd, directory, before, after):
+    require(before.keys() <= after.keys(), "simulator deleted a working-directory file")
+    changed = {name: {"before_sha256": before.get(name), "after_sha256": digest}
+               for name, digest in sorted(after.items()) if before.get(name) != digest}
+    archive = directory / "side_effects"
+    archive.mkdir(exist_ok=False)
+    for name, entry in changed.items():
+        source, target = cwd / name, archive / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source, target)
+        require(sha(target) == entry["after_sha256"],
+                f"side-effect file changed during preservation: {name}")
+    return {"working_directory": str(cwd), "changed": changed}
+
+
 def run(root, output_root, java, classpath, build_manifest, *, execute=False,
         java_options=(), timeout_seconds=300, synthetic=False,
         diagnostic_source=DIAGNOSTIC_SOURCE):
@@ -97,6 +132,7 @@ def run(root, output_root, java, classpath, build_manifest, *, execute=False,
     classpath = [Path(path).absolute() for path in classpath]
     build_manifest = Path(build_manifest).absolute()
     diagnostic_source = Path(diagnostic_source).absolute()
+    cwd = root.parents[1]
     require(timeout_seconds > 0, "timeout must be positive")
     if not synthetic:
         require(all(re.fullmatch(r"-Xm(?:x|s)\d+[mMgG]", value) for value in java_options),
@@ -108,7 +144,7 @@ def run(root, output_root, java, classpath, build_manifest, *, execute=False,
                              output_root / f"seed-{seed}", seed),
              "capture": str(output_root / f"seed-{seed}/capture.json"),
              "capture_files": ["diagnostic_requests.csv", "build_manifest.json",
-                               *OUTPUTS, "capture.json"]}
+                               *OUTPUTS, "side_effects/", "capture.json"]}
             for seed in SEEDS]
     for item in plan:
         check_argv(item["argv"], Path(item["directory"]), root, item["seed"])
@@ -132,11 +168,12 @@ def run(root, output_root, java, classpath, build_manifest, *, execute=False,
                 and sha(directory / "build_manifest.json") == manifest_hash,
                 "copied input drift")
         argv = item["argv"]
+        before = working_tree_inventory(cwd, output_root)
         (directory / "command.txt").write_text(" ".join(argv) + "\n", encoding="utf-8")
         try:
             with (directory / "stdout.txt").open("wb") as stdout, \
                     (directory / "stderr.txt").open("wb") as stderr:
-                process = subprocess.run(argv, cwd=root.parents[1], stdout=stdout,
+                process = subprocess.run(argv, cwd=cwd, stdout=stdout,
                                          stderr=stderr, timeout=timeout_seconds, check=False)
         except subprocess.TimeoutExpired as error:
             (directory / "exit.txt").write_text("TIMEOUT\n", encoding="utf-8")
@@ -150,12 +187,15 @@ def run(root, output_root, java, classpath, build_manifest, *, execute=False,
         require(sha(directory / "diagnostic_requests.csv") == DIAGNOSTIC_REQUEST_SHA256
                 and sha(directory / "build_manifest.json") == manifest_hash,
                 "copied input drift after process")
-        capture = {"schema": "district-seed-diagnostic/v1",
+        after = working_tree_inventory(cwd, output_root)
+        side_effects = preserve_side_effects(cwd, directory, before, after)
+        capture = {"schema": CAPTURE_SCHEMA,
                    "kind": "synthetic_fixture" if synthetic else "real_seed_diagnostic",
                    "seed": item["seed"], "termination": "natural", "java_exit": 0,
                    "argv": argv, "frozen_sha256": FROZEN,
                    "runtime_identity": identity, "build_manifest_sha256": manifest_hash,
                    "diagnostic_requests_sha256": sha(directory / "diagnostic_requests.csv"),
+                   "side_effects": side_effects,
                    "output_sha256": {name: sha(directory / name) for name in OUTPUTS}}
         (directory / "capture.json").write_text(json.dumps(capture, indent=2) + "\n",
                                                     encoding="utf-8")

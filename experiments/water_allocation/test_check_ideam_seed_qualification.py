@@ -188,6 +188,48 @@ class SeedQualificationTests(unittest.TestCase):
                                   "--synthetic-fixture"], capture_output=True, text=True)
         self.assertEqual(process.returncode, 0, process.stderr)
         self.assertIn('"real_seed_qualification": "not_run"', process.stdout)
+        self.assertEqual([run["side_effect_scope"] for run in result["runs"]],
+                         ["not_captured", "not_captured"])
+
+    def upgrade_side_effects(self):
+        for directory, seed in zip(self.dirs, gate.SEEDS):
+            archive = directory / "side_effects/logs"
+            archive.mkdir(parents=True)
+            side_file = archive / "seed.log"
+            side_file.write_text(str(seed), encoding="utf-8")
+            path = directory / "capture.json"
+            capture = json.loads(path.read_text(encoding="utf-8"))
+            capture["schema"] = "district-seed-diagnostic/v2"
+            capture["side_effects"] = {
+                "working_directory": str(self.root.parents[1]),
+                "changed": {"logs/seed.log": {"before_sha256": None,
+                                                "after_sha256": gate.sha(side_file)}},
+            }
+            path.write_text(json.dumps(capture), encoding="utf-8")
+
+    def test_v2_side_effect_archive_is_bound_to_capture(self):
+        self.upgrade_side_effects()
+        result = gate.qualify(self.root, self.dirs, synthetic=True)
+        self.assertEqual([run["side_effect_scope"] for run in result["runs"]],
+                         ["captured_per_seed", "captured_per_seed"])
+        (self.dirs[0] / "side_effects/logs/seed.log").write_text("tampered")
+        self.assert_rejected("side-effect hash mismatch")
+
+    def test_v2_missing_or_extra_side_effect_evidence_fails_closed(self):
+        self.upgrade_side_effects()
+        (self.dirs[0] / "side_effects/logs/seed.log").unlink()
+        self.assert_rejected("side-effect inventory/archive mismatch")
+        (self.dirs[0] / "side_effects/logs/seed.log").write_text(str(gate.SEEDS[0]))
+        (self.dirs[0] / "side_effects/extra.txt").write_text("extra")
+        self.assert_rejected("side-effect inventory/archive mismatch")
+
+    def test_v2_working_directory_claim_is_checked(self):
+        self.upgrade_side_effects()
+        path = self.dirs[0] / "capture.json"
+        capture = json.loads(path.read_text(encoding="utf-8"))
+        capture["side_effects"]["working_directory"] = "/other/source"
+        path.write_text(json.dumps(capture), encoding="utf-8")
+        self.assert_rejected("side-effect working directory mismatch")
 
     def test_relocated_posix_captures_admitted_without_rewriting_evidence(self):
         root, output = self.posix_capture()
